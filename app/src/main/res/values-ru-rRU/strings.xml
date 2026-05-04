@@ -121,6 +121,7 @@
     <!-- category / subcategory -->
     <string name="category">Категория</string>
     <string name="subcategory">Подкатегория</string>
+    <string name="navigation_mode">Режим навигации</string>
     <string name="category_empty_list">Не найдено ни одной категории. Чтобы создать её, нажмите на зеленый плюс.</string>
     <string name="select_category">Выбрать категорию</string>
     <string name="add_category">Добавить категорию</string>
@@ -275,8 +276,8 @@
     <string name="enter_amount">Введите сумму</string>
     <!-- EP Recurring mode recurring_mode -->
     <string name="recurringModeLabel">Автовыполнение</string>
-    <string name="manual">Выполнение вручную</string>
-    <string name="prompt">По запросу</string>
+    <string name="manual">Без напоминания</string>
+    <string name="prompt">Создать напоминание</string>
     <string name="auto">Выполнить автоматически</string>
     <!-- 20121121 -->
     <string name="send_feedback">Отправить отзыв</string>
@@ -312,6 +313,7 @@
     <string name="title_activity_general_report">Общий отчет</string>
     <string name="menu_report_income_vs_expenses">Доход/Расход</string>
     <string name="menu_report_cashflow">Движение средств</string>
+    <string name="menu_report_summary_of_accounts">Сводка по счетам</string>
     <string name="total">Итого</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">За все время</string>
@@ -440,7 +442,7 @@
     <string name="donate_in_app_retrieving_status">Запрашиваем статус ваших пожертвований через Google Play. Пожалуйста подождите&#8230;</string>
     <string name="donate_in_app_error">Невозможно использовать функцию оплаты из программы. Проверьте, что у вас установлена последняя версия приложения Google Play Store.</string>
     <string name="title_repeating_transaction_process">Обработать запланированную проводку</string>
-    <string name="summary_repeating_transaction_process">Обработка запланированных проводок (авто, по запросу, вручную)</string>
+    <string name="summary_repeating_transaction_process">Обработка запланированных проводок (авто, с напоминанием и без)</string>
     <string name="title_use_nested_category">(BETA) Использовать новую модель вложенных категорий</string>
     <string name="summary_use_nested_category">Использовать новую вложенную модель категорий вместо схемы \"категория:подкатегория\" (бета, использовать на свой риск)</string>
     <string name="tools">Инструменты</string>
@@ -488,6 +490,7 @@
     <string name="title_activity_currency_chart">Диаграмма обменного курса валюты</string>
     <string name="sort_by_ascending">Сортировка по годам и месяцам по возрастанию</string>
     <string name="sort_by_desceding">Сортировка по годам и месяцам по убыванию</string>
+    <string name="group_by">Группировать по</string>
     <string name="years">Годы</string>
     <string name="select_the_years_to_be_displayed">Выберите годы для отображения</string>
     <string name="to_date">По дату</string>
@@ -503,10 +506,13 @@
     <string name="update_prices">Обновление цен</string>
     <string name="update_price">Обновление цен</string>
     <string name="download_price">Скачать цену</string>
+    <string name="download_all_prices">Скачать все цены</string>
     <string name="edit_price">Редактировать цену</string>
     <string name="price_updated">Цены обновлены</string>
     <string name="all_prices_updated">Все цены обновлены.</string>
     <string name="download_complete">Загрузка завершена.</string>
+    <string name="downloaded_price_for_symbol">Загружено %1$s @ %2$s</string>
+    <string name="downloaded_prices_count">Цены на %1$d/%2$d загружены</string>
     <string name="confirm_price_download">Вы хотите обновить цены безопасности онлайн ?</string>
     <string name="starting_price_update">Загрузка цен, пожалуйста, подождите...</string>
     <string name="database_migrate_14_to_20">Перенос базы данных с v1.4</string>
@@ -777,6 +783,8 @@
     <string name="notification_channel_fileoperation_uploadin">Выгрузка Mmex</string>
     <string name="notification_channel_fileoperation_complete">Выгрузка Mmex завершена</string>
     <string name="notification_channel_fileoperation_conflict">Конфликт синхронизации Mmex</string>
+    <string name="notification_channel_syncing">Синхр. канал</string>
+    <string name="notification_channel_syncing__description">Синхронизация уведомлений в процессе</string>
     <string name="show">Показать</string>
     <string name="attachment_folder">Папка для вложений</string>
     <string name="attachment_folder_summary">Выберите папку, в которой будут храниться вложения</string>
@@ -800,6 +808,9 @@
     <string name="msg_uploading_overwrite">Загруженная версия перезапишет существующую.\nПродолжить?</string>
     <string name="msg_downloading_overwrite">Скачанная версия перезапишет существующую.\nПродолжить?</string>
     <string name="menu_account_filter_all">Все счета</string>
+    <string name="menu_account_filter_open">Открытые счета</string>
+    <string name="menu_account_filter_favorite">Избранные счета</string>
+    <string name="menu_account_filter_custom">Выбрать счета&#8230;</string>
     <string name="cash_ledger">Кассовая книга</string>
     <!-- Merge -->
     <string name="merge_take_ours">Сохранить локальное значение</string>
@@ -818,4 +829,7 @@
     <string name="changelog">История изменений</string>
     <string name="changelog_title">Важно! Что нового!!</string>
     <string name="changelog_1086">Новая версия 5.4\n- Добавлена бета-версия возможности объединения. Попробуйте объединить файлы при их изменении. Включите ее в Настройках-&gt;Синхронизация-&gt;Объединение баз данных</string>
+    <string name="changelog_1104">Новая версия 5.5\n- Включить полную совместимость для Android 16 с Edge-To-Edge</string>
+    <string name="currency_save_error">Ошибка при вводе валюты. Вероятно, валюта %s уже определена.</string>
+    <string name="menu_cashflow_24_months">Показать 24 месяца</string>
 </resources>
