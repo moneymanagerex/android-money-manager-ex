@@ -68,11 +68,19 @@
     <string name="auto_sync_via_wifi_summary">Automatski sinkronizira samo na Wi-Fi mreži.</string>
     <string name="sync_on_app_start">Sinkroniziraj prilikom pokretanja aplikacije.</string>
     <string name="sync_on_start">Sinkroniziraj prilikom pokretanja</string>
+    <string name="sync_merge_database">EKSPERIMENTALNO: Spoji baze podataka</string>
+    <string name="sync_merge_database_on_sync">Spoji razlike u bazi podataka prilikom sinkronizacije.</string>
+    <string name="sync_merge_dialog_msg_format">Spajaju se svi %1$s%2$s</string>
     <!-- Receive SMS strings -->
+    <string name="title_sms_auto_trans">Obrada bankovnih transakcija SMS-om</string>
+    <string name="summary_sms_auto_trans">Pročitaj SMS s aktualiziranom bankovnom transakcijom i automatski stvori transakciju</string>
+    <string name="deny_receive_sms_error">Dozvola za primanje SMS-a je isključena, stoga se tvoja SMS poruka o bankovnoj transakciji neće biti obraditi.</string>
     <string name="granted_receive_sms_access">Dozvola za RECEIVE_SMS je već odobrena</string>
     <string name="revoke_receive_sms_access">Idi u Postavke &gt;&gt; Aplikacije &gt;&gt; Money Manager Ex &gt;&gt; Dozvole i zabrani pristup za SMS-ove</string>
     <string name="title_sms_trans_status_notification">SMS obavijest o stanju transakcije</string>
+    <string name="summary_sms_trans_status_notification">Uključi prikaz statusa procesa SMS-a bankovne transakcije u području obavijesti umjesto prikaza kao toast poruke ili u ekranu za novu transakciju</string>
     <string name="notification_click_to_edit_transaction">Dodirni za uređivanje transakcije &#8230;</string>
+    <string name="notification_process_sms_transaction_status">Status obrade bankovnih transakcija SMS-om</string>
     <string name="notification_process_sms_channel_description">Kanal za AMMEX SMS obavijesti</string>
     <!-- account -->
     <string name="account">Račun</string>
@@ -113,6 +121,7 @@
     <!-- category / subcategory -->
     <string name="category">Kategorija</string>
     <string name="subcategory">Podkategorija</string>
+    <string name="navigation_mode">Modusi navigacije</string>
     <string name="category_empty_list">Nije pronađena nijedna kategorija. Za izradu kategorije, dodirni zeleni gumb plus.</string>
     <string name="select_category">Odaberi kategoriju</string>
     <string name="add_category">Dodaj kategoriju</string>
@@ -223,6 +232,7 @@
     <string name="tag_empty_list">Nije pronađena nijedna oznaka. Za izradu oznake, dodirni zeleni gumb plus.</string>
     <string name="tag_can_not_deleted">Odabrana oznaka se ne može izbrisati jer je referencirana</string>
     <string name="db_tag_update_failed">Aktualiziranje oznake nije uspjelo</string>
+    <string name="space_replaced_with__">Razmak, &amp; i | zamijenjeni su s podvlakom (_)</string>
     <!-- Scheduled Transactions, formerly Recurring Transactions -->
     <string name="none">Nijedna</string>
     <string name="once">Jednom</string>
@@ -284,6 +294,10 @@
     <string name="enter_your_previous_passcode">Unesi staru lozinku</string>
     <!--<string name="passcode_update">passcode is updated</string>-->
     <string name="passcode_not_update">lozinka nije aktualizirana</string>
+    <string name="fingerprint_passcode_deactivated">Sigurnosna lozinka je aktivirana pomoću autentifikacije otiskom prsta, pa je lozinka automatski deaktivirana. Ponovo aktiviraj lozinku s numeričkom vrijednošću.</string>
+    <string name="preferences_fingerprint_auth_key">Ključ autentifikacije otiskom prsta</string>
+    <string name="preferences_fingerprint_summary">Uključi korištenje autentifikacije otiskom prsta za prijavu i isključi ekran za pristupnu lozinku. Međutim, korisnik ne može koristiti otisak prsta za aktiviranje ili uređivanje pristupne lozinke.</string>
+    <string name="preferences_fingerprint_title">Autentifikacija otiskom prsta</string>
     <!-- 20121217 -->
     <string name="lookups_wildcard">Za pretraživanje možeš koristiti zamjenski znak %</string>
     <string name="income_vs_expenses_current_month">Prihod/Troškovi: Tekući mjesec</string>
@@ -299,6 +313,7 @@
     <string name="title_activity_general_report">Opći izvještaj</string>
     <string name="menu_report_income_vs_expenses">Prihod/Troškovi</string>
     <string name="menu_report_cashflow">Novčani tijek</string>
+    <string name="menu_report_summary_of_accounts">Sažetak računa</string>
     <string name="total">Ukupno</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Svo vrijeme</string>
@@ -314,6 +329,7 @@
     <string name="date_format">Format datuma</string>
     <string name="financial_year_start_day">Fiskalna godina: Početni dan</string>
     <string name="financial_year_start_month">Fiskalna godina: Početni mjesec</string>
+    <string name="financial_year_not_set">U postavkama postavi datum početka fiskalne godine.</string>
     <string name="menu_move_database_to_external_storage">Izvezi bazu podataka</string>
     <string name="database_has_been_moved">Baza podataka je premještena: %1$s</string>
     <string name="copy_database_on_external_storage_failed">Kopiranje baze podataka na eksterni spremnik nije uspjelo</string>
@@ -350,6 +366,7 @@
     <string name="open_database">Otvori bazu podataka</string>
     <string name="synchronization_interval">Interval za sinkronizaciju</string>
     <string name="summary_synchronization_interval">Učestalost sinkronizacije?</string>
+    <string name="tips_new_version_dropbox">Od verzije 1.2.0, Money Manager Ex za Android promijenio je mehanizam za sinkronizaciju Dropboxa. Korisnici koji već koriste sinkronizaciju Dropboxa trebaju aktualizirati konfiguraciju.\nAutentifikacija i odabir baze podataka se nalaze u Postavkama.\nOd verzije 1.2.0, Money Manager Ex za Android može automatski sinkronizirati bazu podataka.</string>
     <string name="title_transaction_shown_balance">Prikazuje saldo za svaku transakciju</string>
     <string name="summary_transaction_shown_balance">Prikazuje saldo za svaku transakciju. Prikaz salda može usporiti rad aplikacije</string>
     <string name="menu_open_database">Otvori bazu podataka</string>
@@ -404,6 +421,7 @@
     <string name="result_search">Rezultat tvoje pretrage</string>
     <string name="new_repeating_transaction">Nova zakazana transakcija</string>
     <string name="edit_repeating_transaction">Uredi zakazanu transakciju</string>
+    <string name="no_recurring_transaction">Izvještaj o novčanom toku koristi zakazanu transakciju, ali nije pronađena nijedna zakazana transakcija</string>
     <string name="path_database_not_exists">Staza baze podataka ne postoji</string>
     <string name="database_can_not_open_write">Baza podataka se ne može otvoriti u modusu za pisanje</string>
     <string name="time_frame">Razdoblje</string>
@@ -472,6 +490,7 @@
     <string name="title_activity_currency_chart">Dijagram tečajeva valuta</string>
     <string name="sort_by_ascending">Razvrstaj po godinama i mjesecima uzlazno</string>
     <string name="sort_by_desceding">Razvrstaj po godinama i mjesecima silazno</string>
+    <string name="group_by">Grupiraj po</string>
     <string name="years">Godine</string>
     <string name="select_the_years_to_be_displayed">Odaberi godine za prikaz</string>
     <string name="to_date">Datum do</string>
@@ -487,10 +506,13 @@
     <string name="update_prices">Aktualiziraj cijene</string>
     <string name="update_price">Aktualiziraj cijenu</string>
     <string name="download_price">Preuzimi cijenu</string>
+    <string name="download_all_prices">Preuzimi sve cijene</string>
     <string name="edit_price">Uredi cijenu</string>
     <string name="price_updated">Cijena je aktualizirana</string>
     <string name="all_prices_updated">Sve cijene su aktualizirane.</string>
     <string name="download_complete">Preuzimanje je završeno.</string>
+    <string name="downloaded_price_for_symbol">Preuzeto: %1$s @ %2$s</string>
+    <string name="downloaded_prices_count">Preuzeto %1$d/%2$d cijena</string>
     <string name="confirm_price_download">Želiš li aktualizirati cijene vrijednosnica online?</string>
     <string name="starting_price_update">Preuzimanje cijena. Pričekaj &#8230;</string>
     <string name="database_migrate_14_to_20">Migriraj bazu podataka od v1.4</string>
@@ -557,6 +579,7 @@
     <string name="fingerprint_info">Koristi otisak prsta za otključavanje</string>
     <string name="fingerprint_no_hardware">Tvoj uređaj ne pordžava autentifikaciju otiskom prsta</string>
     <string name="fingerprint_check_permission">Aktiviraj dozvolu za autentifikaciju otiskom prsta</string>
+    <string name="fingerprint_has_enrolled">Nije konfiguriran nijedan otisak prsta. Registriraj barem jedan otisak prsta u postavkama uređaja.</string>
     <string name="fingerprint_is_keyguard_secure">Aktiviraj sigurnost zaključanog ekrana u postavkama uređaja</string>
     <string name="income_expense_period">Prihod/Troškovi razdoblja</string>
     <string name="income_expense_period_summary">Razdoblje za pregled Prihoda/Troškova u podnožju sučelja.</string>
@@ -624,6 +647,7 @@
     <string name="budget_name">Naziv budžeta</string>
     <string name="budget_year">Godina budžeta</string>
     <string name="budget_month">Mjesec budžeta</string>
+    <string name="budget_month_optional">Mjesec proračuna (opcionalno)</string>
     <!-- string name="copy">Copy</string -->
     <string name="app_restart">Aplikacija će se sada zatvoriti, kako bi se primijenile promjene. Pokreni aplikaciju ponovo.</string>
     <string name="print">Ispiši</string>
@@ -720,10 +744,12 @@
     <string name="error_checking_remote">Došlo je do greške prilikom provjere vanjskih promjena.</string>
     <string name="no_remote_change_date">Datum posljednje promjene nije pronađen u metapodacima vanjske datoteke.</string>
     <string name="remote_unavailable">Udaljena datoteka nije dostupna.</string>
+    <string name="request_reopen">Udaljena datoteka nije dostupna. Zbog toga se tvoja lokalna kopija ne može sinkronizirati s udaljenom. Izvezi bazu podataka ako želiš spremiti lokalnu kopiju ili je ponovo otvori s udaljene datoteke ako želiš učitati podatke iz udaljene datoteke.</string>
     <!-- Select database screen -->
     <string name="intro_text">Za korištenje Money Manager Ex, moraš imati datoteku baze podataka za spremanje podataka. Odaberi jednu od dostupnih opcija.</string>
     <string name="intro_create_db">Možeš stvoriti novu datoteku i urediti izvorne postavke.</string>
     <string name="intro_open_db">Ili odaberi postojeću datoteku s tvojeg uređaja.</string>
+    <string name="intro_sync">Za korištenje usluga u oblaku otvori datoteku od preferiranog pružatelja usluga za dokumente.</string>
     <!-- Create Database screen -->
     <string name="select_language">Odaberi jezik</string>
     <string name="run">Pokreni Money Manager Ex</string>
@@ -751,11 +777,14 @@
     <string name="summary_notifications_repeating_transaction">Prikaži obavijest o dospijeću zakazane transakcije</string>
     <string name="notification_channel_recurring">Obavijest za zakazane transakcije</string>
     <string name="notification_channel_recurring__description">Obavijest za dospjele zakazane transakcije</string>
+    <string name="notification_channel_remotefile">Operacija na udaljenoj datoteci</string>
+    <string name="notification_channel_remotefile__description">Obavijest o operaciji na udaljenoj datoteci</string>
     <string name="notification_channel_fileoperation_downloadin">Mmex preuzimanje</string>
     <string name="notification_channel_fileoperation_uploadin">Mmex prijenos</string>
     <string name="notification_channel_fileoperation_complete">Mmex prijenos završen</string>
     <string name="notification_channel_fileoperation_conflict">Konflikt u Mmex sinkronizaciji</string>
     <string name="notification_channel_syncing">Sinkronizacija kanala</string>
+    <string name="notification_channel_syncing__description">Kanal obavijesti o sinkronizaciji u tijeku</string>
     <string name="show">Prikaži</string>
     <string name="attachment_folder">Mapa priloga</string>
     <string name="attachment_folder_summary">Odaberi mapu u koju će se prilozi spremati</string>
@@ -774,9 +803,14 @@
     <!--Upload/Downlaod warnning -->
     <string name="upload_warning">Upozorenje o prijenosu</string>
     <string name="download_warning">Upozorenje o preuzimanju</string>
+    <string name="remote_file_change">Indikator za promjene udaljenih datoteka:</string>
+    <string name="local_file_change">Indikator za promjene lokalnih datoteka:</string>
     <string name="msg_uploading_overwrite">Prijenos će prepisati tvoju udaljenu verziju.\nŽeliš li nastaviti?</string>
     <string name="msg_downloading_overwrite">Preuzimanje će prepisati tvoju lokalnu verziju.\nŽeliš li nastaviti?</string>
     <string name="menu_account_filter_all">Svi računi</string>
+    <string name="menu_account_filter_open">Otvori račune</string>
+    <string name="menu_account_filter_favorite">Favorizirani računi</string>
+    <string name="menu_account_filter_custom">Odaberi račune &#8230;</string>
     <string name="cash_ledger">Knjiga gotovine</string>
     <!-- Merge -->
     <string name="merge_take_ours">Zadrži lokalno</string>
@@ -794,6 +828,8 @@
     <!-- changelog -->
     <string name="changelog">Log-zapis promjena</string>
     <string name="changelog_title">Važno. Što je novo!!</string>
+    <string name="changelog_1086">Nova verzija 5.4\n – Dodana je nova Beta funkcija za mehanizam za spajanje. Pokušaj spojiti datoteke kada se obje promijene. Uključi je u Postavke -> Sinkronizacija -> Spajanje</string>
+    <string name="changelog_1104">Nova verzija 5.5\n – Omogućuje potpunu kompatibilnost s Androidom 16 i prikazom od ruba do ruba</string>
     <string name="currency_save_error">Greška prilikom unosa valute. Vjerojatno je valuta %s već definirana.</string>
     <string name="menu_cashflow_24_months">Prikaz za 24 mjeseca</string>
 </resources>
