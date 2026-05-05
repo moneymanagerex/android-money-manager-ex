@@ -121,6 +121,7 @@
     <!-- category / subcategory -->
     <string name="category">Categorie</string>
     <string name="subcategory">Subcategorie</string>
+    <string name="navigation_mode">Navigatiemodus</string>
     <string name="category_empty_list">Geen categorie gevonden. Tik op de groene + knop om er een aan te maken.</string>
     <string name="select_category">Selecteer categorie</string>
     <string name="add_category">Voeg categorie toe</string>
