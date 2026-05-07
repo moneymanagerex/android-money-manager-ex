@@ -30,6 +30,7 @@ import androidx.preference.PreferenceManager;
 import com.amplitude.android.Amplitude;
 import com.amplitude.android.AmplitudeKt;
 import com.amplitude.android.TrackingOptions;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.Iconics;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.common.MoneyParcelConverter;
@@ -342,12 +343,15 @@ public class MmexApplication
     }
 
     private void registerCustomFonts() {
-        String iconFontPath = "fonts/mmex.ttf";
 
         // Font icons
         Iconics.registerFont(new MMXIconFont());
 
+        // GMD icons
+        Iconics.registerFont(new GoogleMaterial());
+
         // Initialize font icons support.
+        String iconFontPath = "fonts/mmex.ttf";
         FontIconTypefaceHolder.init(getAssets(), iconFontPath);
     }
 }
