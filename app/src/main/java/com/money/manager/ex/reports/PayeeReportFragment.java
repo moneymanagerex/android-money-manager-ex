@@ -60,11 +60,20 @@ public class PayeeReportFragment
         extends BaseReportFragment {
 
     private LinearLayout mHeaderListView, mFooterListView;
+    private static final String KEY_TX_DIRECTION = "PayeeReportFragment:TxDirection";
+    private static final int TX_DIRECTION_ALL = 0;
+    private static final int TX_DIRECTION_INCOME = 1;
+    private static final int TX_DIRECTION_EXPENSES = 2;
+    private int mTxDirection = TX_DIRECTION_ALL;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         setListAdapter(null);
         setSearchMenuVisible(true);
+        // restore tx direction before loader is started in super
+        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_TX_DIRECTION)) {
+            mTxDirection = savedInstanceState.getInt(KEY_TX_DIRECTION, TX_DIRECTION_ALL);
+        }
         //create header view
         mHeaderListView = (LinearLayout) addListViewHeaderFooter(R.layout.item_generic_report_2_columns);
         TextView txtColumn1 = mHeaderListView.findViewById(R.id.textViewColumn1);
@@ -167,15 +176,23 @@ public class PayeeReportFragment
         String[] projectionIn = new String[]{ QueryMobileData.PAYEEID + " AS _id",
                 QueryMobileData.PAYEEID, QueryMobileData.PAYEENAME,
                 "SUM(" + QueryMobileData.AmountBaseConvRate + ") AS TOTAL"};
-        String selection = QueryMobileData.Status + "<>'V' AND " +
-                QueryMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')"
-// ignore Stock Movement
-                + " AND " +
-                QueryMobileData.ACCOUNTTYPE + "<>'"+ AccountTypes.SHARES.toString()  +"' AND " +
-            QueryMobileData.TOACCOUNTTYPE + "<>'"+ AccountTypes.SHARES.toString() +"'" +
-            " AND " + QueryMobileData.ID + " NOT IN (" +
-            "SELECT CHECKINGACCOUNTID FROM TRANSLINK_V1 WHERE LOWER(LINKTYPE)='stock' " +
-            "UNION SELECT CHECKINGACCOUNTID FROM SHAREINFO_V1)";
+        String selection = QueryMobileData.Status + "<>'V' AND ";
+
+        // transaction direction filter
+        if (mTxDirection == TX_DIRECTION_INCOME) {
+            selection += QueryMobileData.TransactionType + " IN ('Deposit')";
+        } else if (mTxDirection == TX_DIRECTION_EXPENSES) {
+            selection += QueryMobileData.TransactionType + " IN ('Withdrawal')";
+        } else {
+            selection += QueryMobileData.TransactionType + " IN ('Withdrawal', 'Deposit')";
+        }
+    // ignore Stock Movement
+    selection += " AND " +
+        QueryMobileData.ACCOUNTTYPE + "<>\'"+ AccountTypes.SHARES.toString()  +"\' AND " +
+        QueryMobileData.TOACCOUNTTYPE + "<>\'"+ AccountTypes.SHARES.toString() +"\'" +
+        " AND " + QueryMobileData.ID + " NOT IN (" +
+        "SELECT CHECKINGACCOUNTID FROM TRANSLINK_V1 WHERE LOWER(LINKTYPE)='stock' " +
+        "UNION SELECT CHECKINGACCOUNTID FROM SHAREINFO_V1)";
 
         String accountFilterSelection = getAccountFilterSelection(QueryMobileData.ACCOUNTID);
         if (!TextUtils.isEmpty(accountFilterSelection)) {
@@ -206,6 +223,26 @@ public class PayeeReportFragment
             UIHelper uiHelper = new UIHelper(getActivity());
             itemChart.setIcon(uiHelper.resolveAttribute(R.attr.ic_action_pie_chart));
         }
+        // inflate payee-specific filter menu (only if not already present)
+        if (menu.findItem(R.id.menu_payee_direction_all) == null) {
+            try {
+                inflater.inflate(R.menu.menu_report_payee, menu);
+            } catch (Exception ignored) {}
+        }
+
+        // set checked according to current selection
+        MenuItem itemAll = menu.findItem(R.id.menu_payee_direction_all);
+        MenuItem itemIn = menu.findItem(R.id.menu_payee_direction_incoming);
+        MenuItem itemOut = menu.findItem(R.id.menu_payee_direction_outgoing);
+        if (itemAll != null && itemIn != null && itemOut != null) {
+            if (mTxDirection == TX_DIRECTION_INCOME) {
+                itemIn.setChecked(true);
+            } else if (mTxDirection == TX_DIRECTION_EXPENSES) {
+                itemOut.setChecked(true);
+            } else {
+                itemAll.setChecked(true);
+            }
+        }
     }
 
     @Override
@@ -213,6 +250,20 @@ public class PayeeReportFragment
         int itemId = item.getItemId();
         if (itemId == R.id.menu_chart) {
             showChart();
+            return true;
+        }
+
+        if (itemId == R.id.menu_payee_direction_all || itemId == R.id.menu_payee_direction_incoming || itemId == R.id.menu_payee_direction_outgoing) {
+            // update direction filter and reload
+            if (itemId == R.id.menu_payee_direction_incoming) {
+                mTxDirection = TX_DIRECTION_INCOME;
+            } else if (itemId == R.id.menu_payee_direction_outgoing) {
+                mTxDirection = TX_DIRECTION_EXPENSES;
+            } else {
+                mTxDirection = TX_DIRECTION_ALL;
+            }
+            item.setChecked(true);
+            startLoader(new Bundle());
             return true;
         }
 
@@ -279,6 +330,12 @@ public class PayeeReportFragment
     public String getSubTitle() {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_TX_DIRECTION, mTxDirection);
     }
 
     @Override
