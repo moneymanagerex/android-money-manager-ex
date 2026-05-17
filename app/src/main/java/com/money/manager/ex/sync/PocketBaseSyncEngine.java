@@ -111,13 +111,25 @@ public class PocketBaseSyncEngine {
             }
 
             // 2. Pull remote changes
+            // this is wrong becouse ise local time with Z...
+            // String syncStartTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS'Z'", Locale.US).format(new Date());
+            String syncStartTime = java.time.Instant.now().toString();
+
             SyncPreferences prefs = new SyncPreferences(mContext);
             String lastSync = prefs.getPocketBaseSyncLastSyncTime();
             // go back 5 seconds for buffering
-            lastSync = java.time.Instant.parse(lastSync.replace(" ", "T")).minusSeconds(5).toString().replace("T", " ");
-
-            String syncStartTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS'Z'", Locale.US).format(new Date());
-
+            // wrong way
+            // lastSync = java.time.Instant.parse(lastSync.replace(" ", "T")).minusSeconds(5).toString().replace("T", " ");
+            //if (lastSync.contains(" ")) {
+            //    // Trasforma il vecchio "2026-05-17 16:30:00.123" in "2026-05-17T16:30:00.123Z"
+            //    lastSync = lastSync.replace(" ", "T");
+            //}
+            try {
+                lastSync = java.time.Instant.parse(lastSync)
+                        .minusSeconds(5)
+                        .toString();
+            } catch (Exception ignored) {
+            }
             boolean hasError = false;
 
             for (String tableName : mConfig.SYNC_ORDER) {
