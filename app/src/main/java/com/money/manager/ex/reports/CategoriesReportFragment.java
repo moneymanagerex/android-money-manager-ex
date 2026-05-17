@@ -237,7 +237,10 @@ public class CategoriesReportFragment
 // ignore Stock Movement
                 " AND " +
                 QueryMobileData.ACCOUNTTYPE + "<>'"+ AccountTypes.SHARES.toString()  +"' AND " +
-                QueryMobileData.TOACCOUNTTYPE + "<>'"+ AccountTypes.SHARES.toString() +"'" ;
+                QueryMobileData.TOACCOUNTTYPE + "<>'"+ AccountTypes.SHARES.toString() +"'" +
+                " AND " + QueryMobileData.ID + " NOT IN (" +
+                "SELECT CHECKINGACCOUNTID FROM TRANSLINK_V1 WHERE LOWER(LINKTYPE)='stock' " +
+                "UNION SELECT CHECKINGACCOUNTID FROM SHAREINFO_V1)";
         String accountFilterSelection = getAccountFilterSelection(QueryMobileData.ACCOUNTID);
         if (!TextUtils.isEmpty(accountFilterSelection)) {
             selection += " AND " + accountFilterSelection;

@@ -88,6 +88,7 @@
     <string name="account_empty_list">கணக்குகள் எதுவும் கிடைக்கவில்லை. ஒன்றை உருவாக்க, பச்சை பிளஸ் பட்டனைத் தட்டவும்.</string>
     <string name="account_balance">கணக்கு நிலுவை</string>
     <string name="account_reconciled_balance">சமரசம் செய்யப்பட்ட இருப்பு</string>
+    <string name="pie_other">மற்றவை</string>
     <string name="delete_account">கணக்கை நீக்கவும்</string>
     <string name="account_name">கணக்கு பெயர்</string>
     <string name="account_type">கணக்கு வகைகள்</string>
@@ -503,7 +504,6 @@
     <string name="update_prices">விலைகளைப் புதுப்பிக்கவும்</string>
     <string name="update_price">விலையைப் புதுப்பிக்கவும்</string>
     <string name="download_price">பதிவிறக்க விலை</string>
-    <string name="edit_price">விலையைத் திருத்தவும்</string>
     <string name="price_updated">விலை புதுப்பிக்கப்பட்டது</string>
     <string name="all_prices_updated">அனைத்து விலைகளும் புதுப்பிக்கப்பட்டுள்ளன.</string>
     <string name="download_complete">பதிவிறக்கம் முடிந்தது.</string>
@@ -584,7 +584,6 @@
     <string name="watchlist">கண்காணிப்பு பட்டியல்</string>
     <!-- edit investment transaction -->
     <string name="purchase_date">கொள்முதல் தேதி</string>
-    <string name="stock_name">பங்கு பெயர்</string>
     <string name="symbol">சின்னம்</string>
     <string name="number_of_shares">பங்குகளின் எண்ணிக்கை</string>
     <string name="purchase_price">கொள்முதல் விலை</string>
@@ -642,7 +641,6 @@
     <string name="budget_year">பட்ஜெட் ஆண்டு</string>
     <string name="budget_month">பட்ஜெட் மாதம்</string>
     <string name="budget_month_optional">பட்ஜெட் மாதம் (கட்டாயமற்ற)</string>
-    <!-- string name="copy">Copy</string -->
     <string name="app_restart">மாற்றங்களைப் பயன்படுத்த, பயன்பாடு இப்போது மூடப்படும். தயவுசெய்து மீண்டும் தொடங்கவும்.</string>
     <string name="print">அச்சிடுக</string>
     <string name="min_19">ஆவணத்தை அச்சிடுவதற்கு உங்களுக்கு குறைந்தபட்சம் Android 4.4 தேவை.</string>

@@ -71,6 +71,7 @@
     <string name="account_empty_list">Nebol nájdený žiadny účet. Kliknite na zelené tlačidlo so symbolom plus pre jeho vytvorenie.</string>
     <string name="account_balance">Zostatok na účte</string>
     <string name="account_reconciled_balance">Overený zostatok</string>
+    <string name="pie_other">Ďalší</string>
     <string name="delete_account">Odstrániť účet</string>
     <string name="account_name">Názov účtu</string>
     <string name="account_type">Typ účtu</string>
@@ -433,7 +434,6 @@
     <string name="update_prices">Aktualizovať ceny</string>
     <string name="update_price">Aktualizovať cenu</string>
     <string name="download_price">Stiahnuť cenu</string>
-    <string name="edit_price">Upraviť cenu</string>
     <string name="price_updated">Cena aktualizovaná</string>
     <string name="all_prices_updated">Všetky ceny boli aktualizované.</string>
     <string name="download_complete">Sťahovanie dokončené.</string>
@@ -505,7 +505,6 @@
     <string name="watchlist">Sledované</string>
     <!-- edit investment transaction -->
     <string name="purchase_date">Dátum nákupu</string>
-    <string name="stock_name">Názov burzy</string>
     <string name="symbol">Znak</string>
     <string name="number_of_shares">Počet zdieľaní</string>
     <string name="purchase_price">Kúpna cena</string>
@@ -554,7 +553,6 @@
     <string name="budget_name">Názov rozpočtu</string>
     <string name="budget_year">Rok rozpočtu</string>
     <string name="budget_month">Mesiac rozpočtu</string>
-    <!-- string name="copy">Copy</string -->
     <string name="app_restart">Aplikácie sa teraz zavrie, aby sa načítali zmeny. Prosím, reštartujte.</string>
     <string name="print">Vytlačiť</string>
     <string name="min_19">Budete potrebovať aspoň Android 4.4, aby ste mohli vytlačiť dokument.</string>

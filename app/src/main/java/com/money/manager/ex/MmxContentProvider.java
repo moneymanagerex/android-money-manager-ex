@@ -55,6 +55,8 @@ import com.money.manager.ex.datalayer.SplitCategoryRepository;
 import com.money.manager.ex.datalayer.SplitScheduledCategoryRepository;
 import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.datalayer.StockHistoryRepository;
+import com.money.manager.ex.datalayer.ShareInfoRepository;
+import com.money.manager.ex.datalayer.TransactionLinkRepository;
 import com.money.manager.ex.datalayer.TagRepository;
 import com.money.manager.ex.datalayer.TaglinkRepository;
 import com.money.manager.ex.nestedcategory.QueryNestedCategory;
@@ -136,6 +138,8 @@ public class MmxContentProvider
                 new SplitScheduledCategoryRepository(context),
                 new StockRepository(context),
                 new StockHistoryRepository(context),
+                new TransactionLinkRepository(context),
+                new ShareInfoRepository(context),
                 new QueryAccountBills(context),
                 new QueryAllData(context),
                 new QueryBillDeposits(context),

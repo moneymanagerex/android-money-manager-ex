@@ -22,6 +22,7 @@ SELECT
     FromAcc.AccountID AS AccountID,
     FromAcc.AccountName AS AccountName,
     ifnull(ToAcc.AccountId, FromAcc.AccountId) AS ToAccountID,
+    ifnull(TX.TOACCOUNTID, -1) AS TXToAccountID,
     ifnull(ToAcc.AccountName, FromAcc.AccountName) AS ToAccountName,
     TX.ToTransAmount AS ToAmount,
     ifnull(ToAcc.CurrencyId, FromAcc.CurrencyID) AS ToCurrencyID,
@@ -35,6 +36,18 @@ SELECT
     ATT.ATTACHMENTCOUNT AS ATTACHMENTCOUNT,
 	Tags.Tags as TAGS,
 	TX.Color AS COLOR,
+    CASE
+        WHEN SHAREINFO.CHECKINGACCOUNTID IS NOT NULL THEN 1
+        WHEN STOCKTRANS.CHECKINGACCOUNTID IS NOT NULL THEN 1
+        ELSE 0
+    END AS ISSTOCKLINKED,
+    ifnull(SHAREINFO.SHARENUMBER, 0) AS SHARENUMBER,
+    ifnull(SHAREINFO.SHAREPRICE, 0) AS SHAREPRICE,
+    ifnull(SHAREINFO.SHARECOMMISSION, 0) AS SHARECOMMISSION,
+    ifnull(SHAREINFO.SHARELOT, '') AS SHARELOT,
+    ifnull(STOCK.STOCKNAME, '') AS STOCKNAME,
+    ifnull(STOCK.STOCKID, -1) AS STOCKID,
+    ifnull(STOCK.HELDAT, -1) AS STOCKACCOUNTID,
     ROUND( ( CASE TX.TRANSCODE WHEN 'Deposit' THEN 1 ELSE -1 END ) *
 	  ( TX.TRANSAMOUNT ) , 2 )
         * ifnull(cf.BaseConvRate, 1) As AmountBaseConvRate
@@ -51,6 +64,14 @@ FROM CHECKINGACCOUNT_V1 TX
         where REFTYPE = 'Transaction'
         group by REFID
     ) AS ATT on TX.TransID = ATT.REFID
+    LEFT JOIN (
+        select CHECKINGACCOUNTID, min(LINKRECORDID) as LINKRECORDID
+        from TRANSLINK_V1
+        where lower(LINKTYPE) = 'stock'
+        group by CHECKINGACCOUNTID
+    ) as STOCKTRANS on STOCKTRANS.CHECKINGACCOUNTID = TX.TransID
+    LEFT JOIN SHAREINFO_V1 SHAREINFO ON SHAREINFO.CHECKINGACCOUNTID = TX.TransID
+    LEFT JOIN STOCK_V1 STOCK ON STOCK.STOCKID = STOCKTRANS.LINKRECORDID
     LEFT JOIN (
         select Transid, Tags from (
         SELECT TRANSACTIONID as Transid,

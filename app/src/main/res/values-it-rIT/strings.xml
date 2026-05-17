@@ -88,6 +88,7 @@
     <string name="account_empty_list">Nessun conto è stato trovato. Per crearne uno, toccare il pulsante più verde.</string>
     <string name="account_balance">Saldo</string>
     <string name="account_reconciled_balance">Saldo Riconciliato</string>
+    <string name="pie_other">Altro</string>
     <string name="delete_account">Elimina Conto</string>
     <string name="account_name">Nome del conto</string>
     <string name="account_type">Tipo di conto</string>
@@ -506,7 +507,6 @@
     <string name="update_price">Aggiornamento prezzo</string>
     <string name="download_price">Scarica prezzo</string>
     <string name="download_all_prices">Scarica tutti i prezzi</string>
-    <string name="edit_price">Modifica prezzo</string>
     <string name="price_updated">Prezzo aggiornato</string>
     <string name="all_prices_updated">Tutti i prezzi sono stati aggiornati.</string>
     <string name="download_complete">Download completato.</string>
@@ -589,7 +589,6 @@
     <string name="watchlist">Da vedere</string>
     <!-- edit investment transaction -->
     <string name="purchase_date">Data di acquisto</string>
-    <string name="stock_name">Nome Azione</string>
     <string name="symbol">Simbolo</string>
     <string name="number_of_shares">Numero di azioni</string>
     <string name="purchase_price">Prezzo d\'acquisto</string>
@@ -647,7 +646,6 @@
     <string name="budget_year">Budget per anno</string>
     <string name="budget_month">Budget per mese</string>
     <string name="budget_month_optional">Budget Mensile (optional)</string>
-    <!-- string name="copy">Copy</string -->
     <string name="app_restart">L\'applicazione sarà chiusa per applicare le modifiche. Riavviare, prego.</string>
     <string name="print">Stampa</string>
     <string name="min_19">Per poter stampare il documento è necessario almeno Android 4.4.</string>

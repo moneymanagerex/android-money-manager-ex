@@ -72,6 +72,7 @@
     <string name="account_empty_list">Nemate računa. Da biste napravili jedan, dodirnite zeleno plus dugme.</string>
     <string name="account_balance">Stanje računa</string>
     <string name="account_reconciled_balance">Poravnati bilans</string>
+    <string name="pie_other">Drugo</string>
     <string name="delete_account">Obriši račun</string>
     <string name="account_name">Ime računa</string>
     <string name="account_type">Tip računa</string>
@@ -435,7 +436,6 @@
     <string name="update_prices">Osvježi cijene</string>
     <string name="update_price">Osvježi cijenu</string>
     <string name="download_price">Preuzmi cijenu</string>
-    <string name="edit_price">Uređivanje cijene</string>
     <string name="price_updated">Cijena ažurirana</string>
     <string name="all_prices_updated">Sve cijene su ažurirane.</string>
     <string name="download_complete">Preuzimanje je završeno.</string>
@@ -508,7 +508,6 @@
     <string name="watchlist">Pregled</string>
     <!-- edit investment transaction -->
     <string name="purchase_date">Datum kupovine</string>
-    <string name="stock_name">Naziv dionica</string>
     <string name="symbol">Simbol</string>
     <string name="number_of_shares">Broj dionica</string>
     <string name="purchase_price">Kupovna cijena</string>
@@ -561,7 +560,6 @@
     <string name="budget_name">Naziv budžeta</string>
     <string name="budget_year">Budžetska godina</string>
     <string name="budget_month">Mjesec budžeta</string>
-    <!-- string name="copy">Copy</string -->
     <string name="app_restart">App će se sada zatvoriti da primeni promjene. Molimo pokrenite ponovo.</string>
     <string name="print">Ispis</string>
     <string name="min_19">Trebate imati bar Android 4.4 da biste mogli printati dokument.</string>

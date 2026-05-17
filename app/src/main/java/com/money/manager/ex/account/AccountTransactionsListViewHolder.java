@@ -16,6 +16,7 @@
  */
 package com.money.manager.ex.account;
 
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import android.widget.TextView;
  * A view holder for the account transactions list fragment.
  */
 public class AccountTransactionsListViewHolder {
+    public TextView txtAccountBalanceTitle;
     public TextView txtAccountBalance;
     public TextView txtAccountReconciled;
     public TextView txtAccountReconciledTitle;
@@ -31,4 +33,14 @@ public class AccountTransactionsListViewHolder {
     public ImageView imgAccountFav;
     public ImageView imgGotoAccount;
     public ViewGroup listHeader;
+
+    // Investment account header fields
+    public View tableRowCashBalance;
+    public TextView txtCashBalance;
+    public View tableRowMarketValue;
+    public TextView txtMarketValue;
+    public View tableRowInvested;
+    public TextView txtInvested;
+    public View tableRowGainLoss;
+    public TextView txtGainLoss;
 }

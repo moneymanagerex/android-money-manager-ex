@@ -19,6 +19,9 @@ public class YahooChartResponse {
 
         @SerializedName("indicators")
         public Indicators indicators;
+
+        @SerializedName("meta")
+        public Meta meta;
     }
 
     public static class Indicators {
@@ -29,5 +32,13 @@ public class YahooChartResponse {
     public static class Quote {
         @SerializedName("close")
         public List<Double> closePrices;
+    }
+
+    public static class Meta {
+        @SerializedName("regularMarketPrice")
+        public Double regularMarketPrice;
+
+        @SerializedName("regularMarketTime")
+        public Long regularMarketTime;
     }
 }

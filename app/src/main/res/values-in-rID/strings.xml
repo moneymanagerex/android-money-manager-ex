@@ -72,6 +72,7 @@
     <string name="account_empty_list">Tidak ada akun ditemukan. Ketuk tombol tambah hijau untuk membuat baru.</string>
     <string name="account_balance">Saldo Akun</string>
     <string name="account_reconciled_balance">Saldo yang direkonsiliasi</string>
+    <string name="pie_other">Lain</string>
     <string name="delete_account">Hapus Akun</string>
     <string name="account_name">Nama akun</string>
     <string name="account_type">Jenis akun</string>
@@ -435,7 +436,6 @@
     <string name="update_prices">Perbarui harga</string>
     <string name="update_price">Perbarui harga</string>
     <string name="download_price">Mengunduh harga</string>
-    <string name="edit_price">Mengubah harga</string>
     <string name="price_updated">Harga Diperbarui</string>
     <string name="all_prices_updated">Semua harga telah diperbarui.</string>
     <string name="download_complete">Unduhan selesai.</string>
@@ -508,7 +508,6 @@
     <string name="watchlist">Daftar pantauan</string>
     <!-- edit investment transaction -->
     <string name="purchase_date">Tanggal Pembelian</string>
-    <string name="stock_name">Nama saham</string>
     <string name="symbol">Simbol</string>
     <string name="number_of_shares">Jumlah dibagikan</string>
     <string name="purchase_price">Harga pembelian</string>
@@ -561,7 +560,6 @@
     <string name="budget_name">Nama anggaran</string>
     <string name="budget_year">Tahun Anggaran</string>
     <string name="budget_month">Bulan Anggaran</string>
-    <!-- string name="copy">Copy</string -->
     <string name="app_restart">Aplikasi sekarang akan mendekati untuk menerapkan perubahan. Silakan restart.</string>
     <string name="print">Mencetak</string>
     <string name="min_19">Anda memerlukan setidaknya Android 4.4 untuk bisa mencetak dokumen.</string>

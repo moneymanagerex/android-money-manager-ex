@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="14dp"
+    android:paddingBottom="14dp"
+    android:paddingStart="4dp"
+    android:paddingEnd="4dp"
+    android:background="?attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/historyDateTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textAppearance="?attr/textAppearanceBody1"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/historyPriceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:textAppearance="?attr/textAppearanceBody1"
+        android:textSize="16sp" />
+
+    <com.mikepenz.iconics.view.IconicsImageView
+        android:id="@+id/historyDeleteButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_gravity="center_vertical"
+        android:background="?attr/selectableItemBackground"
+        app:iiv_icon="gmd-delete"
+        app:iiv_color="?android:textColorSecondary"
+        app:iiv_size="20dp" />
+
+</LinearLayout>

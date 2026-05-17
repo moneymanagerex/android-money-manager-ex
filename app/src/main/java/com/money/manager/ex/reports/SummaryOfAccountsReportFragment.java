@@ -98,6 +98,10 @@ public class SummaryOfAccountsReportFragment extends Fragment {
     private static final String COL_FROM_AMOUNT_BASE = "FROMAMOUNTBASE";
     private static final String COL_TO_AMOUNT_BASE = "TOAMOUNTBASE";
 
+    private static final String COL_STOCK_SHARE_DATE = "SHAREDATE";
+    private static final String COL_STOCK_PRICE_DATE = "PRICEDATE";
+    private static final String COL_STOCK_VALUE_DELTA = "VALUEDELTA";
+
     private static final DateTimeFormatter MONTH_FORMATTER = DateTimeFormatter.ofPattern("MMM", Locale.getDefault());
 
     private TableLayout tableLayout;
@@ -202,6 +206,7 @@ public class SummaryOfAccountsReportFragment extends Fragment {
             filterMode, settings, PREF_FILTER_CUSTOM, "a.ACCOUNTID");
         loadAccounts(state, accountWhere);
         loadTransactions(state);
+        loadStockMarketValues(state);
 
         normalizeDateBounds(state);
 
@@ -301,6 +306,108 @@ public class SummaryOfAccountsReportFragment extends Fragment {
             }
         } finally {
             transactionCursor.close();
+        }
+    }
+
+    private void loadStockMarketValues(BuildState state) {
+        loadStockShareEvents(state);
+        loadStockPriceDeltas(state);
+    }
+
+    // Adds one event per stock transaction so the market value follows the shares held on that date
+    // instead of the stock row's current NUMSHARES.
+    private void loadStockShareEvents(BuildState state) {
+        Cursor cursor = executeSqlQuery("SELECT "
+                + "s.HELDAT AS ACCOUNTID, "
+                + "date(t.TRANSDATE) AS SHAREDATE, "
+                + "ifnull(si.SHARENUMBER, 0) * ifnull("
+                + "(SELECT h.VALUE FROM STOCKHISTORY_V1 h "
+                + "WHERE h.SYMBOL = s.SYMBOL AND date(h.DATE) <= date(t.TRANSDATE) "
+                + "ORDER BY h.DATE DESC LIMIT 1), "
+                + "s.PURCHASEPRICE) * ifnull(c.BASECONVRATE, 1) AS VALUEDELTA "
+                + "FROM stock_v1 s "
+                + "JOIN ACCOUNTLIST_V1 a ON s.HELDAT = a.ACCOUNTID "
+                + "LEFT JOIN CURRENCYFORMATS_V1 c ON a.CURRENCYID = c.CURRENCYID "
+                + "JOIN TRANSLINK_V1 tl ON lower(tl.LINKTYPE) = 'stock' AND tl.LINKRECORDID = s.STOCKID "
+                + "JOIN CHECKINGACCOUNT_V1 t ON t.TRANSID = tl.CHECKINGACCOUNTID "
+                + "JOIN SHAREINFO_V1 si ON si.CHECKINGACCOUNTID = t.TRANSID "
+                + "WHERE (t.DELETEDTIME IS NULL OR t.DELETEDTIME = '') "
+                + "AND t.STATUS IN ('R', 'F', 'D', '')");
+
+        if (cursor == null) {
+            return;
+        }
+
+        try {
+            while (cursor.moveToNext()) {
+                long accountId = cursor.getLong(cursor.getColumnIndexOrThrow(COL_ACCOUNT_ID));
+                if (!AccountTypes.INVESTMENT.equalsName(state.accountTypeById.get(accountId))) {
+                    continue;
+                }
+
+                LocalDate shareDate = parseDate(cursor.getString(cursor.getColumnIndexOrThrow(COL_STOCK_SHARE_DATE)));
+                if (shareDate == null) {
+                    shareDate = LocalDate.now();
+                }
+
+                double valueDelta = cursor.getDouble(cursor.getColumnIndexOrThrow(COL_STOCK_VALUE_DELTA));
+                state.events.add(new BalanceEvent(shareDate, accountId, valueDelta));
+                state.minDate = minDate(state.minDate, shareDate);
+            }
+        } finally {
+            cursor.close();
+        }
+    }
+
+    // Adds one delta event per STOCKHISTORY entry after PURCHASEDATE: the change in market value
+    // based on the shares held on that price date, so the running total tracks historical prices
+    // and historical share counts.
+    private void loadStockPriceDeltas(BuildState state) {
+        Cursor cursor = executeSqlQuery("SELECT "
+                + "s.HELDAT AS ACCOUNTID, "
+                + "date(h.DATE) AS PRICEDATE, "
+                + "ifnull((SELECT SUM(si2.SHARENUMBER) FROM TRANSLINK_V1 tl2 "
+                + "JOIN CHECKINGACCOUNT_V1 t2 ON t2.TRANSID = tl2.CHECKINGACCOUNTID "
+                + "JOIN SHAREINFO_V1 si2 ON si2.CHECKINGACCOUNTID = t2.TRANSID "
+                + "WHERE lower(tl2.LINKTYPE) = 'stock' AND tl2.LINKRECORDID = s.STOCKID "
+                + "AND (t2.DELETEDTIME IS NULL OR t2.DELETEDTIME = '') "
+                + "AND t2.STATUS IN ('R', 'F', 'D', '') "
+                + "AND date(t2.TRANSDATE) < date(h.DATE)), 0) * (h.VALUE - ifnull("
+                + "(SELECT h2.VALUE FROM STOCKHISTORY_V1 h2 "
+                + "WHERE h2.SYMBOL = s.SYMBOL AND date(h2.DATE) < date(h.DATE) "
+                + "ORDER BY h2.DATE DESC LIMIT 1), "
+                + "ifnull("
+                + "(SELECT h3.VALUE FROM STOCKHISTORY_V1 h3 "
+                + "WHERE h3.SYMBOL = s.SYMBOL AND date(h3.DATE) <= date(s.PURCHASEDATE) "
+                + "ORDER BY h3.DATE DESC LIMIT 1), "
+                + "s.PURCHASEPRICE)"
+                + ")) * ifnull(c.BASECONVRATE, 1) AS VALUEDELTA "
+                + "FROM stock_v1 s "
+                + "JOIN ACCOUNTLIST_V1 a ON s.HELDAT = a.ACCOUNTID "
+                + "LEFT JOIN CURRENCYFORMATS_V1 c ON a.CURRENCYID = c.CURRENCYID "
+                + "JOIN STOCKHISTORY_V1 h ON h.SYMBOL = s.SYMBOL AND date(h.DATE) > date(s.PURCHASEDATE)");
+
+        if (cursor == null) {
+            return;
+        }
+
+        try {
+            while (cursor.moveToNext()) {
+                long accountId = cursor.getLong(cursor.getColumnIndexOrThrow(COL_ACCOUNT_ID));
+                if (!AccountTypes.INVESTMENT.equalsName(state.accountTypeById.get(accountId))) {
+                    continue;
+                }
+
+                LocalDate priceDate = parseDate(cursor.getString(cursor.getColumnIndexOrThrow(COL_STOCK_PRICE_DATE)));
+                if (priceDate == null) {
+                    continue;
+                }
+
+                double valueDelta = cursor.getDouble(cursor.getColumnIndexOrThrow(COL_STOCK_VALUE_DELTA));
+                state.events.add(new BalanceEvent(priceDate, accountId, valueDelta));
+            }
+        } finally {
+            cursor.close();
         }
     }
 

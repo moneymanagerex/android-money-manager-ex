@@ -1,0 +1,9 @@
+## What's Changed
+* **Infrastructure:** Upgraded Gradle and implemented general code quality improvements.
+* **Core Logic:** Performed a full functionality review of the Stock module, including a refactor to ensure consistency with the desktop version.
+* **Reporting:** Added a new Stock Summary Report for better data visualization.
+* **Charts:** Integrated a stock price graph into the Price History view.
+* **Fixes:** Restored the user preference for sorting transactions by type.
+
+## Contributors
+* Special mention to @JoshuaLampert

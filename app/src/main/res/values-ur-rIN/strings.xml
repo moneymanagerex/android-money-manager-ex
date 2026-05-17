@@ -72,6 +72,7 @@
     <string name="account_empty_list">کوئی بھی اکاونٹ نہیں ملا. ایک اکاؤنٹ بنانے کے لیے، بلاکچین کے سبز بٹ کلک کریں.</string>
     <string name="account_balance">اکاؤنٹ کا بیلنس</string>
     <string name="account_reconciled_balance">جمع بیلنس</string>
+    <string name="pie_other">دیگر</string>
     <string name="delete_account">ڈلیٹ اکاونٹ</string>
     <string name="account_name">اکاؤنٹ نام</string>
     <string name="account_type">اکاؤنٹ ٹایپ</string>
@@ -435,7 +436,6 @@
     <string name="update_prices">قیمتوں کی تازہ کاری کریں</string>
     <string name="update_price">اپڈیٹ قیمت کریں</string>
     <string name="download_price">قیمت ڈاؤن لوڈ کریں</string>
-    <string name="edit_price">قیمت کی تدوین کریں</string>
     <string name="price_updated">قیمت اپڈیٹ کی گیی</string>
     <string name="all_prices_updated">تمام قیمتوں کو اپ ڈیٹ کیا گیا ہے ۔.</string>
     <string name="download_complete">ڈاؤن لوڈ مکمل.</string>
@@ -508,7 +508,6 @@
     <string name="watchlist">دیکھنی والی فہرست</string>
     <!-- edit investment transaction -->
     <string name="purchase_date">خریداری کی تاریخ</string>
-    <string name="stock_name">اسٹاک نام</string>
     <string name="symbol">علامت</string>
     <string name="number_of_shares">حصص کی تعداد</string>
     <string name="purchase_price">قیمت خرید</string>
@@ -561,7 +560,6 @@
     <string name="budget_name">بجٹ کا نام</string>
     <string name="budget_year">بجٹ سال</string>
     <string name="budget_month">بجٹ ماہ</string>
-    <!-- string name="copy">Copy</string -->
     <string name="app_restart">اپلیکیشن تبدیلیاں لگانے کے لئے اب بند ہوجائے گی ۔ پھر شروع کریں ۔.</string>
     <string name="print">پرنٹ کریں</string>
     <string name="min_19">آپکو دستاویزات پرنٹ کرنے کے لیے کم از کم انڈرایڈ 4.4 کی ضرورت ہے.</string>

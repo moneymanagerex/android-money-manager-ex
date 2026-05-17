@@ -108,6 +108,7 @@ import com.money.manager.ex.scheduled.ScheduledTransactionListFragment;
 import com.money.manager.ex.reports.CategoriesReportActivity;
 import com.money.manager.ex.reports.GeneralReportActivity;
 import com.money.manager.ex.reports.IncomeVsExpensesActivity;
+import com.money.manager.ex.reports.SummaryOfStocksReportActivity;
 import com.money.manager.ex.reports.PayeesReportActivity;
 import com.money.manager.ex.reports.SummaryOfAccountsReportActivity;
 import com.money.manager.ex.search.SearchActivity;
@@ -685,6 +686,8 @@ public class MainActivity
             startActivity(new Intent(this, CashFlowReportActivity.class));
         } else if (itemId == R.id.menu_report_summary_of_accounts) {
             startActivity(new Intent(this, SummaryOfAccountsReportActivity.class));
+        } else if (itemId == R.id.menu_report_summary_of_stocks) {
+            startActivity(new Intent(this, SummaryOfStocksReportActivity.class));
         } else if (itemId == R.id.menu_help) {
             startActivity(new Intent(MainActivity.this, HelpActivity.class));
         } else if (itemId == R.id.menu_about) {
@@ -814,7 +817,10 @@ public class MainActivity
     public void showAccountFragment(long accountId) {
         String tag = AccountTransactionListFragment.class.getSimpleName() + "_" + accountId;
         AccountTransactionListFragment fragment = (AccountTransactionListFragment) getSupportFragmentManager().findFragmentByTag(tag);
-        if (fragment == null || fragment.getId() != getContentId()) {
+        // Only reuse the fragment if it is currently visible. If it is in the back stack (not
+        // visible), it may have a stale mAccountId from a previous spinner-based account switch,
+        // which would cause the wrong account's transactions to be shown.
+        if (fragment == null || !fragment.isVisible()) {
             fragment = AccountTransactionListFragment.newInstance(accountId);
         }
         showFragment(fragment, tag);
@@ -950,6 +956,11 @@ public class MainActivity
         // summary of accounts
         childReports.add(new DrawerMenuItem().withId(R.id.menu_report_summary_of_accounts)
             .withText(getString(R.string.menu_report_summary_of_accounts))
+            .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
+                .color(iconColor)));
+        // summary of stocks
+        childReports.add(new DrawerMenuItem().withId(R.id.menu_report_summary_of_stocks)
+            .withText(getString(R.string.menu_report_summary_of_stocks))
             .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
                 .color(iconColor)));
         // CashFlow

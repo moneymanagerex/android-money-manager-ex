@@ -88,6 +88,7 @@
     <string name="account_empty_list">没有找到可用的账户。轻触绿色加号按钮可新建一个账户。</string>
     <string name="account_balance">账户余额</string>
     <string name="account_reconciled_balance">已核对余额</string>
+    <string name="pie_other">其他</string>
     <string name="delete_account">删除账户</string>
     <string name="account_name">账户名称</string>
     <string name="account_type">账户类型</string>
@@ -503,7 +504,6 @@
     <string name="update_prices">更新价格</string>
     <string name="update_price">更新价格</string>
     <string name="download_price">下载价格</string>
-    <string name="edit_price">编辑价格</string>
     <string name="price_updated">价格已更新</string>
     <string name="all_prices_updated">所有价格均已更新。</string>
     <string name="download_complete">下载已完成</string>
@@ -584,7 +584,6 @@
     <string name="watchlist">关注列表</string>
     <!-- edit investment transaction -->
     <string name="purchase_date">购买日期</string>
-    <string name="stock_name">股票名称</string>
     <string name="symbol">股票代码</string>
     <string name="number_of_shares">股份数目</string>
     <string name="purchase_price">买入价</string>
@@ -642,7 +641,6 @@
     <string name="budget_year">预算年度</string>
     <string name="budget_month">预算月</string>
     <string name="budget_month_optional">预算月（可选）</string>
-    <!-- string name="copy">Copy</string -->
     <string name="app_restart">此应用将关闭以应用您所做的更改。请稍后重新启动。</string>
     <string name="print">打印</string>
     <string name="min_19">打印功能需要 Android 4.4 以上版本的支持</string>

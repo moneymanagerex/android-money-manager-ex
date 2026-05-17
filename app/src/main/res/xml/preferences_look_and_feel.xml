@@ -50,12 +50,12 @@
         android:summary="@string/pref_transaction_hide_reconciled_amounts_summary"
         android:title="@string/pref_transaction_hide_reconciled_amounts_title"/>
 
-    <!--<SwitchPreferenceCompat-->
-        <!--android:defaultValue="true"-->
-        <!--android:icon="@null"-->
-        <!--android:key="@string/pref_transaction_sort_by_type"-->
-        <!--android:summary="@string/pref_transaction_sort_by_type_summary"-->
-        <!--android:title="@string/pref_transaction_sort_by_type_title"/>-->
+    <SwitchPreferenceCompat
+        android:defaultValue="true"
+        android:icon="@null"
+        android:key="@string/pref_transaction_sort_by_type"
+        android:summary="@string/pref_transaction_sort_by_type_summary"
+        android:title="@string/pref_transaction_sort_by_type_title"/>
 
     <ListPreference
         android:defaultValue="-1"

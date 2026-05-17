@@ -72,6 +72,7 @@
     <string name="account_empty_list">未發現任何帳戶，請點擊綠色加號按鈕新增。</string>
     <string name="account_balance">結餘</string>
     <string name="account_reconciled_balance">已核實</string>
+    <string name="pie_other">其他</string>
     <string name="delete_account">刪除帳戶</string>
     <string name="account_name">帳戶名稱</string>
     <string name="account_type">帳戶類型</string>
@@ -435,7 +436,6 @@
     <string name="update_prices">更新價格</string>
     <string name="update_price">更新價格</string>
     <string name="download_price">下載價格</string>
-    <string name="edit_price">編輯價格</string>
     <string name="price_updated">價格已更新</string>
     <string name="all_prices_updated">所有價格都已更新。</string>
     <string name="download_complete">下載完成。</string>
@@ -508,7 +508,6 @@
     <string name="watchlist">觀察名單</string>
     <!-- edit investment transaction -->
     <string name="purchase_date">購買日期</string>
-    <string name="stock_name">股票名稱</string>
     <string name="symbol">符號</string>
     <string name="number_of_shares">股份數目</string>
     <string name="purchase_price">購買價格</string>
@@ -561,7 +560,6 @@
     <string name="budget_name">預算名稱</string>
     <string name="budget_year">預算年度</string>
     <string name="budget_month">預算月份</string>
-    <!-- string name="copy">Copy</string -->
     <string name="app_restart">應用程式將關閉以套用變更。請重新啟動。</string>
     <string name="print">列印</string>
     <string name="min_19">您需要 Android 4.4 或以上才能列印文件。</string>

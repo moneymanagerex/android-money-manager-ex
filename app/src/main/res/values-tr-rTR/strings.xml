@@ -77,6 +77,7 @@
     <string name="account_empty_list">Hiçbir hesap bulunamadı. Yeni bir hesap oluşturmak için yeşil artı butonuna dokun.</string>
     <string name="account_balance">Hesap bakiyesi</string>
     <string name="account_reconciled_balance">Onaylanmış Bakiye</string>
+    <string name="pie_other">Diğer</string>
     <string name="delete_account">Hesabı Sil</string>
     <string name="account_name">Hesap adı</string>
     <string name="account_type">Hesap tipi</string>
@@ -467,7 +468,6 @@
     <string name="update_prices">Fiyatları güncelleştir</string>
     <string name="update_price">Fiyatı güncelleştir</string>
     <string name="download_price">Fiyat indir</string>
-    <string name="edit_price">Fiyatı düzenle</string>
     <string name="price_updated">Fiyat güncellendi</string>
     <string name="all_prices_updated">Bütün fiyatlar güncellendi.</string>
     <string name="download_complete">İndirme tamamlandı.</string>
@@ -546,7 +546,6 @@
     <string name="watchlist">İzleme Listesi</string>
     <!-- edit investment transaction -->
     <string name="purchase_date">Satın Alma Tarihi</string>
-    <string name="stock_name">Stok Adı</string>
     <string name="symbol">Sembol</string>
     <string name="number_of_shares">Paylaşım Sayısı</string>
     <string name="purchase_price">Satın Alma Fiyatı</string>
@@ -601,7 +600,6 @@
     <string name="budget_name">Bütçe Adı</string>
     <string name="budget_year">Bütçe Yılı</string>
     <string name="budget_month">Bütçe Ay</string>
-    <!-- string name="copy">Copy</string -->
     <string name="app_restart">Değişiklikleri uygulamak için uygulama kapanacak. Lütfen yeniden başlatın.</string>
     <string name="print">Yazdır</string>
     <string name="min_19">Belgeyi yazdırmak için en az Android 4.4 sürümüne ihtiyacınız var.</string>

@@ -8,7 +8,21 @@ FROM (
         select mobiledata.month, mobiledata.year, mobiledata.transactiontype, sum(mobiledata.AmountBaseConvRate) as total
         from %%mobiledata%%
         where not(mobiledata.status = 'V')
-            and not (mobiledata.TOACCOUNTID = 32702 and lower(mobiledata.transactiontype) in ('deposit', 'withdrawal'))
+            and lower(mobiledata.transactiontype) in ('deposit', 'withdrawal')
+            and mobiledata.ID not in (
+                select tl.CHECKINGACCOUNTID
+                from TRANSLINK_V1 tl
+                join CHECKINGACCOUNT_V1 ca on ca.TRANSID = tl.CHECKINGACCOUNTID
+                where lower(tl.LINKTYPE) = 'stock'
+                    and ca.TOACCOUNTID is not null
+                    and ca.TOACCOUNTID <> -1
+                union
+                select si.CHECKINGACCOUNTID
+                from SHAREINFO_V1 si
+                join CHECKINGACCOUNT_V1 ca on ca.TRANSID = si.CHECKINGACCOUNTID
+                where ca.TOACCOUNTID is not null
+                    and ca.TOACCOUNTID <> -1
+            )
         group by month, year, transactiontype
         ) sub1
     ) SUB2
@@ -26,9 +40,22 @@ FROM (
 		select mobiledata.month, mobiledata.year, mobiledata.transactiontype, sum(mobiledata.AmountBaseConvRate) as total
 		from %%mobiledata%%
     where not(mobiledata.status = 'V')
-            and not (mobiledata.TOACCOUNTID = 32702 and lower(mobiledata.transactiontype) in ('deposit', 'withdrawal'))
+            and lower(mobiledata.transactiontype) in ('deposit', 'withdrawal')
+            and mobiledata.ID not in (
+                        select tl.CHECKINGACCOUNTID
+                        from TRANSLINK_V1 tl
+                        join CHECKINGACCOUNT_V1 ca on ca.TRANSID = tl.CHECKINGACCOUNTID
+                        where lower(tl.LINKTYPE) = 'stock'
+                            and ca.TOACCOUNTID is not null
+                            and ca.TOACCOUNTID <> -1
+                        union
+                        select si.CHECKINGACCOUNTID
+                        from SHAREINFO_V1 si
+                        join CHECKINGACCOUNT_V1 ca on ca.TRANSID = si.CHECKINGACCOUNTID
+                        where ca.TOACCOUNTID is not null
+                            and ca.TOACCOUNTID <> -1
+                    )
     group by month, year, transactiontype
     ) sub1
 ) SUB2
 GROUP BY SUB2.Year
-

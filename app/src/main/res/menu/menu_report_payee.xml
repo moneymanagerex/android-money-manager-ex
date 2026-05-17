@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_payee_direction_all"
+            android:title="@string/all_transaction"
+            android:checked="true" />
+        <item
+            android:id="@+id/menu_payee_direction_incoming"
+            android:title="@string/income" />
+        <item
+            android:id="@+id/menu_payee_direction_outgoing"
+            android:title="@string/expenses" />
+    </group>
+
+</menu>

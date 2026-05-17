@@ -130,6 +130,9 @@
                 <item
                     android:id="@+id/menu_report_summary_of_accounts"
                     android:title="@string/menu_report_summary_of_accounts"/>
+                <item
+                    android:id="@+id/menu_report_summary_of_stocks"
+                    android:title="@string/menu_report_summary_of_stocks"/>
             </menu>
         </item>
         <item

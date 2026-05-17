@@ -72,6 +72,7 @@
     <string name="account_empty_list">ანგარიშები არ მოიძებნა. ახლის შესაქმნელად დააჭირეთ მწვანე პლიუსის ღილაკს.</string>
     <string name="account_balance">ანგარიშის ბალანსი</string>
     <string name="account_reconciled_balance">Reconciled Balance</string>
+    <string name="pie_other">სხვა</string>
     <string name="delete_account">ანგარიშის წაშლა</string>
     <string name="account_name">ანგარიშის სახელი</string>
     <string name="account_type">ანგარიშის ტიპი</string>
@@ -244,7 +245,6 @@
     <string name="update_prices">ფასების განახლება</string>
     <string name="update_price">ფასის განახლება</string>
     <string name="download_price">ფასის გადმოტვირთვა</string>
-    <string name="edit_price">ფასის რედაქტირება</string>
     <string name="price_updated">ფასი განახლებულია</string>
     <string name="all_prices_updated">ყველა ფასი განახლებულია.</string>
     <string name="download_complete">გადმოტვირთვა დასრულებულია.</string>
@@ -316,7 +316,6 @@
     <string name="add_budget">ბიუჯეტის დამატება</string>
     <string name="budget_name">ბიუჯეტის სახელი</string>
     <string name="budget_year">ბიუჯეტის წელი</string>
-    <!-- string name="copy">Copy</string -->
     <!-- Currencies -->
     <!-- Investment -->
     <!-- deprecated / Dropbox -->

@@ -88,6 +88,7 @@
     <string name="account_empty_list">Nincsenek számlák. Létrehozáshoz érintse meg a zöld plusz gombot.</string>
     <string name="account_balance">Számla egyenleg</string>
     <string name="account_reconciled_balance">Egyeztetett egyenleg</string>
+    <string name="pie_other">Egyéb</string>
     <string name="delete_account">Számla törlése</string>
     <string name="account_name">Számla neve</string>
     <string name="account_type">Számla típusa</string>
@@ -503,7 +504,6 @@
     <string name="update_prices">Árak frissítése</string>
     <string name="update_price">Ár frissítése</string>
     <string name="download_price">Ár letöltése</string>
-    <string name="edit_price">Ár szerkesztése</string>
     <string name="price_updated">Ár frissítve</string>
     <string name="all_prices_updated">Minden ár frissítve.</string>
     <string name="download_complete">Letöltés befejeződött.</string>
@@ -584,7 +584,6 @@
     <string name="watchlist">Figyelőlista</string>
     <!-- edit investment transaction -->
     <string name="purchase_date">Vásárlás dátuma</string>
-    <string name="stock_name">Készlet neve</string>
     <string name="symbol">Szimbólum</string>
     <string name="number_of_shares">Részvények száma</string>
     <string name="purchase_price">Vételár</string>
@@ -642,7 +641,6 @@
     <string name="budget_year">Költségvetés év</string>
     <string name="budget_month">Költségvetés hónap</string>
     <string name="budget_month_optional">Költségvetési hónap (nem kötelező)</string>
-    <!-- string name="copy">Copy</string -->
     <string name="app_restart">Az alkalmazás most bezárul a módosítások alkalmazásához. Kérjük, indítsa újra.</string>
     <string name="print">Nyomtatás</string>
     <string name="min_19">A dokumentum kinyomtatásához legalább Android 4.4-es verzióra van szüksége.</string>

@@ -69,14 +69,9 @@ public class StockRepository
      * @param price Stock price
      */
     public void updateCurrentPrice(String symbol, Money price) {
-
-        // recalculate value
         for (Stock stock : loadBySymbol(symbol)) {
             if (stock == null) continue; // this should not happen, but see #2295 -anr-1071-stockrepository
             stock.setCurrentPrice(price);
-            // recalculate & assign the value
-            stock.getValue();
-
             save(stock);
         }
     }

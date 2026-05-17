@@ -18,6 +18,7 @@
 package com.money.manager.ex.investment;
 
 import android.view.View;
+import android.widget.Button;
 
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.money.manager.ex.R;
@@ -33,6 +34,7 @@ public class EditPriceViewHolder {
 
     public RobotoTextView symbolTextView;
     public RobotoTextView amountTextView;
+    public Button addButton;
     public RobotoTextView dateTextView;
     @Nullable public IconicsImageView previousDayButton;
     @Nullable public IconicsImageView nextDayButton;
@@ -50,6 +52,7 @@ public class EditPriceViewHolder {
         // Manually bind views
         symbolTextView = activity.findViewById(R.id.symbolTextView);
         amountTextView = activity.findViewById(R.id.amountTextView);
+        addButton = activity.findViewById(R.id.addPriceButton);
         dateTextView = activity.findViewById(R.id.dateTextView);
         previousDayButton = activity.findViewById(R.id.previousDayButton);
         nextDayButton = activity.findViewById(R.id.nextDayButton);

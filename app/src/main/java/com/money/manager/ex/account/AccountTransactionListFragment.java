@@ -59,16 +59,23 @@ import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.database.WhereStatementGenerator;
 import com.money.manager.ex.datalayer.AccountRepository;
 import com.money.manager.ex.datalayer.Select;
+import com.money.manager.ex.datalayer.StockRepository;
 import com.money.manager.ex.domainmodel.Account;
+import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.home.MainActivity;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
+import com.money.manager.ex.investment.PortfolioFragment;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
+
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -98,6 +105,7 @@ public class AccountTransactionListFragment
 
     private static final int ID_LOADER_SUMMARY = 2;
     private static final String TAG_FILTER_DIALOG = "FilterDialogTag";
+    private static final int MENU_VIEW_PORTFOLIO = 2001;
 
     /**
      * @param accountId Id of the Account to be displayed
@@ -282,6 +290,10 @@ public class AccountTransactionListFragment
 
         // call create option menu of fragment
         mAllDataListFragment.old_onCreateOptionsMenu(menu, inflater);
+
+        if (menu.findItem(MENU_VIEW_PORTFOLIO) == null) {
+            menu.add(Menu.NONE, MENU_VIEW_PORTFOLIO, Menu.NONE, R.string.portfolio);
+        }
     }
 
     public void old_onPrepareOptionsMenu(Menu menu) {
@@ -312,6 +324,13 @@ public class AccountTransactionListFragment
             }
         }
 
+        MenuItem itemPortfolio = menu.findItem(MENU_VIEW_PORTFOLIO);
+        if (itemPortfolio != null) {
+            boolean isInvestment = mAccount != null &&
+                    mAccount.getType() == AccountTypes.INVESTMENT;
+            itemPortfolio.setVisible(isInvestment);
+        }
+
         selectCurrentPeriod(menu);
         selectCurrentStatus(menu);
     }
@@ -335,6 +354,11 @@ public class AccountTransactionListFragment
         } else if (itemId == R.id.menu_export_to_csv) {
             if (mAllDataListFragment != null && mAccount != null)
                 mAllDataListFragment.exportDataToCSVFile(mAccount.getName());
+            result = true;
+        } else if (itemId == MENU_VIEW_PORTFOLIO) {
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).showPortfolioFragment(mAccountId);
+            }
             result = true;
         } else {
             result = false;
@@ -536,10 +560,22 @@ public class AccountTransactionListFragment
         this.viewHolder.listHeader = (ViewGroup) inflater.inflate(R.layout.account_header_fragment, null, false);
 
         // take reference text view from layout
+        this.viewHolder.txtAccountBalanceTitle = this.viewHolder.listHeader.findViewById(R.id.textViewAccountBalanceTitle);
         this.viewHolder.txtAccountBalance = this.viewHolder.listHeader.findViewById(R.id.textViewAccountBalance);
         this.viewHolder.txtAccountReconciled = this.viewHolder.listHeader.findViewById(R.id.textViewAccountReconciled);
         this.viewHolder.txtAccountReconciledTitle = this.viewHolder.listHeader.findViewById(R.id.textViewAccountReconciledTitle);
         this.viewHolder.txtAccountDifference = this.viewHolder.listHeader.findViewById(R.id.textViewDifference);
+
+        // investment header rows
+        this.viewHolder.tableRowCashBalance = this.viewHolder.listHeader.findViewById(R.id.tableRowCashBalance);
+        this.viewHolder.txtCashBalance = this.viewHolder.listHeader.findViewById(R.id.textViewCashBalance);
+        this.viewHolder.tableRowMarketValue = this.viewHolder.listHeader.findViewById(R.id.tableRowMarketValue);
+        this.viewHolder.txtMarketValue = this.viewHolder.listHeader.findViewById(R.id.textViewMarketValue);
+        this.viewHolder.tableRowInvested = this.viewHolder.listHeader.findViewById(R.id.tableRowInvested);
+        this.viewHolder.txtInvested = this.viewHolder.listHeader.findViewById(R.id.textViewInvested);
+        this.viewHolder.tableRowGainLoss = this.viewHolder.listHeader.findViewById(R.id.tableRowGainLoss);
+        this.viewHolder.txtGainLoss = this.viewHolder.listHeader.findViewById(R.id.textViewGainLoss);
+
         // favorite icon
         this.viewHolder.imgAccountFav = this.viewHolder.listHeader.findViewById(R.id.imageViewAccountFav);
 
@@ -735,23 +771,115 @@ public class AccountTransactionListFragment
     }
 
     /**
-     * Show the account balances (current & reconciled) in the header.
+     * Show the account balances in the header. For Investment accounts, shows the
+     * investment summary (total, cash, market value, invested, gain/loss). For all
+     * other account types shows the standard balance and reconciled balance.
      */
     private void setTextViewBalance() {
-        // Reload account info as it can be changed via dropdown. Need a currency info here.
         reloadAccountInfo();
+        if (mAccount == null) return;
 
-        // write account balance
-        if (mAccount != null) {
+        if (mAccount.getType() == AccountTypes.INVESTMENT) {
+            configureInvestmentHeader();
+        } else {
+            // Ensure investment-only rows are hidden and labels are reset (defensive reset
+            // against view reuse across account types).
+            if (this.viewHolder.txtAccountBalanceTitle != null)
+                this.viewHolder.txtAccountBalanceTitle.setText(R.string.account_balance);
+            if (this.viewHolder.txtAccountReconciledTitle != null)
+                this.viewHolder.txtAccountReconciledTitle.setVisibility(View.VISIBLE);
+            if (this.viewHolder.txtAccountReconciled != null)
+                this.viewHolder.txtAccountReconciled.setVisibility(View.VISIBLE);
+            setGone(this.viewHolder.tableRowCashBalance);
+            setGone(this.viewHolder.tableRowMarketValue);
+            setGone(this.viewHolder.tableRowInvested);
+            setGone(this.viewHolder.tableRowGainLoss);
+            if (this.viewHolder.txtAccountDifference != null) {
+                View diffRow = (View) this.viewHolder.txtAccountDifference.getParent();
+                if (diffRow != null) diffRow.setVisibility(View.GONE);
+            }
+
             CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
-
             this.viewHolder.txtAccountBalance.setText(currencyService.getCurrencyFormatted(
-                mAccount.getCurrencyId(), mAccountBalance));
+                    mAccount.getCurrencyId(), mAccountBalance));
             this.viewHolder.txtAccountReconciled.setText(currencyService.getCurrencyFormatted(
-                mAccount.getCurrencyId(), mAccountReconciled));
+                    mAccount.getCurrencyId(), mAccountReconciled));
             this.viewHolder.txtAccountDifference.setText(currencyService.getCurrencyFormatted(
-                mAccount.getCurrencyId(), mAccountReconciled.subtract(mAccountBalance)));
+                    mAccount.getCurrencyId(), mAccountReconciled.subtract(mAccountBalance)));
         }
+    }
+
+    private void configureInvestmentHeader() {
+        CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
+        long currencyId = mAccount.getCurrencyId();
+
+        // Make the difference row visible (balance values are set after stock loading).
+        if (this.viewHolder.txtAccountDifference != null) {
+            View diffRow = (View) this.viewHolder.txtAccountDifference.getParent();
+            if (diffRow != null) diffRow.setVisibility(View.VISIBLE);
+        }
+
+        // Show market value and invested rows; leave cash balance and gain/loss hidden.
+        setVisible(this.viewHolder.tableRowMarketValue);
+        setVisible(this.viewHolder.tableRowInvested);
+
+        loadInvestmentSummary(currencyId, currencyService);
+    }
+
+    private void loadInvestmentSummary(long currencyId, CurrencyService currencyService) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            StockRepository repo = new StockRepository(requireContext());
+            List<Stock> stocks = repo.loadByAccount(mAccountId);
+
+            Money marketValue = MoneyFactory.fromDouble(0);
+            Money invested = MoneyFactory.fromDouble(0);
+            for (Stock s : stocks) {
+                marketValue = marketValue.add(s.getCurrentPrice().multiply(s.getNumberOfShares()));
+                // invested uses cost basis (VALUE field) which includes commission
+                invested = invested.add(s.getValue());
+            }
+
+            // mAccountBalance and mAccountReconciled from QueryAccountBills both include market
+            // value in their totals. Subtract it to get true cash-only figures.
+            final Money finalMarketValue = marketValue;
+            final Money finalInvested = invested;
+            final Money cashBalance = mAccountBalance.subtract(marketValue);
+            final Money reconciledBalance = mAccountReconciled.subtract(marketValue);
+            final Money difference = cashBalance.subtract(reconciledBalance);
+
+            requireActivity().runOnUiThread(() -> {
+                if (this.viewHolder.txtAccountBalance != null) {
+                    this.viewHolder.txtAccountBalance.setText(
+                            currencyService.getCurrencyFormatted(currencyId, cashBalance));
+                }
+                if (this.viewHolder.txtAccountReconciled != null) {
+                    this.viewHolder.txtAccountReconciled.setText(
+                            currencyService.getCurrencyFormatted(currencyId, reconciledBalance));
+                }
+                if (this.viewHolder.txtAccountDifference != null) {
+                    this.viewHolder.txtAccountDifference.setText(
+                            currencyService.getCurrencyFormatted(currencyId, difference));
+                }
+                if (this.viewHolder.txtMarketValue != null) {
+                    this.viewHolder.txtMarketValue.setText(
+                            currencyService.getCurrencyFormatted(currencyId, finalMarketValue));
+                }
+                if (this.viewHolder.txtInvested != null) {
+                    this.viewHolder.txtInvested.setText(
+                            currencyService.getCurrencyFormatted(currencyId, finalInvested));
+                }
+            });
+        });
+        executor.shutdown();
+    }
+
+    private void setVisible(View view) {
+        if (view != null) view.setVisibility(View.VISIBLE);
+    }
+
+    private void setGone(View view) {
+        if (view != null) view.setVisibility(View.GONE);
     }
 
     /**
@@ -824,6 +952,8 @@ public class AccountTransactionListFragment
 
         // switch account. Reload transactions.
         mAccountId = accountId;
+        reloadAccountInfo();
+        requireActivity().invalidateOptionsMenu();
         mAllDataListFragment.accountId = accountId;
         mAllDataListFragment.loadData(prepareQuery());
 

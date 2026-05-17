@@ -88,7 +88,17 @@
     <string name="account_empty_list">Keine Konten gefunden. Um ein Konto zu erstellen, tippen Sie auf die grüne Plus-Taste.</string>
     <string name="account_balance">Kontostand</string>
     <string name="account_reconciled_balance">abgestimmter Saldo</string>
+    <string name="total_balance">Gesamtwert</string>
+    <string name="cash_balance">Kontostand</string>
+    <string name="market_value">Marktwert</string>
+    <string name="invested">Investiert</string>
+    <string name="total_cost">Gesamtkosten</string>
+    <string name="gain_loss">Gewinn / Verlust</string>
+    <string name="unrealized_gain_loss">Nicht realisierter G/V</string>
+    <string name="realized_gain_loss">Realisierter G/V</string>
+    <string name="pie_other">Weitere</string>
     <string name="delete_account">Konto löschen</string>
+    <string name="delete_stock_investment">Wertpapieranlage löschen</string>
     <string name="account_name">Kontoname</string>
     <string name="account_type">Kontoart</string>
     <string name="account_number">Kontonummer</string>
@@ -148,6 +158,8 @@
     <string name="amount">Betrag</string>
     <string name="total_amount">Gesamtbetrag</string>
     <string name="deposit">Einzahlung</string>
+    <string name="buy">Kauf</string>
+    <string name="sell">Verkauf</string>
     <string name="status">Status</string>
     <string name="status_reconciled">Ausgeglichen</string>
     <string name="status_void">ungültig</string>
@@ -172,6 +184,7 @@
     <string name="about">Über</string>
     <string name="add">Hinzufügen</string>
     <string name="confirmDelete">Möchten Sie den Eintrag wirklich löschen?</string>
+    <string name="confirm_delete_stock_investment">Möchten Sie die Wertpapieranlage löschen?</string>
     <string name="date">Datum</string>
     <string name="delete">Löschen</string>
     <string name="download">Download</string>
@@ -314,6 +327,9 @@
     <string name="menu_report_income_vs_expenses">Einnahmen vs Ausgaben</string>
     <string name="menu_report_cashflow">Geldfluss</string>
     <string name="menu_report_summary_of_accounts">Kontenübersicht</string>
+    <string name="menu_report_summary_of_stocks">Wertpapierübersicht</string>
+    <string name="report_subtotal">Zwischensumme</string>
+    <string name="report_grand_total">Gesamtsumme</string>
     <string name="total">Gesamt</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Gesamter Zeitraum</string>
@@ -507,7 +523,15 @@
     <string name="update_price">Preis aktualisieren</string>
     <string name="download_price">Preis herunterladen</string>
     <string name="download_all_prices">Alle Preise herunterladen</string>
-    <string name="edit_price">Preis bearbeiten</string>
+    <string name="download_price_selected_date">Preis für das ausgewählte Datum herunterladen</string>
+    <string name="download_price_history_range">Preise für Datumsbereich herunterladen</string>
+    <string name="download_for_date_range">Über Datumsbereich herunterladen</string>
+    <string name="price_history">Kursverlauf</string>
+    <string name="stock_name">Aktienname</string>
+    <string name="download_prices">Alle Preise herunterladen</string>
+    <string name="download_prices_explanation">Bitte wählen Sie das Startdatum. Die Preise werden bis heute heruntergeladen.</string>
+    <string name="no_price_history">Kein Preisverlauf verfügbar</string>
+    <string name="prices_downloaded">%1$d Preise heruntergeladen</string>
     <string name="price_updated">Preis aktualisiert</string>
     <string name="all_prices_updated">Alle Preise wurden aktualisiert.</string>
     <string name="download_complete">Download abgeschlossen.</string>
@@ -590,21 +614,23 @@
     <string name="watchlist">Beobachtungsliste</string>
     <!-- edit investment transaction -->
     <string name="purchase_date">Kaufdatum</string>
-    <string name="stock_name">Aktienname</string>
     <string name="symbol">Symbol</string>
     <string name="number_of_shares">Anzahl der Wertpapiere</string>
     <string name="purchase_price">Kaufpreis</string>
+    <string name="share_price">Wertpapierkurs</string>
     <string name="current_price">Aktueller Preis</string>
     <string name="price_date">Preis Datum</string>
     <string name="commission">Provision</string>
     <string name="value">Wert</string>
     <string name="view_transactions">Transaktionen anzeigen</string>
     <string name="view_transactions_sub">Transaktionen mit Unterkategorien anzeigen</string>
+    <string name="open_yahoo_finance">Seite bei Yahoo Finance öffnen</string>
+    <string name="no_browser_available">Kein Browser verfügbar</string>
     <string name="switch_active">Aktivieren/Inaktiv wechseln</string>
     <string name="error_downloading_symbol">Fehler beim Herunterladen des Preises für Symbol</string>
     <string name="error_updating_rates">Fehler beim Aktualisieren der Kurse</string>
     <string name="error_no_price_found_for_symbol">Für das Symbol wurde kein Preis gefunden</string>
-    <string name="other">Hinzufügen</string>
+    <string name="other">Weitere</string>
     <string name="cleared">Gelöscht</string>
     <string name="delete_success">Element gelöscht</string>
     <!-- asset allocation -->
@@ -648,7 +674,7 @@
     <string name="budget_year">Jahresbudget</string>
     <string name="budget_month">Monatsbudget</string>
     <string name="budget_month_optional">Budget Monat (optional)</string>
-    <!-- string name="copy">Copy</string -->
+    <string name="menu_copy">kopieren</string>
     <string name="app_restart">Die App wird sich nun schließen, um die Änderungen wirksam zu machen. Bitte starten Sie neu.</string>
     <string name="print">Drucken</string>
     <string name="min_19">Sie benötigen mindestens Android 4.4 um das Dokument zu drucken.</string>
@@ -763,6 +789,7 @@
     <string name="title_pref_budget_financial_year">Geschäftsjahr im Budget verwenden</string>
     <string name="summary_pref_budget_financial_year">Wenn angekreuzt, verwenden die Budgets das Haushaltsjahr anstelle des Kalenderjahres</string>
     <string name="shares">Wertpapiere</string>
+    <string name="menu_hide_zero_shares">Bestand > 0</string>
     <string name="loan">Darlehen</string>
     <string name="loan_account">Darlehenskonten</string>
     <string name="shares_accounts">Wertpapierkonten</string>

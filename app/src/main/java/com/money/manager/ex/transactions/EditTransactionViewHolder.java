@@ -17,6 +17,7 @@
 
 package com.money.manager.ex.transactions;
 
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -25,7 +26,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.view.IconicsImageView;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
 import com.shamanland.fonticon.FontIconView;
@@ -39,8 +39,8 @@ import androidx.recyclerview.widget.RecyclerView;
 public class EditTransactionViewHolder {
 
     public TextView dateTextView;
-    public IconicsImageView previousDayButton;
-    public IconicsImageView nextDayButton;
+    public View previousDayButton;
+    public View nextDayButton;
 
     public TextView categoryTextView;
     public TextView txtSelectPayee;
@@ -54,7 +54,7 @@ public class EditTransactionViewHolder {
     public ViewGroup tableRowAmountTo;
     public ViewGroup tableRowAccountTo;
     public TextView accountFromLabel;
-    public IconicsImageView swapAccountButton; //added by velmuruganc
+    public View swapAccountButton; //added by velmuruganc
     public TextView txtToAccount;
     public TextView amountHeaderTextView;
     public TextView amountToHeaderTextView;

@@ -46,6 +46,7 @@ public class QueryAllData
     public static final String PAYEEID = "PayeeID";
     public static final String ToAccountName = "ToAccountName";
     public static final String TOACCOUNTID = "ToAccountID";
+    public static final String TXTOACCOUNTID = "TXToAccountID";
     public static final String ToAmount = "ToAmount";
     public static final String ToCurrencyId = "ToCurrencyID";
     public static final String TransactionNumber = "TransactionNumber";
@@ -55,6 +56,14 @@ public class QueryAllData
     public static final String ATTACHMENTCOUNT = "ATTACHMENTCOUNT";
     public static final String TAGS = "TAGS";
     public static final String COLOR = "COLOR";
+    public static final String ISSTOCKLINKED = "ISSTOCKLINKED";
+    public static final String SHARENUMBER = "SHARENUMBER";
+    public static final String SHAREPRICE = "SHAREPRICE";
+    public static final String SHARECOMMISSION = "SHARECOMMISSION";
+    public static final String SHARELOT = "SHARELOT";
+    public static final String STOCKNAME = "STOCKNAME";
+    public static final String STOCKID = "STOCKID";
+    public static final String STOCKACCOUNTID = "STOCKACCOUNTID";
 
     public QueryAllData(Context context) {
         super(MmxFileUtils.getRawAsString(context, R.raw.query_alldata), DatasetType.QUERY, "queryalldata");
@@ -68,7 +77,9 @@ public class QueryAllData
         return new String[]{"ID AS _id", ID, TransactionType, Date, Year, Month, Day, ATTACHMENTCOUNT,
                 Category, AMOUNT, BaseConvRate, CURRENCYID, AccountName, ACCOUNTID,
                 SPLITTED, CATEGID, PAYEENAME, PAYEEID, TransactionNumber, STATUS, Notes,
-                ToAccountName, TOACCOUNTID, ToAmount, ToCurrencyId,
-                currency, TAGS, COLOR};
+                ToAccountName, TOACCOUNTID, TXTOACCOUNTID, ToAmount, ToCurrencyId,
+            currency, TAGS, COLOR, ISSTOCKLINKED,
+            SHARENUMBER, SHAREPRICE, SHARECOMMISSION, SHARELOT, STOCKNAME,
+            STOCKID, STOCKACCOUNTID};
     }
 }

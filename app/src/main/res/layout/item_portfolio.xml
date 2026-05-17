@@ -15,19 +15,13 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<HorizontalScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="@dimen/mmx_list_item_height"
-    android:fillViewport="true"
-    android:scrollbars="none">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingVertical="@dimen/mmx_margin_bottom_top">
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingVertical="@dimen/mmx_margin_bottom_top">
 
                 <!-- Column 1: Name | Symbol -->
                 <LinearLayout
@@ -59,7 +53,7 @@
 
                 <!-- Column 2: Market Value | Shares -->
                 <LinearLayout
-                    android:layout_width="120dp"
+                    android:layout_width="140dp"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:gravity="end"
@@ -85,7 +79,7 @@
 
                 <!-- Column 3: Current Price | Purchase Price -->
                 <LinearLayout
-                    android:layout_width="120dp"
+                    android:layout_width="140dp"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:gravity="end"
@@ -111,7 +105,7 @@
 
                 <!-- Column 4: Unrealized G/L | % -->
                 <LinearLayout
-                    android:layout_width="120dp"
+                    android:layout_width="140dp"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:gravity="end"
@@ -134,5 +128,30 @@
                             android:textSize="12sp"
                             android:paddingVertical="2dp"/>
                 </LinearLayout>
+
+                <!-- Column 5: Realized G/L | % -->
+                <LinearLayout
+                    android:layout_width="140dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="end"
+                    android:paddingHorizontal="8dp">
+
+                        <com.money.manager.ex.view.RobotoTextView
+                            android:id="@+id/realizedGLAmountTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:textSize="14sp"
+                            android:paddingVertical="2dp"/>
+
+                        <com.money.manager.ex.view.RobotoTextView
+                            android:id="@+id/realizedGLPercentTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:gravity="end"
+                            android:textSize="12sp"
+                            android:paddingVertical="2dp"/>
+                </LinearLayout>
         </LinearLayout>
-</HorizontalScrollView>

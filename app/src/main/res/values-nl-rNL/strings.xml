@@ -88,7 +88,17 @@
     <string name="account_empty_list">Geen rekening gevonden. Tik op de groene + knop om er een te maken.</string>
     <string name="account_balance">Rekeningbalans</string>
     <string name="account_reconciled_balance">Goedgekeurde balans</string>
+    <string name="total_balance">Balanstotaal</string>
+    <string name="cash_balance">Contant saldo</string>
+    <string name="market_value">Marktwaarde</string>
+    <string name="invested">Geïnvesteerd</string>
+    <string name="total_cost">Totale kosten</string>
+    <string name="gain_loss">Winst / Verlies</string>
+    <string name="unrealized_gain_loss">Niet-gerealiseerde w/v</string>
+    <string name="realized_gain_loss">Gerealiseerde w/v</string>
+    <string name="pie_other">Overig</string>
     <string name="delete_account">Verwijder rekening</string>
+    <string name="delete_stock_investment">Verwijder Belegging</string>
     <string name="account_name">Rekeningnaam</string>
     <string name="account_type">Rekeningtype</string>
     <string name="account_number">Rekeningnummer</string>
@@ -121,6 +131,7 @@
     <!-- category / subcategory -->
     <string name="category">Categorie</string>
     <string name="subcategory">Subcategorie</string>
+    <string name="navigation_mode">Navigatiemodus</string>
     <string name="category_empty_list">Geen categorie gevonden. Tik op de groene + knop om er een aan te maken.</string>
     <string name="select_category">Selecteer categorie</string>
     <string name="add_category">Voeg categorie toe</string>
@@ -147,6 +158,8 @@
     <string name="amount">Bedrag</string>
     <string name="total_amount">Totaalbedrag</string>
     <string name="deposit">Storting</string>
+    <string name="buy">Kopen</string>
+    <string name="sell">Verkopen</string>
     <string name="status">Status</string>
     <string name="status_reconciled">Bevestigd</string>
     <string name="status_void">Ongeldig</string>
@@ -171,6 +184,7 @@
     <string name="about">Over</string>
     <string name="add">Voeg toe</string>
     <string name="confirmDelete">Weet u zeker dat u deze record wilt verwijderen?</string>
+    <string name="confirm_delete_stock_investment">Wilt u de aandelenbelegging verwijderen?</string>
     <string name="date">Datum</string>
     <string name="delete">Verwijder</string>
     <string name="download">Download</string>
@@ -313,6 +327,9 @@
     <string name="menu_report_income_vs_expenses">Inkomsten vs Uitgaven</string>
     <string name="menu_report_cashflow">Cash Flow</string>
     <string name="menu_report_summary_of_accounts">Samenvatting van rekeningen</string>
+    <string name="menu_report_summary_of_stocks">Overzicht van aandelen</string>
+    <string name="report_subtotal">Subtotaal</string>
+    <string name="report_grand_total">Totaalbedrag</string>
     <string name="total">Totaal</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Sinds het begin</string>
@@ -506,7 +523,15 @@
     <string name="update_price">Prijs bijwerken</string>
     <string name="download_price">Prijs downloaden</string>
     <string name="download_all_prices">Download alle prijzen</string>
-    <string name="edit_price">Prijzen bewerken</string>
+    <string name="download_price_selected_date">Download de prijs voor de geselecteerde datum.</string>
+    <string name="download_price_history_range">Download de prijsgeschiedenis voor een datumbereik.</string>
+    <string name="download_for_date_range">Downloaden voor een datumbereik</string>
+    <string name="price_history">Prijsgeschiedenis</string>
+    <string name="stock_name">Aandelennaam</string>
+    <string name="download_prices">Download alle prijzen</string>
+    <string name="download_prices_explanation">Selecteer de gewenste startdatum. De prijzen worden tot en met vandaag gedownload.</string>
+    <string name="no_price_history">Geen prijsgeschiedenis beschikbaar</string>
+    <string name="prices_downloaded">Gedownloade %1$d prijzen</string>
     <string name="price_updated">Prijzen bijgewerkt</string>
     <string name="all_prices_updated">Alle prijzen zijn bijgewerkt.</string>
     <string name="download_complete">Download voltooid.</string>
@@ -589,16 +614,18 @@
     <string name="watchlist">Volglijst</string>
     <!-- edit investment transaction -->
     <string name="purchase_date">Aankoopdatum</string>
-    <string name="stock_name">Effectennaam</string>
     <string name="symbol">Symbool</string>
     <string name="number_of_shares">Aantal aandelen</string>
     <string name="purchase_price">Aankoopbedrag</string>
+    <string name="share_price">Aandelenprijs</string>
     <string name="current_price">Huidige prijs</string>
     <string name="price_date">Prijsdatum</string>
     <string name="commission">Commissie</string>
     <string name="value">Waarde</string>
     <string name="view_transactions">Bekijk transacties</string>
     <string name="view_transactions_sub">Bekijk transacties met subcategorieën</string>
+    <string name="open_yahoo_finance">Open Yahoo Financiën</string>
+    <string name="no_browser_available">Geen browser beschikbaar</string>
     <string name="switch_active">Schakel Actief/Inactief</string>
     <string name="error_downloading_symbol">Fout bij het downloaden van de prijs voor het symbool</string>
     <string name="error_updating_rates">Fout bij het updaten van de prijzen</string>
@@ -647,7 +674,7 @@
     <string name="budget_year">Budgetjaar</string>
     <string name="budget_month">Budgetmaand</string>
     <string name="budget_month_optional">Begroting maand (optioneel)</string>
-    <!-- string name="copy">Copy</string -->
+    <string name="menu_copy">Kopieer</string>
     <string name="app_restart">Het programma zal nu afsluiten om de wijzigingen door te voeren. Start programma opnieuw.</string>
     <string name="print">Afdrukken</string>
     <string name="min_19">U heeft minstens Android 4.4 nodig om dit document te kunnen printen.</string>
@@ -762,6 +789,7 @@
     <string name="title_pref_budget_financial_year">Gebruik boekjaar in begroting</string>
     <string name="summary_pref_budget_financial_year">Indien aangevinkt gebruik begroting boekjaar in plaats van kalenderjaar</string>
     <string name="shares">Aandelen</string>
+    <string name="menu_hide_zero_shares">Verberg aandelen met nul aandelen</string>
     <string name="loan">Lening</string>
     <string name="loan_account">Leningen</string>
     <string name="shares_accounts">Aandelen</string>

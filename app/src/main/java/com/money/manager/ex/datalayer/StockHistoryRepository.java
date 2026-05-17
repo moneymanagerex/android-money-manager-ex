@@ -29,7 +29,9 @@ import com.money.manager.ex.investment.PriceEditModel;
 import com.money.manager.ex.investment.events.PriceDownloadedEvent;
 import com.money.manager.ex.utils.MmxDate;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import info.javaperformance.money.Money;
 import timber.log.Timber;
@@ -198,12 +200,57 @@ public class StockHistoryRepository
         return history;
     }
 
+    public StockHistory getPriceForDate(String symbol, String isoDate) {
+        Cursor cursor = getContext().getContentResolver().query(getUri(),
+                null,
+                StockHistory.SYMBOL + "=? AND " + StockHistory.DATE + "=?",
+                new String[]{symbol, isoDate},
+                null);
+        if (cursor == null) return null;
+        StockHistory history = null;
+        if (cursor.moveToFirst()) {
+            history = new StockHistory();
+            history.loadFromCursor(cursor);
+        }
+        cursor.close();
+        return history;
+    }
+
+    public List<StockHistory> getAllPricesForSymbol(String symbol) {
+        Cursor cursor = getContext().getContentResolver().query(getUri(),
+                null,
+                StockHistory.SYMBOL + "=?",
+                new String[]{symbol},
+                StockHistory.DATE + " DESC");
+        if (cursor == null) return new ArrayList<>();
+        List<StockHistory> result = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            StockHistory history = new StockHistory();
+            history.loadFromCursor(cursor);
+            result.add(history);
+        }
+        cursor.close();
+        return result;
+    }
+
     public long deleteAutomaticPriceHistory() {
         // Delete all automatically downloaded prices.
         long deleted = getContext().getContentResolver().delete(getUri(),
             StockHistory.UPDTYPE + "=?",
             new String[] { "1" });
 
+        return deleted;
+    }
+
+    /**
+     * Delete a single price history record for a symbol on the specified ISO date.
+     * @param symbol stock symbol
+     * @param isoDate ISO date string (yyyy-MM-dd)
+     * @return number of deleted records
+     */
+    public long deletePrice(String symbol, String isoDate) {
+        String where = StockHistory.SYMBOL + "=? AND " + StockHistory.DATE + "=?";
+        long deleted = getContext().getContentResolver().delete(getUri(), where, new String[] { symbol, isoDate });
         return deleted;
     }
 

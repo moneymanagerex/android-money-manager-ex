@@ -72,6 +72,7 @@
     <string name="account_empty_list">Δεν έχουν βρεθεί Λογαριασμοί. Για να δημιουργήσετε ένα, πατήστε το πράσινο συν (+) κουμπί.</string>
     <string name="account_balance">Υπόλοιπο Λογαριασμού</string>
     <string name="account_reconciled_balance">Τακτοποιημένο Υπόλοιπο</string>
+    <string name="pie_other">Άλλα</string>
     <string name="delete_account">Διαγραφή λογαριασμού</string>
     <string name="account_name">Όνομα λογαριασμού</string>
     <string name="account_type">Τύπος λογαριασμού</string>
@@ -435,7 +436,6 @@
     <string name="update_prices">Ενημέρωση των τιμών</string>
     <string name="update_price">Ενημέρωση τιμών</string>
     <string name="download_price">Κάντε λήψη της τιμής</string>
-    <string name="edit_price">Επεξεργασία Τιμής</string>
     <string name="price_updated">Η τιμή ενημερώνεται</string>
     <string name="all_prices_updated">Όλες οι τιμές έχουν ενημερωθεί.</string>
     <string name="download_complete">Η λήψη ολοκληρώθηκε.</string>
@@ -508,7 +508,6 @@
     <string name="watchlist">Λίστα παρακολούθησης</string>
     <!-- edit investment transaction -->
     <string name="purchase_date">Ημερομηνία αγοράς</string>
-    <string name="stock_name">Όνομα αποθεμάτων</string>
     <string name="symbol">Σύμβολο</string>
     <string name="number_of_shares">Αριθμός μετοχών</string>
     <string name="purchase_price">Τιμή αγοράς</string>
@@ -561,7 +560,6 @@
     <string name="budget_name">Όνομα προϋπολογισμού</string>
     <string name="budget_year">Προϋπολογισμός έτους</string>
     <string name="budget_month">Προϋπολογισμός Μήνα</string>
-    <!-- string name="copy">Copy</string -->
     <string name="app_restart">Η εφαρμογή τώρα θα κλείσει για να εφαρμοστούν οι αλλαγές. Παρακαλώ κάντε επανεκκίνηση.</string>
     <string name="print">Εκτύπωση</string>
     <string name="min_19">Χρειάζεται τουλάχιστον Android 4.4, ώστε να είναι σε θέση να εκτυπώσετε το έγγραφο.</string>

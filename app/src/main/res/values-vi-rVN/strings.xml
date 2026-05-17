@@ -88,6 +88,7 @@
     <string name="account_empty_list">Không tìm thấy tài khoản nào. Để tạo 1 tài khoản, chạm vào nút \"+\" màu xanh.</string>
     <string name="account_balance">Số dư tài khoản</string>
     <string name="account_reconciled_balance">Số dư đối chiếu</string>
+    <string name="pie_other">Khác</string>
     <string name="delete_account">Xoá tài khoản</string>
     <string name="account_name">Tên tài khoản</string>
     <string name="account_type">Loại tài khoản</string>
@@ -485,7 +486,6 @@
     <string name="update_prices">Cập nhật giá</string>
     <string name="update_price">Cập nhật giá</string>
     <string name="download_price">Tải về giá</string>
-    <string name="edit_price">Chỉnh sửa giá</string>
     <string name="price_updated">Giá đã cập nhật</string>
     <string name="all_prices_updated">Tất cả giá đã được cập nhật.</string>
     <string name="download_complete">Tải xuống hoàn tất.</string>
@@ -558,7 +558,6 @@
     <string name="watchlist">Danh sách theo dõi</string>
     <!-- edit investment transaction -->
     <string name="purchase_date">Ngày mua</string>
-    <string name="stock_name">Tên chứng khoán</string>
     <string name="symbol">Biểu tượng</string>
     <string name="number_of_shares">Số cổ phần</string>
     <string name="purchase_price">Giá mua</string>
@@ -604,7 +603,6 @@
     <string name="budget_name">Tên Ngân sách</string>
     <string name="budget_year">Ngân sách theo năm</string>
     <string name="budget_month">Ngân sách theo tháng</string>
-    <!-- string name="copy">Copy</string -->
     <string name="print">In</string>
     <string name="min_19">Bạn cần tối thiểu thiết bị chạy Android 4.4 để có thể in ấn văn bản</string>
     <string name="save_as_html">Lưu dưới định dạng HTML</string>

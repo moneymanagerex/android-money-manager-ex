@@ -19,6 +19,7 @@
 package com.money.manager.ex.reports.cashflow;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.graphics.Color;
@@ -38,6 +39,7 @@ import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.data.Entry;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.LineData;
@@ -114,6 +116,9 @@ public class CashFlowReportListFragment
 
     @SuppressLint("Range")
     private void createCashFlowRecords() {
+        Context context = getContext();
+        if (context == null) return;
+
         // Use MatrixCursor instead
         if (matrixCursor != null) return;
 
@@ -137,11 +142,11 @@ public class CashFlowReportListFragment
         };
         matrixCursor = new MatrixCursor(columnNames);
 
-        QueryBillDeposits billDeposits = new QueryBillDeposits(getContext());
+        QueryBillDeposits billDeposits = new QueryBillDeposits(context);
 
         Cursor cursor = null;
         try {
-            cursor = getContext().getContentResolver().query(billDeposits.getUri(),
+            cursor = context.getContentResolver().query(billDeposits.getUri(),
                     billDeposits.getAllColumns(),
                     null,
                     null,
@@ -158,7 +163,7 @@ public class CashFlowReportListFragment
         List<HashMap<String, Object>> listRecurring = new ArrayList<>();
         HashMap<String, Object> row;
         while (cursor.moveToNext()) {
-            RecurringTransactionService recurringTransactionService = new RecurringTransactionService(cursor.getLong(cursor.getColumnIndexOrThrow(QueryBillDeposits.BDID)), getContext());
+            RecurringTransactionService recurringTransactionService = new RecurringTransactionService(cursor.getLong(cursor.getColumnIndexOrThrow(QueryBillDeposits.BDID)), context);
             // ignore transfert if both is on selected account
             // create recurring transaction
             double amount = cursor.getDouble(cursor.getColumnIndexOrThrow(QueryBillDeposits.AMOUNT));
@@ -196,7 +201,7 @@ public class CashFlowReportListFragment
                 row.put(QueryBillDeposits.PAYEENAME, cursor.getString(cursor.getColumnIndexOrThrow(QueryBillDeposits.ACCOUNTNAME)));
             row.put(QueryBillDeposits.CATEGNAME, cursor.getString(cursor.getColumnIndexOrThrow(QueryBillDeposits.CATEGNAME)));
             if (row.get(QueryBillDeposits.CATEGNAME) == null)
-                row.put(QueryBillDeposits.CATEGNAME, getString(R.string.transfer));
+                row.put(QueryBillDeposits.CATEGNAME, context.getString(R.string.transfer));
             row.put(QueryBillDeposits.COLOR, Objects.requireNonNullElse(cursor.getLong(cursor.getColumnIndexOrThrow(QueryBillDeposits.COLOR)), -1L)); // handle null #2235
             row.put(QueryBillDeposits.ATTACHMENTCOUNT, Objects.requireNonNullElse(cursor.getLong(cursor.getColumnIndexOrThrow(QueryBillDeposits.ATTACHMENTCOUNT)), 0L)); // handle null #2235
             row.put(QueryBillDeposits.TAGS, Objects.requireNonNullElse(cursor.getString(cursor.getColumnIndexOrThrow(QueryBillDeposits.TAGS)), "")); // handle null #2235
@@ -230,7 +235,7 @@ public class CashFlowReportListFragment
 
         listRecurring.sort(Comparator.comparing((HashMap<String, Object> uno) -> uno.get(QueryBillDeposits.TRANSDATE).toString()));
 
-        long baseCurrencyId = currencyService.getBaseCurrencyId();
+        long baseCurrencyId = (currencyService != null) ? currencyService.getBaseCurrencyId() : 0;
         graphValue = new ArrayList<>();
         for (int x = 0; x < 31 * monthInAdvance; x++) {
             graphValue.add(null);
@@ -246,7 +251,7 @@ public class CashFlowReportListFragment
             Money amountBase;
             long transCurrency = (rowMap.get("transCurrency") == null ? baseCurrencyId : (long) rowMap.get("transCurrency"));
             amountTrans = MoneyFactory.fromDouble((double) rowMap.get(QueryBillDeposits.AMOUNT));
-            amountBase = currencyService.doCurrencyExchange(baseCurrencyId, amountTrans, transCurrency);
+            amountBase = (currencyService != null) ? currencyService.doCurrencyExchange(baseCurrencyId, amountTrans, transCurrency) : amountTrans;
 
             if (!rowMap.get(QueryBillDeposits.STATUS).equals("V")) {
                 totalAmount += amountBase.toDouble();
@@ -279,7 +284,10 @@ public class CashFlowReportListFragment
     }
 
     private void getTotalAmountAndAccounts() {
-        LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
+        Context context = getContext();
+        if (context == null) return;
+
+        LookAndFeelSettings settings = new AppSettings(context).getLookAndFeelSettings();
         int accountFilter = AccountFilterSupport.getFilterMode(settings, PREF_FILTER_MODE, R.id.menu_account_filter_open);
         // compose whereClause
         String where = AccountFilterSupport.getSelectionForAccountIdColumn(
@@ -288,10 +296,10 @@ public class CashFlowReportListFragment
             PREF_FILTER_CUSTOM,
             QueryAccountBills.ACCOUNTID);
 
-        QueryAccountBills queryAccountBills = new QueryAccountBills(getActivity());
+        QueryAccountBills queryAccountBills = new QueryAccountBills(context);
         selectedAccounts = new ArrayList<>();
 
-        Cursor c = getContext().getContentResolver().query(queryAccountBills.getUri(),
+        Cursor c = context.getContentResolver().query(queryAccountBills.getUri(),
                 null,
                 where,
                 null,
@@ -308,73 +316,33 @@ public class CashFlowReportListFragment
 
     @Override
     public String getSubTitle() {
-        return getString(R.string.menu_cashflow_24_months).replace("24", String.valueOf(monthInAdvance));
+        Context context = getContext();
+        if (context == null) return "";
+        return context.getString(R.string.menu_cashflow_24_months).replace("24", String.valueOf(monthInAdvance));
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
+        Context context = getContext();
+        if (context == null) return;
+
+        LookAndFeelSettings settings = new AppSettings(context).getLookAndFeelSettings();
 
         monthInAdvance = ( settings.get(R.id.menu_cashflow_24_months, false) ) ? 24 : 12;
 
         ui = new UIHelper(getActivity());
 
-        // Update UI elements here
-        //createCashFlowRecords();
-        new Thread(() -> {
-            createCashFlowRecords();
-
-            // here you perform background operation
-            //Update the value background thread to UI thread
-            Handler mHandler = new Handler(Looper.getMainLooper());
-            mHandler.post(() -> {
-                // here you can update ui
-                if (matrixCursor.getCount() == 0) {
-                    setEmptyText(getActivity().getResources().getString(R.string.no_recurring_transaction));
-                } else {
-                    adapter.swapCursor(matrixCursor);
-                    adapter.notifyDataSetChanged();
-
-                    buildChartInfo();
-
-                    getListView().setOnScrollListener(new AbsListView.OnScrollListener() {
-                        @Override
-                        public void onScrollStateChanged(AbsListView view, int scrollState) {
-                        }
-
-                        @Override
-                        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-//                            if (cursorPosition != null ) {
-                              if ( chart != null && chart.getData() != null && firstVisibleItem >= 0 && firstVisibleItem < dayPosition.size() ) {
-//                                Timber.d("Position: %d",firstVisibleItem);
-//                                chart.getXAxis().removeLimitLine(cursorPosition);
-                                int pos = dayPosition.get(firstVisibleItem);
-//                                cursorPosition = new LimitLine(pos,"");
-//                                cursorPosition.setLineColor(Color.GREEN);
-//                                cursorPosition.setLineWidth(2f);
-//                                chart.getXAxis().addLimitLine(cursorPosition);
-                                chart.highlightValue(pos, 0, false);
-                                chart.invalidate();
-                            }
-                        }
-                    });
-                }
-                setListShown(true);
-            });
-        }).start();
-
         // create a object query
         setSearchMenuVisible(false);
         // set default text
-        setEmptyText(getActivity().getResources().getString(R.string.loading));
+        setEmptyText(context.getString(R.string.loading));
 
         // setHasOptionsMenu(true);
 
         Locale locale = MmexApplication.getApp().getAppLocale();
         dateUtils = new MmxDateTimeUtils(locale);
-        currencyService = new CurrencyService(getContext());
-        infoService = new InfoService(getContext());
-
+        currencyService = new CurrencyService(context);
+        infoService = new InfoService(context);
 
         int layout = R.layout.item_alldata_account;
 
@@ -416,7 +384,7 @@ public class CashFlowReportListFragment
             if (aView.getId() == R.id.viewColor) {
                 int color = aCursor.getInt(aColumnIndex);
                 if (color > 0) {
-                    aView.setBackgroundColor(infoService.getColorNumberFromInfoKey(color));
+                    if (infoService != null) aView.setBackgroundColor(infoService.getColorNumberFromInfoKey(color));
                     aView.setVisibility(View.VISIBLE);
                 } else {
                     aView.setVisibility(View.GONE);
@@ -442,11 +410,11 @@ public class CashFlowReportListFragment
 
             TextView textView = (TextView) aView;
             if (textView.getId() == R.id.textViewMonth) {
-                textView.setText(dateUtils.format(getAsDate(aCursor, aColumnIndex), "MMM"));
+                if (dateUtils != null) textView.setText(dateUtils.format(getAsDate(aCursor, aColumnIndex), "MMM"));
             } else if (textView.getId() == R.id.textViewDay) {
-                textView.setText(dateUtils.format(getAsDate(aCursor, aColumnIndex), "dd"));
+                if (dateUtils != null) textView.setText(dateUtils.format(getAsDate(aCursor, aColumnIndex), "dd"));
             } else if (textView.getId() == R.id.textViewYear) {
-                textView.setText(dateUtils.format(getAsDate(aCursor, aColumnIndex), "yyyy"));
+                if (dateUtils != null) textView.setText(dateUtils.format(getAsDate(aCursor, aColumnIndex), "yyyy"));
             } else if (textView.getId() == R.id.textViewCategorySub || textView.getId() == R.id.textViewPayee || textView.getId() == R.id.textViewNotes || textView.getId() == R.id.textViewStatus) {
                 textView.setText(aCursor.getString(aColumnIndex));
             } else if (textView.getId() == R.id.textViewAmount) {
@@ -471,10 +439,54 @@ public class CashFlowReportListFragment
         });
 
         setListAdapter(adapter);
-
-        // set list view
-        // a good idea is to make fill of matrixCursor async, start with showlist false and when matrixcursor is ready set showlist as true
         setListShown(false);
+
+        // Update UI elements here
+        //createCashFlowRecords();
+        new Thread(() -> {
+            createCashFlowRecords();
+
+            // here you perform background operation
+            //Update the value background thread to UI thread
+            Handler mHandler = new Handler(Looper.getMainLooper());
+            mHandler.post(() -> {
+                FragmentActivity activity = getActivity();
+                if (activity == null || getView() == null) return;
+
+                // here you can update ui
+                if (matrixCursor != null && matrixCursor.getCount() == 0) {
+                    setEmptyText(activity.getString(R.string.no_recurring_transaction));
+                } else if (matrixCursor != null) {
+                    adapter.swapCursor(matrixCursor);
+                    adapter.notifyDataSetChanged();
+
+                    buildChartInfo();
+
+                    getListView().setOnScrollListener(new AbsListView.OnScrollListener() {
+                        @Override
+                        public void onScrollStateChanged(AbsListView view, int scrollState) {
+                        }
+
+                        @Override
+                        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//                            if (cursorPosition != null ) {
+                              if ( chart != null && chart.getData() != null && firstVisibleItem >= 0 && firstVisibleItem < dayPosition.size() ) {
+//                                Timber.d("Position: %d",firstVisibleItem);
+//                                chart.getXAxis().removeLimitLine(cursorPosition);
+                                int pos = dayPosition.get(firstVisibleItem);
+//                                cursorPosition = new LimitLine(pos,"");
+//                                cursorPosition.setLineColor(Color.GREEN);
+//                                cursorPosition.setLineWidth(2f);
+//                                chart.getXAxis().addLimitLine(cursorPosition);
+                                chart.highlightValue(pos, 0, false);
+                                chart.invalidate();
+                            }
+                        }
+                    });
+                }
+                setListShown(true);
+            });
+        }).start();
 
 //        getLoaderManager().initLoader(ID_LOADER_REPORT, null, this);
         // attachFloatingActionButtonToListView();
@@ -491,17 +503,23 @@ public class CashFlowReportListFragment
 
     private String getAsAmountFromCurrency(Cursor aCursor, int aColumnIndex) {
         Long currency = aCursor.getLong(aCursor.getColumnIndexOrThrow("transCurrency"));
-        if (currency == null) currency = currencyService.getBaseCurrencyId();
-        return currencyService.getCurrencyFormatted(
-                currency, MoneyFactory.fromDouble(
-                        aCursor.getDouble(aColumnIndex)
-                ));
+        if (currencyService != null) {
+            if (currency == null) currency = currencyService.getBaseCurrencyId();
+            return currencyService.getCurrencyFormatted(
+                    currency, MoneyFactory.fromDouble(
+                            aCursor.getDouble(aColumnIndex)
+                    ));
+        }
+        return String.valueOf(aCursor.getDouble(aColumnIndex));
     }
 
     private String getAsAmount(Cursor aCursor, int aColumnIndex) {
-        return currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(
-                aCursor.getDouble(aColumnIndex)
-        ));
+        if (currencyService != null) {
+            return currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(
+                    aCursor.getDouble(aColumnIndex)
+            ));
+        }
+        return String.valueOf(aCursor.getDouble(aColumnIndex));
     }
 
 
@@ -517,7 +535,9 @@ public class CashFlowReportListFragment
     public void old_onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         // set accounts Filter
         inflater.inflate(R.menu.menu_cashflow, menu);
-        LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
+        Context context = getContext();
+        if (context == null) return;
+        LookAndFeelSettings settings = new AppSettings(context).getLookAndFeelSettings();
 
         if (settings.get(R.id.menu_cashflow_24_months, false)) {
             monthInAdvance = 24;
@@ -533,23 +553,27 @@ public class CashFlowReportListFragment
     @Override
     public boolean old_onOptionsItemSelected(@NonNull MenuItem item) {
         // handle accounts filter
-        LookAndFeelSettings settings = new AppSettings(getContext()).getLookAndFeelSettings();
+        Context context = getContext();
+        if (context == null) return false;
+        LookAndFeelSettings settings = new AppSettings(context).getLookAndFeelSettings();
         int itemId = item.getItemId();
         if (itemId == R.id.menu_cashflow_24_months) {
             monthInAdvance = (item.isChecked()) ? 12 : 24;
             item.setChecked(!item.isChecked());
             settings.set(R.id.menu_cashflow_24_months, item.isChecked());
-            getActivity().recreate();
+            if (getActivity() != null) getActivity().recreate();
             return true;
         } else if (AccountFilterSupport.isAccountFilterMenuItem(itemId)) {
             item.setChecked(true);
             AccountFilterSupport.saveFilterMode(settings, PREF_FILTER_MODE, item.getItemId());
             if (item.getItemId() == R.id.menu_account_filter_custom) {
                 AccountFilterSupport.showAndPersistAccountSelectionDialog(
-                        requireContext(), settings, PREF_FILTER_CUSTOM, () -> getActivity().recreate());
+                        requireContext(), settings, PREF_FILTER_CUSTOM, () -> {
+                            if (getActivity() != null) getActivity().recreate();
+                        });
                 return true;
             }
-            getActivity().recreate();
+            if (getActivity() != null) getActivity().recreate();
             return true;
         } else {
             return super.onOptionsItemSelected(item);
@@ -579,6 +603,8 @@ public class CashFlowReportListFragment
     private LineChart chart;
 
     private void buildChartInfo() {
+        if (dateUtils == null || graphValue == null) return;
+
         List<String> xVal = new ArrayList<>();
         ArrayList<Entry> values = new ArrayList<>();
 //        for (int i = 0; i < graphValue.size(); i++) {
@@ -593,7 +619,7 @@ public class CashFlowReportListFragment
                 xVal.add("");
             }
 //            xVal.add(dateUtils.format(date.toDate(), "dd-MMM"));
-            if (graphValue.get(i) != null) {
+            if (graphValue.size() > i && graphValue.get(i) != null) {
                 old = (Float) graphValue.get(i).floatValue();
             }
             if (i == 0) {
@@ -626,7 +652,11 @@ public class CashFlowReportListFragment
 //        });
 
         // disable dual axis (only use LEFT axis)
-        chart = getActivity().findViewById(R.id.chartLine);
+        FragmentActivity activity = getActivity();
+        if (activity == null) return;
+        chart = activity.findViewById(R.id.chartLine);
+        if (chart == null) return;
+
         chart.getAxisRight().setEnabled(false);
         chart.getXAxis().setDrawGridLines(false);
         for( int i = 0; i < xVal.size(); i++ ) {
@@ -634,7 +664,7 @@ public class CashFlowReportListFragment
                 LimitLine l = new LimitLine(i, xVal.get(i));
                 l.setTextSize(10);
                 l.setLineColor(Color.DKGRAY);
-                l.setTextColor(ui.getPrimaryTextColor());
+                if (ui != null) l.setTextColor(ui.getPrimaryTextColor());
                 chart.getXAxis().addLimitLine(l);
             }
         }
@@ -646,7 +676,7 @@ public class CashFlowReportListFragment
 
         chart.getXAxis().setDrawLabels(false);
 //        chart.getXAxis().setPosition(XAxis.XAxisPosition.TOP);
-        chart.getAxisLeft().setTextColor(ui.getPrimaryTextColor());
+        if (ui != null) chart.getAxisLeft().setTextColor(ui.getPrimaryTextColor());
         chart.setDescription("");
         chart.setData(data);
 //        chart.setTouchEnabled(false);
@@ -666,7 +696,7 @@ public class CashFlowReportListFragment
             }
         });
         chart.getLegend().setEnabled(false);
-        chart.setNoDataText(getString(R.string.loading));
+        chart.setNoDataText(activity.getString(R.string.loading));
         Timber.d("Max: %f", chart.getAxisLeft().getAxisMaximum());
         Timber.d("Min: %f", chart.getAxisLeft().getAxisMinimum());
         chart.getAxisLeft().setAxisMaxValue( ( (chart.getAxisLeft().getAxisMaximum()  - chart.getAxisLeft().getAxisMinimum() ) / ( chart.getHeight() - 15 ) ) * chart.getHeight() + chart.getAxisLeft().getAxisMinimum() );

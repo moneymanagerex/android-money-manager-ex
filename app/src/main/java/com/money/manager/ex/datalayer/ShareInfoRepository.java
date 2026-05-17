@@ -22,11 +22,23 @@ public class ShareInfoRepository
 
     @Override
     public String[] getAllColumns() {
-        return new String[]{ID_COLUMN + " AS _id",
+        return new String[]{
+                ID_COLUMN + " AS _id",
+                ShareInfo.SHAREINFOID,
+                ShareInfo.CHECKINGACCOUNTID,
                 ShareInfo.SHARENUMBER,
                 ShareInfo.SHAREPRICE,
                 ShareInfo.SHARECOMMISSION,
                 ShareInfo.SHARELOT
         };
+    }
+
+    public ShareInfo loadByTransactionId(long transactionId) {
+        return first(
+                getAllColumns(),
+                ShareInfo.CHECKINGACCOUNTID + "=?",
+                new String[]{String.valueOf(transactionId)},
+                null
+        );
     }
 }

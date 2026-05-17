@@ -67,8 +67,8 @@ public class MenuHelper {
                 return getContext().getString(R.string.download_price);
             case EDIT:
                 return getContext().getString(R.string.edit);
-            case EditPrice:
-                return getContext().getString(R.string.edit_price);
+            case PriceHistory:
+                return getContext().getString(R.string.price_history);
             case Print:
                 return getContext().getString(R.string.print);
             case SaveAsHtml:

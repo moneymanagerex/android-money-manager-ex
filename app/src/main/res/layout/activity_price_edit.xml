@@ -93,6 +93,36 @@
             android:paddingEnd="@dimen/mmx_activity_side_padding"
             android:paddingStart="@dimen/mmx_activity_side_padding">
 
+            <!-- stock name -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/mmx_list_two_line_item_height"
+                android:orientation="horizontal">
+                <com.mikepenz.iconics.view.IconicsImageView
+                    app:iiv_icon="gmd-business"
+                    app:iiv_color="?android:textColorSecondary"
+                    app:iiv_size="@dimen/mmx_icon_size"
+                    android:layout_width="@dimen/mmx_side_icon_size"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/mmx_side_icon_margin"
+                    android:layout_marginEnd="@dimen/mmx_side_icon_margin"
+                    android:layout_gravity="center_vertical"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <com.money.manager.ex.view.RobotoTextView
+                        android:id="@+id/stockNameTextView"
+                        style="@style/Money.TextView.Widget.EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:hint="@string/stock_name" />
+                </LinearLayout>
+            </LinearLayout>
+
             <!-- symbol -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -225,7 +255,86 @@
                         android:hint="@string/amount" />
 
                 </LinearLayout>
+
+                <com.mikepenz.iconics.view.IconicsImageView
+                    android:id="@+id/downloadSelectedPriceButton"
+                    android:layout_width="@dimen/mmx_side_icon_size"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:contentDescription="@string/download_price_selected_date"
+                    app:iiv_icon="gmd-cloud-download"
+                    app:iiv_color="?android:textColorPrimary"
+                    app:iiv_size="@dimen/mmx_icon_size" />
+
+                <Button
+                    android:id="@+id/addPriceButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:text="@string/add" />
             </LinearLayout>
+
+            <!-- period selector + download button -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/mmx_list_two_line_item_height"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/priceChartPeriodSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal">
+
+                    <com.mikepenz.iconics.view.IconicsImageView
+                        android:id="@+id/downloadPricesButton"
+                        android:layout_width="@dimen/mmx_side_icon_size"
+                        android:layout_height="@dimen/mmx_side_icon_size"
+                        android:background="?attr/selectableItemBackground"
+                        android:contentDescription="@string/download_price_history_range"
+                        app:iiv_icon="gmd-cloud-download"
+                        app:iiv_color="?android:textColorPrimary"
+                        app:iiv_size="@dimen/mmx_icon_size" />
+
+                    <com.money.manager.ex.view.RobotoTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/download_for_date_range"
+                        android:textColor="?android:textColorSecondary"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/priceHistoryChart"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="20dp" />
+
+            <!-- price history table -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/priceHistoryRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:nestedScrollingEnabled="true" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

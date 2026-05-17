@@ -50,6 +50,11 @@ public class MmxDateTimeUtils {
     @Inject
     public MmxDateTimeUtils() {
 
+        try {
+            _locale = MmexApplication.getApp().getAppLocale();
+        } catch (Exception e) {
+            _locale = Locale.getDefault();
+        }
     }
 
     public MmxDateTimeUtils(Locale locale) {

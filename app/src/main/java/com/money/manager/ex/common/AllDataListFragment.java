@@ -60,7 +60,6 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.QueryAllData;
-import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.datalayer.SplitCategoryRepository;
@@ -70,6 +69,7 @@ import com.money.manager.ex.domainmodel.RefType;
 import com.money.manager.ex.domainmodel.SplitCategory;
 import com.money.manager.ex.home.DrawerMenuItem;
 import com.money.manager.ex.home.DrawerMenuItemAdapter;
+import com.money.manager.ex.investment.InvestmentTransactionEditActivity;
 import com.money.manager.ex.search.SearchActivity;
 import com.money.manager.ex.servicelayer.qif.QifExport;
 import com.money.manager.ex.settings.AppSettings;
@@ -168,7 +168,7 @@ public class AllDataListFragment
             if (getListAdapter() != null && getListAdapter() instanceof AllDataAdapter) {
                 Cursor cursor = ((AllDataAdapter) getListAdapter()).getCursor();
                 if (cursor.moveToPosition(position - (mListHeader != null ? 1 : 0))) {
-                    startEditAccountTransactionActivity(cursor.getLong(cursor.getColumnIndexOrThrow(QueryAllData.ID)));
+                    startEditAccountTransactionActivity(cursor);
                 }
             }
         });
@@ -319,14 +319,7 @@ public class AllDataListFragment
 //                    whereParams = whereParamsList.toArray(whereParams);
 //                }
 
-            Dataset allData;
-            // create loader
-            if (args != null && args.containsKey(ARG_SHOW_FLOATING_BUTTON)) {
-                // coming from report, use mobile data
-                allData = new QueryMobileData(getActivity());
-            } else {
-                allData = new QueryAllData(getActivity());
-            }
+            Dataset allData = new QueryAllData(getActivity());
 
             // set sort
             String sort = (args != null) ? args.getString(KEY_ARGUMENTS_SORT) : null;
@@ -334,8 +327,7 @@ public class AllDataListFragment
             //#2810: Transaction list order is inconsistent for transactions created on the same day
             if (TextUtils.isEmpty(sort)) {
                 String sortDirection = (new AppSettings(getContext())).getTransactionSort() == 0 ? "DESC" : "ASC";
-                    sort = ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.Date : QueryMobileData.Date) + " " + sortDirection + ", " +
-                            ((allData.getClass().equals(QueryAllData.class)) ? QueryAllData.ID : QueryMobileData.ID) + " " + sortDirection;
+                sort = QueryAllData.Date + " " + sortDirection + ", " + QueryAllData.ID + " " + sortDirection;
             }
 
             Select query = new Select(allData.getAllColumns())
@@ -449,7 +441,7 @@ public class AllDataListFragment
 
     @Override
     public void onFloatingActionButtonClicked() {
-        startEditAccountTransactionActivity(null);
+        startEditAccountTransactionActivity();
     }
 
     // Multi-choice-mode listener callback handlers.
@@ -710,6 +702,8 @@ public class AllDataListFragment
             DatabaseUtils.cursorLongToContentValues(cursor, adapter.TOCURRENCYID, values);
             DatabaseUtils.cursorDoubleToCursorValues(cursor, adapter.AMOUNT, values);
             DatabaseUtils.cursorDoubleToCursorValues(cursor, adapter.TOAMOUNT, values);
+            DatabaseUtils.cursorLongToContentValues(cursor, adapter.ISSTOCKLINKED, values);
+            DatabaseUtils.cursorLongToContentValues(cursor, adapter.TXTOACCOUNTID, values);
 
             DatabaseUtils.cursorStringToContentValues(cursor, adapter.STATUS, values);
             if (values.getAsString(adapter.STATUS).equalsIgnoreCase("V")) {
@@ -720,6 +714,17 @@ public class AllDataListFragment
 
             transType = values.getAsString(adapter.TRANSACTIONTYPE);
             transactionType = TransactionTypes.valueOf(transType);
+
+            Long isStockLinked = values.getAsLong(adapter.ISSTOCKLINKED);
+                Long toAccountId = values.getAsLong(adapter.TXTOACCOUNTID);
+            boolean isStockTransfer = isStockLinked != null
+                    && isStockLinked == 1L
+                    && toAccountId != null
+                    && toAccountId != Constants.NOT_SET;
+            if (isStockTransfer) {
+                // Treat only transfer-marked stock cash movements as transfer-like in list totals.
+                continue;
+            }
 
             if (transactionType.equals(TransactionTypes.Transfer)) {
                 currencyId = values.getAsLong(adapter.TOCURRENCYID);
@@ -835,18 +840,40 @@ public class AllDataListFragment
     }
 
     /**
-     * start the activity of transaction management
-     *
-     * @param transId null set if you want to do a new transaction, or transaction id
+     * Start insert flow for a new cash transaction.
      */
-    private void startEditAccountTransactionActivity(Long transId) {
-        // create intent, set Account ID
-        Intent intent = new Intent(getActivity(), CheckingTransactionEditActivity.class);
+    private void startEditAccountTransactionActivity() {
+        startEditAccountTransactionActivity(null);
+    }
 
-        //Set the source
+    /**
+     * Start edit flow for the selected ledger row.
+     */
+    private void startEditAccountTransactionActivity(Cursor cursor) {
+        Long transId = null;
+        if (cursor != null) {
+            transId = cursor.getLong(cursor.getColumnIndexOrThrow(QueryAllData.ID));
+        }
+
+        if (cursor != null && transId != null && isInvestmentLinked(cursor)) {
+            long stockId = getLongColumn(cursor, QueryAllData.STOCKID, Constants.NOT_SET);
+            long stockAccountId = getLongColumn(cursor, QueryAllData.STOCKACCOUNTID, Constants.NOT_SET);
+
+            if (stockId != Constants.NOT_SET && stockAccountId != Constants.NOT_SET) {
+                Intent intent = new Intent(getActivity(), InvestmentTransactionEditActivity.class);
+                intent.putExtra(InvestmentTransactionEditActivity.ARG_ACCOUNT_ID, stockAccountId);
+                intent.putExtra(InvestmentTransactionEditActivity.ARG_STOCK_ID, stockId);
+                intent.putExtra(InvestmentTransactionEditActivity.ARG_TRANS_ID, transId);
+                intent.setAction(Intent.ACTION_EDIT);
+                startActivity(intent);
+                return;
+            }
+        }
+
+        // Fallback to standard cash transaction editor.
+        Intent intent = new Intent(getActivity(), CheckingTransactionEditActivity.class);
         intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "AllDataListFragment.java");
 
-        // check transId not null
         if (transId != null) {
             intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_ID, transId);
             intent.setAction(Intent.ACTION_EDIT);
@@ -854,8 +881,20 @@ public class AllDataListFragment
             intent.putExtra(EditTransactionActivityConstants.KEY_ACCOUNT_ID, this.accountId);
             intent.setAction(Intent.ACTION_INSERT);
         }
-        // launch activity
+
         startActivity(intent);
+    }
+
+    private boolean isInvestmentLinked(Cursor cursor) {
+        return getLongColumn(cursor, QueryAllData.ISSTOCKLINKED, 0L) == 1L;
+    }
+
+    private long getLongColumn(Cursor cursor, String columnName, long defaultValue) {
+        int index = cursor.getColumnIndex(columnName);
+        if (index < 0 || cursor.isNull(index)) {
+            return defaultValue;
+        }
+        return cursor.getLong(index);
     }
 
     private AllDataAdapter getAllDataAdapter() {

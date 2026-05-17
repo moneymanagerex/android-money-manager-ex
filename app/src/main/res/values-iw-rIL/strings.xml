@@ -72,6 +72,7 @@
     <string name="account_empty_list">לא נמצאו חשבונות. כדי ליצור חשבון, הקש על כפתור סימן הפלוס הירוק.</string>
     <string name="account_balance">יתרת חשבון</string>
     <string name="account_reconciled_balance">יתרה מותאמת</string>
+    <string name="pie_other">אחר</string>
     <string name="delete_account">מחק חשבון</string>
     <string name="account_name">שם חשבון</string>
     <string name="account_type">סוג חשבון</string>
@@ -435,7 +436,6 @@
     <string name="update_prices">עדכן מחירים</string>
     <string name="update_price">עדכן מחיר</string>
     <string name="download_price">הורד מחיר</string>
-    <string name="edit_price">ערוך מחיר</string>
     <string name="price_updated">עדכן מחיר</string>
     <string name="all_prices_updated">כל המחירים עודכנו.</string>
     <string name="download_complete">הורדה הושלמה.</string>
@@ -508,7 +508,6 @@
     <string name="watchlist">רשימת מעקב</string>
     <!-- edit investment transaction -->
     <string name="purchase_date">תאריך הרכישה</string>
-    <string name="stock_name">שם המניה</string>
     <string name="symbol">סמל</string>
     <string name="number_of_shares">מספר מניות</string>
     <string name="purchase_price">מחיר הרכישה</string>
@@ -561,7 +560,6 @@
     <string name="budget_name">שם תקציב</string>
     <string name="budget_year">שנת תקציב</string>
     <string name="budget_month">חודש תקציב</string>
-    <!-- string name="copy">Copy</string -->
     <string name="app_restart">היישום ייסגר כעת כדי להחיל את השינויים. בבקשה תפעיל אותו מחדש.</string>
     <string name="print">הדפס</string>
     <string name="min_19">אתה צריך לפחות אנדרואיד 4.4 כדי להיות מסוגל להדפיס את המסמך.</string>

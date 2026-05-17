@@ -85,6 +85,7 @@
     <string name="account_empty_list">لم يتم العثور على حساب. لإنشاء حساب. قم بالضغط على زر الزائد الأخضر.</string>
     <string name="account_balance">رصيد الحساب</string>
     <string name="account_reconciled_balance">تسوية الرصيد</string>
+    <string name="pie_other">آخري</string>
     <string name="delete_account">حذف الحساب</string>
     <string name="account_name">إسم الحساب</string>
     <string name="account_type">نوع الحساب</string>
@@ -451,7 +452,6 @@
     <string name="pref_transaction_sort_by_type_title">ترتيب المعاملات حسب النوع</string>
     <string name="warning">تحذير</string>
     <string name="update_price">تحديث السعر</string>
-    <string name="edit_price">تعديل السعر</string>
     <string name="all_prices_updated">تم تحديث جميع أسعار الصنف.</string>
     <string name="download_complete">اكتمل التحميل.</string>
     <string name="confirm_price_download"></string>
@@ -507,7 +507,6 @@
     <string name="budget_name">اسم الميزانية</string>
     <string name="budget_year">سنة الميزانية</string>
     <string name="budget_month">شهر الميزانية</string>
-    <!-- string name="copy">Copy</string -->
     <string name="print">طباعة</string>
     <string name="save_as_html">حفظ كملف HTML</string>
     <string name="no_network">لا يتوفر اتصال بالإنترنت.</string>

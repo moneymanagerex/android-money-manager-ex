@@ -72,6 +72,7 @@
     <string name="account_empty_list">Walang akawnts ang nahanap. Upang makagawa ng isa, i-tap ang berdeng dagdagan na button.</string>
     <string name="account_balance">Balanse ng Akawnt</string>
     <string name="account_reconciled_balance">Reconciled na Balanse</string>
+    <string name="pie_other">Iba</string>
     <string name="delete_account">Ibura ang Account</string>
     <string name="account_name">Pangalan ng account</string>
     <string name="account_type">Uri ng Account</string>
@@ -435,7 +436,6 @@
     <string name="update_prices">I-update ang mga presyo</string>
     <string name="update_price">I-update ang presyo</string>
     <string name="download_price">I-download ang presyo</string>
-    <string name="edit_price">I-edit ang presyo</string>
     <string name="price_updated">Na-update na ang presyo</string>
     <string name="all_prices_updated">Na-update na ang lahat ng presyo.</string>
     <string name="download_complete">Kompleto na ang download.</string>
@@ -508,7 +508,6 @@
     <string name="watchlist">Listaan ng sinusubaybayan</string>
     <!-- edit investment transaction -->
     <string name="purchase_date">Petsa ng Pagbili</string>
-    <string name="stock_name">Pangalan ng Stock</string>
     <string name="symbol">Simbolo</string>
     <string name="number_of_shares">Bilang ng mga bahagi</string>
     <string name="purchase_price">Presyo ng Pagbili</string>
@@ -561,7 +560,6 @@
     <string name="budget_name">Pangalan ng Badyet</string>
     <string name="budget_year">Badyet ng Taon</string>
     <string name="budget_month">Badyet ng Buwan</string>
-    <!-- string name="copy">Copy</string -->
     <string name="app_restart">Ang app ay magsasara na upang ilapat ang mga pagbabago. Mangyari lamang na mag-restart.</string>
     <string name="print">Ispis</string>
     <string name="min_19">Kailangan mo ng hindi bababa sa Android 4.4 upang ma-print ang dokumento.</string>

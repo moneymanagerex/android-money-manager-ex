@@ -21,8 +21,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,9 +34,12 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
 
 public class PortfolioListAdapter extends ListAdapter<Stock, PortfolioListAdapter.ViewHolder> {
     private final LayoutInflater inflater;
@@ -46,6 +47,7 @@ public class PortfolioListAdapter extends ListAdapter<Stock, PortfolioListAdapte
     private OnItemLongClickListener longClickListener;
     private Account mAccount;
     private final CurrencyService mCurrencyService;
+    private final Map<Long, RealizedGainLoss> mRealizedGainLossByStockId = new HashMap<>();
 
     public interface OnItemClickListener {
         void onItemClick(long stockId);
@@ -84,6 +86,11 @@ public class PortfolioListAdapter extends ListAdapter<Stock, PortfolioListAdapte
         this.longClickListener = listener;
     }
 
+    public void setRealizedGainLossByStockId(@NonNull Map<Long, RealizedGainLoss> gainLossByStockId) {
+        mRealizedGainLossByStockId.clear();
+        mRealizedGainLossByStockId.putAll(gainLossByStockId);
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -115,13 +122,38 @@ public class PortfolioListAdapter extends ListAdapter<Stock, PortfolioListAdapte
         holder.unrealizedGLAmountTextView.setText(mAccount == null ? "<unknown>" : mCurrencyService.getCurrencyFormatted(mAccount.getCurrencyId(), unrealizedAmount));
         holder.unrealizedGLPercentTextView.setText(String.format("%.2f%%", unrealizedPercent));
 
+        // Column 5: Realized G/L
+        RealizedGainLoss realizedGainLoss = mRealizedGainLossByStockId.get(stock.getId());
+        Money realizedAmount = realizedGainLoss != null ? realizedGainLoss.amount : MoneyFactory.fromDouble(0);
+        double realizedPercent = realizedGainLoss != null ? realizedGainLoss.percent : 0.0;
+        holder.realizedGLAmountTextView.setText(mAccount == null
+            ? "<unknown>"
+            : mCurrencyService.getCurrencyFormatted(mAccount.getCurrencyId(), realizedAmount));
+        holder.realizedGLPercentTextView.setText(String.format("%.2f%%", realizedPercent));
+
         // Zebra striping
         int bgColor = (position % 2 == 0) ? android.R.color.darker_gray : android.R.color.white;
         int fgColor = (position % 2 == 0) ? android.R.color.white : android.R.color.black;
         holder.currentPriceTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), fgColor));
         holder.purchasePriceTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), fgColor));
-        holder.unrealizedGLAmountTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), fgColor));
-        holder.unrealizedGLPercentTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), fgColor));
+        int gainLossColor = ContextCompat.getColor(holder.itemView.getContext(), fgColor);
+        if (unrealizedAmount.toDouble() < 0) {
+            gainLossColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.red);
+        } else if (unrealizedAmount.toDouble() > 0) {
+            gainLossColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.green);
+        }
+        holder.unrealizedGLAmountTextView.setTextColor(gainLossColor);
+        holder.unrealizedGLPercentTextView.setTextColor(gainLossColor);
+
+        int realizedGainLossColor = ContextCompat.getColor(holder.itemView.getContext(), fgColor);
+        if (realizedAmount.toDouble() < 0) {
+            realizedGainLossColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.red);
+        } else if (realizedAmount.toDouble() > 0) {
+            realizedGainLossColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.green);
+        }
+        holder.realizedGLAmountTextView.setTextColor(realizedGainLossColor);
+        holder.realizedGLPercentTextView.setTextColor(realizedGainLossColor);
+
         holder.marketValueTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), fgColor));
         holder.sharesTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), fgColor));
         holder.nameTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), fgColor));
@@ -131,16 +163,18 @@ public class PortfolioListAdapter extends ListAdapter<Stock, PortfolioListAdapte
 
     // Helper methods for calculations
     private Money calculateUnrealizedGainLoss(Stock stock) {
-        Money current = stock.getCurrentPrice();
-        Money purchase = stock.getPurchasePrice();
-        return current.subtract(purchase).multiply(stock.getNumberOfShares());
+        // Market value - cost basis (VALUE field includes commission)
+        Money marketValue = stock.getCurrentPrice().multiply(stock.getNumberOfShares());
+        Money costBasis = stock.getValue();
+        return marketValue.subtract(costBasis);
     }
 
     private double calculateUnrealizedPercentage(Stock stock) {
-        Money purchase = stock.getPurchasePrice();
-        if (purchase.isZero()) return 0.0;
-        Money diff = stock.getCurrentPrice().subtract(purchase);
-        return (diff.toDouble() / purchase.toDouble()) * 100.0;
+        Money costBasis = stock.getValue();
+        if (costBasis.isZero()) return 0.0;
+        Money marketValue = stock.getCurrentPrice().multiply(stock.getNumberOfShares());
+        Money gainLoss = marketValue.subtract(costBasis);
+        return (gainLoss.toDouble() / costBasis.toDouble()) * 100.0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -156,6 +190,9 @@ public class PortfolioListAdapter extends ListAdapter<Stock, PortfolioListAdapte
         // Column 4
         TextView unrealizedGLAmountTextView;
         TextView unrealizedGLPercentTextView;
+        // Column 5
+        TextView realizedGLAmountTextView;
+        TextView realizedGLPercentTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -171,17 +208,18 @@ public class PortfolioListAdapter extends ListAdapter<Stock, PortfolioListAdapte
             // Column 4
             unrealizedGLAmountTextView = itemView.findViewById(R.id.unrealizedGLAmountTextView);
             unrealizedGLPercentTextView = itemView.findViewById(R.id.unrealizedGLPercentTextView);
+            // Column 5
+            realizedGLAmountTextView = itemView.findViewById(R.id.realizedGLAmountTextView);
+            realizedGLPercentTextView = itemView.findViewById(R.id.realizedGLPercentTextView);
 
-            LinearLayout mainLayout = (LinearLayout) ((HorizontalScrollView) itemView).getChildAt(0);
-
-            mainLayout.setOnClickListener(v -> {
+            itemView.setOnClickListener(v -> {
                 int position = getBindingAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && listener != null) {
                     listener.onItemClick(getItem(position).getId());
                 }
             });
 
-            mainLayout.setOnLongClickListener(v -> {
+            itemView.setOnLongClickListener(v -> {
                 int position = getBindingAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && longClickListener != null) {
                     Stock stock = getItem(position);
@@ -190,6 +228,16 @@ public class PortfolioListAdapter extends ListAdapter<Stock, PortfolioListAdapte
                 }
                 return false;
             });
+        }
+    }
+
+    public static final class RealizedGainLoss {
+        public final Money amount;
+        public final double percent;
+
+        public RealizedGainLoss(@NonNull Money amount, double percent) {
+            this.amount = amount;
+            this.percent = percent;
         }
     }
 }

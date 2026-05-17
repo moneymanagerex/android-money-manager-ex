@@ -85,6 +85,7 @@
     <string name="account_empty_list">Рахунки не виявлено. Для створення натисніть зелений плюс.</string>
     <string name="account_balance">Залишок на рахунку</string>
     <string name="account_reconciled_balance">Погоджений баланс</string>
+    <string name="pie_other">Інше</string>
     <string name="delete_account">Видалити рахунок</string>
     <string name="account_name">Назва рахунку</string>
     <string name="account_type">Тип рахунку</string>
@@ -459,7 +460,6 @@
     <string name="update_prices">Оновлення цін</string>
     <string name="update_price">Оновлення ціни</string>
     <string name="download_price">Завантажити ціни</string>
-    <string name="edit_price">Редагувати ціни</string>
     <string name="price_updated">Ціну оновлено</string>
     <string name="all_prices_updated">Всі ціни були поновлені.</string>
     <string name="download_complete">Завантаження завершено.</string>
@@ -538,7 +538,6 @@
     <string name="watchlist">Список перегляду</string>
     <!-- edit investment transaction -->
     <string name="purchase_date">Дата придбання</string>
-    <string name="stock_name">Назва фонду</string>
     <string name="symbol">Символ</string>
     <string name="number_of_shares">Кількість акцій</string>
     <string name="purchase_price">Ціна купівлі</string>
@@ -591,7 +590,6 @@
     <string name="budget_name">Назва бюджету</string>
     <string name="budget_year">Рік бюджету</string>
     <string name="budget_month">Місяць бюджету</string>
-    <!-- string name="copy">Copy</string -->
     <string name="app_restart">Додаток буде закритий, щоб задіяти зміни. Будь ласка перезавантажте.</string>
     <string name="print">Друкувати</string>
     <string name="min_19">Необхідний принаймні Android 4.4, щоб надрукувати документ.</string>

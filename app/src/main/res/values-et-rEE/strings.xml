@@ -49,6 +49,7 @@
     <!-- account -->
     <string name="account">Konto</string>
     <string name="account_balance">Kontojääk</string>
+    <string name="pie_other">Muu</string>
     <string name="delete_account">Kustuta konto</string>
     <string name="account_name">Konto nimi</string>
     <string name="account_type">Konto tüüp</string>
@@ -226,7 +227,6 @@
     <string name="favourite">Lemmik</string>
     <!-- budgets -->
     <string name="add_budget">Lisa eelarve</string>
-    <!-- string name="copy">Copy</string -->
     <string name="print">Prindi</string>
     <!-- Currencies -->
     <string name="currencies">Valuutad</string>

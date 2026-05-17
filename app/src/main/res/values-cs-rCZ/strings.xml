@@ -72,6 +72,7 @@
     <string name="account_empty_list">Nebyl nalezen žádný účet. Klepněte na zelené tlačítko se symbolem plus pro jeho vytvoření.</string>
     <string name="account_balance">Zůstatek na účtu</string>
     <string name="account_reconciled_balance">Ověřený zůstatek</string>
+    <string name="pie_other">Další</string>
     <string name="delete_account">Odstranit účet</string>
     <string name="account_name">Název účtu</string>
     <string name="account_type">Typ účtu</string>
@@ -434,7 +435,6 @@
     <string name="update_prices">Aktualizovat ceny</string>
     <string name="update_price">Aktualizovat cenu</string>
     <string name="download_price">Stáhnout cenu</string>
-    <string name="edit_price">Upravit cenu</string>
     <string name="price_updated">Cena aktualizována</string>
     <string name="all_prices_updated">Všechny ceny byly aktualizovány.</string>
     <string name="download_complete">Stahování dokončeno.</string>
@@ -506,7 +506,6 @@
     <string name="watchlist">Sledované</string>
     <!-- edit investment transaction -->
     <string name="purchase_date">Datum nákupu</string>
-    <string name="stock_name">Název akcie</string>
     <string name="symbol">Symbol</string>
     <string name="number_of_shares">Počet sdílení</string>
     <string name="purchase_price">Pořizovací cena</string>
@@ -555,7 +554,6 @@
     <string name="budget_name">Název rozpočtu</string>
     <string name="budget_year">Rok rozpočtu</string>
     <string name="budget_month">Měsíc rozpočtu</string>
-    <!-- string name="copy">Copy</string -->
     <string name="app_restart">Aplikace se nyní za účelem provedení změn ukončí. Prosím restartujte.</string>
     <string name="print">Tisk</string>
     <string name="min_19">Pro tisk potřebujete alespoň Android 4.4.</string>

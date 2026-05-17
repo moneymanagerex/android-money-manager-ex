@@ -12,4 +12,12 @@ public interface IYahooChartService {
             @Query("range") String range,
             @Query("interval") String interval
     );
+
+    @GET("/v8/finance/chart/{symbol}")
+    Call<YahooChartResponse> getChartDataForPeriod(
+            @Path("symbol") String symbol,
+            @Query("period1") long period1,
+            @Query("period2") long period2,
+            @Query("interval") String interval
+    );
 }

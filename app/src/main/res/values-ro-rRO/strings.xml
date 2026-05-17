@@ -72,6 +72,7 @@
     <string name="account_empty_list">Nu s-a găsit nici un cont. Pentru a crea unul, apasă butonul verde plus.</string>
     <string name="account_balance">Soldul contului</string>
     <string name="account_reconciled_balance">Reglarea balanței</string>
+    <string name="pie_other">Altele</string>
     <string name="delete_account">Șterge contul</string>
     <string name="account_name">Numele contului</string>
     <string name="account_type">Tipul contului</string>
@@ -435,7 +436,6 @@
     <string name="update_prices">Actualizează prețurile</string>
     <string name="update_price">Actualizează prețul</string>
     <string name="download_price">Descarcă prețul</string>
-    <string name="edit_price">Editează prețul</string>
     <string name="price_updated">Preț actualizat</string>
     <string name="all_prices_updated">Toate prețurile au fost actualizate.</string>
     <string name="download_complete">Descărcare completă.</string>
@@ -508,7 +508,6 @@
     <string name="watchlist">Pagini urmărite</string>
     <!-- edit investment transaction -->
     <string name="purchase_date">Data achiziției</string>
-    <string name="stock_name">Numele acțiunii</string>
     <string name="symbol">Simbol</string>
     <string name="number_of_shares">Număr de acțiuni</string>
     <string name="purchase_price">Preț de cumpărare</string>
@@ -561,7 +560,6 @@
     <string name="budget_name">Nume buget</string>
     <string name="budget_year">Anul bugetar</string>
     <string name="budget_month">Lună buget</string>
-    <!-- string name="copy">Copy</string -->
     <string name="app_restart">Aplicația se va închide pentru aplicarea schimbărilor. Vă rugăm să o reporniți.</string>
     <string name="print">Imprimă</string>
     <string name="min_19">Aveți nevoie de cel puțin Android 4.4 pentru a putea imprima documentul.</string>

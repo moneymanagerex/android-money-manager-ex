@@ -84,6 +84,7 @@
     <string name="account_empty_list">Ingen konti fundet. Tryk på den grønne plus-knap for at oprette én.</string>
     <string name="account_balance">Kontosaldo</string>
     <string name="account_reconciled_balance">Afstemt saldo</string>
+    <string name="pie_other">Andet</string>
     <string name="delete_account">Slet konto</string>
     <string name="account_name">Kontonavn</string>
     <string name="account_type">Kontotype</string>
@@ -458,7 +459,6 @@
     <string name="update_prices">Opdatér priser</string>
     <string name="update_price">Opdatér pris</string>
     <string name="download_price">Hent pris</string>
-    <string name="edit_price">Rediger pris</string>
     <string name="price_updated">Pris opdateret</string>
     <string name="all_prices_updated">Alle priser er blevet opdateret.</string>
     <string name="download_complete">Download fuldført.</string>
@@ -537,7 +537,6 @@
     <string name="watchlist">Overvågningsliste</string>
     <!-- edit investment transaction -->
     <string name="purchase_date">Købsdato</string>
-    <string name="stock_name">Aktienavn</string>
     <string name="symbol">Symbol</string>
     <string name="number_of_shares">Antal aktier</string>
     <string name="purchase_price">Købspris</string>
@@ -590,7 +589,6 @@
     <string name="budget_name">Budgetnavn</string>
     <string name="budget_year">Budgetår</string>
     <string name="budget_month">Budgetmåned</string>
-    <!-- string name="copy">Copy</string -->
     <string name="app_restart">Programmet vil nu lukke for at anvende ændringerne. Genstart.</string>
     <string name="print">Udskriv</string>
     <string name="min_19">Minimum Android 4.4 kræves for at kunne udskrive dokumentet.</string>

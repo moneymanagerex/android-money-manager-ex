@@ -1,6 +1,7 @@
 package com.money.manager.ex.viewmodels;
 
 import android.app.Application;
+import android.database.Cursor;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -9,11 +10,15 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import com.money.manager.ex.datalayer.AccountRepository;
+import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.datalayer.StockRepository;
+import com.money.manager.ex.database.QueryAccountBills;
 import com.money.manager.ex.domainmodel.Account;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.investment.SecurityPriceModel;
 import com.money.manager.ex.investment.yahoofinance.StockPriceRepository;
+import info.javaperformance.money.Money;
+import info.javaperformance.money.MoneyFactory;
 
 import java.util.List;
 import java.util.Set;
@@ -33,6 +38,7 @@ public class StockViewModel extends AndroidViewModel {
     private final MutableLiveData<List<Stock>> stocks = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     private final MutableLiveData<Account> account = new MutableLiveData<>();
+    private final MutableLiveData<Money> accountBalance = new MutableLiveData<>();
     private final MutableLiveData<SecurityPriceModel> latestDownloadedPrice = new MutableLiveData<>();
     private final MutableLiveData<int[]> allDownloadedPricesResult = new MutableLiveData<>();
 
@@ -47,6 +53,7 @@ public class StockViewModel extends AndroidViewModel {
     public LiveData<Boolean> getIsLoading() { return isLoading; }
     public LiveData<SecurityPriceModel> getLatestDownloadedPrice() { return latestDownloadedPrice; }
     public LiveData<Account> getAccount() {return account; }
+    public LiveData<Money> getAccountBalance() { return accountBalance; }
     public LiveData<int[]> getAllDownloadedPricesResult() { return allDownloadedPricesResult; }
 
     public void clearDownloadEvents() {
@@ -56,7 +63,7 @@ public class StockViewModel extends AndroidViewModel {
 
     public void loadStocks(long accountId) {
         isLoading.postValue(true);
-        ExecutorService executor = Executors.newFixedThreadPool(2);
+        ExecutorService executor = Executors.newFixedThreadPool(3);
 
         executor.execute(() -> {
             List<Stock> result = stockRepository.loadByAccount(accountId);
@@ -66,6 +73,23 @@ public class StockViewModel extends AndroidViewModel {
         executor.execute(() -> {
             Account acc = accountRepository.load(accountId);
             account.postValue(acc);
+        });
+
+        executor.execute(() -> {
+            QueryAccountBills query = new QueryAccountBills(getApplication());
+            Select select = new Select().where(QueryAccountBills.ACCOUNTID + "=?", Long.toString(accountId));
+            Cursor c = getApplication().getContentResolver().query(
+                    query.getUri(), null,
+                    select.selection, select.selectionArgs, null);
+            Money balance = MoneyFactory.fromDouble(0);
+            if (c != null) {
+                if (c.moveToFirst()) {
+                    balance = MoneyFactory.fromString(
+                            Double.toString(c.getDouble(c.getColumnIndexOrThrow(QueryAccountBills.TOTAL))));
+                }
+                c.close();
+            }
+            accountBalance.postValue(balance);
         });
 
         executor.execute(() -> isLoading.postValue(false));

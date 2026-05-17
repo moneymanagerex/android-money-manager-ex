@@ -84,6 +84,7 @@
     <string name="account_empty_list">No accounts have been found. To create one, tap the green plus button.</string>
     <string name="account_balance">Account Balance</string>
     <string name="account_reconciled_balance">Reconciled Balance</string>
+    <string name="pie_other">Other</string>
     <string name="delete_account">Delete Account</string>
     <string name="account_name">Account name</string>
     <string name="account_type">Account type</string>
@@ -498,7 +499,6 @@
     <string name="update_prices">Update prices</string>
     <string name="update_price">Update price</string>
     <string name="download_price">Download price</string>
-    <string name="edit_price">Edit price</string>
     <string name="price_updated">Price updated</string>
     <string name="all_prices_updated">All prices have been updated.</string>
     <string name="download_complete">Download complete.</string>
@@ -577,7 +577,6 @@
     <string name="watchlist">Watchlist</string>
     <!-- edit investment transaction -->
     <string name="purchase_date">Purchase Date</string>
-    <string name="stock_name">Stock Name</string>
     <string name="symbol">Symbol</string>
     <string name="number_of_shares">Number of Shares</string>
     <string name="purchase_price">Purchase Price</string>
@@ -634,7 +633,6 @@
     <string name="budget_name">Budget Name</string>
     <string name="budget_year">Budget Year</string>
     <string name="budget_month">Budget Month</string>
-    <!-- string name="copy">Copy</string -->
     <string name="app_restart">The app will now close to apply the changes. Please restart.</string>
     <string name="print">Print</string>
     <string name="min_19">You need at least Android 4.4 to be able to print the document.</string>

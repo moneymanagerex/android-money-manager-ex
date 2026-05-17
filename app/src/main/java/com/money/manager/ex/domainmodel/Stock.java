@@ -95,6 +95,7 @@ public class Stock
         DatabaseUtils.cursorDoubleToCursorValues(c, CURRENTPRICE, this.contentValues);
         DatabaseUtils.cursorDoubleToCursorValues(c, NUMSHARES, this.contentValues);
         DatabaseUtils.cursorDoubleToCursorValues(c, PURCHASEPRICE, this.contentValues);
+        DatabaseUtils.cursorDoubleToCursorValues(c, VALUE, this.contentValues);
     }
 
     // properties
@@ -183,12 +184,21 @@ public class Stock
     }
 
     public Money getValue() {
-        // value = current price * num shares
-        Money value = this.getCurrentPrice().multiply(this.getNumberOfShares());
+        Money value = getMoney(VALUE);
+        if (value != null) {
+            return value;
+        }
 
+        // Fallback for legacy/empty records.
+        Money purchaseValue = this.getPurchasePrice().multiply(this.getNumberOfShares());
+        Money commission = this.getCommission();
+        value = commission == null ? purchaseValue : purchaseValue.add(commission);
         setMoney(VALUE, value);
-
         return value;
+    }
+
+    public void setValue(Money value) {
+        setMoney(VALUE, value);
     }
 
     @Override

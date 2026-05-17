@@ -82,6 +82,7 @@
     <string name="account_empty_list">Račun ni bil najden. Če ga želite ustvariti, tapnite zeleni gumb plus.</string>
     <string name="account_balance">Stanje na računu</string>
     <string name="account_reconciled_balance">Usklajena ravnovesja</string>
+    <string name="pie_other">Drugo </string>
     <string name="delete_account">Izbris računa</string>
     <string name="account_name">Ime računa</string>
     <string name="account_type">Vrsta računa</string>
@@ -452,7 +453,6 @@
     <string name="qif_export">Qif izvoz</string>
     <string name="update_prices">Posodobi cene</string>
     <string name="update_price">Posodobi ceno</string>
-    <string name="edit_price">Uredi ceno</string>
     <string name="price_updated">Cena posodobljena</string>
     <string name="all_prices_updated">Vse cene posodobljene</string>
     <string name="download_complete">Prenos dokončan</string>
@@ -520,7 +520,6 @@
     <string name="add_budget">Dodaj proračun</string>
     <string name="budget_name">Ime proračuna </string>
     <string name="budget_month">Mesec proračuna </string>
-    <!-- string name="copy">Copy</string -->
     <string name="print">Natisni</string>
     <string name="save_as_html">Shrani kot HTML</string>
     <!-- Currencies -->
