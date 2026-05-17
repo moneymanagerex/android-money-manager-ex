@@ -73,6 +73,8 @@ public class PayeeReportFragment
         // restore tx direction before loader is started in super
         if (savedInstanceState != null && savedInstanceState.containsKey(KEY_TX_DIRECTION)) {
             mTxDirection = savedInstanceState.getInt(KEY_TX_DIRECTION, TX_DIRECTION_ALL);
+        } else {
+            restoreDirectionSelection();
         }
         //create header view
         mHeaderListView = (LinearLayout) addListViewHeaderFooter(R.layout.item_generic_report_2_columns);
@@ -263,6 +265,7 @@ public class PayeeReportFragment
                 mTxDirection = TX_DIRECTION_ALL;
             }
             item.setChecked(true);
+            saveDirectionSelection();
             startLoader(new Bundle());
             return true;
         }
@@ -336,6 +339,27 @@ public class PayeeReportFragment
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(KEY_TX_DIRECTION, mTxDirection);
+    }
+
+    private String getDirectionSelectionPrefKey() {
+        return getClass().getSimpleName() + ":DirectionSelection";
+    }
+
+    private void saveDirectionSelection() {
+        com.money.manager.ex.settings.LookAndFeelSettings settings =
+            new com.money.manager.ex.settings.AppSettings(requireContext()).getLookAndFeelSettings();
+        settings.set(getDirectionSelectionPrefKey(), Integer.toString(mTxDirection));
+    }
+
+    private void restoreDirectionSelection() {
+        com.money.manager.ex.settings.LookAndFeelSettings settings =
+            new com.money.manager.ex.settings.AppSettings(requireContext()).getLookAndFeelSettings();
+        String selectionValue = settings.get(getDirectionSelectionPrefKey(), Integer.toString(TX_DIRECTION_ALL));
+        try {
+            mTxDirection = Integer.parseInt(selectionValue);
+        } catch (Exception ignored) {
+            mTxDirection = TX_DIRECTION_ALL;
+        }
     }
 
     @Override
