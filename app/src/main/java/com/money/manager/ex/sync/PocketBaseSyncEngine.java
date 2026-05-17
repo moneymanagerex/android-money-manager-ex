@@ -133,6 +133,7 @@ public class PocketBaseSyncEngine {
             boolean hasError = false;
 
             for (String tableName : mConfig.SYNC_ORDER) {
+                Timber.d("Download table %s", tableName);
                 if (listener != null) listener.onProgress(tableName, "Pulling");
                 hasError = hasError || !pullTableChanges(db, tableName, lastSync);
             }
@@ -233,7 +234,7 @@ public class PocketBaseSyncEngine {
 
         while (page <= totalPages) {
             Map<String, String> options = new HashMap<>();
-            options.put("filter", "updated > \"" + lastSync + "\"");
+            options.put("filter", "_updated_at > \"" + lastSync + "\"");
             options.put("sort", "_updated_at");
             options.put("page", String.valueOf(page));
             options.put("perPage", "200"); // Aumentiamo il limite per pagina a 200
