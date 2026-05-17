@@ -72,6 +72,7 @@
     <string name="account_empty_list">未發現任何帳戶，請點擊綠色加號按鈕新增。</string>
     <string name="account_balance">結餘</string>
     <string name="account_reconciled_balance">已核實</string>
+    <string name="pie_other">其他</string>
     <string name="delete_account">刪除帳戶</string>
     <string name="account_name">帳戶名稱</string>
     <string name="account_type">帳戶類型</string>

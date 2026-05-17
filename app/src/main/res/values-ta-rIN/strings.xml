@@ -88,6 +88,7 @@
     <string name="account_empty_list">கணக்குகள் எதுவும் கிடைக்கவில்லை. ஒன்றை உருவாக்க, பச்சை பிளஸ் பட்டனைத் தட்டவும்.</string>
     <string name="account_balance">கணக்கு நிலுவை</string>
     <string name="account_reconciled_balance">சமரசம் செய்யப்பட்ட இருப்பு</string>
+    <string name="pie_other">மற்றவை</string>
     <string name="delete_account">கணக்கை நீக்கவும்</string>
     <string name="account_name">கணக்கு பெயர்</string>
     <string name="account_type">கணக்கு வகைகள்</string>

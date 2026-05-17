@@ -77,6 +77,7 @@
     <string name="account_empty_list">Hiçbir hesap bulunamadı. Yeni bir hesap oluşturmak için yeşil artı butonuna dokun.</string>
     <string name="account_balance">Hesap bakiyesi</string>
     <string name="account_reconciled_balance">Onaylanmış Bakiye</string>
+    <string name="pie_other">Diğer</string>
     <string name="delete_account">Hesabı Sil</string>
     <string name="account_name">Hesap adı</string>
     <string name="account_type">Hesap tipi</string>

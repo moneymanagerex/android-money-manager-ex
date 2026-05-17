@@ -72,6 +72,7 @@
     <string name="account_empty_list">Tidak ada akun ditemukan. Ketuk tombol tambah hijau untuk membuat baru.</string>
     <string name="account_balance">Saldo Akun</string>
     <string name="account_reconciled_balance">Saldo yang direkonsiliasi</string>
+    <string name="pie_other">Lain</string>
     <string name="delete_account">Hapus Akun</string>
     <string name="account_name">Nama akun</string>
     <string name="account_type">Jenis akun</string>

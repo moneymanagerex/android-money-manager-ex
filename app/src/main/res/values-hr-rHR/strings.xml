@@ -88,6 +88,7 @@
     <string name="account_empty_list">Nije nađen nijedan račun. Za izradu računa, dodirni zelenu plus-tipku.</string>
     <string name="account_balance">Stanje računa</string>
     <string name="account_reconciled_balance">Usklađeno stanje</string>
+    <string name="pie_other">Ostalo</string>
     <string name="delete_account">Izbriši račun</string>
     <string name="account_name">Ime računa</string>
     <string name="account_type">Vrsta računa</string>

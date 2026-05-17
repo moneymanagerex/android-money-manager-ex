@@ -88,6 +88,7 @@
     <string name="account_empty_list">Không tìm thấy tài khoản nào. Để tạo 1 tài khoản, chạm vào nút \"+\" màu xanh.</string>
     <string name="account_balance">Số dư tài khoản</string>
     <string name="account_reconciled_balance">Số dư đối chiếu</string>
+    <string name="pie_other">Khác</string>
     <string name="delete_account">Xoá tài khoản</string>
     <string name="account_name">Tên tài khoản</string>
     <string name="account_type">Loại tài khoản</string>

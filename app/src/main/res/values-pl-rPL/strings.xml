@@ -79,6 +79,7 @@
     <string name="account_empty_list">Konta nie zostały odnalezione. Aby utworzyć, wybierz zielony przycisk.</string>
     <string name="account_balance">Saldo konta</string>
     <string name="account_reconciled_balance">Uzgodnione saldo</string>
+    <string name="pie_other">Inne</string>
     <string name="delete_account">Usuń konto</string>
     <string name="account_name">Nazwa konta</string>
     <string name="account_type">Typ konta</string>

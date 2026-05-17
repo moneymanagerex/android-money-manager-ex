@@ -88,6 +88,7 @@
     <string name="account_empty_list">Nincsenek számlák. Létrehozáshoz érintse meg a zöld plusz gombot.</string>
     <string name="account_balance">Számla egyenleg</string>
     <string name="account_reconciled_balance">Egyeztetett egyenleg</string>
+    <string name="pie_other">Egyéb</string>
     <string name="delete_account">Számla törlése</string>
     <string name="account_name">Számla neve</string>
     <string name="account_type">Számla típusa</string>

@@ -85,6 +85,7 @@
     <string name="account_empty_list">لم يتم العثور على حساب. لإنشاء حساب. قم بالضغط على زر الزائد الأخضر.</string>
     <string name="account_balance">رصيد الحساب</string>
     <string name="account_reconciled_balance">تسوية الرصيد</string>
+    <string name="pie_other">آخري</string>
     <string name="delete_account">حذف الحساب</string>
     <string name="account_name">إسم الحساب</string>
     <string name="account_type">نوع الحساب</string>

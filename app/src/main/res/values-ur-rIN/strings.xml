@@ -72,6 +72,7 @@
     <string name="account_empty_list">کوئی بھی اکاونٹ نہیں ملا. ایک اکاؤنٹ بنانے کے لیے، بلاکچین کے سبز بٹ کلک کریں.</string>
     <string name="account_balance">اکاؤنٹ کا بیلنس</string>
     <string name="account_reconciled_balance">جمع بیلنس</string>
+    <string name="pie_other">دیگر</string>
     <string name="delete_account">ڈلیٹ اکاونٹ</string>
     <string name="account_name">اکاؤنٹ نام</string>
     <string name="account_type">اکاؤنٹ ٹایپ</string>

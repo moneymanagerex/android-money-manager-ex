@@ -49,6 +49,7 @@
     <!-- account -->
     <string name="account">Konto</string>
     <string name="account_balance">Kontojääk</string>
+    <string name="pie_other">Muu</string>
     <string name="delete_account">Kustuta konto</string>
     <string name="account_name">Konto nimi</string>
     <string name="account_type">Konto tüüp</string>
