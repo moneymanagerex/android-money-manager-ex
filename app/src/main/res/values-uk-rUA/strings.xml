@@ -85,6 +85,7 @@
     <string name="account_empty_list">Рахунки не виявлено. Для створення натисніть зелений плюс.</string>
     <string name="account_balance">Залишок на рахунку</string>
     <string name="account_reconciled_balance">Погоджений баланс</string>
+    <string name="pie_other">Інше</string>
     <string name="delete_account">Видалити рахунок</string>
     <string name="account_name">Назва рахунку</string>
     <string name="account_type">Тип рахунку</string>

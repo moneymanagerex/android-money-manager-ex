@@ -72,6 +72,7 @@
     <string name="account_empty_list">Nu s-a găsit nici un cont. Pentru a crea unul, apasă butonul verde plus.</string>
     <string name="account_balance">Soldul contului</string>
     <string name="account_reconciled_balance">Reglarea balanței</string>
+    <string name="pie_other">Altele</string>
     <string name="delete_account">Șterge contul</string>
     <string name="account_name">Numele contului</string>
     <string name="account_type">Tipul contului</string>

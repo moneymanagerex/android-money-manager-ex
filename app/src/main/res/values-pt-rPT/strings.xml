@@ -77,6 +77,7 @@
     <string name="account_empty_list">Não foram encontradas contas. Para criar, utilize o botão com o sinal + verde.</string>
     <string name="account_balance">Saldo da Conta</string>
     <string name="account_reconciled_balance">Saldo Reconciliado</string>
+    <string name="pie_other">Outro</string>
     <string name="delete_account">Eliminar conta</string>
     <string name="account_name">Nome da conta</string>
     <string name="account_type">Tipo de conta</string>

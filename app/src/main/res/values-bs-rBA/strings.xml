@@ -72,6 +72,7 @@
     <string name="account_empty_list">Nemate računa. Da biste napravili jedan, dodirnite zeleno plus dugme.</string>
     <string name="account_balance">Stanje računa</string>
     <string name="account_reconciled_balance">Poravnati bilans</string>
+    <string name="pie_other">Drugo</string>
     <string name="delete_account">Obriši račun</string>
     <string name="account_name">Ime računa</string>
     <string name="account_type">Tip računa</string>

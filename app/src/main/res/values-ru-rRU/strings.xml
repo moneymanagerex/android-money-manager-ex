@@ -88,6 +88,7 @@
     <string name="account_empty_list">Не найдено ни одной учетной записи. Чтобы создать её, нажмите на зеленый плюс.</string>
     <string name="account_balance">Баланс счета</string>
     <string name="account_reconciled_balance">Выверенный баланс</string>
+    <string name="pie_other">Другое</string>
     <string name="delete_account">Удалить счет</string>
     <string name="account_name">Название счета</string>
     <string name="account_type">Тип счета</string>

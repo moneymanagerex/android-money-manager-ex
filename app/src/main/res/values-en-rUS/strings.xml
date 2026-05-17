@@ -84,6 +84,7 @@
     <string name="account_empty_list">No accounts have been found. To create one, tap the green plus button.</string>
     <string name="account_balance">Account Balance</string>
     <string name="account_reconciled_balance">Reconciled Balance</string>
+    <string name="pie_other">Other</string>
     <string name="delete_account">Delete Account</string>
     <string name="account_name">Account name</string>
     <string name="account_type">Account type</string>

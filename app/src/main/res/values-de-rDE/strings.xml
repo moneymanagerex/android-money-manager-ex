@@ -96,6 +96,7 @@
     <string name="gain_loss">Gewinn / Verlust</string>
     <string name="unrealized_gain_loss">Nicht realisierter G/V</string>
     <string name="realized_gain_loss">Realisierter G/V</string>
+    <string name="pie_other">Hinzufügen</string>
     <string name="delete_account">Konto löschen</string>
     <string name="delete_stock_investment">Wertpapieranlage löschen</string>
     <string name="account_name">Kontoname</string>

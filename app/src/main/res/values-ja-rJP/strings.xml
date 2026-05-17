@@ -72,6 +72,7 @@
     <string name="account_empty_list">口座が見つかりません。作成するには緑のプラスボタンをタップします。</string>
     <string name="account_balance">口座の残高</string>
     <string name="account_reconciled_balance">調整残高</string>
+    <string name="pie_other">その他</string>
     <string name="delete_account">口座を削除</string>
     <string name="account_name">口座名</string>
     <string name="account_type">口座の種類</string>

@@ -71,6 +71,7 @@
     <string name="account_empty_list">Nebol nájdený žiadny účet. Kliknite na zelené tlačidlo so symbolom plus pre jeho vytvorenie.</string>
     <string name="account_balance">Zostatok na účte</string>
     <string name="account_reconciled_balance">Overený zostatok</string>
+    <string name="pie_other">Ďalší</string>
     <string name="delete_account">Odstrániť účet</string>
     <string name="account_name">Názov účtu</string>
     <string name="account_type">Typ účtu</string>

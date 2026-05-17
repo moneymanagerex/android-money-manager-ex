@@ -72,6 +72,7 @@
     <string name="account_empty_list">ანგარიშები არ მოიძებნა. ახლის შესაქმნელად დააჭირეთ მწვანე პლიუსის ღილაკს.</string>
     <string name="account_balance">ანგარიშის ბალანსი</string>
     <string name="account_reconciled_balance">Reconciled Balance</string>
+    <string name="pie_other">სხვა</string>
     <string name="delete_account">ანგარიშის წაშლა</string>
     <string name="account_name">ანგარიშის სახელი</string>
     <string name="account_type">ანგარიშის ტიპი</string>

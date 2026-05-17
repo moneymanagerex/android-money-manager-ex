@@ -84,6 +84,7 @@
     <string name="account_empty_list">Aucun compte n\'a été trouvé. Pour en créer un, appuyez sur le bouton plus vert.</string>
     <string name="account_balance">Balance du compte</string>
     <string name="account_reconciled_balance">Balance réconciliée</string>
+    <string name="pie_other">Autre</string>
     <string name="delete_account">Supprimer le compte</string>
     <string name="account_name">Nom du Compte</string>
     <string name="account_type">Type de compte</string>

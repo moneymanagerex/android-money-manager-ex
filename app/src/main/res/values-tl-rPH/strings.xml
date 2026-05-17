@@ -72,6 +72,7 @@
     <string name="account_empty_list">Walang akawnts ang nahanap. Upang makagawa ng isa, i-tap ang berdeng dagdagan na button.</string>
     <string name="account_balance">Balanse ng Akawnt</string>
     <string name="account_reconciled_balance">Reconciled na Balanse</string>
+    <string name="pie_other">Iba</string>
     <string name="delete_account">Ibura ang Account</string>
     <string name="account_name">Pangalan ng account</string>
     <string name="account_type">Uri ng Account</string>

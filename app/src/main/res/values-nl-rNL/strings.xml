@@ -96,6 +96,7 @@
     <string name="gain_loss">Winst / Verlies</string>
     <string name="unrealized_gain_loss">Niet-gerealiseerde w/v</string>
     <string name="realized_gain_loss">Gerealiseerde w/v</string>
+    <string name="pie_other">Overig</string>
     <string name="delete_account">Verwijder rekening</string>
     <string name="delete_stock_investment">Verwijder Belegging</string>
     <string name="account_name">Rekeningnaam</string>

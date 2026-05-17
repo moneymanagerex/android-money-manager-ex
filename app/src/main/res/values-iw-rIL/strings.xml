@@ -72,6 +72,7 @@
     <string name="account_empty_list">לא נמצאו חשבונות. כדי ליצור חשבון, הקש על כפתור סימן הפלוס הירוק.</string>
     <string name="account_balance">יתרת חשבון</string>
     <string name="account_reconciled_balance">יתרה מותאמת</string>
+    <string name="pie_other">אחר</string>
     <string name="delete_account">מחק חשבון</string>
     <string name="account_name">שם חשבון</string>
     <string name="account_type">סוג חשבון</string>

@@ -88,6 +88,7 @@
     <string name="account_empty_list">没有找到可用的账户。轻触绿色加号按钮可新建一个账户。</string>
     <string name="account_balance">账户余额</string>
     <string name="account_reconciled_balance">已核对余额</string>
+    <string name="pie_other">其他</string>
     <string name="delete_account">删除账户</string>
     <string name="account_name">账户名称</string>
     <string name="account_type">账户类型</string>
