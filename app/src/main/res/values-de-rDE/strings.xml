@@ -96,7 +96,7 @@
     <string name="gain_loss">Gewinn / Verlust</string>
     <string name="unrealized_gain_loss">Nicht realisierter G/V</string>
     <string name="realized_gain_loss">Realisierter G/V</string>
-    <string name="pie_other">Hinzufügen</string>
+    <string name="pie_other">Weitere</string>
     <string name="delete_account">Konto löschen</string>
     <string name="delete_stock_investment">Wertpapieranlage löschen</string>
     <string name="account_name">Kontoname</string>
@@ -630,7 +630,7 @@
     <string name="error_downloading_symbol">Fehler beim Herunterladen des Preises für Symbol</string>
     <string name="error_updating_rates">Fehler beim Aktualisieren der Kurse</string>
     <string name="error_no_price_found_for_symbol">Für das Symbol wurde kein Preis gefunden</string>
-    <string name="other">Hinzufügen</string>
+    <string name="other">Weitere</string>
     <string name="cleared">Gelöscht</string>
     <string name="delete_success">Element gelöscht</string>
     <!-- asset allocation -->
