@@ -91,10 +91,15 @@ public class SyncManager {
      * Checks if cloud sync (PocketBase) is enabled for the current database.
      */
     public static boolean isCloudSyncEnabled() {
-        // Implementation logic: for now we check a preference or metadata.
-        // This will be set to true if the DB is opened/created via PocketBase flow.
         SyncPreferences preferences = new SyncPreferences(MmexApplication.getApp());
-        return preferences.isPocketBaseSyncEnabled();
+        if(preferences.isPocketBaseSyncEnabled()) {
+            return true;
+        }
+
+        RecentDatabasesProvider provider = MmexApplication.getApp().iocComponent.recentDatabasesProvider();
+        if (provider == null) return false;
+        DatabaseMetadata current = provider.getCurrent();
+        return current != null && current.isRemoteSyncServer();
     }
 
     public void abortScheduledUpload() {
@@ -321,6 +326,11 @@ public class SyncManager {
     }
 
     public void triggerSynchronization() {
+        // fix for empty db
+        if (mDatabases.get().getCurrent() == null ) {
+            return;
+        }
+
         if (isCloudSyncEnabled()) {
             triggerCloudSync();
             return;

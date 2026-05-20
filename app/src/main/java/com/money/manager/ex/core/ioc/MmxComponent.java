@@ -66,6 +66,7 @@ import dagger.Component;
 public interface MmxComponent {
     // Example on how to expose a provision method.
 //    MmxOpenHelper getHelper();
+    com.money.manager.ex.home.RecentDatabasesProvider recentDatabasesProvider();
 
     // Activities
     void inject(CalculatorActivity activity);
@@ -75,6 +76,7 @@ public interface MmxComponent {
     void inject(PriceEditActivity activity);
     void inject(ScheduledTransactionEditActivity activity);
     void inject(SelectDatabaseActivity activity);
+    void inject(com.money.manager.ex.sync.PocketBaseSetupActivity activity);
     void inject(SettingsActivity activity);
 
     // Fragments

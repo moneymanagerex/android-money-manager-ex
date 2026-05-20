@@ -64,6 +64,7 @@ public class PocketBaseClient {
     }
 
     private void initializeService() {
+        // TODO: da leggere da mdatabazse...
         SyncPreferences preferences = new SyncPreferences(mContext);
         String baseUrl = preferences.loadPreference(com.money.manager.ex.R.string.pref_sync_url, "");
         

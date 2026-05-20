@@ -17,6 +17,7 @@
 package com.money.manager.ex.home;
 
 import android.content.Context;
+import android.net.Uri;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
@@ -65,6 +66,15 @@ public class DatabaseMetadata {
     }
 
     public String getRemoteContentProvider() {
+        if (isRemoteSyncServer()) {
+            Uri uri = Uri.parse(remotePath);
+            String provider = uri.getScheme() + "://" + uri.getHost();
+            if (uri.getPort() != -1 && uri.getPort() != 443) {
+                provider += ":" + uri.getPort();
+            }
+            return provider;
+        }
+
         URI uri;
         try {
             uri = new URI(remotePath);
@@ -89,6 +99,9 @@ public class DatabaseMetadata {
      * @return The date/time of the last change
      */
     public MmxDate getRemoteFileModifiedDate(Context context) {
+        if (isRemoteSyncServer()) {
+            return new MmxDate();
+        }
         DocFileMetadata remote = DocFileMetadata.fromDatabaseMetadata(context, this);
         // This is current dateModified at the remote file.
         return remote.lastModified;
@@ -119,6 +132,9 @@ public class DatabaseMetadata {
      * @return true if the remote file has changed, false otherwise
      */
     public boolean isRemoteFileChanged(Context context) {
+        if (isRemoteSyncServer()) {
+            return true;
+        }
         Date remoteModified = this.getRemoteFileModifiedDate(context).toDate();
         // Check if the remote file was modified since fetched.
         Date remoteSnapshot = MmxDate.fromIso8601(this.remoteLastChangedDate).toDate();
@@ -126,6 +142,18 @@ public class DatabaseMetadata {
         Timber.d("Remote file modified time: %s, snapshot time: %s", remoteModified.toString(), remoteSnapshot.toString());
 
         return remoteModified.after(remoteSnapshot);
+    }
+
+    public boolean isRemoteSyncServer() {
+        return !TextUtils.isEmpty(remotePath) && remotePath.startsWith("https://");
+    }
+
+// TODO: replce old deprecated method
+    public boolean isPocketBase() {
+        if (!isRemoteSyncServer()) return false;
+        Uri uri = Uri.parse(remotePath);
+        String userInfo = uri.getUserInfo();
+        return userInfo != null && userInfo.startsWith("pocketbase:");
     }
 
     public static DatabaseMetadata fromDocFileMetadata(Context context, DocFileMetadata docFileMetadata) {

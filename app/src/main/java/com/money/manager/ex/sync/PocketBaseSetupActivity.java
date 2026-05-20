@@ -18,13 +18,23 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.database.MmxOpenHelper;
+import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.home.MainActivity;
+import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.scheduled.ScheduledTransactionForecastListServices;
+import com.money.manager.ex.settings.AppSettings;
+import com.money.manager.ex.settings.DatabaseSettings;
 import com.money.manager.ex.settings.SyncPreferences;
 
+import java.util.Objects;
+
+import javax.inject.Inject;
+
+import dagger.Lazy;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -42,11 +52,16 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
     private TextView mTextViewStatus;
     private final CompositeDisposable mDisposables = new CompositeDisposable();
 
+    @Inject
+    Lazy<RecentDatabasesProvider> mDatabasesLazy;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pocketbase_setup);
+
+        MmexApplication.getApp().iocComponent.inject(this);
 
         View mainView = findViewById(R.id.main_layout);
         if (mainView != null) {
@@ -136,16 +151,16 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
     }
 
     private void startSetup() {
-        String url = mEditTextUrl.getText().toString().trim();
-        String email = mEditTextEmail.getText().toString().trim();
-        String password = mEditTextPassword.getText().toString().trim();
+        String url = Objects.requireNonNull(mEditTextUrl.getText()).toString().trim();
+        String email = Objects.requireNonNull(mEditTextEmail.getText()).toString().trim();
+        String password = Objects.requireNonNull(mEditTextPassword.getText()).toString().trim();
 
         if (TextUtils.isEmpty(url) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Save URL and Email in preferences
+        // TODO: move into mDatabase
         SyncPreferences prefs = new SyncPreferences(this);
         prefs.set(getString(R.string.pref_sync_url), url);
         prefs.set(getString(R.string.pref_pocketbase_email), email);
@@ -177,15 +192,43 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
     private void performInitialPull() {
         mTextViewStatus.setText(R.string.performing_initial_pull_this_may_take_a_while);
 
+        String url = Objects.requireNonNull(mEditTextUrl.getText()).toString().trim();
+        String email = Objects.requireNonNull(mEditTextEmail.getText()).toString().trim();
+
         mDisposables.add(Observable.fromCallable(() -> {
+            // TODO remove from here
             SyncPreferences prefs = new SyncPreferences(this);
             prefs.setPocketBaseSyncEnabled(true); // Enable cloud mode to use the correct schema/engine
-            // create db
-                    MmxOpenHelper openHelper = new MmxOpenHelper(this, new DatabaseManager(this).getDatabasePath() );
-                    SupportSQLiteDatabase db = openHelper.getWritableDatabase();
-                    db.close();
 
-                    PocketBaseSyncEngine engine = new PocketBaseSyncEngine(this);
+            // create db
+            String dbPath = new DatabaseManager(this).getDatabasePath();
+            MmxOpenHelper openHelper = new MmxOpenHelper(this, dbPath);
+            SupportSQLiteDatabase db = openHelper.getWritableDatabase();
+            db.close();
+
+            // Setup metadata for the new cloud database
+            android.net.Uri inputUri = android.net.Uri.parse(url);
+            String host = inputUri.getHost();
+            int port = inputUri.getPort();
+            String encodedEmail = android.net.Uri.encode(email);
+
+            StringBuilder remotePathBuilder = new StringBuilder("https://pocketbase:");
+            remotePathBuilder.append(encodedEmail).append("@").append(host);
+            if (port != -1 && port != 443) {
+                remotePathBuilder.append(":").append(port);
+            }
+            String remotePath = remotePathBuilder.toString();
+
+            DatabaseMetadata metadata = new DatabaseMetadata();
+            metadata.localPath = dbPath;
+            metadata.remotePath = remotePath;
+            metadata.localSnapshotTimestamp = java.time.Instant.now().toString();
+
+            mDatabasesLazy.get().add(metadata);
+            DatabaseSettings dbSetting = (new AppSettings(this).getDatabaseSettings());
+            dbSetting.setDatabasePath(dbPath);
+
+            PocketBaseSyncEngine engine = new PocketBaseSyncEngine(this);
             ScheduledTransactionForecastListServices.destroyInstance();
             engine.synchronize(); // This will perform full pull if pb_last_sync_time is empty
             return true;

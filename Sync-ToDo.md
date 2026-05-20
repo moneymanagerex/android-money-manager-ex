@@ -1,0 +1,8 @@
+- [X] move pref url and user into remote url (database metafile)
+- [ ] move check of isSyncCloud into metafile
+- [ ] add ability to change from remotefile to remoteserver (so any actual db can be moved into mmex-sync) 
+- [ ] add welcome message and instruction for subscription or setup pocketbase server
+- [ ] introduce Abstract Calss so SyncManager can refer to ISyncClient and pocketbaseclient implements method
+- [ ] rename pocbketbasesetupactivity into cloydsync and add service type (for now fixed to pocketbase)
+- [ ] ensure that opening a new DB will clear all sync info
+- [ ] ability to reopen from hisotry will resore all info (and ask for password)
