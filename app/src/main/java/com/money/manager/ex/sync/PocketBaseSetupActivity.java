@@ -46,6 +46,8 @@ import timber.log.Timber;
  */
 public class PocketBaseSetupActivity extends AppCompatActivity {
 
+    public static final String EXTRA_RE_LOGIN = "PocketBaseSetupActivity:ReLogin";
+
     private TextInputEditText mEditTextUrl, mEditTextEmail, mEditTextPassword;
     private Button mButtonConnect;
     private ProgressBar mProgressBar;
@@ -102,6 +104,36 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
     }
 
     private void loadSavedCredentials() {
+        boolean isReLogin = getIntent().getBooleanExtra(EXTRA_RE_LOGIN, false);
+
+        if (isReLogin) {
+            RecentDatabasesProvider provider = mDatabasesLazy.get();
+            DatabaseMetadata current = provider.getCurrent();
+            if (current != null && current.isPocketBase()) {
+                android.net.Uri uri = android.net.Uri.parse(current.remotePath);
+                String userInfo = uri.getUserInfo();
+                if (userInfo != null && userInfo.startsWith("pocketbase:")) {
+                    String email = android.net.Uri.decode(userInfo.substring("pocketbase:".length()));
+                    mEditTextEmail.setText(email);
+                }
+
+                String host = uri.getHost();
+                int port = uri.getPort();
+                StringBuilder urlBuilder = new StringBuilder("https://");
+                urlBuilder.append(host);
+                if (port != -1 && port != 443) {
+                    urlBuilder.append(":").append(port);
+                }
+                mEditTextUrl.setText(urlBuilder.toString());
+
+                // Disable fields in re-login mode
+                mEditTextUrl.setEnabled(false);
+                mEditTextEmail.setEnabled(false);
+                mEditTextPassword.requestFocus();
+                return;
+            }
+        }
+
         SyncPreferences prefs = new SyncPreferences(this);
         String savedUrl = prefs.loadPreference(R.string.pref_sync_url, "");
         String savedEmail = prefs.get(R.string.pref_pocketbase_email, "");
@@ -176,8 +208,16 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(success -> {
             if (success) {
-                mTextViewStatus.setText(R.string.authentication_successful_initializing_database);
-                performInitialPull();
+                boolean isReLogin = getIntent().getBooleanExtra(EXTRA_RE_LOGIN, false);
+                if (isReLogin) {
+                    setLoading(false);
+                    mTextViewStatus.setText(R.string.sync_setup_complete);
+                    Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    mTextViewStatus.setText(R.string.authentication_successful_initializing_database);
+                    performInitialPull();
+                }
             } else {
                 setLoading(false);
                 mTextViewStatus.setText(R.string.authentication_failed_check_credentials_and_url);

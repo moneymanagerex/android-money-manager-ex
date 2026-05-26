@@ -366,6 +366,13 @@ public class SyncManager {
         if (!client.isAuthenticated()) {
             Timber.w("PocketBase not authenticated. Showing setup screen.");
             Intent intent = new Intent(mContext, PocketBaseSetupActivity.class);
+
+            // Check if we should use re-login mode
+            DatabaseMetadata current = mDatabases.get().getCurrent();
+            if (current != null && current.isPocketBase()) {
+                intent.putExtra(PocketBaseSetupActivity.EXTRA_RE_LOGIN, true);
+            }
+
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mContext.startActivity(intent);
             return;

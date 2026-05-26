@@ -8,6 +8,8 @@ import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 
 import com.google.gson.JsonObject;
+import com.money.manager.ex.home.DatabaseMetadata;
+import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.settings.SyncPreferences;
 
 import java.io.IOException;
@@ -45,6 +47,17 @@ public class PocketBaseClient {
         // Load session from secure storage
         mAuthToken = mEncryptedPrefs.getString(PREF_AUTH_TOKEN, null);
         mAuthCollection = mEncryptedPrefs.getString(PREF_AUTH_COLLECTION, "users");
+
+        // if mAuthToken is empty wee need to pupup passwrod and relogin
+        if (TextUtils.isEmpty(mAuthToken)) {
+            android.content.Intent intent = new android.content.Intent(mContext, PocketBaseSetupActivity.class);
+            intent.putExtra(PocketBaseSetupActivity.EXTRA_RE_LOGIN, true);
+            intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+        } else {
+            // if mAuthToken is not empty, then perform autorefresh
+            new Thread(this::refreshToken).start();
+        }
     }
 
     private void initEncryptedPrefs() {
@@ -64,9 +77,27 @@ public class PocketBaseClient {
     }
 
     private void initializeService() {
-        // TODO: da leggere da mdatabazse...
-        SyncPreferences preferences = new SyncPreferences(mContext);
-        String baseUrl = preferences.loadPreference(com.money.manager.ex.R.string.pref_sync_url, "");
+        String baseUrl = "";
+        
+        // Try to get URL from current database metadata
+        RecentDatabasesProvider provider = com.money.manager.ex.MmexApplication.getApp().iocComponent.recentDatabasesProvider();
+        if (provider != null) {
+            DatabaseMetadata current = provider.getCurrent();
+            if (current != null && current.isPocketBase()) {
+                android.net.Uri uri = android.net.Uri.parse(current.remotePath);
+                String host = uri.getHost();
+                int port = uri.getPort();
+                baseUrl = "https://" + host;
+                if (port != -1 && port != 443) {
+                    baseUrl += ":" + port;
+                }
+            }
+        }
+
+        if (TextUtils.isEmpty(baseUrl)) {
+            SyncPreferences preferences = new SyncPreferences(mContext);
+            baseUrl = preferences.loadPreference(com.money.manager.ex.R.string.pref_sync_url, "");
+        }
         
         if (TextUtils.isEmpty(baseUrl)) {
             Timber.w("PocketBase base URL is empty");
