@@ -44,6 +44,7 @@ import com.money.manager.ex.servicelayer.InfoService;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DatabaseSettingsFragment;
 import com.money.manager.ex.settings.SettingsActivity;
+import com.money.manager.ex.sync.PocketBaseSyncEngine;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.sync.SyncPreferenceFragment;
 import com.money.manager.ex.sync.SyncService;
@@ -65,6 +66,7 @@ import dagger.Component;
 public interface MmxComponent {
     // Example on how to expose a provision method.
 //    MmxOpenHelper getHelper();
+    com.money.manager.ex.home.RecentDatabasesProvider recentDatabasesProvider();
 
     // Activities
     void inject(CalculatorActivity activity);
@@ -74,6 +76,7 @@ public interface MmxComponent {
     void inject(PriceEditActivity activity);
     void inject(ScheduledTransactionEditActivity activity);
     void inject(SelectDatabaseActivity activity);
+    void inject(com.money.manager.ex.sync.PocketBaseSetupActivity activity);
     void inject(SettingsActivity activity);
 
     // Fragments
@@ -102,6 +105,7 @@ public interface MmxComponent {
     void inject(SyncServiceMessageHandler handler);
     void inject(Passcode object);
     void inject(EditTransactionCommonFunctions object);
+    void inject(PocketBaseSyncEngine engine);
 
     // Helpers
     void inject(UIHelper helper);

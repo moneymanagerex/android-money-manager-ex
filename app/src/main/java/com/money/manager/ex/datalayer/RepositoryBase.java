@@ -35,7 +35,10 @@ import com.money.manager.ex.domainmodel.Attachment;
 import com.money.manager.ex.domainmodel.EntityBase;
 import com.money.manager.ex.domainmodel.RefType;
 import com.money.manager.ex.domainmodel.TagLink;
+import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -334,5 +337,21 @@ public abstract class RepositoryBase<T extends EntityBase>
     public ArrayList<TagLink> loadTagLinks(long id) {
         TaglinkRepository repo = new TaglinkRepository(getContext());
         return repo.loadByRef(id, refType());
+    }
+
+    /**
+     * Adds PocketBase sync columns to the provided columns array if cloud sync is enabled.
+     * @param columns The base columns array.
+     * @return The updated columns array.
+     */
+    protected String[] addPbColumnsIfNeeded(String[] columns) {
+        if (SyncManager.isCloudSyncEnabled()) {
+            return ArrayUtils.addAll(columns,
+                    EntityBase.PB_ID,
+                    EntityBase.PB_UPDATED_AT,
+                    EntityBase.PB_IS_DIRTY
+            );
+        }
+        return columns;
     }
 }

@@ -29,6 +29,7 @@ android {
     }
 
     defaultConfig {
+        manifestPlaceholders = [appName: "Money Manager Ex"]
         applicationId "com.money.manager.ex"
         versionCode 1112
         //versionName getVersionAsDate() + "." + versionCode
@@ -41,6 +42,8 @@ android {
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "boolean", "IS_SYNC_ENABLED", "false"
     }
 
     base {
@@ -84,6 +87,13 @@ android {
         gplay {
             dimension "distribution"
             applicationIdSuffix ".android"
+        }
+        sync {
+            dimension "distribution"
+            applicationIdSuffix ".synccloud"
+            versionNameSuffix "-synccloud"
+            manifestPlaceholders = [appName: "Money Manager Ex (Cloud version)"]
+            buildConfigField "boolean", "IS_SYNC_ENABLED", "true"
         }
         // beta {
         //     applicationId "com.money.manager.ex.beta"
@@ -171,6 +181,7 @@ dependencies {
             , 'androidx.documentfile:documentfile:1.0.1'
             , 'com.caverock:androidsvg-aar:1.4'
             , 'androidx.core:core-splashscreen:1.0.1' // splash screen for Android 15
+            , 'androidx.security:security-crypto:1.0.0' // Security-crypto for EncryptedSharedPreferences
     )
     implementation libs.core
     implementation libs.appcompat

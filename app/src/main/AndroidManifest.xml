@@ -56,8 +56,9 @@
         android:backupAgent=".core.MoneyManagerBackupAgentHelper"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:label="@string/application_name"
+        android:label="${appName}"
         android:theme="@style/Theme.Splash"
+        android:networkSecurityConfig="@xml/network_security_config"
         tools:replace="android:label"
         android:supportsRtl="true">
 
@@ -370,6 +371,8 @@
         <activity
             android:name=".common.CalculatorActivity"
             android:label="@string/app_name" />
+
+        <activity android:name=".sync.PocketBaseSetupActivity" />
 
         <!-- providers -->
 

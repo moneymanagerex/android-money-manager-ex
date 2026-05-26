@@ -29,6 +29,13 @@ import com.money.manager.ex.R;
 public class SyncPreferences
     extends SettingsBase {
 
+    public static final String PREF_POCKETBASE_SYNC_ENABLED = "pref_pocketbase_sync_enabled";
+    public static final String PREF_POCKETBASE_SYNC_LAST_SYNC_TIME = "pb_last_sync_time";
+
+    public static final String INITIAL_SYNC_TIME = "1970-01-01 00:00:00.000Z";
+
+
+
     public SyncPreferences(Context context) {
         super(context);
 
@@ -87,6 +94,35 @@ public class SyncPreferences
     }
 
     public boolean shouldSyncMergeDatabase() { return get("pref_sync_merge_database", false); }
+
+    /**
+     * @deprecated Use RecentDatabasesProvider to manage database metadata with remotePath instead.
+     */
+    @Deprecated
+    public boolean isPocketBaseSyncEnabled() {
+        return getPreferences().getBoolean(PREF_POCKETBASE_SYNC_ENABLED, false) ;
+        // return com.money.manager.ex.sync.SyncManager.isCloudSyncEnabled();
+    }
+
+    /**
+     * @deprecated Use RecentDatabasesProvider to manage database metadata with remotePath instead.
+     */
+    @Deprecated
+    public void setPocketBaseSyncEnabled(boolean enabled) {
+        getPreferences().edit().putBoolean(PREF_POCKETBASE_SYNC_ENABLED, enabled).apply();
+    }
+
+    public String getPocketBaseSyncLastSyncTime() {
+        return get(PREF_POCKETBASE_SYNC_LAST_SYNC_TIME, INITIAL_SYNC_TIME);
+    }
+
+    public void setPocketBaseSyncLastSyncTimeToInitial() {
+        set(PREF_POCKETBASE_SYNC_LAST_SYNC_TIME, INITIAL_SYNC_TIME);
+    }
+
+    public void setPocketBaseSyncLastSyncTime(String time) {
+        set(PREF_POCKETBASE_SYNC_LAST_SYNC_TIME, time);
+    }
 
     // private
 

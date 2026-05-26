@@ -29,6 +29,7 @@ import android.os.Messenger;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -58,6 +59,9 @@ import java.util.HashMap;
 import javax.inject.Inject;
 
 import dagger.Lazy;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -83,6 +87,21 @@ public class SyncManager {
     private final Context mContext;
     private SyncPreferences mPreferences;
 
+    /**
+     * Checks if cloud sync (PocketBase) is enabled for the current database.
+     */
+    public static boolean isCloudSyncEnabled() {
+        SyncPreferences preferences = new SyncPreferences(MmexApplication.getApp());
+        if(preferences.isPocketBaseSyncEnabled()) {
+            return true;
+        }
+
+        RecentDatabasesProvider provider = MmexApplication.getApp().iocComponent.recentDatabasesProvider();
+        if (provider == null) return false;
+        DatabaseMetadata current = provider.getCurrent();
+        return current != null && current.isRemoteSyncServer();
+    }
+
     public void abortScheduledUpload() {
         Timber.d("Aborting scheduled sync");
 
@@ -105,6 +124,10 @@ public class SyncManager {
      * @return boolean indicating if auto sync should be done.
      */
     public boolean canSync() {
+        if (isCloudSyncEnabled()) {
+            return true;
+        }
+
         if (isPhoneStorage()) return true;
 
         // check if online
@@ -303,6 +326,16 @@ public class SyncManager {
     }
 
     public void triggerSynchronization() {
+        // fix for empty db
+        if (mDatabases.get().getCurrent() == null ) {
+            return;
+        }
+
+        if (isCloudSyncEnabled()) {
+            triggerCloudSync();
+            return;
+        }
+
         if (!canSync())  return;
 
         // Make sure that the current database is also the one linked in the cloud.
@@ -326,12 +359,84 @@ public class SyncManager {
         }});
     }
 
+    private void triggerCloudSync() {
+        Timber.d("Triggering PocketBase cloud sync");
+
+        PocketBaseClient client = PocketBaseClient.getInstance(mContext);
+        if (!client.isAuthenticated()) {
+            Timber.w("PocketBase not authenticated. Showing setup screen.");
+            Intent intent = new Intent(mContext, PocketBaseSetupActivity.class);
+
+            // Check if we should use re-login mode
+            DatabaseMetadata current = mDatabases.get().getCurrent();
+            if (current != null && current.isPocketBase()) {
+                intent.putExtra(PocketBaseSetupActivity.EXTRA_RE_LOGIN, true);
+            }
+
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+            return;
+        }
+
+        AlertDialog progressDialog = null;
+        TextView progressMessage = null;
+        if (mContext instanceof AppCompatActivity) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            LayoutInflater inflater = LayoutInflater.from(mContext);
+            View view = inflater.inflate(R.layout.progress_dialog, null);
+            progressMessage = view.findViewById(R.id.progress_message);
+            builder.setView(view);
+            builder.setCancelable(false);
+            progressDialog = builder.create();
+            progressDialog.show();
+        }
+
+        final AlertDialog finalProgressDialog = progressDialog;
+        final TextView finalProgressMessage = progressMessage;
+
+        Observable.fromCallable(() -> {
+            PocketBaseSyncEngine engine = new PocketBaseSyncEngine(mContext);
+            engine.synchronize((tableName, action) -> {
+                if (finalProgressMessage != null && mContext instanceof AppCompatActivity) {
+                    ((AppCompatActivity) mContext).runOnUiThread(() -> {
+                        finalProgressMessage.setText(action + " " + tableName + "...");
+                    });
+                }
+            });
+            return true;
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(success -> {
+            if (finalProgressDialog != null) finalProgressDialog.dismiss();
+            Timber.i("PocketBase sync completed");
+            // Toast.makeText(mContext, "Sync Complete", Toast.LENGTH_SHORT).show();
+            
+            // Refresh MainActivity if we are currently there
+            if (mContext instanceof MainActivity) {
+                ((MainActivity) mContext).refreshData();
+            }
+        }, throwable -> {
+            if (finalProgressDialog != null) finalProgressDialog.dismiss();
+            Timber.e(throwable, "PocketBase sync failed");
+            // Toast.makeText(mContext, "Sync Failed: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
+        });
+    }
+
     public void triggerDownload() {
-        invokeSyncService(SyncConstants.INTENT_ACTION_DOWNLOAD);
+        if (isCloudSyncEnabled()) {
+            triggerCloudSync();
+        } else {
+            invokeSyncService(SyncConstants.INTENT_ACTION_DOWNLOAD);
+        }
     }
 
     public void triggerUpload() {
-        invokeSyncService(SyncConstants.INTENT_ACTION_UPLOAD);
+        if (isCloudSyncEnabled()) {
+            triggerCloudSync();
+        } else {
+            invokeSyncService(SyncConstants.INTENT_ACTION_UPLOAD);
+        }
     }
 
     /**

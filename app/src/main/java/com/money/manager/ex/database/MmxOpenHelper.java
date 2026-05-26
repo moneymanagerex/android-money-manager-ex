@@ -36,6 +36,7 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.InfoRepositorySql;
 import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.servicelayer.InfoService;
+import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.MmxFileUtils;
 
 import net.zetetic.database.sqlcipher.SupportOpenHelperFactory;
@@ -104,8 +105,16 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         Timber.d("OpenHelper onCreate");
 
         try {
-            executeRawSql(db, R.raw.tables_v1);
-            initDatabase(db);
+            boolean isCloudEnabled = SyncManager.isCloudSyncEnabled();
+            int tableSqlResource = isCloudEnabled ? R.raw.table_v1_completo : R.raw.tables_v1;
+            
+            executeRawSql(db, tableSqlResource);
+            
+            // If cloud sync is enabled, we don't initialize the database with default records
+            // because they will be pulled from the cloud.
+            if (!isCloudEnabled) {
+                initDatabase(db);
+            }
         } catch (Exception e) {
             Timber.e(e, "initializing database");
         }
@@ -191,7 +200,9 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
      */
     private void executeRawSql(SupportSQLiteDatabase db, int rawId) {
         String sqlRaw = MmxFileUtils.getRawAsString(getContext(), rawId);
-        String[] sqlStatement = sqlRaw.split(";");
+        // Use ;; as delimiter for cloud sync to handle complex statements like triggers
+        String delimiter = SyncManager.isCloudSyncEnabled() ? ";;" : ";";
+        String[] sqlStatement = sqlRaw.split(delimiter);
 
         // process all statements
         for (String aSqlStatement : sqlStatement) {
