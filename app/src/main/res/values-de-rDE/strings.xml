@@ -859,4 +859,5 @@
     <string name="changelog_1104">Neue Version 5.5\n- Aktiviere Android 16 volle Kompatibilität mit Edge-To-Edge</string>
     <string name="currency_save_error">Fehler beim Einfügen der Währung. Wahrscheinlich ist die Währung %s bereits definiert.</string>
     <string name="menu_cashflow_24_months">24 Monate Ansicht</string>
+    <!-- PocketBse Sync -->
 </resources>

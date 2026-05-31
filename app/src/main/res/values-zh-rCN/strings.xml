@@ -816,4 +816,5 @@
     <string name="changelog">更新日志​​​​​</string>
     <string name="changelog_title">重要更新！</string>
     <string name="changelog_1086">新版本 5.4 现已发布！\n- 新增 Beta 版合并引擎功能。当本地和远程文件同时发生更改时，可尝试自动合并。您可以在 设置 &gt; 同步 &gt; 合并 中启用此功能。</string>
+    <!-- PocketBse Sync -->
 </resources>
