@@ -584,6 +584,8 @@
     <string name="pref_transaction_hide_reconciled_amounts_title">Hide Reconciled Amounts</string>
     <string name="pref_transaction_sort_by_type_summary">Arrange daily transactions by transaction type (deposit, transfer, withdrawal)</string>
     <string name="pref_transaction_sort_by_type_title">Sort Transactions by Type</string>
+    <string name="pref_search_results_group_by_account_title">Group Search Results by Account</string>
+    <string name="pref_search_results_group_by_account_summary">When enabled, search results are grouped by account. When disabled, all results are listed by date.</string>
     <string name="warning">Warning</string>
     <string name="no_transfer_splits">You have chosen to switch to Transfer but there are Split Categories on the transaction. Do you want to proceed and remove the Split Categories?</string>
     <string name="qif_export">Qif Export</string>

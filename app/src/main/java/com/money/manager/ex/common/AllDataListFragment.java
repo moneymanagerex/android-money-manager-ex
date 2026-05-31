@@ -19,6 +19,7 @@ package com.money.manager.ex.common;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -93,8 +94,8 @@ public class AllDataListFragment
     private static final String ARG_ACCOUNT_ID = "AccountId";
     private static final String ARG_SHOW_FLOATING_BUTTON = "ShowFloatingButton";
 
-    private final int SORT_BY_DATE_DESC = 0;
-    private final int SORT_BY_DATE_ASC = 1;
+    private static final int SORT_BY_DATE_DESC = 0;
+    private static final int SORT_BY_DATE_ASC = 1;
 
     public static AllDataListFragment newInstance(long accountId) {
         return newInstance(accountId, true);
@@ -424,14 +425,20 @@ public class AllDataListFragment
         Bundle latestArguments = getLatestArguments();
         if (latestArguments == null || !latestArguments.containsKey(KEY_ARGUMENTS_SORT)) return;
 
-        String sortDirection = (new AppSettings(getContext())).getTransactionSort() == SORT_BY_DATE_DESC
-                ? "DESC"
-                : "ASC";
-
-        String searchSort = QueryAllData.TOACCOUNTID + ", " + QueryAllData.Date + " " + sortDirection
-                + ", " + QueryAllData.TransactionType + ", " + QueryAllData.ID + " " + sortDirection;
-        latestArguments.putString(KEY_ARGUMENTS_SORT, searchSort);
+        latestArguments.putString(KEY_ARGUMENTS_SORT, getSearchResultsSortOrder(requireContext()));
         setLatestArguments(latestArguments);
+    }
+
+    public static String getSearchResultsSortOrder(@NonNull Context context) {
+        AppSettings settings = new AppSettings(context);
+        String sortDirection = settings.getTransactionSort() == SORT_BY_DATE_DESC ? "DESC" : "ASC";
+
+        if (settings.getSearchResultsGroupByAccount()) {
+            return QueryAllData.TOACCOUNTID + ", " + QueryAllData.Date + " " + sortDirection
+                    + ", " + QueryAllData.TransactionType + ", " + QueryAllData.ID + " " + sortDirection;
+        }
+
+        return QueryAllData.Date + " " + sortDirection + ", " + QueryAllData.ID + " " + sortDirection;
     }
 
     @Override
