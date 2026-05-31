@@ -106,6 +106,12 @@ public class ScheduledTransactionListFragment
         UIHelper uiHelper = new UIHelper(getActivity());
         getListView().setDivider(new ColorDrawable(uiHelper.resolveAttribute(R.attr.theme_background_color)));
 
+        // create adapter once so we can swap cursor on reload and preserve
+        // the list position / focus (same approach used in AccountListFragment)
+        AllDataAdapter adapter = new AllDataAdapter(getActivity(), null,
+            AllDataAdapter.TypeCursor.RECURRINGTRANSACTION);
+        setListAdapter(adapter);
+
         setListShown(false);
 
         getLoaderManager().initLoader(ID_LOADER_REPEATING, null, this);
@@ -247,9 +253,15 @@ public class ScheduledTransactionListFragment
         if (loader.getId() == ID_LOADER_REPEATING) {
             if (data == null) return;
 
-            AllDataAdapter adapter = new AllDataAdapter(getActivity(), data,
-                    AllDataAdapter.TypeCursor.RECURRINGTRANSACTION);
-            setListAdapter(adapter);
+            // reuse existing adapter and swap cursor to preserve list scroll/focus
+            AllDataAdapter adapter = (AllDataAdapter) getListAdapter();
+            if (adapter != null) {
+                adapter.changeCursor(data);
+            } else {
+                adapter = new AllDataAdapter(getActivity(), data,
+                        AllDataAdapter.TypeCursor.RECURRINGTRANSACTION);
+                setListAdapter(adapter);
+            }
 
             if (isResumed()) {
                 setListShown(true);
