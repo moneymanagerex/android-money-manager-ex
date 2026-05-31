@@ -121,6 +121,12 @@ public class AppSettings
     public int getTransactionSort() {return get("getTransactionSort", 0); }
     public void setTransactionSort(int value) { set("getTransactionSort", value); }
 
+    public boolean getSearchResultsGroupByAccount() {
+        return get(R.string.pref_search_results_group_by_account, true);
+    }
+
+    public void setSearchResultsGroupByAccount(boolean value) {
+        set(R.string.pref_search_results_group_by_account, value);
+    }
+
 }
-
-
