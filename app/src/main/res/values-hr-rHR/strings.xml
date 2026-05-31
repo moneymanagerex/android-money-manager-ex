@@ -830,4 +830,5 @@
     <string name="changelog_1104">Nova verzija 5.5\n – Omogućuje potpunu kompatibilnost s Androidom 16 i prikazom od ruba do ruba</string>
     <string name="currency_save_error">Greška prilikom unosa valute. Vjerojatno je valuta %s već definirana.</string>
     <string name="menu_cashflow_24_months">Prikaz za 24 mjeseca</string>
+    <!-- PocketBse Sync -->
 </resources>

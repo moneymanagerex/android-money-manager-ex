@@ -826,4 +826,5 @@
     <string name="changelog_1104">Nuova versione 5.5\n-Compatibilità completa con Android 16 e modalità edge-to-edge</string>
     <string name="currency_save_error">Errore durante l\'inserimento della valuta. Probabilmente la valuta %s è già definita.</string>
     <string name="menu_cashflow_24_months">Vista 24 mesi</string>
+    <!-- PocketBse Sync -->
 </resources>

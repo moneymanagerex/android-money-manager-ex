@@ -859,4 +859,22 @@
     <string name="changelog_1104">Nieuwe versie 5.5\n- Android 16 volledige compatibiliteit met Edge-To-Edge inschakelen</string>
     <string name="currency_save_error">Fout tijdens het toevoegen van valuta. Valuta %s is waarschijnlijk al gedefinieerd.</string>
     <string name="menu_cashflow_24_months">24 maanden overzicht</string>
+    <!-- PocketBse Sync -->
+    <string name="pref_sync_url">Pocketbase server URL</string>
+    <string name="pref_pocketbase_email">Pocketbase e-mail</string>
+    <string name="confirm_cloud_import_title">Alle gegevens verwijderen en opnieuw laden vanuit de cloud?</string>
+    <string name="confirm_cloud_import_message">Waarschuwing: Hiermee wordt uw huidige lokale database verwijderd en de installatiewizard geopend om verbinding te maken met de cloud. Doorgaan?</string>
+    <string name="menu_open_from_cloud">Open vanuit de cloud</string>
+    <string name="checking_session">Sessie controleren...</string>
+    <string name="session_restored_initializing_database">Sessie hersteld. Database initialiseren...</string>
+    <string name="please_enter_your_password_to_continue">Voer je wachtwoord in om verder te gaan.</string>
+    <string name="session_expired_please_login_again">Sessie verlopen. Log aub opnieuw in.</string>
+    <string name="authenticating">Bezig met authenticeren...</string>
+    <string name="authentication_successful_initializing_database">Verificatie gelukt. Database initialiseren...</string>
+    <string name="authentication_failed_check_credentials_and_url">Authenticatie mislukt. Controleer inloggegevens en URL.</string>
+    <string name="error_two_dots">"Fout: "</string>
+    <string name="performing_initial_pull_this_may_take_a_while">Begin met pull uitvoeren (dit kan een tijdje duren)...</string>
+    <string name="sync_setup_complete">Synchronisatie voltooid!</string>
+    <string name="sync_failed">"Synchronisatie mislukt: "</string>
+    <string name="sync_your_data_with_pocketbase_cloud">Synchroniseer je gegevens met PocketBase Cloud</string>
 </resources>

@@ -830,4 +830,5 @@
     <string name="changelog_1104">Новая версия 5.5\n- Включить полную совместимость для Android 16 с Edge-To-Edge</string>
     <string name="currency_save_error">Ошибка при вводе валюты. Вероятно, валюта %s уже определена.</string>
     <string name="menu_cashflow_24_months">Показать 24 месяца</string>
+    <!-- PocketBse Sync -->
 </resources>

@@ -819,4 +819,5 @@
     <string name="changelog_title">Principais novidades!!</string>
     <string name="changelog_1086">Nova versão 5.4\n- Adicionado novo recurso Beta para o motor de mesclagem. Tente mesclar o arquivo quando ambos forem alterados. Habilite nas configurações-&gt;Sincronização-&gt;Mesclar</string>
     <string name="currency_save_error">Erro ao inserir Currency. Provavelmente a moeda %s já está definida.</string>
+    <!-- PocketBse Sync -->
 </resources>
