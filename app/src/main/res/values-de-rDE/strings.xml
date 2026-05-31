@@ -860,4 +860,21 @@
     <string name="currency_save_error">Fehler beim Einfügen der Währung. Wahrscheinlich ist die Währung %s bereits definiert.</string>
     <string name="menu_cashflow_24_months">24 Monate Ansicht</string>
     <!-- PocketBse Sync -->
+    <string name="pref_sync_url">Pocketbase-Server-Url</string>
+    <string name="pref_pocketbase_email">Pocketbase E-Mail</string>
+    <string name="confirm_cloud_import_title">Alle Daten löschen und aus der Cloud neu laden?</string>
+    <string name="confirm_cloud_import_message">Warnung: Dies löscht Ihre aktuelle lokale Datenbank und öffnet den Einrichtungsassistenten, um sich mit der Cloud zu verbinden. Fortfahren?</string>
+    <string name="menu_open_from_cloud">In der Cloud öffnen</string>
+    <string name="checking_session">Überprüfe Sitzung...</string>
+    <string name="session_restored_initializing_database">Sitzung wiederhergestellt. Initialisiere Datenbank...</string>
+    <string name="please_enter_your_password_to_continue">Bitte geben Sie Ihr Passwort ein, um fortzufahren.</string>
+    <string name="session_expired_please_login_again">Sitzung ist abgelaufen. Bitte loggen Sie sich erneut ein.</string>
+    <string name="authenticating">Authentifizierung …</string>
+    <string name="authentication_successful_initializing_database">Authentifizierung erfolgreich. Datenbank wird initialisiert...</string>
+    <string name="authentication_failed_check_credentials_and_url">Authentifizierung fehlgeschlagen. Überprüfen Sie die Anmeldeinformationen und die URL.</string>
+    <string name="error_two_dots">"Fehler: "</string>
+    <string name="performing_initial_pull_this_may_take_a_while">Initiales Abrufen ausführen (dies kann eine Weile dauern)...</string>
+    <string name="sync_setup_complete">Sync-Einrichtung abgeschlossen!</string>
+    <string name="sync_failed">"Sync fehlgeschlagen: "</string>
+    <string name="sync_your_data_with_pocketbase_cloud">Daten mit PocketBase Cloud synchronisieren</string>
 </resources>
