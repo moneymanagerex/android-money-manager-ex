@@ -1,0 +1,4 @@
+## What's Changed
+* Initial release for pilot remote Sync Server
+* Improve reporting
+* Improve Translations
