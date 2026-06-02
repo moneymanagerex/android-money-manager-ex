@@ -516,6 +516,8 @@
     <string name="pref_transaction_hide_reconciled_amounts_title">Bereinigte Beträge ausblenden</string>
     <string name="pref_transaction_sort_by_type_summary">Ordne Tages-Transaktionen nach dem Transaktions-Typ (Einzahlung, Überweisung, Auszahlung)</string>
     <string name="pref_transaction_sort_by_type_title">Transaktionen nach Typ sortieren</string>
+    <string name="pref_search_results_group_by_account_title">Suchergebnisse nach Konto gruppieren</string>
+    <string name="pref_search_results_group_by_account_summary">Wenn aktiviert, werden Suchergebnisse nach Konto gruppiert. Wenn deaktiviert, werden alle Ergebnisse nach Datum aufgelistet.</string>
     <string name="warning">Warnung</string>
     <string name="no_transfer_splits">Sie haben sich entschieden, nach Überweisung zu wechseln, aber es gibt Splitkategorien für die Transaktion. Möchten Sie fortfahren und die Splitkategorien zu entfernen?</string>
     <string name="qif_export">QIF-Export</string>
