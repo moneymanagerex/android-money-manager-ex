@@ -1,5 +1,6 @@
 package com.money.manager.ex.sync;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
@@ -158,6 +159,7 @@ public class PocketBaseClient {
         return mAuthToken != null;
     }
 
+    @SuppressLint("ApplySharedPref")
     private void saveSession(String token, String collection) {
         mAuthToken = token;
         mAuthCollection = collection;
@@ -237,7 +239,7 @@ public class PocketBaseClient {
             Request originalRequest = chain.request();
             // Do not add auth header for auth requests
             String path = originalRequest.url().encodedPath();
-            if (mAuthToken == null || path.contains("/auth-with-password") || path.contains("/auth-refresh")) {
+            if (mAuthToken == null || path.contains("/auth-with-password") ) { // autorefresh require aujth || path.contains("/auth-refresh")) {
                 return chain.proceed(originalRequest);
             }
 

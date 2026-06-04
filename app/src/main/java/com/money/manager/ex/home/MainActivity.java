@@ -1717,7 +1717,6 @@ public class MainActivity
 
     private void startCloudSetup() {
         // Reset preferences and old data.
-        PocketBaseClient.getInstance(this).clearSession();
         new PocketBaseSyncEngine(this).clearSyncEngine();
 
         // Start the PocketBase setup wizard directly
