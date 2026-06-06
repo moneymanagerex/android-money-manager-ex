@@ -291,6 +291,7 @@
     <string name="title_activity_general_report">تقرير عام</string>
     <string name="menu_report_income_vs_expenses">الإيرادات مقابل المصروفات</string>
     <string name="menu_report_cashflow">التدفق النقدي</string>
+    <string name="menu_report_summary_of_accounts">مُلخص الحسابات</string>
     <string name="total">المجموع</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">جميع الأوقات</string>
@@ -579,6 +580,9 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_account_filter_all">كافة الحسابات</string>
+    <string name="menu_account_filter_open">الحسابات المفتوحة</string>
+    <string name="menu_account_filter_favorite">الحسابات المفضلة</string>
+    <string name="menu_account_filter_custom">الحسابات المحددة...</string>
     <!-- Merge -->
     <!-- Error Handling -->
     <!-- changelog -->
