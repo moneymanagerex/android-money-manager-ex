@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2025 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -50,6 +50,16 @@ public class LookAndFeelSettings
     public boolean getHideReconciledAmounts() {
         String key = getSettingsKey(R.string.pref_transaction_hide_reconciled_amounts);
         return getBooleanSetting(key, false);
+    }
+
+    public boolean getHideBalances() {
+        String key = getSettingsKey(R.string.pref_hide_balances);
+        return getBooleanSetting(key, false);
+    }
+
+    public void setHideBalances(boolean value) {
+        String key = getSettingsKey(R.string.pref_hide_balances);
+        set(key, value);
     }
 
     public DefinedDateRangeName getShowTransactions() {

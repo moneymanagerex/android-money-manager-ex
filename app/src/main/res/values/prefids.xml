@@ -62,6 +62,7 @@
     <string name="pref_version_date">versiondate</string>
     <string name="pref_sqlite_version">sqliteversion</string>
     <string name="pref_transaction_shown_balance">transactionshownbalance</string>
+    <string name="pref_hide_balances">pref_hide_balances</string>
     <string name="pref_transaction_hide_reconciled_amounts">pref_transaction_hide_reconciled_amounts</string>
     <string name="pref_application_font">prefapplicationfont</string>
     <string name="pref_application_font_size">prefapplicationfontsize</string>
