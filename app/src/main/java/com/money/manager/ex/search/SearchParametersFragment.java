@@ -493,9 +493,9 @@ public class SearchParametersFragment
         }
 
         // status
-        if (searchParameters.status != null &&
-                !searchParameters.status.equals(SearchParameters.STRING_NULL_VALUE) &&
-                !searchParameters.status.isEmpty()) {
+        if (searchParameters.status != null  &&
+                !searchParameters.status.equals(SearchParameters.STRING_NULL_VALUE) ) { // &&
+//                !searchParameters.status.isEmpty()) {
             where.addStatement(QueryAllData.STATUS, "=", searchParameters.status);
         }
 
