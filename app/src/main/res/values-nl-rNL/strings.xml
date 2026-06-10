@@ -877,4 +877,5 @@
     <string name="sync_setup_complete">Synchronisatie voltooid!</string>
     <string name="sync_failed">"Synchronisatie mislukt: "</string>
     <string name="sync_your_data_with_pocketbase_cloud">Synchroniseer je gegevens met PocketBase Cloud</string>
+    <!-- Show & Hide Balance -->
 </resources>

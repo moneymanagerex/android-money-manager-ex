@@ -831,4 +831,5 @@
     <string name="currency_save_error">Greška prilikom unosa valute. Vjerojatno je valuta %s već definirana.</string>
     <string name="menu_cashflow_24_months">Prikaz za 24 mjeseca</string>
     <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>
