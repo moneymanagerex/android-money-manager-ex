@@ -985,5 +985,10 @@
     <string name="sync_setup_complete">Sync Setup Complete!</string>
     <string name="sync_failed">"Sync failed: "</string>
     <string name="sync_your_data_with_pocketbase_cloud">Sync your data with PocketBase Cloud</string>
-
+	
+	<!-- Show & Hide Balance -->
+    <string name="show_balances">Show Balances</string>
+    <string name="hide_balances">Hide Balances</string>
+	<string name="pref_hide_balances_title">Hide Balances</string>
+    <string name="pref_hide_balances_summary">Hide account balances on the main screens.</string>
 </resources>

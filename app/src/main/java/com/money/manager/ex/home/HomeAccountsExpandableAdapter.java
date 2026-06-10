@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2018 The Android Money Manager Ex Project Team
+ * Copyright (C) 2012-2025 The Android Money Manager Ex Project Team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -57,18 +57,20 @@ public class HomeAccountsExpandableAdapter
     private HashMap<String, List<QueryAccountBills>> mAccountsByType = new HashMap<>();
     private HashMap<String, QueryAccountBills> mTotalsByType = new HashMap<>();
     private final boolean mHideReconciled;
+    private final boolean mHideBalances;
     private final CurrencyService mCurrencyService;
     private final HashMap<Long, InvestmentSummary> mInvestmentSummaries = new HashMap<>();
 
     public HomeAccountsExpandableAdapter(Context context, List<String> accountTypes,
                                          HashMap<String, List<QueryAccountBills>> accountsByType,
                                          HashMap<String, QueryAccountBills> totalsByType,
-                                         boolean hideReconciled) {
+                                         boolean hideReconciled, boolean hideBalances) {
         mContext = context;
         mAccountTypes = accountTypes;
         mAccountsByType = accountsByType;
         mTotalsByType = totalsByType;
         mHideReconciled = hideReconciled;
+        mHideBalances = hideBalances;
         mCurrencyService = new CurrencyService(mContext);
     }
 
@@ -164,22 +166,22 @@ public class HomeAccountsExpandableAdapter
             holder.imgAccountType.setImageDrawable(
                     uiHelper.getIcon(MMXIconFont.Icon.mmx_briefcase).sizeDp(iconSize).color(iconColor));
             holder.txtCashBalance.setTypeface(null, Typeface.BOLD);
-            holder.txtCashBalance.setText(mCurrencyService.getBaseCurrencyFormatted(summary.cashBalance));
+            holder.txtCashBalance.setText(mHideBalances ? "****" : mCurrencyService.getBaseCurrencyFormatted(summary.cashBalance));
             if (holder.txtReconciled != null) {
                 if (mHideReconciled) {
                     holder.txtReconciled.setVisibility(View.GONE);
                 } else {
                     holder.txtReconciled.setVisibility(View.VISIBLE);
                     holder.txtReconciled.setTypeface(null, Typeface.BOLD);
-                    holder.txtReconciled.setText(mCurrencyService.getBaseCurrencyFormatted(summary.reconciledCash));
+                    holder.txtReconciled.setText(mHideBalances ? "****" : mCurrencyService.getBaseCurrencyFormatted(summary.reconciledCash));
                 }
             }
             holder.txtMarketValue.setTypeface(null, Typeface.BOLD);
-            holder.txtMarketValue.setText(mCurrencyService.getBaseCurrencyFormatted(summary.marketValue));
+            holder.txtMarketValue.setText(mHideBalances ? "****" : mCurrencyService.getBaseCurrencyFormatted(summary.marketValue));
             holder.txtInvested.setTypeface(null, Typeface.BOLD);
-            holder.txtInvested.setText(mCurrencyService.getBaseCurrencyFormatted(summary.invested));
+            holder.txtInvested.setText(mHideBalances ? "****" : mCurrencyService.getBaseCurrencyFormatted(summary.invested));
             holder.txtGainLoss.setTypeface(null, Typeface.BOLD);
-            holder.txtGainLoss.setText(formatGainLoss(summary.gainLoss, summary.invested));
+            holder.txtGainLoss.setText(mHideBalances ? "****" : formatGainLoss(summary.gainLoss, summary.invested));
             int gainLossColor = summary.gainLoss.toDouble() < 0
                     ? ContextCompat.getColor(mContext, R.color.red)
                     : ContextCompat.getColor(mContext, R.color.green);
@@ -187,10 +189,10 @@ public class HomeAccountsExpandableAdapter
         } else {
             QueryAccountBills total = mTotalsByType.get(accountType);
             if (total != null) {
-                String totalDisplay = mCurrencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(total.getTotalBaseConvRate()));
+                String totalDisplay = mHideBalances ? "****" : mCurrencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(total.getTotalBaseConvRate()));
                 holder.txtAccountTotal.setText(totalDisplay);
                 if (!mHideReconciled) {
-                    String reconciledDisplay = mCurrencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(total.getReconciledBaseConvRate()));
+                    String reconciledDisplay = mHideBalances ? "****" : mCurrencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(total.getReconciledBaseConvRate()));
                     holder.txtAccountReconciled.setText(reconciledDisplay);
                 }
                 holder.txtAccountName.setText(total.getAccountName());
@@ -331,27 +333,27 @@ public class HomeAccountsExpandableAdapter
             }
             if (holder.txtCashBalance != null) {
                 holder.txtCashBalance.setTypeface(null, Typeface.NORMAL);
-                holder.txtCashBalance.setText(mCurrencyService.getBaseCurrencyFormatted(summary.cashBalance));
+                holder.txtCashBalance.setText(mHideBalances ? "****" : mCurrencyService.getBaseCurrencyFormatted(summary.cashBalance));
             }
             if (holder.txtReconciled != null) {
                 if (mHideReconciled) {
                     holder.txtReconciled.setVisibility(View.GONE);
                 } else {
                     holder.txtReconciled.setVisibility(View.VISIBLE);
-                    holder.txtReconciled.setText(mCurrencyService.getBaseCurrencyFormatted(summary.reconciledCash));
+                    holder.txtReconciled.setText(mHideBalances ? "****" : mCurrencyService.getBaseCurrencyFormatted(summary.reconciledCash));
                 }
             }
             if (holder.txtMarketValue != null) {
                 holder.txtMarketValue.setTypeface(null, Typeface.NORMAL);
-                holder.txtMarketValue.setText(mCurrencyService.getBaseCurrencyFormatted(summary.marketValue));
+                holder.txtMarketValue.setText(mHideBalances ? "****" : mCurrencyService.getBaseCurrencyFormatted(summary.marketValue));
             }
             if (holder.txtInvested != null) {
                 holder.txtInvested.setTypeface(null, Typeface.NORMAL);
-                holder.txtInvested.setText(mCurrencyService.getBaseCurrencyFormatted(summary.invested));
+                holder.txtInvested.setText(mHideBalances ? "****" : mCurrencyService.getBaseCurrencyFormatted(summary.invested));
             }
             if (holder.txtGainLoss != null) {
                 holder.txtGainLoss.setTypeface(null, Typeface.NORMAL);
-                holder.txtGainLoss.setText(formatGainLoss(summary.gainLoss, summary.invested));
+                holder.txtGainLoss.setText(mHideBalances ? "****" : formatGainLoss(summary.gainLoss, summary.invested));
                 int gainLossColor = summary.gainLoss.toDouble() < 0
                         ? ContextCompat.getColor(mContext, R.color.red)
                         : ContextCompat.getColor(mContext, R.color.green);
@@ -359,7 +361,7 @@ public class HomeAccountsExpandableAdapter
             }
         } else {
             // import formatted
-            String value = mCurrencyService.getCurrencyFormatted(account.getCurrencyId(), MoneyFactory.fromDouble(account.getTotal()));
+            String value = mHideBalances ? "****" : mCurrencyService.getCurrencyFormatted(account.getCurrencyId(), MoneyFactory.fromDouble(account.getTotal()));
             // set amount value
             holder.txtAccountTotal.setText(value);
 
@@ -367,7 +369,7 @@ public class HomeAccountsExpandableAdapter
             if(mHideReconciled) {
                 holder.txtAccountReconciled.setVisibility(View.GONE);
             } else {
-                value = mCurrencyService.getCurrencyFormatted(account.getCurrencyId(), MoneyFactory.fromDouble(account.getReconciled()));
+                value = mHideBalances ? "****" : mCurrencyService.getCurrencyFormatted(account.getCurrencyId(), MoneyFactory.fromDouble(account.getReconciled()));
                 holder.txtAccountReconciled.setText(value);
             }
         }

@@ -50,6 +50,7 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
@@ -62,6 +63,7 @@ import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAccountBills;
@@ -126,6 +128,7 @@ public class HomeFragment
 
     private CurrencyService mCurrencyService;
     private boolean mHideReconciled;
+    private boolean mHideBalances;
 
     // This is the collapsible list of account groups with accounts.
     private ExpandableListView mExpandableListView;
@@ -174,6 +177,14 @@ public class HomeFragment
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
                 old_onCreateOptionsMenu(menu, menuInflater);
+
+                MenuItem hideBalancesItem = menu.findItem(R.id.menu_hide_balances);
+                if (hideBalancesItem != null) {
+                    UIHelper uiHelper = new UIHelper(getActivity());
+                    hideBalancesItem.setIcon(uiHelper.getIcon(mHideBalances ?
+                            GoogleMaterial.Icon.gmd_visibility_off : GoogleMaterial.Icon.gmd_visibility));
+                    hideBalancesItem.setTitle(mHideBalances ? R.string.show_balances : R.string.hide_balances);
+                }
             }
 
             @Override
@@ -320,7 +331,7 @@ public class HomeFragment
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         if (loader.getId() == LOADER_ACCOUNT_BILLS) {
-            txtTotalAccounts.setText(mCurrencyService.getBaseCurrencyFormatted(MoneyFactory.fromString("0")));
+            txtTotalAccounts.setText(mHideBalances ? "****" : mCurrencyService.getBaseCurrencyFormatted(MoneyFactory.fromString("0")));
             setListViewAccountBillsVisible(false);
             mAccountsByType.clear();
             mTotalsByType.clear();
@@ -355,13 +366,13 @@ public class HomeFragment
                 TextView txtDifference = getActivity().findViewById(R.id.textViewDifference);
                 // set value
                 if (txtIncome != null)
-                    txtIncome.setText(mCurrencyService.getCurrencyFormatted(mCurrencyService.getBaseCurrencyId(),
+                    txtIncome.setText(mHideBalances ? "****" : mCurrencyService.getCurrencyFormatted(mCurrencyService.getBaseCurrencyId(),
                             MoneyFactory.fromDouble(income)));
                 if (txtExpenses != null)
-                    txtExpenses.setText(mCurrencyService.getCurrencyFormatted(mCurrencyService.getBaseCurrencyId(),
+                    txtExpenses.setText(mHideBalances ? "****" : mCurrencyService.getCurrencyFormatted(mCurrencyService.getBaseCurrencyId(),
                             MoneyFactory.fromDouble(Math.abs(expenses))));
                 if (txtDifference != null)
-                    txtDifference.setText(mCurrencyService.getCurrencyFormatted(mCurrencyService.getBaseCurrencyId(),
+                    txtDifference.setText(mHideBalances ? "****" : mCurrencyService.getCurrencyFormatted(mCurrencyService.getBaseCurrencyId(),
                             MoneyFactory.fromDouble(income - Math.abs(expenses))));
                 // manage progressbar
                 final ProgressBar barIncome = getActivity().findViewById(R.id.progressBarIncome);
@@ -400,6 +411,18 @@ public class HomeFragment
 
         if (item.getItemId() == R.id.menu_search) {
             startActivity(new Intent(getActivity(), SearchActivity.class));
+            return true;
+        } else if (item.getItemId() == R.id.menu_hide_balances) {
+            mHideBalances = !mHideBalances;
+            new AppSettings(getActivity()).getLookAndFeelSettings().setHideBalances(mHideBalances);
+
+            UIHelper uiHelper = new UIHelper(getActivity());
+            item.setIcon(uiHelper.getIcon(mHideBalances ?
+                    GoogleMaterial.Icon.gmd_visibility_off : GoogleMaterial.Icon.gmd_visibility));
+            item.setTitle(mHideBalances ? R.string.show_balances : R.string.hide_balances);
+
+            // Refresh the loaders to update the UI
+            startLoaders();
             return true;
         }
 
@@ -615,10 +638,10 @@ public class HomeFragment
         // remove footer
         mExpandableListView.removeFooterView(linearFooter);
         // set text
-        txtTotalAccounts.setText(mCurrencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(curTotal)));
+        txtTotalAccounts.setText(mHideBalances ? "****" : mCurrencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(curTotal)));
         txtFooterSummary.setText(txtTotalAccounts.getText());
         if(!mHideReconciled) {
-            txtFooterSummaryReconciled.setText(mCurrencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(curReconciled)));
+            txtFooterSummaryReconciled.setText(mHideBalances ? "****" : mCurrencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(curReconciled)));
         }
         // add footer
         mExpandableListView.addFooterView(linearFooter, null, false);
@@ -846,7 +869,7 @@ public class HomeFragment
 
         // create adapter
         HomeAccountsExpandableAdapter expandableAdapter = new HomeAccountsExpandableAdapter(getActivity(),
-                mAccountTypes, mAccountsByType, mTotalsByType, mHideReconciled);
+                mAccountTypes, mAccountsByType, mTotalsByType, mHideReconciled, mHideBalances);
         // set adapter and shown
         mExpandableListView.setAdapter(expandableAdapter);
 
@@ -924,6 +947,7 @@ public class HomeFragment
     private void refreshSettings() {
         AppSettings settings = new AppSettings(getActivity());
         mHideReconciled = settings.getLookAndFeelSettings().getHideReconciledAmounts();
+        mHideBalances = settings.getLookAndFeelSettings().getHideBalances();
 
         if (txtFooterSummaryReconciled != null) {
             txtFooterSummaryReconciled.setVisibility(mHideReconciled ? View.GONE : View.VISIBLE);
