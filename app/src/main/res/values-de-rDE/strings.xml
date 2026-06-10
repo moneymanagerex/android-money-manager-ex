@@ -879,4 +879,5 @@
     <string name="sync_setup_complete">Sync-Einrichtung abgeschlossen!</string>
     <string name="sync_failed">"Sync fehlgeschlagen: "</string>
     <string name="sync_your_data_with_pocketbase_cloud">Daten mit PocketBase Cloud synchronisieren</string>
+    <!-- Show & Hide Balance -->
 </resources>

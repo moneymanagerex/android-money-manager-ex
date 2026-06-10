@@ -827,4 +827,5 @@
     <string name="currency_save_error">Errore durante l\'inserimento della valuta. Probabilmente la valuta %s è già definita.</string>
     <string name="menu_cashflow_24_months">Vista 24 mesi</string>
     <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>
