@@ -82,6 +82,17 @@ public class LookFeelPreferenceFragment
             });
         }
 
+        // Hide balances setting
+
+        final SwitchPreferenceCompat chkHideBalances = findPreference(getString(R.string.pref_hide_balances));
+        if (chkHideBalances != null) {
+            chkHideBalances.setOnPreferenceChangeListener((preference, newValue) -> {
+                settings.setHideBalances((Boolean) newValue);
+                MainActivity.setRestartActivity(true);
+                return true;
+            });
+        }
+
         // Hide reconciled amounts setting.
 
         final SwitchPreferenceCompat chkHideReconciled = findPreference(getString(

@@ -50,6 +50,7 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
@@ -62,6 +63,7 @@ import com.money.manager.ex.common.events.AmountEnteredEvent;
 import com.money.manager.ex.core.ContextMenuIds;
 import com.money.manager.ex.core.InfoKeys;
 import com.money.manager.ex.core.TransactionTypes;
+import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.core.database.DatabaseManager;
 import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.QueryAccountBills;
@@ -178,6 +180,9 @@ public class HomeFragment
 
                 MenuItem hideBalancesItem = menu.findItem(R.id.menu_hide_balances);
                 if (hideBalancesItem != null) {
+                    UIHelper uiHelper = new UIHelper(getActivity());
+                    hideBalancesItem.setIcon(uiHelper.getIcon(mHideBalances ?
+                            GoogleMaterial.Icon.gmd_visibility_off : GoogleMaterial.Icon.gmd_visibility));
                     hideBalancesItem.setTitle(mHideBalances ? R.string.show_balances : R.string.hide_balances);
                 }
             }
@@ -410,7 +415,12 @@ public class HomeFragment
         } else if (item.getItemId() == R.id.menu_hide_balances) {
             mHideBalances = !mHideBalances;
             new AppSettings(getActivity()).getLookAndFeelSettings().setHideBalances(mHideBalances);
+
+            UIHelper uiHelper = new UIHelper(getActivity());
+            item.setIcon(uiHelper.getIcon(mHideBalances ?
+                    GoogleMaterial.Icon.gmd_visibility_off : GoogleMaterial.Icon.gmd_visibility));
             item.setTitle(mHideBalances ? R.string.show_balances : R.string.hide_balances);
+
             // Refresh the loaders to update the UI
             startLoaders();
             return true;
