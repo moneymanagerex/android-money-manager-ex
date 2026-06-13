@@ -316,13 +316,29 @@ public class InvestmentTransactionEditActivity
         // Handle action bar item clicks here. The action bar will
         // automatically e clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        long id = item.getItemId();
+        int id = item.getItemId();
 
-        if (id == MenuHelper.save) {
+        if (id == android.R.id.home) {
+            return onActionCancelClick();
+        } else if (id == MenuHelper.save) {
             return onActionDoneClick();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onActionCancelClick() {
+        if (mCommon != null) {
+            return mCommon.onActionCancelClick();
+        }
+        finish();
+        return true;
+    }
+
+    @Override
+    public boolean onHandleOnBackPressed() {
+        return onActionCancelClick();
     }
 
     @Override
@@ -338,6 +354,9 @@ public class InvestmentTransactionEditActivity
     }
 
     public void setDirty(boolean dirty) {
+        if (mCommon != null) {
+            mCommon.setDirty(dirty);
+        }
     }
 
     private void onNumSharesClick() {
