@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.R;
@@ -128,6 +129,8 @@ public class HomeAccountsExpandableAdapter
                 holder.txtAccountName = rowView.findViewById(R.id.textViewItemAccountName);
                 holder.txtAccountName.setTypeface(null, Typeface.BOLD);
                 holder.imgAccountType = rowView.findViewById(R.id.imageViewAccountType);
+                holder.imgCashBalance = rowView.findViewById(R.id.imageViewCashBalance);
+                holder.imgMarketValue = rowView.findViewById(R.id.imageViewMarketValue);
                 holder.txtCashBalance = rowView.findViewById(R.id.textViewCashBalance);
                 holder.txtReconciled = rowView.findViewById(R.id.textViewReconciled);
                 holder.txtMarketValue = rowView.findViewById(R.id.textViewMarketValue);
@@ -165,6 +168,18 @@ public class HomeAccountsExpandableAdapter
             holder.imgAccountType.setVisibility(View.VISIBLE);
             holder.imgAccountType.setImageDrawable(
                     uiHelper.getIcon(MMXIconFont.Icon.mmx_briefcase).sizeDp(iconSize).color(iconColor));
+            
+            // Set icons for Cash Balance and Market Value
+            int smallIconSize = 14;
+            if (holder.imgCashBalance != null) {
+                holder.imgCashBalance.setImageDrawable(
+                        uiHelper.getIcon(GoogleMaterial.Icon.gmd_account_balance_wallet).sizeDp(smallIconSize).color(iconColor));
+            }
+            if (holder.imgMarketValue != null) {
+                holder.imgMarketValue.setImageDrawable(
+                        uiHelper.getIcon(GoogleMaterial.Icon.gmd_trending_up).sizeDp(smallIconSize).color(iconColor));
+            }
+
             holder.txtCashBalance.setTypeface(null, Typeface.BOLD);
             holder.txtCashBalance.setText(mHideBalances ? "****" : mCurrencyService.getBaseCurrencyFormatted(summary.cashBalance));
             if (holder.txtReconciled != null) {
@@ -303,6 +318,8 @@ public class HomeAccountsExpandableAdapter
             if (investmentAccount) {
                 holder.imgAccountType = rowView.findViewById(R.id.imageViewAccountType);
                 holder.imgAccountType.setVisibility(View.INVISIBLE);
+                holder.imgCashBalance = rowView.findViewById(R.id.imageViewCashBalance);
+                holder.imgMarketValue = rowView.findViewById(R.id.imageViewMarketValue);
                 holder.txtCashBalance = rowView.findViewById(R.id.textViewCashBalance);
                 holder.txtReconciled = rowView.findViewById(R.id.textViewReconciled);
                 holder.txtMarketValue = rowView.findViewById(R.id.textViewMarketValue);
@@ -331,6 +348,20 @@ public class HomeAccountsExpandableAdapter
             if (holder.txtAccountName != null) {
                 holder.txtAccountName.setTypeface(null, Typeface.NORMAL);
             }
+
+            UIHelper uiHelper = new UIHelper(getContext());
+            int smallIconSize = 14;
+            int iconColor = uiHelper.getSecondaryTextColor();
+
+            if (holder.imgCashBalance != null) {
+                holder.imgCashBalance.setImageDrawable(
+                        uiHelper.getIcon(GoogleMaterial.Icon.gmd_account_balance_wallet).sizeDp(smallIconSize).color(iconColor));
+            }
+            if (holder.imgMarketValue != null) {
+                holder.imgMarketValue.setImageDrawable(
+                        uiHelper.getIcon(GoogleMaterial.Icon.gmd_trending_up).sizeDp(smallIconSize).color(iconColor));
+            }
+
             if (holder.txtCashBalance != null) {
                 holder.txtCashBalance.setTypeface(null, Typeface.NORMAL);
                 holder.txtCashBalance.setText(mHideBalances ? "****" : mCurrencyService.getBaseCurrencyFormatted(summary.cashBalance));
@@ -408,6 +439,8 @@ public class HomeAccountsExpandableAdapter
         TextView txtInvested;
         TextView txtGainLoss;
         ImageView imgAccountType;
+        ImageView imgCashBalance;
+        ImageView imgMarketValue;
         boolean isInvestmentLayout;
     }
 
