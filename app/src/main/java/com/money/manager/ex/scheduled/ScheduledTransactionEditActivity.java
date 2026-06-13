@@ -217,7 +217,7 @@ public class ScheduledTransactionEditActivity
 
     @Override
     public boolean onHandleOnBackPressed() {
-        return !onActionCancelClick();
+        return onActionCancelClick();
     }
 
 //    @Override
