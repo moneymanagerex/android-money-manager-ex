@@ -66,14 +66,15 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
-            <com.money.manager.ex.view.RobotoTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/cash_balance"
+            <ImageView
+                android:id="@+id/imageViewCashBalance"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginRight="4dp"
                 android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp" />
+                android:layout_marginLeft="5dp"
+                android:contentDescription="@string/cash_balance" />
 
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewCashBalance"
@@ -100,14 +101,15 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
-            <com.money.manager.ex.view.RobotoTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/market_value"
+            <ImageView
+                android:id="@+id/imageViewMarketValue"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginRight="4dp"
                 android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp" />
+                android:layout_marginLeft="5dp"
+                android:contentDescription="@string/market_value" />
 
             <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewMarketValue"
