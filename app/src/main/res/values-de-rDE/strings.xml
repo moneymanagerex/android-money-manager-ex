@@ -883,6 +883,4 @@
     <!-- Show & Hide Balance -->
     <string name="show_balances">Kontostände anzeigen</string>
     <string name="hide_balances">Kontostände ausblenden</string>
-    <string name="pref_hide_balances_title">Kontostände ausblenden</string>
-    <string name="pref_hide_balances_summary">Kontostände auf den Hauptbildschirmen ausblenden.</string>
 </resources>
