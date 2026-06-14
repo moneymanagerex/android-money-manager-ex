@@ -313,6 +313,7 @@
     <string name="title_activity_general_report">Báo cáo tổng hợp</string>
     <string name="menu_report_income_vs_expenses">Thu nhập Vs Chi phí</string>
     <string name="menu_report_cashflow">Dòng tiền</string>
+    <string name="asset_current_value">Giá trị hiện tại</string>
     <string name="total">Tổng cộng</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Tất cả thời gian</string>

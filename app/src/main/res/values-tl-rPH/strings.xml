@@ -263,6 +263,7 @@
     <string name="month">Buwan</string>
     <string name="year">Taon</string>
     <string name="menu_report_income_vs_expenses">Kita Vs Gastos</string>
+    <string name="asset_current_value">Kasalukuyang Halaga</string>
     <string name="total">Kabuuan</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Buong Kasaysayan</string>

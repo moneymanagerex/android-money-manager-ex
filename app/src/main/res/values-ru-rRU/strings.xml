@@ -315,6 +315,7 @@
     <string name="menu_report_income_vs_expenses">Доход/Расход</string>
     <string name="menu_report_cashflow">Движение средств</string>
     <string name="menu_report_summary_of_accounts">Сводка по счетам</string>
+    <string name="asset_current_value">Текущее значение</string>
     <string name="total">Итого</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">За все время</string>

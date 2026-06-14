@@ -304,6 +304,7 @@
     <string name="title_activity_general_report">Informe general</string>
     <string name="menu_report_income_vs_expenses">Ingresos Vs Gastos</string>
     <string name="menu_report_cashflow">Flujo de caja</string>
+    <string name="asset_current_value">Valor actual</string>
     <string name="total">Total</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Tiempo Total</string>

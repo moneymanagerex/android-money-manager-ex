@@ -315,6 +315,7 @@
     <string name="menu_report_income_vs_expenses">Prihod/Troškovi</string>
     <string name="menu_report_cashflow">Novčani tijek</string>
     <string name="menu_report_summary_of_accounts">Sažetak računa</string>
+    <string name="asset_current_value">Trenutačna vrijednost</string>
     <string name="total">Ukupno</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Svo vrijeme</string>
