@@ -122,6 +122,7 @@ public class HomeFragment
     private static final int LOADER_INCOME_EXPENSES = 4;
 
     private static final String TAG_BALANCE_ACCOUNT = "HomeFragment:BalanceAccount";
+    private static final String STATE_HIDE_BALANCES = "HomeFragment:HideBalances";
     private static final int REQUEST_BALANCE_ACCOUNT = 1;
 
     @Inject Lazy<InfoRepositorySql> infoRepositorySqlLazy;
@@ -129,6 +130,7 @@ public class HomeFragment
     private CurrencyService mCurrencyService;
     private boolean mHideReconciled;
     private boolean mHideBalances;
+    private boolean mHideBalancesSetManually = false;
 
     // This is the collapsible list of account groups with accounts.
     private ExpandableListView mExpandableListView;
@@ -166,6 +168,10 @@ public class HomeFragment
         // restore number input binaryDialog reference, if any
         if (savedInstanceState != null) {
             this.accountBalancedId = savedInstanceState.getLong(TAG_BALANCE_ACCOUNT);
+            if (savedInstanceState.containsKey(STATE_HIDE_BALANCES)) {
+                mHideBalances = savedInstanceState.getBoolean(STATE_HIDE_BALANCES);
+                mHideBalancesSetManually = true;
+            }
         }
     }
 
@@ -182,7 +188,7 @@ public class HomeFragment
                 if (hideBalancesItem != null) {
                     UIHelper uiHelper = new UIHelper(getActivity());
                     hideBalancesItem.setIcon(uiHelper.getIcon(mHideBalances ?
-                            GoogleMaterial.Icon.gmd_visibility_off : GoogleMaterial.Icon.gmd_visibility));
+                            GoogleMaterial.Icon.gmd_visibility : GoogleMaterial.Icon.gmd_visibility_off));
                     hideBalancesItem.setTitle(mHideBalances ? R.string.show_balances : R.string.hide_balances);
                 }
             }
@@ -414,11 +420,11 @@ public class HomeFragment
             return true;
         } else if (item.getItemId() == R.id.menu_hide_balances) {
             mHideBalances = !mHideBalances;
-            new AppSettings(getActivity()).getLookAndFeelSettings().setHideBalances(mHideBalances);
+            mHideBalancesSetManually = true;
 
             UIHelper uiHelper = new UIHelper(getActivity());
             item.setIcon(uiHelper.getIcon(mHideBalances ?
-                    GoogleMaterial.Icon.gmd_visibility_off : GoogleMaterial.Icon.gmd_visibility));
+                    GoogleMaterial.Icon.gmd_visibility : GoogleMaterial.Icon.gmd_visibility_off));
             item.setTitle(mHideBalances ? R.string.show_balances : R.string.hide_balances);
 
             // Refresh the loaders to update the UI
@@ -543,6 +549,7 @@ public class HomeFragment
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putLong(TAG_BALANCE_ACCOUNT, this.accountBalancedId);
+        outState.putBoolean(STATE_HIDE_BALANCES, mHideBalances);
     }
 
     // Events
@@ -947,7 +954,10 @@ public class HomeFragment
     private void refreshSettings() {
         AppSettings settings = new AppSettings(getActivity());
         mHideReconciled = settings.getLookAndFeelSettings().getHideReconciledAmounts();
-        mHideBalances = settings.getLookAndFeelSettings().getHideBalances();
+        
+        if (!mHideBalancesSetManually) {
+            mHideBalances = settings.getLookAndFeelSettings().getHideBalances();
+        }
 
         if (txtFooterSummaryReconciled != null) {
             txtFooterSummaryReconciled.setVisibility(mHideReconciled ? View.GONE : View.VISIBLE);
