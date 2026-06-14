@@ -350,7 +350,7 @@
     <string name="menu_report_summary_of_stocks">Summary of Stocks</string>
 	<string name="menu_report_summary_of_assets">Summary of Assets</string>
     <string name="asset_name">Asset Name</string>
-    <string name="asset_type">Asset Yype</string> 
+    <string name="asset_type">Asset Type</string> 
 	<string name="asset_initial_value">Initial Value</string>
     <string name="asset_current_value">Current Value</string>
     <string name="asset_rate_percent">Rate %</string>	
