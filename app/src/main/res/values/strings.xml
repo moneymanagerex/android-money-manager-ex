@@ -989,6 +989,6 @@
 	<!-- Show & Hide Balance -->
     <string name="show_balances">Show Balances</string>
     <string name="hide_balances">Hide Balances</string>
-	<string name="pref_hide_balances_title">Hide Balances</string>
-    <string name="pref_hide_balances_summary">Hide account balances on the main screens.</string>
+	<string name="pref_hide_balances_title">Hide Balances by default</string>
+    <string name="pref_hide_balances_summary">Show/Hide account balances on the main screens by default.</string>
 </resources>
