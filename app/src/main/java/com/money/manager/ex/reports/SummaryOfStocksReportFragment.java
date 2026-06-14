@@ -200,7 +200,10 @@ public class SummaryOfStocksReportFragment extends Fragment {
         Money marketValue = stock.getCurrentPrice().multiply(stock.getNumberOfShares());
         Money totalCost = realizedGainLoss.investedCost;
         Money commission = realizedGainLoss.totalCommission;
-        Money unrealizedGainLoss = realizedGainLoss.openCostBasis.toDouble() <= 0.0
+        // Only fully-closed positions (no shares held) have no unrealized gain/loss.
+        // A position with a zero cost basis but positive shares still has unrealized
+        // gain/loss equal to its market value, so guard on shares rather than cost basis.
+        Money unrealizedGainLoss = shares.toDouble() <= 0.0
             ? MoneyFactory.fromDouble(0)
             : marketValue.subtract(realizedGainLoss.openCostBasis);
 
