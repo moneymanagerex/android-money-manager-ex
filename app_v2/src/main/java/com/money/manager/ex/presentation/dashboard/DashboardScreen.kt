@@ -1,5 +1,10 @@
 package com.money.manager.ex.presentation.dashboard
 
+import android.content.Intent
+import android.net.Uri
+import android.provider.OpenableColumns
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -22,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,6 +47,36 @@ fun DashboardScreen(
     val uiState by viewModel.uiState.collectAsState()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+
+    // Launcher for selecting a database file
+    val filePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument(),
+        onResult = { uri: Uri? ->
+            uri?.let {
+                // Persist permission to access the file even after app restart
+                try {
+                    context.contentResolver.takePersistableUriPermission(
+                        it,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                    )
+                } catch (e: Exception) {
+                    // Fallback or log if persistable permission cannot be granted
+                }
+                
+                // Extract filename
+                val fileName = context.contentResolver.query(it, null, null, null, null)?.use { cursor ->
+                    val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                    if (cursor.moveToFirst()) {
+                        cursor.getString(nameIndex)
+                    } else null
+                } ?: "Unknown Database"
+                
+                viewModel.onDatabaseSelected(it.toString(), fileName)
+                scope.launch { drawerState.close() }
+            }
+        }
+    )
     
     val lightGreen = Color(0xFFE8F5E9)
     val darkGreen = Color(0xFF00897B)
@@ -53,6 +89,10 @@ fun DashboardScreen(
                 drawerContainerColor = Color.White
             ) {
                 DashboardDrawerContent(
+                    databaseName = uiState.databaseName,
+                    onOpenDatabase = { 
+                        filePickerLauncher.launch(arrayOf("*/*"))
+                    },
                     onClose = { scope.launch { drawerState.close() } }
                 )
             }
@@ -140,6 +180,8 @@ fun DashboardScreen(
 
 @Composable
 fun DashboardDrawerContent(
+    databaseName: String,
+    onOpenDatabase: () -> Unit,
     onClose: () -> Unit
 ) {
     val darkGreen = Color(0xFF00897B)
@@ -188,6 +230,13 @@ fun DashboardDrawerContent(
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold
                     )
+                    Text(
+                        text = "FINANCIAL PRO",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = darkGreen,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 1.sp
+                    )
                 }
             }
             
@@ -216,7 +265,7 @@ fun DashboardDrawerContent(
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    text = "local_main.db",
+                    text = databaseName,
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color(0xFF455A64)
                 )
@@ -239,7 +288,8 @@ fun DashboardDrawerContent(
         DrawerMenuItem(
             icon = Icons.Default.FolderOpen,
             label = "Apri database",
-            onClick = { /* TODO */ }
+            isSelected = true,
+            onClick = onOpenDatabase
         )
     }
 }
@@ -248,6 +298,7 @@ fun DashboardDrawerContent(
 fun DrawerMenuItem(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
     label: String,
+    isSelected: Boolean = false,
     onClick: () -> Unit
 ) {
     val darkGreen = Color(0xFF00897B)
@@ -256,7 +307,7 @@ fun DrawerMenuItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() },
-        color = Color.Transparent,
+        color = if (isSelected) Color(0xFFE8F5E9) else Color.Transparent,
         shape = RoundedCornerShape(8.dp)
     ) {
         Row(
@@ -266,16 +317,23 @@ fun DrawerMenuItem(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = Color(0xFF455A64)
+                tint = if (isSelected) darkGreen else Color(0xFF455A64)
             )
             Spacer(modifier = Modifier.width(20.dp))
             Text(
                 text = label,
                 style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.Normal,
-                color = Color(0xFF455A64),
+                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                color = if (isSelected) darkGreen else Color(0xFF455A64),
                 modifier = Modifier.weight(1f)
             )
+            if (isSelected) {
+                Icon(
+                    imageVector = Icons.Default.ExpandMore,
+                    contentDescription = null,
+                    tint = darkGreen
+                )
+            }
         }
     }
 }
@@ -417,7 +475,8 @@ fun DashboardScreenPreview() {
                 category = "Cat 2"
             )
         ),
-        isPeriodMenuVisible = false
+        isPeriodMenuVisible = false,
+        databaseName = "local_main.db"
     )
     MmexTheme {
         DashboardContent(uiState = mockState)

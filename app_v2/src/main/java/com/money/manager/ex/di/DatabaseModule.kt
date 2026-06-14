@@ -1,9 +1,9 @@
 package com.money.manager.ex.di
 
 import android.content.Context
-import androidx.room.Room
-import com.money.manager.ex.data.local.MmexDatabase
+import com.money.manager.ex.data.local.DatabaseManager
 import com.money.manager.ex.data.local.dao.AccountDao
+import com.money.manager.ex.domain.repository.SettingsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,18 +17,18 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(@ApplicationContext context: Context): MmexDatabase {
-        return Room.databaseBuilder(
-            context,
-            MmexDatabase::class.java,
-            "mmex_v2.db"
-        )
-        // createFromFile() o createFromAsset() verrebbero usati qui per il database legacy
-        .build()
+    fun provideDatabaseManager(
+        @ApplicationContext context: Context,
+        settingsRepository: SettingsRepository
+    ): DatabaseManager {
+        return DatabaseManager(context, settingsRepository)
     }
 
     @Provides
-    fun provideAccountDao(database: MmexDatabase): AccountDao {
-        return database.accountDao()
+    fun provideAccountDao(databaseManager: DatabaseManager): AccountDao? {
+        // This is tricky because AccountDao is needed by repositories, 
+        // but it might not be available yet. 
+        // We'll handle this in the repositories by observing databaseManager.database
+        return null
     }
 }

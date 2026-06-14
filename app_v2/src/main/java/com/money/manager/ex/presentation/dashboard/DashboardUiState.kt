@@ -20,5 +20,6 @@ data class DashboardUiState(
     val currentForecastSummary: PeriodSummary? = null,
     val previousActualSummary: PeriodSummary? = null,
     val recentActivity: List<Transaction> = emptyList(),
+    val databaseName: String = "No database selected",
     val error: String? = null
 )

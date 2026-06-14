@@ -1,11 +1,7 @@
 package com.money.manager.ex.di
 
-import com.money.manager.ex.data.repository.FakeAccountRepositoryImpl
-import com.money.manager.ex.data.repository.FakePeriodSummaryRepositoryImpl
-import com.money.manager.ex.data.repository.FakeTransactionRepositoryImpl
-import com.money.manager.ex.domain.repository.AccountRepository
-import com.money.manager.ex.domain.repository.PeriodSummaryRepository
-import com.money.manager.ex.domain.repository.TransactionRepository
+import com.money.manager.ex.data.repository.*
+import com.money.manager.ex.domain.repository.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -19,7 +15,7 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindAccountRepository(
-        fakeAccountRepositoryImpl: FakeAccountRepositoryImpl
+        accountRepositoryImpl: AccountRepositoryImpl
     ): AccountRepository
 
     @Binds
@@ -33,4 +29,10 @@ abstract class RepositoryModule {
     abstract fun bindPeriodSummaryRepository(
         fakePeriodSummaryRepositoryImpl: FakePeriodSummaryRepositoryImpl
     ): PeriodSummaryRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindSettingsRepository(
+        settingsRepositoryImpl: SettingsRepositoryImpl
+    ): SettingsRepository
 }

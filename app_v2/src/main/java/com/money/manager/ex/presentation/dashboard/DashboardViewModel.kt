@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.money.manager.ex.domain.model.*
 import com.money.manager.ex.domain.repository.AccountRepository
 import com.money.manager.ex.domain.repository.PeriodSummaryRepository
+import com.money.manager.ex.domain.repository.SettingsRepository
 import com.money.manager.ex.domain.repository.TransactionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -18,7 +19,8 @@ import javax.inject.Inject
 class DashboardViewModel @Inject constructor(
     private val accountRepository: AccountRepository,
     private val transactionRepository: TransactionRepository,
-    private val periodSummaryRepository: PeriodSummaryRepository
+    private val periodSummaryRepository: PeriodSummaryRepository,
+    private val settingsRepository: SettingsRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(DashboardUiState())
@@ -45,6 +47,13 @@ class DashboardViewModel @Inject constructor(
         _isPeriodMenuVisible.value = !_isPeriodMenuVisible.value
     }
 
+    fun onDatabaseSelected(path: String, name: String) {
+        viewModelScope.launch {
+            settingsRepository.setDatabasePath(path)
+            settingsRepository.setDatabaseName(name)
+        }
+    }
+
     private fun loadDashboardData() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
@@ -53,9 +62,10 @@ class DashboardViewModel @Inject constructor(
                 accountRepository.getOpenAccounts(),
                 _selectedAccountId,
                 _selectedPeriodType,
-                _isPeriodMenuVisible
-            ) { accounts, selectedId, periodType, menuVisible ->
-                DataParams(accounts, selectedId, periodType, menuVisible)
+                _isPeriodMenuVisible,
+                settingsRepository.getDatabaseName()
+            ) { accounts, selectedId, periodType, menuVisible, dbName ->
+                DataParams(accounts, selectedId, periodType, menuVisible, dbName ?: "No database selected")
             }.flatMapLatest { params ->
                 val dates = calculateDates(params.periodType)
                 
@@ -74,7 +84,8 @@ class DashboardViewModel @Inject constructor(
                         recentActivity = transactions,
                         currentActualSummary = currentActual,
                         currentForecastSummary = currentForecast,
-                        previousActualSummary = previousActual
+                        previousActualSummary = previousActual,
+                        databaseName = params.dbName
                     )
                 }
             }.collect { state ->
@@ -90,7 +101,8 @@ class DashboardViewModel @Inject constructor(
         val accounts: List<Account>,
         val accountId: Int?,
         val periodType: PeriodType,
-        val isMenuVisible: Boolean
+        val isMenuVisible: Boolean,
+        val dbName: String
     )
 
     private data class DateRange(
