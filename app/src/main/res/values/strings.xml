@@ -348,6 +348,12 @@
     <string name="menu_report_cashflow">Cash Flow</string>
     <string name="menu_report_summary_of_accounts">Summary of Accounts</string>
     <string name="menu_report_summary_of_stocks">Summary of Stocks</string>
+	<string name="menu_report_summary_of_assets">Summary of Assets</string>
+    <string name="asset_name">Asset Name</string>
+    <string name="asset_type">Asset Yype</string> 
+	<string name="asset_initial_value">Initial Value</string>
+    <string name="asset_current_value">Current Value</string>
+    <string name="asset_rate_percent">Rate %</string>	
     <string name="report_subtotal">Subtotal</string>
     <string name="report_grand_total">Grand total</string>
     <string name="total">Total</string>

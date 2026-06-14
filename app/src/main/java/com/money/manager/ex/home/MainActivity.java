@@ -69,6 +69,7 @@ import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.about.WhatNewManager;
 import com.money.manager.ex.datalayer.ReportRepository;
 import com.money.manager.ex.domainmodel.Report;
+import com.money.manager.ex.reports.SummaryOfAssetsReportActivity;
 import com.money.manager.ex.reports.cashflow.CashFlowReportActivity;
 import com.money.manager.ex.scheduled.ScheduledTransactionForecastListServices;
 import com.money.manager.ex.settings.DatabaseSettingsFragment;
@@ -688,6 +689,8 @@ public class MainActivity
             startActivity(new Intent(this, SummaryOfAccountsReportActivity.class));
         } else if (itemId == R.id.menu_report_summary_of_stocks) {
             startActivity(new Intent(this, SummaryOfStocksReportActivity.class));
+        } else if (itemId == R.id.menu_report_summary_of_assets) {
+            startActivity(new Intent(this, SummaryOfAssetsReportActivity.class));
         } else if (itemId == R.id.menu_help) {
             startActivity(new Intent(MainActivity.this, HelpActivity.class));
         } else if (itemId == R.id.menu_about) {
@@ -961,6 +964,11 @@ public class MainActivity
         // summary of stocks
         childReports.add(new DrawerMenuItem().withId(R.id.menu_report_summary_of_stocks)
             .withText(getString(R.string.menu_report_summary_of_stocks))
+            .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
+                .color(iconColor)));
+        // summary of assets
+        childReports.add(new DrawerMenuItem().withId(R.id.menu_report_summary_of_assets)
+            .withText(getString(R.string.menu_report_summary_of_assets))
             .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
                 .color(iconColor)));
         // CashFlow
