@@ -272,6 +272,7 @@ Toque para marcar a transação como atrasada</string>
     <string name="month">Mês</string>
     <string name="year">Ano</string>
     <string name="menu_report_income_vs_expenses">Receitas vs Despesas</string>
+    <string name="asset_current_value">Valor atual</string>
     <string name="total">Total</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Desde sempre</string>

@@ -281,6 +281,7 @@
     <string name="month">Місяць</string>
     <string name="year">Рік</string>
     <string name="menu_report_income_vs_expenses">Доходи проти витрат</string>
+    <string name="asset_current_value">Поточне значення</string>
     <string name="total">Всього</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">За весь час</string>

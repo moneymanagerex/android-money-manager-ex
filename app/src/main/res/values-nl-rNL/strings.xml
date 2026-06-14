@@ -328,6 +328,7 @@
     <string name="menu_report_cashflow">Cash Flow</string>
     <string name="menu_report_summary_of_accounts">Samenvatting van rekeningen</string>
     <string name="menu_report_summary_of_stocks">Overzicht van aandelen</string>
+    <string name="asset_current_value">Huidige waarde</string>
     <string name="report_subtotal">Subtotaal</string>
     <string name="report_grand_total">Totaalbedrag</string>
     <string name="total">Totaal</string>

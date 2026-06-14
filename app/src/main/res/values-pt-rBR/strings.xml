@@ -313,6 +313,7 @@
     <string name="title_activity_general_report">Relatório Geral</string>
     <string name="menu_report_income_vs_expenses">Receitas x Despesas</string>
     <string name="menu_report_cashflow">Fluxo de Caixa</string>
+    <string name="asset_current_value">Valor atual</string>
     <string name="total">Total</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Sempre</string>

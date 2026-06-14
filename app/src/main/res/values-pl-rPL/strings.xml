@@ -276,6 +276,7 @@
     <string name="title_activity_general_report">Sprawozdanie ogólne</string>
     <string name="menu_report_income_vs_expenses">Przychody a wydatki</string>
     <string name="menu_report_cashflow">Przepływ Pieniędzy</string>
+    <string name="asset_current_value">Bieżąca wartość</string>
     <string name="total">Łącznie</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Wszystko</string>
