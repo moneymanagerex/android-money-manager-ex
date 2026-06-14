@@ -193,7 +193,7 @@ public class FormatUtilities {
         value = value.truncate(decimals);
 
         // set format
-        DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols();
+        DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols(Locale.ROOT);
         // getDecimalSeparator()
         if (!(TextUtils.isEmpty(decimalSeparator))) {
             formatSymbols.setDecimalSeparator(decimalSeparator.charAt(0));
@@ -244,7 +244,7 @@ public class FormatUtilities {
 
         // Separators
 
-        DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols();
+        DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols(Locale.ROOT);
         if (!(TextUtils.isEmpty(decimalSeparator))) {
             formatSymbols.setDecimalSeparator(decimalSeparator.charAt(0));
         }
