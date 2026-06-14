@@ -328,7 +328,12 @@
     <string name="menu_report_cashflow">Geldfluss</string>
     <string name="menu_report_summary_of_accounts">Kontenübersicht</string>
     <string name="menu_report_summary_of_stocks">Wertpapierübersicht</string>
+    <string name="menu_report_summary_of_assets">Vermögenswertübersicht</string>
+    <string name="asset_name">Vermögenswertname</string>
+    <string name="asset_type">Vermögensart</string>
+    <string name="asset_initial_value">Anfangswert</string>
     <string name="asset_current_value">Aktueller Wert</string>
+    <string name="asset_rate_percent">Rate %</string>
     <string name="report_subtotal">Zwischensumme</string>
     <string name="report_grand_total">Gesamtsumme</string>
     <string name="total">Gesamt</string>
