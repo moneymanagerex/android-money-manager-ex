@@ -117,19 +117,20 @@ public class PortfolioListAdapter extends ListAdapter<Stock, PortfolioListAdapte
 
         // Column 4: Unrealized G/L
         Money unrealizedAmount = calculateUnrealizedGainLoss(stock);
-        double unrealizedPercent = calculateUnrealizedPercentage(stock);
 
         holder.unrealizedGLAmountTextView.setText(mAccount == null ? "<unknown>" : mCurrencyService.getCurrencyFormatted(mAccount.getCurrencyId(), unrealizedAmount));
-        holder.unrealizedGLPercentTextView.setText(String.format("%.2f%%", unrealizedPercent));
+        holder.unrealizedGLPercentTextView.setText(formatUnrealizedPercentage(stock));
 
         // Column 5: Realized G/L
         RealizedGainLoss realizedGainLoss = mRealizedGainLossByStockId.get(stock.getId());
         Money realizedAmount = realizedGainLoss != null ? realizedGainLoss.amount : MoneyFactory.fromDouble(0);
-        double realizedPercent = realizedGainLoss != null ? realizedGainLoss.percent : 0.0;
         holder.realizedGLAmountTextView.setText(mAccount == null
             ? "<unknown>"
             : mCurrencyService.getCurrencyFormatted(mAccount.getCurrencyId(), realizedAmount));
-        holder.realizedGLPercentTextView.setText(String.format("%.2f%%", realizedPercent));
+        holder.realizedGLPercentTextView.setText(
+            realizedGainLoss != null && realizedGainLoss.hasPercent
+                ? String.format("%.2f%%", realizedGainLoss.percent)
+                : "");
 
         // Zebra striping
         int bgColor = (position % 2 == 0) ? android.R.color.darker_gray : android.R.color.white;
@@ -169,12 +170,15 @@ public class PortfolioListAdapter extends ListAdapter<Stock, PortfolioListAdapte
         return marketValue.subtract(costBasis);
     }
 
-    private double calculateUnrealizedPercentage(Stock stock) {
+    private String formatUnrealizedPercentage(Stock stock) {
         Money costBasis = stock.getValue();
-        if (costBasis.isZero()) return 0.0;
+        // A percentage return is undefined when there is no cost basis (division by
+        // zero), so omit it rather than showing a misleading 0.00%.
+        if (costBasis.isZero()) return "";
         Money marketValue = stock.getCurrentPrice().multiply(stock.getNumberOfShares());
         Money gainLoss = marketValue.subtract(costBasis);
-        return (gainLoss.toDouble() / costBasis.toDouble()) * 100.0;
+        double percent = (gainLoss.toDouble() / costBasis.toDouble()) * 100.0;
+        return String.format("%.2f%%", percent);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -234,10 +238,12 @@ public class PortfolioListAdapter extends ListAdapter<Stock, PortfolioListAdapte
     public static final class RealizedGainLoss {
         public final Money amount;
         public final double percent;
+        public final boolean hasPercent;
 
-        public RealizedGainLoss(@NonNull Money amount, double percent) {
+        public RealizedGainLoss(@NonNull Money amount, double percent, boolean hasPercent) {
             this.amount = amount;
             this.percent = percent;
+            this.hasPercent = hasPercent;
         }
     }
 }

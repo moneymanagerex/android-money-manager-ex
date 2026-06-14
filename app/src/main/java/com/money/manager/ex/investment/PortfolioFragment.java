@@ -767,10 +767,13 @@ public class PortfolioFragment extends BaseRecyclerFragment {
                 }
             }
 
-            double realizedPercent = realizedCostBasis > 0.0
+            // A percentage return is undefined without a realized cost basis (division
+            // by zero), so flag it as absent rather than reporting a misleading 0.00%.
+            boolean hasPercent = realizedCostBasis > 0.0;
+            double realizedPercent = hasPercent
                     ? (realizedAmount.toDouble() / realizedCostBasis) * 100.0
                     : 0.0;
-            return new PortfolioListAdapter.RealizedGainLoss(realizedAmount, realizedPercent);
+            return new PortfolioListAdapter.RealizedGainLoss(realizedAmount, realizedPercent, hasPercent);
         }
 
         private List<TradeData> loadTrades(long stockId) {
@@ -810,7 +813,7 @@ public class PortfolioFragment extends BaseRecyclerFragment {
         }
 
         private PortfolioListAdapter.RealizedGainLoss zeroResult() {
-            return new PortfolioListAdapter.RealizedGainLoss(MoneyFactory.fromDouble(0), 0.0);
+            return new PortfolioListAdapter.RealizedGainLoss(MoneyFactory.fromDouble(0), 0.0, false);
         }
 
         private static final class Position {

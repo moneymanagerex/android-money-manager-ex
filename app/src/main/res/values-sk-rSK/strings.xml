@@ -262,6 +262,7 @@
     <string name="month">Mesiac</string>
     <string name="year">Rok</string>
     <string name="menu_report_income_vs_expenses">Príjmy a výdaje</string>
+    <string name="asset_current_value">Súčasná hodnota</string>
     <string name="total">Celkom</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Za celú dobu</string>

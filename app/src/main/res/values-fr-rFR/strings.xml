@@ -294,6 +294,7 @@
     <string name="title_activity_general_report">Rapport général</string>
     <string name="menu_report_income_vs_expenses">Revenus Vs Dépenses</string>
     <string name="menu_report_summary_of_accounts">Résumé des comptes</string>
+    <string name="asset_current_value">Valeur actuelle</string>
     <string name="total">Total</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Totalité  des opérations </string>
