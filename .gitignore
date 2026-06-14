@@ -47,3 +47,6 @@ session_analytics_to_send
 /app/beta/
 /app/release/
 /app/debug/
+
+# Claude settings
+.claude/

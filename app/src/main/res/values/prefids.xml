@@ -52,6 +52,7 @@
     <string name="pref_dropbox_mode">dropbox2modesync</string>
     <string name="pref_theme">applicationtheme</string>
     <string name="pref_show_transaction">showtransaction</string>
+    <string name="pref_show_transaction_custom">showtransactioncustom</string>
     <string name="pref_type_home">typehome</string>
     <string name="pref_edit_passcode">editpasscode</string>
     <string name="pref_disable_passcode">disablepasscode</string>
