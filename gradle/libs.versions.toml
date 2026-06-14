@@ -22,6 +22,14 @@ retrofit2 = "3.0.0"
 selendroidStandalone = "0.17.0"
 sqlite = "2.6.2"
 compileSdk = "36"
+compose-bom = "2024.12.01"
+androidx-lifecycle = "2.8.7"
+androidx-activity-compose = "1.9.3"
+room = "2.6.1"
+hilt = "2.59.2"
+ksp = "2.0.21-1.0.27"
+kotlin = "2.0.21"
+coroutines = "1.9.0"
 
 [libraries]
 aboutlibraries = { group = "com.mikepenz", name = "aboutlibraries", version.ref = "aboutlibraries" }
@@ -45,6 +53,34 @@ parceler = { group = "org.parceler", name = "parceler", version.ref = "parceler"
 parceler-api = { group = "org.parceler", name = "parceler-api", version.ref = "parceler" }
 picasso = { group = "com.squareup.picasso", name = "picasso", version.ref = "picasso" }
 preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }
+
+# Compose
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activity-compose" }
+
+# Lifecycle & ViewModel
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
+
+# Room
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+
+# Hilt
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+
+# Coroutines
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+
 recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit2" }
 selendroid-standalone = { group = "io.selendroid", name = "selendroid-standalone", version.ref = "selendroidStandalone" }
@@ -54,3 +90,6 @@ sqlite-framework = { group = "androidx.sqlite", name = "sqlite-framework", versi
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 foojay = { id = "org.gradle.toolchains.foojay-resolver-convention", version.ref = "gradleToolchainsFoojayResolverConvention" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

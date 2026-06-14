@@ -24,4 +24,4 @@ plugins {
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-include ':app', ':money', ':MMEX_Icon_Font'
+include ':app', ':money', ':MMEX_Icon_Font', ':app_v2'
