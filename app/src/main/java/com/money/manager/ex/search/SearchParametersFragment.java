@@ -812,6 +812,10 @@ public class SearchParametersFragment
         // Notes
         txtNotes.setText(searchParameters.notes);
 
+        // Tag
+        viewHolder.txtSelectTag.setTag(searchParameters.tagId);
+        viewHolder.txtSelectTag.setText(searchParameters.tagName);
+
         // color
         TransactionColorUtils tsc = new TransactionColorUtils(getContext());
         tsc.initColorControls(viewHolder.viewTextColor,
