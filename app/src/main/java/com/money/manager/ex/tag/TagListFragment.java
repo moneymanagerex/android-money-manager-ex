@@ -140,7 +140,6 @@ public class TagListFragment extends BaseListFragment
 
         }
 
-        if (mAction.equals(Intent.ACTION_PICK) ) {
         if (Intent.ACTION_PICK.equals(mAction)) {
             menu.findItem(R.id.menu_show_inactive).setVisible(false);
         } else {
