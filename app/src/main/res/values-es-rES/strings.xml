@@ -67,6 +67,8 @@
     <string name="auto_sync_via_wifi_summary">Auto sincronizar solo al conectarse a Wi-Fi.</string>
     <string name="sync_on_app_start">Sincronizar al iniciar la aplicación.</string>
     <string name="sync_on_start">Sincronizar al inicio</string>
+    <string name="sync_merge_database">EXPERIMENTAL: Fusionar bases de datos</string>
+    <string name="sync_merge_dialog_msg_format">Fusionando todas las %1$s%2$s</string>
     <!-- Receive SMS strings -->
     <string name="title_sms_auto_trans">Procesar SMS de transacción bancaria</string>
     <string name="summary_sms_auto_trans">Leer el SMS de actualización de la transacción bancaria y crear la transacción automáticamente</string>
@@ -84,6 +86,8 @@
     <string name="account_empty_list">No se encontraron cuentas. Para crear una, pulsar el botón verde con el símbolo más.</string>
     <string name="account_balance">Balance</string>
     <string name="account_reconciled_balance">Balance reconciliado</string>
+    <string name="total_balance">Saldo Total</string>
+    <string name="cash_balance">Saldo de efectivo</string>
     <string name="pie_other">Otros</string>
     <string name="delete_account">Borrar la cuenta</string>
     <string name="account_name">Nombre de la cuenta</string>
@@ -144,6 +148,7 @@
     <string name="amount">Importe</string>
     <string name="total_amount">Importe total</string>
     <string name="deposit">Depósito</string>
+    <string name="buy">Comprar</string>
     <string name="status">Estado</string>
     <string name="status_reconciled">Reconciliada</string>
     <string name="status_void">Nada</string>
@@ -168,6 +173,7 @@
     <string name="about">Acerca de</string>
     <string name="add">Agregar</string>
     <string name="confirmDelete">¿Realmente quiere borrar el registro?</string>
+    <string name="confirm_delete_stock_investment">¿Desea eliminar la compra de acciones?</string>
     <string name="date">Fecha</string>
     <string name="delete">Borrar</string>
     <string name="download">Descargar</string>
@@ -236,6 +242,7 @@
     <string name="bi_weekly">Quincenal</string>
     <string name="monthly">Mensual</string>
     <string name="bi_monthly">Bimestral</string>
+    <string name="quarterly">Trimestral</string>
     <string name="half_year">Semestral</string>
     <string name="yearly">Anual</string>
     <string name="four_months">Cuatro Meses</string>
@@ -304,7 +311,10 @@
     <string name="title_activity_general_report">Informe general</string>
     <string name="menu_report_income_vs_expenses">Ingresos Vs Gastos</string>
     <string name="menu_report_cashflow">Flujo de caja</string>
+    <string name="menu_report_summary_of_stocks">Resumen de acciones</string>
     <string name="asset_current_value">Valor actual</string>
+    <string name="asset_rate_percent">Tasa %</string>
+    <string name="report_subtotal">Subtotal</string>
     <string name="total">Total</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Tiempo Total</string>
@@ -430,6 +440,7 @@
     <string name="donate_in_app_already_donate">Ha colaborado con el desarrollo de MoneyManagerEx para Android con su donación!\n\n Gracias de parte del equipo de desarrollo!</string>
     <string name="donate_in_app_retrieving_status">Recibiendo el estado de sus donaciones desde Google Play. Por favor espere&#8230;</string>
     <string name="donate_in_app_error">No puede usar el pago desde aplicación. Compruebe que está usando la última versión disponible en Play Store.</string>
+    <string name="title_repeating_transaction_process">Nueva transacción programada</string>
     <string name="tools">Herramientas</string>
     <string name="entities">Entidades</string>
     <string name="loading">Cargando&#8230;</string>
@@ -440,6 +451,9 @@
     <string name="sort_order">Ordenar por</string>
     <string name="sort_by_name">Ordenar por nombre</string>
     <string name="sort_by_usage">Ordenar por uso</string>
+    <string name="sort_by_recent">Ordenar por recientes</string>
+    <string name="sort_date_desc">Ordenar por fecha (descendente)</string>
+    <string name="sort_date_asc">Ordenar por fecha (ascendente)</string>
     <string name="choose_sorting">Elija ordenación</string>
     <string name="credit_card">Tarjeta de Crédito</string>
     <string name="cash_accounts">Cuentas en Efectivo</string>
@@ -486,6 +500,7 @@
     <string name="update_prices">Actualizar cotizaciones</string>
     <string name="update_price">Actualizar cotización</string>
     <string name="download_price">Descargar precio</string>
+    <string name="price_history">Historial de precios</string>
     <string name="price_updated">Cotización actualizada</string>
     <string name="all_prices_updated">Todos las cotizaciones fueron actualizadas.</string>
     <string name="download_complete">Descarga completada.</string>
