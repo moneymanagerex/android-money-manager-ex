@@ -1,30 +1,53 @@
-# Linee Guida per l'Implementazione della Sincronizzazione nell'App Android (AMMEX Sync)
+# Synchronization Implementation Guidelines for the Android App (AMMEX Sync)
 
-Questo documento descrive i requisiti tecnici, i casi d'uso e le regole di business che l'applicazione Android (AMMEX) deve implementare nel proprio database e nei servizi di sincronizzazione per integrarsi correttamente con il backend PocketBase e mantenere la piena coerenza dei dati con la versione Desktop.
-
----
-
-## 1. Struttura del Database e Protocollo a Tre Stati
-
-Per evitare loop infiniti di sincronizzazione e tracciare correttamente lo stato dei dati in modalità "offline-first", ogni tabella sincronizzata nel database locale SQLite del dispositivo Android deve contenere tre colonne tecniche aggiuntive:
-1.  **`pb_id` (TEXT):** L'identificativo univoco del record sul server PocketBase (nullo o vuoto per record creati offline e non ancora sincronizzati).
-2.  **`pb_is_dirty` (INTEGER):** Indica lo stato di sincronizzazione locale del record:
-    *   **`0` (Synced):** Il record locale è allineato con il server.
-    *   **`1` (Local Change):** Il record è stato inserito o modificato localmente e deve essere inviato al server.
-    *   **`2` (Cloud Ingress):** Stato temporaneo. Indica che il record viene aggiornato/inserito a seguito di un'operazione di sincronizzazione remota (Pull). Questo stato disattiva i trigger locali per prevenire loop infiniti.
-3.  **`pb_updated_at` (TEXT):** Timestamp dell'ultimo aggiornamento (in formato ISO-8601 UTC).
-
-### Trigger SQLite Locali su Android
-L'app Android deve definire per ciascuna tabella dei trigger SQLite equivalenti a quelli desktop:
-*   **Trigger di INSERT:** Quando un record viene inserito con `pb_is_dirty != 2`, imposta automaticamente `pb_is_dirty = 1` e valorizza `pb_updated_at` con il tempo corrente.
-*   **Trigger di UPDATE:** Quando una colonna non tecnica viene modificata e `pb_is_dirty != 2`, imposta automaticamente `pb_is_dirty = 1` e aggiorna `pb_updated_at`.
-*   **Trigger di DELETE:** Prima di eliminare un record avente un `pb_id` non nullo, inserisce una riga contenente il nome della tabella e il `pb_id` nella tabella di log tecnica `pb_DELETED_RECORDS_LOG`.
+This document describes the technical requirements, use cases, and business rules that the Android application (AMMEX) must implement in its database and synchronization services to correctly integrate with the PocketBase backend and maintain full data consistency with the Desktop version.
 
 ---
 
-## 2. Ordinamento della Sincronizzazione (`SYNC_ORDER`)
+## 1. Database Structure and Three-State Protocol
 
-Per evitare violazioni dei vincoli di chiave esterna (Foreign Key) sia nel database locale SQLite che sulle collezioni di PocketBase, le tabelle devono essere elaborate rigorosamente in sequenza (in ordine crescente per il **Push** e il **Pull**, assicurandosi che le tabelle dipendenti siano aggiornate solo dopo i loro padri):
+To avoid infinite synchronization loops and correctly track data state in an "offline-first" mode, every synchronized table in the local SQLite database of the Android device must contain three additional technical columns:
+
+1. **`pb_id` (TEXT):** The unique identifier of the record on the PocketBase server (null or empty for records created offline and not yet synchronized).
+
+
+2. **`pb_is_dirty` (INTEGER):** Indicates the local synchronization state of the record:
+
+
+* **`0` (Synced):** The local record is aligned with the server.
+
+
+* **`1` (Local Change):** The record has been inserted or modified locally and must be sent to the server.
+
+
+* **`2` (Cloud Ingress):** Temporary state. Indicates that the record is being updated/inserted as a result of a remote synchronization operation (Pull). This state disables local triggers to prevent infinite loops.
+
+
+
+
+3. **`pb_updated_at` (TEXT):** Timestamp of the last update (in ISO-8601 UTC format).
+
+
+
+### Local SQLite Triggers on Android
+
+The Android app must define SQLite triggers for each table equivalent to those on the desktop version:
+
+* **INSERT Trigger:** When a record is inserted with `pb_is_dirty != 2`, it automatically sets `pb_is_dirty = 1` and populates `pb_updated_at` with the current time.
+
+
+* **UPDATE Trigger:** When a non-technical column is modified and `pb_is_dirty != 2`, it automatically sets `pb_is_dirty = 1` and updates `pb_updated_at`.
+
+
+* **DELETE Trigger:** Before deleting a record that has a non-null `pb_id`, it inserts a row containing the table name and the `pb_id` into the technical log table `pb_DELETED_RECORDS_LOG`.
+
+
+
+---
+
+## 2. Synchronization Ordering (`SYNC_ORDER`)
+
+To prevent Foreign Key constraint violations both in the local SQLite database and in PocketBase collections, tables must be processed strictly in sequence (in ascending order for both **Push** and **Pull**, ensuring that dependent tables are updated only after their parent tables):
 
 ```markdown
 1.  INFOTABLE_V1
@@ -32,7 +55,7 @@ Per evitare violazioni dei vincoli di chiave esterna (Foreign Key) sia nel datab
 3.  TAG_V1
 4.  BUDGETYEAR_V1
 5.  CUSTOMFIELD_V1
-6.  CATEGORY_V1 (Autoreferenziale: gestire con cura la gerarchia PARENTID)
+6.  CATEGORY_V1 (Self-referential: handle the PARENTID hierarchy with care)
 7.  PAYEE_V1
 8.  ACCOUNTLIST_V1
 9.  ASSETS_V1
@@ -49,65 +72,138 @@ Per evitare violazioni dei vincoli di chiave esterna (Foreign Key) sia nel datab
 20. TRANSLINK_V1
 21. SHAREINFO_V1
 22. CUSTOMFIELDDATA_V1
+
 ```
 
----
-
-## 3. Protocollo di Gestione del Flusso di PUSH (Locale $\rightarrow$ Server)
-
-La fase di Push invia al server PocketBase tutte le modifiche locali accumulate offline. Per ciascuna tabella (nell'ordine definito al punto 2), estrarre tutti i record aventi `pb_is_dirty = 1` o privi di `pb_id`, ed elaborare ogni riga secondo la logica definita di seguito:
-
-### Scenario A: `pb_id` Vuoto (Record nato in locale)
-1.  **Invio:** Effettuare una richiesta di `CREATE` sul server PocketBase.
-2.  **Esito Positivo (OK):** Salvare il `pb_id` restituito dal server nel record locale e impostare `pb_is_dirty = 0`.
-3.  **Esito Negativo (KO):** Se la creazione fallisce a causa di una violazione della chiave primaria (PK) o di un vincolo di unicità (Unique):
-    *   Se l'errore restituito dal server è `validation_not_unique`, estrarre l'elenco dei campi che sono oggetto della violazione di unicità (es. `REFTYPE`, `REFID`, `TAGID` per `TAGLINK_V1`). Altrimenti, fare riferimento alla chiave primaria (PK) del record.
-    *   Eseguire una query di ricerca sul server PocketBase per trovare un record remoto con la stessa PK o con lo stesso valore per i campi Unique estratti.
-    *   **Se il record remoto viene trovato:** Risolvere il conflitto sostituendo il record locale con quello remoto. Eliminare fisicamente il record locale con la chiave originaria ed inserire il record remoto compilando correttamente il `pb_id`, le colonne collegate e impostando `pb_is_dirty = 0`.
-
-### Scenario B: `pb_id` Non Vuoto (Record già sincronizzato in precedenza)
-1.  **Invio:** Effettuare una richiesta di `UPDATE` sul server PocketBase per il corrispondente `pb_id`.
-2.  **Esito Positivo (OK):** Impostare `pb_is_dirty = 0` sul database locale.
-3.  **Esito Negativo (KO):** Se l'aggiornamento fallisce, significa che il record è stato cancellato dal server (errore 404).
-    *   **Risoluzione:** Provare a ricreare il record sul server PocketBase tramite una chiamata `CREATE` passando esplicitamente il `pb_id` locale originario (che non è più presente sul server).
-    *   **Se la `CREATE` ha successo:** Impostare `pb_is_dirty = 0` sul record locale.
-    *   **Se la `CREATE` fallisce:** Significa che l'operazione urta contro un vincolo di unicità. Utilizzare lo stesso meccanismo descritto nello *Scenario A* (KO) per identificare la PK o i campi Unique, cercare il record sul server ed effettuare la sostituzione locale del record con quello remoto.
-
-### Gestione Conflitti Temporali (Errore 409)
-In qualsiasi chiamata di `UPDATE` o `CREATE` (nel caso in cui il server gestisca il controllo di versione delle righe), il server potrebbe restituire un errore **409 Conflict**, che indica che la versione del record sul server è più recente di quella locale.
-*   **Risoluzione:** Ignorare le modifiche locali sul record corrente, scaricare il record aggiornato dal server (es. tramite `getById`), aggiornare il database locale con i dati remoti e impostare lo stato del record a `0` (sincronizzato).
+(Source: derived from table order specifications)
 
 ---
 
-## 4. Gestione del Flusso di PULL (Server $\rightarrow$ Locale)
+## 3. PUSH Flow Management Protocol (Local $\rightarrow$ Server)
 
-Il pull recupera le modifiche effettuate su altri dispositivi ed allinea il DB locale.
-1.  **Filtro Incrementale (lastSync):** Per ottimizzare le performance, richiedere al server solo i record modificati dopo il timestamp dell'ultima sincronizzazione riuscita (`_updated_at > lastSync`). Sottoscrivere una tolleranza di sicurezza di circa 5 secondi (`lastSync - 5s`) per evitare di perdere scritture concorrenti.
-2.  **Sincronizzazione Forzata (Force Mode):** Se richiesta esplicitamente (o al primo avvio), ignorare il filtro temporale e scaricare l'intera lista dei record.
-3.  **Applicazione dei Record Ricevuti:**
-    *   **Se il record remoto non esiste localmente:**
-        *   Se è marcato sul server come eliminato (`_is_deleted != 0`), ignorarlo.
-        *   Altrimenti, inserire il record locale impostando temporaneamente `pb_is_dirty = 2` (per disattivare i trigger locali), inserire i dati e poi impostare `pb_is_dirty = 0`.
-    *   **Se il record remoto esiste già localmente (stesso `pb_id`):**
-        *   Se sul server è marcato come eliminato (`_is_deleted != 0`), procedere con l'eliminazione fisica del record dal database locale.
-        *   Altrimenti, aggiornare tutti i campi locali con i valori remoti impostando `pb_is_dirty = 2` durante l'aggiornamento e resettandolo a `0` a transazione ultimata.
+The Push phase sends all local changes accumulated offline to the PocketBase server. For each table (in the order defined in section 2), extract all records that have `pb_is_dirty = 1` or lack a `pb_id`, and process each row according to the logic defined below:
+
+### Scenario A: Empty `pb_id` (Locally created record)
+
+1. **Submission:** Perform a `CREATE` request on the PocketBase server.
+
+
+2. **Successful Outcome (OK):** Save the `pb_id` returned by the server into the local record and set `pb_is_dirty = 0`.
+
+
+3. **Unsuccessful Outcome (KO):** If the creation fails due to a primary key (PK) violation or a uniqueness (Unique) constraint:
+
+
+* If the error returned by the server is `validation_not_unique`, extract the list of fields involved in the uniqueness violation (e.g., `REFTYPE`, `REFID`, `TAGID` for `TAGLINK_V1`). Otherwise, refer to the primary key (PK) of the record.
+
+
+* Execute a search query on the PocketBase server to find a remote record with the same PK or with the same value for the extracted Unique fields.
+
+
+* **If the remote record is found:** Resolve the conflict by replacing the local record with the remote one. Physically delete the local record with the original key and insert the remote record, correctly populating the `pb_id`, connected columns, and setting `pb_is_dirty = 0`.
+
+
+
+
+
+### Scenario B: Non-Empty `pb_id` (Previously synchronized record)
+
+1. **Submission:** Perform an `UPDATE` request on the PocketBase server for the corresponding `pb_id`.
+
+
+2. **Successful Outcome (OK):** Set `pb_is_dirty = 0` in the local database.
+
+
+3. **Unsuccessful Outcome (KO):** If the update fails, it means the record was deleted from the server (404 error).
+
+
+* **Resolution:** Attempt to recreate the record on the PocketBase server via a `CREATE` call, explicitly passing the original local `pb_id` (which is no longer present on the server).
+
+
+* **If the `CREATE` succeeds:** Set `pb_is_dirty = 0` on the local record.
+
+
+* **If the `CREATE` fails:** It means the operation runs into a uniqueness constraint. Use the same mechanism described in *Scenario A* (KO) to identify the PK or Unique fields, search for the record on the server, and perform a local replacement of the record with the remote one.
+
+
+
+
+
+### Handling Temporal Conflicts (409 Error)
+
+In any `UPDATE` or `CREATE` call (in case the server handles row version control), the server might return a **409 Conflict** error, indicating that the version of the record on the server is newer than the local one.
+
+* **Resolution:** Ignore local changes on the current record, download the updated record from the server (e.g., via `getById`), update the local database with the remote data, and set the record state to `0` (synchronized).
+
+
 
 ---
 
-## 5. Gestione delle Cancellazioni Locali (DELETE $\rightarrow$ Server)
+## 4. PULL Flow Management (Server $\rightarrow$ Local)
 
-Quando l'utente elimina dei dati dall'interfaccia Android offline:
-1.  L'eliminazione locale valorizza la tabella `pb_DELETED_RECORDS_LOG` tramite il trigger `TRG_DELETE`.
-2.  Durante la fase di sincronizzazione, inviare una richiesta `DELETE` al server per ciascun `PB_ID` presente nel log delle cancellazioni.
-3.  **Gestione del 404 su Delete:** Se il server restituisce 404 (il record è già stato cancellato sul server da un altro dispositivo), l'errore va ignorato.
-4.  Svuotare interamente la tabella `pb_DELETED_RECORDS_LOG` locale al completamento positivo dell'operazione.
+The pull phase retrieves modifications made on other devices and aligns the local DB.
+
+1. **Incremental Filter (lastSync):** To optimize performance, request from the server only those records modified after the timestamp of the last successful synchronization (`_updated_at > lastSync`). Subtract a safety tolerance window of approximately 5 seconds (`lastSync - 5s`) to avoid missing concurrent writes.
+
+
+2. **Forced Synchronization (Force Mode):** If explicitly requested (or upon initial startup), ignore the time filter and download the entire list of records.
+
+
+3. **Applying Received Records:**
+* **If the remote record does NOT exist locally:**
+* If it is marked on the server as deleted (`_is_deleted != 0`), ignore it.
+
+
+* Otherwise, insert it into the local DB by temporarily setting `pb_is_dirty = 2` (to deactivate local triggers), write the data, and then set `pb_is_dirty = 0`.
+
+
+
+
+* **If the remote record ALREADY exists locally (same `pb_id`):**
+* If it is marked on the server as deleted (`_is_deleted != 0`), proceed to physically delete the record from the local database.
+
+
+* Otherwise, update all local fields with the remote values, setting `pb_is_dirty = 2` during the update and resetting it to `0` once the transaction is finalized.
+
+
+
+
+
+
 
 ---
 
-## 6. Specifiche ed Attenzioni per lo Sviluppo in Android (Kotlin/Java)
+## 5. Local Deletion Management (DELETE $\rightarrow$ Server)
 
-*   **Gestione delle transazioni SQLite:** Tutte le operazioni di scrittura locale durante l'applicazione del Pull o del Push devono essere racchiuse in transazioni SQLite (`db.beginTransaction()` / `db.endTransaction()`) per garantire atomicità e performance elevate.
-*   **Gestione dei Trigger in Room / SQLite Open Helper:** Se si utilizza la libreria Room di Jetpack, prestare attenzione al fatto che le modifiche allo schema (aggiunta di colonne tecniche e trigger) devono essere gestite tramite Migrations esplicite. I trigger devono essere ricreati esplicitamente all'apertura del database (`RoomDatabase.Callback.onOpen`).
-*   **Disattivazione dei Trigger (Stato 2):** Assicurarsi che le funzioni che scrivono nel DB locale durante il pull utilizzino rigorosamente la logica dello stato `pb_is_dirty = 2` prima di procedere con l'operazione di inserimento/aggiornamento, altrimenti si verificheranno crash di violazione di vincoli o cicli infiniti di aggiornamento dei timestamp locali.
-*   **Ripristino in caso di fallimento:** Se una sincronizzazione viene interrotta (es. perdita improvvisa di connettività), implementare un blocco `try-finally` o un meccanismo di recovery all'avvio che reimposti tutti i record locali rimasti bloccati in stato `2` allo stato `1`.
-*   **Gestione del Fuso Orario:** Tutti i timestamp scambiati con PocketBase devono essere memorizzati in formato UTC ISO-8601 (es. `yyyy-MM-dd'T'HH:mm:ss'Z'`).
+When the user deletes data from the offline Android interface:
+
+1. The local deletion populates the `pb_DELETED_RECORDS_LOG` table via the `TRG_DELETE` trigger.
+
+
+2. During the synchronization phase, send a `DELETE` request to the server for each `PB_ID` present in the deletion log.
+
+
+3. **Handling 404 on Delete:** If the server returns a 404 error (the record has already been deleted on the server by another device), the error should be ignored.
+
+
+4. Entirely clear the local `pb_DELETED_RECORDS_LOG` table upon successful completion of the operation.
+
+
+
+---
+
+## 6. Specifications and Considerations for Android Development (Kotlin/Java)
+
+* **SQLite Transaction Management:** All local database write operations during the execution of Pull or Push phases must be wrapped inside SQLite transactions (`db.beginTransaction()` / `db.endTransaction()`) to guarantee atomicity and high performance.
+
+
+* **Trigger Management in Room / SQLite Open Helper:** If using Jetpack's Room library, note that schema changes (adding technical columns and triggers) must be handled via explicit Migrations. Triggers must be explicitly recreated when opening the database (`RoomDatabase.Callback.onOpen`).
+
+
+* **Deactivating Triggers (State 2):** Ensure that functions writing to the local DB during the pull phase strictly utilize the `pb_is_dirty = 2` state logic before proceeding with the insert/update operation. Otherwise, constraint violation crashes or infinite loops updating local timestamps will occur.
+
+
+* **Recovery in Case of Failure:** If a synchronization is interrupted (e.g., sudden loss of connectivity), implement a `try-finally` block or a startup recovery mechanism that resets all local records left stuck in state `2` back to state `1`.
+
+
+* **Time Zone Management:** All timestamps exchanged with PocketBase must be stored in UTC ISO-8601 format (e.g., `yyyy-MM-dd'T'HH:mm:ss'Z'`).
