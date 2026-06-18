@@ -1,0 +1,14 @@
+## What's Changed
+* Fix lost token on startup
+* Hiding the Fingerprint Option if hardware doesn't support
+* fix search
+* Implemented a "Hide/Show Balances" feature on the Home screen
+* Use icon in place of Cash Balance / Market Value in Main Screen
+* Implemented the Summary of Assets report
+* Add custom dates option in account view
+* Fix decimal format symbols
+
+### other
+* Varius fix (include dump in back)
+* Improve Translations
+* improve Sync with pocketbase (only available on github release)
