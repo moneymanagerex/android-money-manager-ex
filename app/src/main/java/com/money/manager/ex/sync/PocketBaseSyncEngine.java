@@ -18,8 +18,7 @@ import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.utils.MmxFileUtils;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -163,7 +162,6 @@ public class PocketBaseSyncEngine {
         // Handle Dirty records
         String selection = "pb_is_dirty = 1 OR pb_id IS NULL OR pb_id = ''";
         Cursor cursor = db.query("SELECT * FROM " + tableName + " WHERE " + selection);
-        // if (cursor == null) return;
 
         try {
             int pkIdx = cursor.getColumnIndex(config.pk);
@@ -192,7 +190,7 @@ public class PocketBaseSyncEngine {
                 Response<JsonObject> response = null;
 
                 try {
-                    if (TextUtils.isEmpty(currentPbId)) {
+                    if (currentPbId == null || TextUtils.isEmpty(currentPbId)) {
                         // CASO 1: Nessun ID remoto -> CREA
                         response = mService.create(tableName, payload).execute();
                     } else {
@@ -211,14 +209,17 @@ public class PocketBaseSyncEngine {
                     if (response.isSuccessful() && response.body() != null) {
                         String remoteId = response.body().get("id").getAsString();
                         updateLocalRecordAfterPush(db, tableName, config.pk, localId, remoteId);
+                    } else {
+                        // Gestione errori avanzata
+                        handlePushError(db, tableName, config, cursor, response, payload, localId, currentPbId);
                     }
 
                 } catch (IOException e) {
-                    // Non fare il throw qui per permettere al ciclo di provare col record successivo
+                    Timber.e(e, "[SYNC_CLOUD] Network error pushing record %d in %s", localId, tableName);
                 }
             }
         } finally {
-            cursor.close();
+            if (cursor != null) cursor.close();
         }
 
     }
@@ -248,68 +249,8 @@ public class PocketBaseSyncEngine {
 
             for (JsonElement itemElement : items) {
                 JsonObject rmt = itemElement.getAsJsonObject();
-                // Timber.d("[SYNC_CLOUD] IN: record of table: " + tableName + " Record:" + rmt.toString());
-
-                String pbId = rmt.get("id").getAsString();
-                String updatedAt = rmt.get("_updated_at").getAsString();
-
-                // Check if deleted in remote
-                if (rmt.has("_is_deleted") && rmt.get("_is_deleted").getAsInt() == 1) {
-                    db.execSQL("DELETE FROM " + tableName + " WHERE pb_id = ?", new Object[]{pbId});
-                    continue;
-                }
-
-                // Check if exists locally
-                Cursor localCursor = db.query("SELECT " + config.pk + " FROM " + tableName + " WHERE pb_id = ?", new Object[]{pbId});
-                boolean existsLocally = localCursor != null && localCursor.moveToFirst();
-                if (localCursor != null) localCursor.close();
-
-                if (existsLocally) {
-                    // UPDATE locally with pb_is_dirty = 2 (ignore triggers)
-                    StringBuilder sql = new StringBuilder("UPDATE ").append(tableName).append(" SET ");
-                    Object[] values = new Object[config.fields.size() + 2];
-                    int i = 0;
-                    for (String field : config.fields) {
-                        sql.append(field).append(" = ?, ");
-                        values[i++] = rmt.has(field) && !rmt.get(field).isJsonNull() ? rmt.get(field).getAsString() : null;
-                    }
-                    sql.append("pb_updated_at = ?, pb_is_dirty = 2 WHERE pb_id = ?");
-                    values[i++] = updatedAt;
-                    values[i] = pbId;
-                    try {
-                        db.execSQL(sql.toString(), values);
-                    } catch (SQLException e) {
-                        hasError = true;
-                        Timber.e(e, "[SYNC_CLOUD] Error updating record in table: %s", tableName);
-                    }
-                } else {
-                    // INSERT locally with pb_is_dirty = 2
-                    StringBuilder sql = new StringBuilder("INSERT INTO ").append(tableName).append(" (");
-                    StringBuilder placeholders = new StringBuilder(" VALUES (");
-                    Object[] values = new Object[config.fields.size() + 3];
-
-                    sql.append(config.pk).append(", ");
-                    placeholders.append("?, ");
-                    values[0] = rmt.get(config.pk).getAsLong();
-
-                    int i = 1;
-                    for (String field : config.fields) {
-                        sql.append(field).append(", ");
-                        placeholders.append("?, ");
-                        values[i++] = rmt.has(field) && !rmt.get(field).isJsonNull() ? rmt.get(field).getAsString() : null;
-                    }
-
-                    sql.append("pb_id, pb_updated_at, pb_is_dirty)");
-                    placeholders.append("?, ?, 2)");
-                    values[i++] = pbId;
-                    values[i] = updatedAt;
-
-                    try {
-                        db.execSQL(sql.toString() + placeholders.toString(), values);
-                    } catch (SQLException e) {
-                        hasError = true;
-                        Timber.e(e, "[SYNC_CLOUD] Error inserting record into table: %s.%s", tableName,values[0]);
-                    }
+                if (!applyRemoteRecord(db, tableName, config, rmt, false)) {
+                    hasError = true;
                 }
             }
             page++;
@@ -318,6 +259,170 @@ public class PocketBaseSyncEngine {
         // Reset pb_is_dirty to 0 for all pull-updated records
         db.execSQL("UPDATE " + tableName + " SET pb_is_dirty = 0 WHERE pb_is_dirty = 2");
         return !hasError;
+    }
+
+    private void handlePushError(SupportSQLiteDatabase db, String tableName, TableConfig config, Cursor cursor,
+                                 Response<JsonObject> response, JsonObject payload, long localId, String currentPbId) throws IOException {
+
+        // 409 Conflict: record modified on server
+        if (response.code() == 409) {
+            if (!TextUtils.isEmpty(currentPbId)) {
+                Response<JsonObject> getResponse = mService.getOne(tableName, currentPbId).execute();
+                if (getResponse.isSuccessful() && getResponse.body() != null) {
+                    applyRemoteRecord(db, tableName, config, getResponse.body(), true);
+                    Timber.d("[SYNC_CLOUD] Resolved 409 conflict for %s (id: %d)", tableName, localId);
+                }
+            }
+            return;
+        }
+
+        // Unique Constraint Violation
+        String errorBody = null;
+        try (okhttp3.ResponseBody errorResponseBody = response.errorBody()) {
+            if (errorResponseBody != null) {
+                errorBody = errorResponseBody.string();
+            }
+        }
+
+        if (isUniqueValidationError(errorBody)) {
+            JsonObject remoteRecord = null;
+            if ("TAGLINK_V1".equals(tableName)) {
+                int reftypeIdx = cursor.getColumnIndex("REFTYPE");
+                int refidIdx = cursor.getColumnIndex("REFID");
+                int tagidIdx = cursor.getColumnIndex("TAGID");
+
+                if (reftypeIdx != -1 && refidIdx != -1 && tagidIdx != -1) {
+                    String reftype = cursor.getString(reftypeIdx);
+                    long refid = cursor.getLong(refidIdx);
+                    long tagid = cursor.getLong(tagidIdx);
+                    String filter = String.format(Locale.US, "REFTYPE='%s' && REFID=%d && TAGID=%d", reftype, refid, tagid);
+                    remoteRecord = getRemoteRecord(tableName, filter);
+                }
+            } else {
+                // Search by primary key (config.pk)
+                String filter = String.format(Locale.US, "%s=%d", config.pk, localId);
+                remoteRecord = getRemoteRecord(tableName, filter);
+            }
+
+            if (remoteRecord != null) {
+                String remoteId = remoteRecord.get("id").getAsString();
+                // Update local record with remote ID
+                updateLocalRecordAfterPushKeepingDirty(db, tableName, config.pk, localId, remoteId);
+                // next cicle update correctly
+
+                // Retry update. We don't' retry now because 409  can be raised. next cycle
+/*                Response<JsonObject> retryResponse = mService.update(tableName, remoteId, payload).execute();
+                if (retryResponse.isSuccessful() && retryResponse.body() != null) {
+                    updateLocalRecordAfterPush(db, tableName, config.pk, localId, remoteId);
+                    Timber.d("[SYNC_CLOUD] Resolved unique conflict for %s (id: %d) by linking to remote record", tableName, localId);
+                } */
+            }
+        } else {
+            Timber.e("[SYNC_CLOUD] Error pushing record %d in %s: %d %s", localId, tableName, response.code(), errorBody);
+        }
+    }
+
+    private boolean applyRemoteRecord(SupportSQLiteDatabase db, String tableName, TableConfig config, JsonObject rmt, boolean markAsSynced) {
+        String pbId = rmt.get("id").getAsString();
+        String updatedAt = rmt.get("_updated_at").getAsString();
+
+        // Check if deleted in remote
+        if (rmt.has("_is_deleted") && rmt.get("_is_deleted").getAsInt() == 1) {
+            db.execSQL("DELETE FROM " + tableName + " WHERE pb_id = ?", new Object[]{pbId});
+            return true;
+        }
+
+        // Check if exists locally
+        Cursor localCursor = db.query("SELECT " + config.pk + " FROM " + tableName + " WHERE pb_id = ?", new Object[]{pbId});
+        boolean existsLocally = localCursor != null && localCursor.moveToFirst();
+        if (localCursor != null) localCursor.close();
+
+        int dirtyValue = markAsSynced ? 0 : 2;
+
+        if (existsLocally) {
+            // UPDATE locally
+            StringBuilder sql = new StringBuilder("UPDATE ").append(tableName).append(" SET ");
+            Object[] values = new Object[config.fields.size() + 3];
+            int i = 0;
+            for (String field : config.fields) {
+                sql.append(field).append(" = ?, ");
+                values[i++] = rmt.has(field) && !rmt.get(field).isJsonNull() ? rmt.get(field).getAsString() : null;
+            }
+            sql.append("pb_updated_at = ?, pb_is_dirty = ? WHERE pb_id = ?");
+            values[i++] = updatedAt;
+            values[i++] = dirtyValue;
+            values[i] = pbId;
+            try {
+                db.execSQL(sql.toString(), values);
+                return true;
+            } catch (SQLException e) {
+                Timber.e(e, "[SYNC_CLOUD] Error updating record in table: %s", tableName);
+                return false;
+            }
+        } else {
+            // INSERT locally
+            StringBuilder sql = new StringBuilder("INSERT INTO ").append(tableName).append(" (");
+            StringBuilder placeholders = new StringBuilder(" VALUES (");
+            Object[] values = new Object[config.fields.size() + 4];
+
+            sql.append(config.pk).append(", ");
+            placeholders.append("?, ");
+            values[0] = rmt.get(config.pk).getAsLong();
+
+            int i = 1;
+            for (String field : config.fields) {
+                sql.append(field).append(", ");
+                placeholders.append("?, ");
+                values[i++] = rmt.has(field) && !rmt.get(field).isJsonNull() ? rmt.get(field).getAsString() : null;
+            }
+
+            sql.append("pb_id, pb_updated_at, pb_is_dirty)");
+            placeholders.append("?, ?, ?)");
+            values[i++] = pbId;
+            values[i++] = updatedAt;
+            values[i] = dirtyValue;
+
+            try {
+                db.execSQL(sql.toString() + placeholders.toString(), values);
+                return true;
+            } catch (SQLException e) {
+                Timber.e(e, "[SYNC_CLOUD] Error inserting record into table: %s.%s", tableName, values[0]);
+                return false;
+            }
+        }
+    }
+
+    private JsonObject getRemoteRecord(String tableName, String filter) throws IOException {
+        Map<String, String> options = new HashMap<>();
+        options.put("filter", filter);
+        Response<JsonObject> response = mService.getRecords(tableName, options).execute();
+        if (response.isSuccessful() && response.body() != null) {
+            com.google.gson.JsonArray items = response.body().getAsJsonArray("items");
+            if (items != null && !items.isEmpty()) {
+                return items.get(0).getAsJsonObject();
+            }
+        }
+        return null;
+    }
+
+    private boolean isUniqueValidationError(String errorBody) {
+        if (TextUtils.isEmpty(errorBody)) return false;
+        try {
+            JsonObject errorObj = mGson.fromJson(errorBody, JsonObject.class);
+            if (errorObj.has("data")) {
+                JsonObject data = errorObj.getAsJsonObject("data");
+                for (Map.Entry<String, JsonElement> entry : data.entrySet()) {
+                    if (entry.getValue().isJsonObject()) {
+                        JsonObject fieldError = entry.getValue().getAsJsonObject();
+                        if (fieldError.has("code") && "validation_not_unique".equals(fieldError.get("code").getAsString())) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        } catch (Exception ignored) {
+        }
+        return false;
     }
 
     private void processTableDeletions(SupportSQLiteDatabase db, String tableName) throws IOException {
@@ -347,6 +452,12 @@ public class PocketBaseSyncEngine {
         } finally {
             cursor.close();
         }
+    }
+
+
+    private void updateLocalRecordAfterPushKeepingDirty(SupportSQLiteDatabase db, String tableName, String pkName, long localId, String newPbId) {
+        db.execSQL("UPDATE " + tableName + " SET pb_is_dirty = 1, pb_id = ? WHERE " + pkName + " = ?",
+                new Object[]{newPbId, localId});
     }
 
     private void updateLocalRecordAfterPush(SupportSQLiteDatabase db, String tableName, String pkName, long localId, String newPbId) {
