@@ -313,6 +313,7 @@
     <string name="title_activity_general_report">பொது அறிக்கைகள்</string>
     <string name="menu_report_income_vs_expenses">பொது அறிக்கை</string>
     <string name="menu_report_cashflow">பணப்புழக்கம்</string>
+    <string name="asset_current_value">தற்போதைய மதிப்பு</string>
     <string name="total">மொத்தம்</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">எல்லா நேரமும்</string>
@@ -816,4 +817,5 @@
     <string name="changelog">மாற்றங்களின் பதிவு</string>
     <string name="changelog_title">என்ன புதுசு!!</string>
     <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>

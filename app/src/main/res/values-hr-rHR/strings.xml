@@ -315,6 +315,7 @@
     <string name="menu_report_income_vs_expenses">Prihod/Troškovi</string>
     <string name="menu_report_cashflow">Novčani tijek</string>
     <string name="menu_report_summary_of_accounts">Sažetak računa</string>
+    <string name="asset_current_value">Trenutačna vrijednost</string>
     <string name="total">Ukupno</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Svo vrijeme</string>
@@ -831,4 +832,5 @@
     <string name="currency_save_error">Greška prilikom unosa valute. Vjerojatno je valuta %s već definirana.</string>
     <string name="menu_cashflow_24_months">Prikaz za 24 mjeseca</string>
     <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>

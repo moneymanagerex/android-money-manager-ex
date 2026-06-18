@@ -47,6 +47,7 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.account.events.RunningBalanceCalculatedEvent;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.MmxCursorLoader;
+import com.money.manager.ex.core.DateRange;
 import com.money.manager.ex.core.DefinedDateRange;
 import com.money.manager.ex.core.DefinedDateRangeName;
 import com.money.manager.ex.core.DefinedDateRanges;
@@ -68,11 +69,13 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.LookAndFeelSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.investment.PortfolioFragment;
+import com.money.manager.ex.reports.ReportDateRangeSupport;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -470,6 +473,11 @@ public class AccountTransactionListFragment
     private boolean datePeriodItemSelected(MenuItem item) {
         long itemId = item.getItemId();
 
+        if (itemId == R.id.menu_custom_dates) {
+            showCustomDatesDialog(item);
+            return true;
+        }
+
         DefinedDateRanges dateRanges = new DefinedDateRanges(getActivity());
         DefinedDateRange range = dateRanges.getByMenuId(itemId);
         if (range == null) return false;
@@ -477,6 +485,8 @@ public class AccountTransactionListFragment
 
         LookAndFeelSettings settings = new AppSettings(getActivity()).getLookAndFeelSettings();
         settings.setShowTransactions(range.key);
+        // Switching to a pre-defined period clears any previously selected custom range.
+        settings.setShowTransactionsCustomRange(null, null);
 
         // Save the selected period.
         mFilter.dateRange = new MmxDateTimeUtils().getDateRangeForPeriod(getActivity(), stringId);
@@ -486,6 +496,35 @@ public class AccountTransactionListFragment
         loadTransactions();
 
         return true;
+    }
+
+    /**
+     * Show the shared custom date-range picker (reused from the reports) and apply the
+     * selected range to the transactions list.
+     */
+    private void showCustomDatesDialog(MenuItem item) {
+        Date fromDate = mFilter.dateRange != null ? mFilter.dateRange.dateFrom : null;
+        Date toDate = mFilter.dateRange != null ? mFilter.dateRange.dateTo : null;
+
+        // Match the reports' behavior: when "All time" is the active period there is no
+        // meaningful range to prefill, so fall back to today/today (handled by the dialog
+        // when both dates are null).
+        LookAndFeelSettings settings = new AppSettings(getActivity()).getLookAndFeelSettings();
+        if (settings.getShowTransactionsCustomRange() == null
+                && settings.getShowTransactions() == DefinedDateRangeName.ALL_TIME) {
+            fromDate = null;
+            toDate = null;
+        }
+
+        ReportDateRangeSupport.showCustomDateDialog(getActivity(), fromDate, toDate, (from, to) -> {
+            mFilter.dateRange = new DateRange(from, to);
+
+            settings.setShowTransactionsCustomRange(from, to);
+
+            item.setChecked(true);
+
+            loadTransactions();
+        });
     }
 
     private Spinner getAccountsSpinner() {
@@ -917,6 +956,14 @@ public class AccountTransactionListFragment
 
         // on init, mark the default item as checked
         AppSettings settings = new AppSettings(getActivity());
+
+        // A custom date range, when set, takes precedence over the pre-defined periods.
+        if (settings.getLookAndFeelSettings().getShowTransactionsCustomRange() != null) {
+            MenuItem customItem = subMenu.findItem(R.id.menu_custom_dates);
+            if (customItem != null) customItem.setChecked(true);
+            return;
+        }
+
         DefinedDateRangeName rangeName = settings.getLookAndFeelSettings().getShowTransactions();
         if (rangeName == null) return;
 
@@ -1044,8 +1091,16 @@ public class AccountTransactionListFragment
     }
 
     private void updateFilterDateRange() {
-        DefinedDateRangeName rangeName = new AppSettings(getActivity()).getLookAndFeelSettings()
-            .getShowTransactions();
+        LookAndFeelSettings settings = new AppSettings(getActivity()).getLookAndFeelSettings();
+
+        // A custom date range, when set, takes precedence over the pre-defined periods.
+        DateRange customRange = settings.getShowTransactionsCustomRange();
+        if (customRange != null) {
+            mFilter.dateRange = customRange;
+            return;
+        }
+
+        DefinedDateRangeName rangeName = settings.getShowTransactions();
         DefinedDateRanges ranges = new DefinedDateRanges(getActivity());
         DefinedDateRange range = ranges.get(rangeName);
 

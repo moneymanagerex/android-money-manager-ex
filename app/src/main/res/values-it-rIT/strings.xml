@@ -314,6 +314,7 @@
     <string name="menu_report_income_vs_expenses">Entrate Vs Uscite</string>
     <string name="menu_report_cashflow">Flusso Di Cassa</string>
     <string name="menu_report_summary_of_accounts">Saldo dei Conti</string>
+    <string name="asset_current_value">Valore Attuale</string>
     <string name="total">Totale</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Storico</string>
@@ -827,4 +828,5 @@
     <string name="currency_save_error">Errore durante l\'inserimento della valuta. Probabilmente la valuta %s è già definita.</string>
     <string name="menu_cashflow_24_months">Vista 24 mesi</string>
     <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>

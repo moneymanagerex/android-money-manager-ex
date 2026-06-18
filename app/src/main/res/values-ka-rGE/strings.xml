@@ -168,6 +168,7 @@
     <string name="month">თვე</string>
     <string name="year">წელი</string>
     <string name="menu_report_income_vs_expenses">შემოსავალი vs გასავლები</string>
+    <string name="asset_current_value">მიმდინარე ფასი</string>
     <string name="total">ჯამი</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">ყველა დრო</string>
@@ -357,4 +358,5 @@
     <!-- Error Handling -->
     <!-- changelog -->
     <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>

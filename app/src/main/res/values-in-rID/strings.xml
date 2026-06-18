@@ -263,6 +263,7 @@
     <string name="month">Bulan</string>
     <string name="year">Tahun</string>
     <string name="menu_report_income_vs_expenses">Pendapatan Vs Biaya</string>
+    <string name="asset_current_value">Nilai sekarang</string>
     <string name="total">Seluruh</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Semua waktu</string>
@@ -679,4 +680,5 @@
     <!-- changelog -->
     <string name="changelog">Catatan perubahan</string>
     <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>

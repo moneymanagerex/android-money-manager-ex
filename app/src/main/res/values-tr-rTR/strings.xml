@@ -280,6 +280,7 @@
     <string name="month">Ay</string>
     <string name="year">Yıl</string>
     <string name="menu_report_income_vs_expenses">Gelir ve Giderler</string>
+    <string name="asset_current_value">Geçerli Değer</string>
     <string name="total">Toplam</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Tüm Zamanlar</string>
@@ -749,4 +750,5 @@
     <!-- changelog -->
     <string name="changelog">Sürüm Bilgileri</string>
     <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>

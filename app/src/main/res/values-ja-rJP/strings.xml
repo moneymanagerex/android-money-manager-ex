@@ -263,6 +263,7 @@
     <string name="month">月</string>
     <string name="year">年</string>
     <string name="menu_report_income_vs_expenses">収入と支出</string>
+    <string name="asset_current_value">現在価値</string>
     <string name="total">合計</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">すべての期間</string>
@@ -679,4 +680,5 @@
     <!-- changelog -->
     <string name="changelog">変更履歴</string>
     <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>

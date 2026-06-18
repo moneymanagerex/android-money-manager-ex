@@ -262,6 +262,7 @@
     <string name="month">Měsíc</string>
     <string name="year">Rok</string>
     <string name="menu_report_income_vs_expenses">Příjmy a výdaje</string>
+    <string name="asset_current_value">Současná hodnota</string>
     <string name="total">Celkem</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Celkem</string>
@@ -668,4 +669,5 @@
     <!-- changelog -->
     <string name="changelog">Přehled změn</string>
     <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>

@@ -328,6 +328,12 @@
     <string name="menu_report_cashflow">Geldfluss</string>
     <string name="menu_report_summary_of_accounts">Kontenübersicht</string>
     <string name="menu_report_summary_of_stocks">Wertpapierübersicht</string>
+    <string name="menu_report_summary_of_assets">Vermögenswertübersicht</string>
+    <string name="asset_name">Vermögenswertname</string>
+    <string name="asset_type">Vermögensart</string>
+    <string name="asset_initial_value">Anfangswert</string>
+    <string name="asset_current_value">Aktueller Wert</string>
+    <string name="asset_rate_percent">Rate %</string>
     <string name="report_subtotal">Zwischensumme</string>
     <string name="report_grand_total">Gesamtsumme</string>
     <string name="total">Gesamt</string>
@@ -879,4 +885,9 @@
     <string name="sync_setup_complete">Sync-Einrichtung abgeschlossen!</string>
     <string name="sync_failed">"Sync fehlgeschlagen: "</string>
     <string name="sync_your_data_with_pocketbase_cloud">Daten mit PocketBase Cloud synchronisieren</string>
+    <!-- Show & Hide Balance -->
+    <string name="show_balances">Kontostände anzeigen</string>
+    <string name="hide_balances">Kontostände ausblenden</string>
+    <string name="pref_hide_balances_title">Kontostände standardmäßig ausblenden</string>
+    <string name="pref_hide_balances_summary">Kontostände standardmäßig auf den Hauptbildschirmen ein-/ausblenden.</string>
 </resources>

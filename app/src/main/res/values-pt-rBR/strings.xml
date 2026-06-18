@@ -313,6 +313,7 @@
     <string name="title_activity_general_report">Relatório Geral</string>
     <string name="menu_report_income_vs_expenses">Receitas x Despesas</string>
     <string name="menu_report_cashflow">Fluxo de Caixa</string>
+    <string name="asset_current_value">Valor atual</string>
     <string name="total">Total</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Sempre</string>
@@ -820,4 +821,5 @@
     <string name="changelog_1086">Nova versão 5.4\n- Adicionado novo recurso Beta para o motor de mesclagem. Tente mesclar o arquivo quando ambos forem alterados. Habilite nas configurações-&gt;Sincronização-&gt;Mesclar</string>
     <string name="currency_save_error">Erro ao inserir Currency. Provavelmente a moeda %s já está definida.</string>
     <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>

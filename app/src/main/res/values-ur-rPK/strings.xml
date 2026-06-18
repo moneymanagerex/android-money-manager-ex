@@ -263,6 +263,7 @@
     <string name="month">ماہ</string>
     <string name="year">سال</string>
     <string name="menu_report_income_vs_expenses">آمدنی بمقابلہ اخراجات</string>
+    <string name="asset_current_value">حالیہ قدر</string>
     <string name="total">کل</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">ہر وقت</string>
@@ -679,4 +680,5 @@
     <!-- changelog -->
     <string name="changelog">لاگ تبدیل کریں</string>
     <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>

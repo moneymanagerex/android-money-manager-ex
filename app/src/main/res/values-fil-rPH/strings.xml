@@ -263,6 +263,7 @@
     <string name="month">Buwan</string>
     <string name="year">Taon</string>
     <string name="menu_report_income_vs_expenses">Kita Vs Gastusin</string>
+    <string name="asset_current_value">Kasalukuyang Halaga</string>
     <string name="total">Kabuuan</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Lahat ng oras</string>
@@ -679,4 +680,5 @@
     <!-- changelog -->
     <string name="changelog">Listahan ng mga nabago</string>
     <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>

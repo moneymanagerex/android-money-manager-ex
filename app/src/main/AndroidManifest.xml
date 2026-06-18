@@ -298,6 +298,9 @@
             android:name=".reports.SummaryOfAccountsChartActivity"
             android:label="@string/menu_report_summary_of_accounts" />
         <activity
+            android:name=".reports.SummaryOfAssetsReportActivity"
+            android:label="@string/menu_report_summary_of_assets" />
+        <activity
                 android:name=".settings.SyncPreferencesActivity"
                 android:label="@string/synchronization"
                 android:launchMode="singleTask" android:exported="true">

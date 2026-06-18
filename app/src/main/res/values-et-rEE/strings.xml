@@ -124,6 +124,7 @@
     <!-- 20121122 -->
     <!--<string name="passcode_update">passcode is updated</string>-->
     <!-- 20121217 -->
+    <string name="asset_current_value">Aktiivne leht</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Kogu aeg</string>
     <string name="last_month">Eelmine kuu</string>
@@ -271,4 +272,5 @@
     <!-- Error Handling -->
     <!-- changelog -->
     <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>

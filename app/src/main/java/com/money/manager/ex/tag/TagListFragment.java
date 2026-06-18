@@ -44,9 +44,8 @@ import com.money.manager.ex.search.SearchParameters;
 import com.money.manager.ex.servicelayer.TagService;
 import com.money.manager.ex.settings.AppSettings;
 
-public class TagListFragment     extends BaseListFragment
+public class TagListFragment extends BaseListFragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
-
 
     public static String mAction = Intent.ACTION_EDIT;
 
@@ -60,6 +59,12 @@ public class TagListFragment     extends BaseListFragment
         super.onActivityCreated(savedInstanceState);
 
         mContext = getActivity();
+        if (mContext != null && getActivity().getIntent() != null) {
+            mAction = getActivity().getIntent().getAction();
+            if (mAction == null) {
+                mAction = Intent.ACTION_EDIT;
+            }
+        }
 
         setSearchMenuVisible(true);
         // Focus on search menu if set in preferences.
@@ -135,7 +140,7 @@ public class TagListFragment     extends BaseListFragment
 
         }
 
-        if (mAction.equals(Intent.ACTION_PICK) ) {
+        if (Intent.ACTION_PICK.equals(mAction)) {
             menu.findItem(R.id.menu_show_inactive).setVisible(false);
         } else {
             menu.findItem(R.id.menu_show_inactive).setVisible(true);
@@ -205,9 +210,6 @@ public class TagListFragment     extends BaseListFragment
         } else {
             return false;
         }
-//        if (item.getMenuInfo() instanceof ExpandableListView.ExpandableListContextMenuInfo) {
-//            info = item.getMenuInfo();
-//        }
 
         Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
         cursor.moveToPosition(info.position);
@@ -261,8 +263,8 @@ public class TagListFragment     extends BaseListFragment
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == ID_LOADER_TAG) {
-            String whereClause = ""; // we don't filter inactive by default
-            if (mAction == Intent.ACTION_PICK
+            String whereClause = ""; 
+            if (Intent.ACTION_PICK.equals(mAction)
                     || !(new AppSettings(getContext())).getShowInactive()) {
                 whereClause = "ACTIVE <> 0";
             }
@@ -331,7 +333,7 @@ public class TagListFragment     extends BaseListFragment
         if (Intent.ACTION_PICK.equals(mAction)) {
             // Cursor that is already in the desired position, because positioned in the event onListItemClick
             Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
-            if (cursor.isBeforeFirst() || cursor.isAfterLast())
+            if (cursor == null || cursor.isBeforeFirst() || cursor.isAfterLast())
                 return;
             long tagId = cursor.getLong(cursor.getColumnIndexOrThrow(Tag.TAGID));
             String tagName = cursor.getString(cursor.getColumnIndexOrThrow(Tag.TAGNAME));
@@ -350,8 +352,6 @@ public class TagListFragment     extends BaseListFragment
         result.putExtra(TagActivity.INTENT_RESULT_TAGNAME, tagName);
 
         getActivity().setResult(AppCompatActivity.RESULT_OK, result);
-
-        getActivity().finish();
     }
 
     private void showDialogDeletetag(final long tagId) {
@@ -415,9 +415,9 @@ public class TagListFragment     extends BaseListFragment
                                 Tag tag = service.createNew(name);
                                 if (tag != null) {
                                     // Created a new tag. But only if picking a tag for another activity.
-                                    if (mAction.equalsIgnoreCase(Intent.ACTION_PICK)) {
-                                        // Select it and close.
+                                    if (Intent.ACTION_PICK.equals(mAction)) {
                                         sendResultToActivity(tag.getId(), name);
+                                        getActivity().finish();
                                         return;
                                     }
                                 } else {
@@ -467,7 +467,7 @@ public class TagListFragment     extends BaseListFragment
         super.onListItemClick(l, v, position, id);
 
         // On select go back to the calling activity (if there is one)
-        if (getActivity().getCallingActivity() != null) {
+        if (Intent.ACTION_PICK.equals(mAction)) {
             Cursor cursor = ((SimpleCursorAdapter) getListAdapter()).getCursor();
             if (cursor != null) {
                 if (cursor.moveToPosition(position)) {
@@ -483,6 +483,4 @@ public class TagListFragment     extends BaseListFragment
     public void restartLoader() {
         getLoaderManager().restartLoader(ID_LOADER_TAG, null, this);
     }
-
-
 }
