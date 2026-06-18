@@ -5,6 +5,7 @@ import androidx.room.Embedded
 import androidx.room.Relation
 import com.money.manager.ex.data.local.entity.AccountEntityV1
 import com.money.manager.ex.data.local.entity.CurrencyFormatEntityV1
+import java.math.BigDecimal
 
 data class AccountWithBalancePojo(
     @Embedded
@@ -17,14 +18,14 @@ data class AccountWithBalancePojo(
     val currency: CurrencyFormatEntityV1?,
 
     @ColumnInfo(name = "TOTAL")
-    val total: Double,
+    val total: BigDecimal,
     
     @ColumnInfo(name = "RECONCILED")
-    val reconciled: Double,
+    val reconciled: BigDecimal,
 
     @ColumnInfo(name = "TOTALBASECONVRATE")
-    val totalBaseConvRate: Double,
+    val totalBaseConvRate: BigDecimal,
 
     @ColumnInfo(name = "RECONCILEDBASECONVRATE")
-    val reconciledBaseConvRate: Double
+    val reconciledBaseConvRate: BigDecimal
 )

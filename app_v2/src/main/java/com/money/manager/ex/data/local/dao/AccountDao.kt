@@ -12,10 +12,10 @@ interface AccountDao {
     @Query("""
         SELECT
             ACCOUNTLIST_V1.*,
-            (INITIALBAL + ifnull(T1.TOTAL, 0)) AS TOTAL,
-            (INITIALBAL + ifnull(T1.reconciled, 0)) AS RECONCILED,
-            (INITIALBAL + ifnull(T1.TOTAL, 0)) * ifnull(CURRENCYFORMATS_V1.BASECONVRATE, 1) AS TOTALBASECONVRATE,
-            (INITIALBAL + ifnull(T1.reconciled, 0)) * ifnull(CURRENCYFORMATS_V1.BASECONVRATE, 1) AS RECONCILEDBASECONVRATE
+            (ifnull(INITIALBAL, 0) + ifnull(T1.TOTAL, 0)) AS TOTAL,
+            (ifnull(INITIALBAL, 0) + ifnull(T1.reconciled, 0)) AS RECONCILED,
+            (ifnull(INITIALBAL, 0) + ifnull(T1.TOTAL, 0)) * ifnull(CURRENCYFORMATS_V1.BASECONVRATE, 1) AS TOTALBASECONVRATE,
+            (ifnull(INITIALBAL, 0) + ifnull(T1.reconciled, 0)) * ifnull(CURRENCYFORMATS_V1.BASECONVRATE, 1) AS RECONCILEDBASECONVRATE
         FROM ACCOUNTLIST_V1 
         LEFT JOIN ( 
             SELECT accountid, SUM(total) as total, SUM(reconciled) as reconciled

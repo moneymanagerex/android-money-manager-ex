@@ -6,7 +6,7 @@ import com.money.manager.ex.domain.model.AccountType
 
 fun AccountWithBalancePojo.toDomain(): Account {
     return Account(
-        id = this.account.accountId,
+        id = this.account.accountId ?: 0,
         name = this.account.accountName,
         type = AccountType.fromTitle(this.account.accountType) ?: AccountType.CASH,
         status = this.account.status,

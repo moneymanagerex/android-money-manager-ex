@@ -2,6 +2,7 @@ package com.money.manager.ex.data.repository
 
 import com.money.manager.ex.domain.model.*
 import com.money.manager.ex.domain.repository.PeriodSummaryRepository
+import java.math.BigDecimal
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -30,20 +31,30 @@ class FakePeriodSummaryRepositoryImpl @Inject constructor() : PeriodSummaryRepos
 
         val values = when (periodModel) {
             PeriodModel.ACTUAL -> {
-                if (isCurrentMonth) FinancialValues(income = 3200.0 * multiplier, expense = 1450.0 * multiplier)
-                else FinancialValues(income = 3000.0 * multiplier, expense = 1600.0 * multiplier)
+                if (isCurrentMonth) FinancialValues(
+                    income = BigDecimal.valueOf(3200.0 * multiplier),
+                    expense = BigDecimal.valueOf(1450.0 * multiplier)
+                )
+                else FinancialValues(
+                    income = BigDecimal.valueOf(3000.0 * multiplier),
+                    expense = BigDecimal.valueOf(1600.0 * multiplier)
+                )
             }
             PeriodModel.FORECAST -> {
-                if (isCurrentMonth) FinancialValues(income = 800.0 * multiplier, expense = 350.0 * multiplier)
-                else FinancialValues(income = 0.0, expense = 0.0)
+                if (isCurrentMonth) FinancialValues(
+                    income = BigDecimal.valueOf(800.0 * multiplier),
+                    expense = BigDecimal.valueOf(350.0 * multiplier)
+                )
+                else FinancialValues(income = BigDecimal.ZERO, expense = BigDecimal.ZERO)
             }
         }
 
         emit(
             PeriodSummary(
                 values = values,
-                periodModel = periodModel,
-                periodType = periodType,
+                model = periodModel,
+                type = periodType,
+                shift = PeriodShift.CURRENT,
                 startDate = startDate,
                 endDate = endDate
             )

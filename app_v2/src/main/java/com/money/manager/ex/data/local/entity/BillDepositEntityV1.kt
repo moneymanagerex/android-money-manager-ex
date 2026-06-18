@@ -2,13 +2,20 @@ package com.money.manager.ex.data.local.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
+import java.math.BigDecimal
 
-@Entity(tableName = "BILLSDEPOSITS_V1")
+@Entity(
+    tableName = "BILLSDEPOSITS_V1",
+    indices = [
+        Index(value = ["ACCOUNTID", "TOACCOUNTID"], name = "IDX_BILLSDEPOSITS_ACCOUNT")
+    ]
+)
 data class BillDepositEntityV1(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "BDID")
-    val bdId: Int = 0,
+    val bdId: Int? = null,
     @ColumnInfo(name = "ACCOUNTID")
     val accountId: Int,
     @ColumnInfo(name = "TOACCOUNTID")
@@ -17,8 +24,8 @@ data class BillDepositEntityV1(
     val payeeId: Int,
     @ColumnInfo(name = "TRANSCODE")
     val transCode: String,
-    @ColumnInfo(name = "TRANSAMOUNT")
-    val transAmount: Double,
+    @ColumnInfo(name = "TRANSAMOUNT", typeAffinity = ColumnInfo.REAL)
+    val transAmount: BigDecimal,
     @ColumnInfo(name = "STATUS")
     val status: String?,
     @ColumnInfo(name = "TRANSACTIONNUMBER")
@@ -31,8 +38,8 @@ data class BillDepositEntityV1(
     val transDate: String?,
     @ColumnInfo(name = "FOLLOWUPID")
     val followUpId: Int?,
-    @ColumnInfo(name = "TOTRANSAMOUNT")
-    val toTransAmount: Double?,
+    @ColumnInfo(name = "TOTRANSAMOUNT", typeAffinity = ColumnInfo.REAL)
+    val toTransAmount: BigDecimal?,
     @ColumnInfo(name = "REPEATS")
     val repeats: Int?,
     @ColumnInfo(name = "NEXTOCCURRENCEDATE")
@@ -45,6 +52,6 @@ data class BillDepositEntityV1(
     val pbId: String? = null,
     @ColumnInfo(name = "pb_updated_at")
     val pbUpdatedAt: String? = null,
-    @ColumnInfo(name = "pb_is_dirty")
-    val pbIsDirty: Int = 0
+    @ColumnInfo(name = "pb_is_dirty", defaultValue = "0")
+    val pbIsDirty: Int? = 0
 )

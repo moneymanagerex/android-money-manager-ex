@@ -4,5 +4,5 @@ import com.money.manager.ex.domain.model.Transaction
 import kotlinx.coroutines.flow.Flow
 
 interface TransactionRepository {
-    fun getRecentTransactions(limit: Int, accountId: Int? = null): Flow<List<Transaction>>
+    fun getRecentTransactions(limit: Int, accountId: Int?): Flow<List<Transaction>>
 }

@@ -37,6 +37,7 @@ import com.money.manager.ex.domain.model.*
 import com.money.manager.ex.presentation.dashboard.components.*
 import com.money.manager.ex.presentation.theme.MmexTheme
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
 import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -423,31 +424,34 @@ fun DashboardContent(
 @Composable
 fun DashboardScreenPreview() {
     val currentActual = PeriodSummary(
-        values = FinancialValues(income = 2000.0, expense = 1500.0),
-        periodModel = PeriodModel.ACTUAL,
-        periodType = PeriodType.MONTH,
+        values = FinancialValues(income = BigDecimal.valueOf(2000.0), expense = BigDecimal.valueOf(1500.0)),
+        model = PeriodModel.ACTUAL,
+        type = PeriodType.MONTH,
+        shift = PeriodShift.CURRENT,
         startDate = LocalDate.now(),
         endDate = LocalDate.now()
     )
     val currentForecast = PeriodSummary(
-        values = FinancialValues(income = 1500.0, expense = 300.0),
-        periodModel = PeriodModel.FORECAST,
-        periodType = PeriodType.MONTH,
+        values = FinancialValues(income = BigDecimal.valueOf(1500.0), expense = BigDecimal.valueOf(300.0)),
+        model = PeriodModel.FORECAST,
+        type = PeriodType.MONTH,
+        shift = PeriodShift.CURRENT,
         startDate = LocalDate.now(),
         endDate = LocalDate.now()
     )
     val previousActual = PeriodSummary(
-        values = FinancialValues(income = 2800.0, expense = 1600.0),
-        periodModel = PeriodModel.ACTUAL,
-        periodType = PeriodType.MONTH,
+        values = FinancialValues(income = BigDecimal.valueOf(2800.0), expense = BigDecimal.valueOf(1600.0)),
+        model = PeriodModel.ACTUAL,
+        type = PeriodType.MONTH,
+        shift = PeriodShift.PREVIOUS,
         startDate = LocalDate.now().minusMonths(1),
         endDate = LocalDate.now().minusMonths(1)
     )
 
     val mockState = DashboardUiState(
         accounts = listOf(
-            Account(1, "Bank", AccountType.CHECKING, "Open", true, "€", null, 12000.0, 11500.0),
-            Account(2, "Cash", AccountType.CASH, "Open", false, "€", null, 500.0, 500.0)
+            Account(1, "Bank", AccountType.CHECKING, "Open", true, "€", null, BigDecimal.valueOf(12000.0), BigDecimal.valueOf(11500.0)),
+            Account(2, "Cash", AccountType.CASH, "Open", false, "€", null, BigDecimal.valueOf(500.0), BigDecimal.valueOf(500.0))
         ),
         currentActualSummary = currentActual,
         currentForecastSummary = currentForecast,

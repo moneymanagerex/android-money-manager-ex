@@ -14,9 +14,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.money.manager.ex.domain.model.FinancialValues
 import com.money.manager.ex.domain.model.PeriodModel
+import com.money.manager.ex.domain.model.PeriodShift
 import com.money.manager.ex.domain.model.PeriodSummary
 import com.money.manager.ex.domain.model.PeriodType
 import com.money.manager.ex.presentation.theme.MmexTheme
+import java.math.BigDecimal
 import java.time.LocalDate
 import java.util.*
 
@@ -34,15 +36,25 @@ fun SummaryRow(
             .padding(horizontal = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        val currentIncome = currentActual?.values?.income ?: BigDecimal.ZERO
+        val currentForecastIncome = currentForecast?.values?.income ?: BigDecimal.ZERO
+        val previousIncome = previousActual?.values?.income ?: BigDecimal.ZERO
+        val previousForecastIncome = previousForecast?.values?.income ?: BigDecimal.ZERO
+
+        val currentExpense = currentActual?.values?.expense ?: BigDecimal.ZERO
+        val currentForecastExpense = currentForecast?.values?.expense ?: BigDecimal.ZERO
+        val previousExpense = previousActual?.values?.expense ?: BigDecimal.ZERO
+        val previousForecastExpense = previousForecast?.values?.expense ?: BigDecimal.ZERO
+
         // Income Card
         SummaryCard(
             title = "Income",
-            actual = currentActual?.values?.income ?: 0.0,
-            actualTrend = calculateTrend(currentActual?.values?.income ?: 0.0, previousActual?.values?.income ?: 0.0),
-            forecast = (currentActual?.values?.income ?: 0.0) + (currentForecast?.values?.income ?: 0.0),
+            actual = currentIncome,
+            actualTrend = calculateTrend(currentIncome, previousIncome),
+            forecast = currentIncome + currentForecastIncome,
             forecastTrend = calculateTrend(
-                (currentActual?.values?.income ?: 0.0) + (currentForecast?.values?.income ?: 0.0),
-                (previousActual?.values?.income ?: 0.0) + (previousForecast?.values?.income ?: 0.0)
+                currentIncome + currentForecastIncome,
+                previousIncome + previousForecastIncome
             ),
             isIncome = true,
             modifier = Modifier.weight(1f)
@@ -50,12 +62,12 @@ fun SummaryRow(
         // Expense Card
         SummaryCard(
             title = "Expenses",
-            actual = currentActual?.values?.expense ?: 0.0,
-            actualTrend = calculateTrend(currentActual?.values?.expense ?: 0.0, previousActual?.values?.expense ?: 0.0),
-            forecast = (currentActual?.values?.expense ?: 0.0) + (currentForecast?.values?.expense ?: 0.0),
+            actual = currentExpense,
+            actualTrend = calculateTrend(currentExpense, previousExpense),
+            forecast = currentExpense + currentForecastExpense,
             forecastTrend = calculateTrend(
-                (currentActual?.values?.expense ?: 0.0) + (currentForecast?.values?.expense ?: 0.0),
-                (previousActual?.values?.expense ?: 0.0) + (previousForecast?.values?.expense ?: 0.0)
+                currentExpense + currentForecastExpense,
+                previousExpense + previousForecastExpense
             ),
             isIncome = false,
             modifier = Modifier.weight(1f)
@@ -66,9 +78,9 @@ fun SummaryRow(
 @Composable
 fun SummaryCard(
     title: String,
-    actual: Double,
+    actual: BigDecimal,
     actualTrend: Double,
-    forecast: Double,
+    forecast: BigDecimal,
     forecastTrend: Double,
     isIncome: Boolean,
     modifier: Modifier = Modifier
@@ -174,36 +186,39 @@ private fun TrendBadge(trend: Double, isIncome: Boolean) {
     }
 }
 
-private fun calculateTrend(current: Double, previous: Double): Double {
-    if (previous == 0.0) return 0.0
-    return ((current - previous) / previous) * 100.0
+private fun calculateTrend(current: BigDecimal, previous: BigDecimal): Double {
+    if (previous.compareTo(BigDecimal.ZERO) == 0) return 0.0
+    return ((current - previous).toDouble() / previous.toDouble()) * 100.0
 }
 
-private fun formatValue(value: Double): String {
-    return String.format(Locale.getDefault(), "€%,.2f", value)
+private fun formatValue(value: BigDecimal): String {
+    return String.format(Locale.getDefault(), "€%,.2f", value.toDouble())
 }
 
 @Preview
 @Composable
 fun SummaryRowPreview() {
     val currentActual = PeriodSummary(
-        values = FinancialValues(income = 2000.0, expense = 1500.0),
-        periodModel = PeriodModel.ACTUAL,
-        periodType = PeriodType.MONTH,
+        values = FinancialValues(income = BigDecimal.valueOf(2000.0), expense = BigDecimal.valueOf(1500.0)),
+        model = PeriodModel.ACTUAL,
+        type = PeriodType.MONTH,
+        shift = PeriodShift.CURRENT,
         startDate = LocalDate.now(),
         endDate = LocalDate.now()
     )
     val currentForecast = PeriodSummary(
-        values = FinancialValues(income = 1500.0, expense = 300.0),
-        periodModel = PeriodModel.FORECAST,
-        periodType = PeriodType.MONTH,
+        values = FinancialValues(income = BigDecimal.valueOf(1500.0), expense = BigDecimal.valueOf(300.0)),
+        model = PeriodModel.FORECAST,
+        type = PeriodType.MONTH,
+        shift = PeriodShift.CURRENT,
         startDate = LocalDate.now(),
         endDate = LocalDate.now()
     )
     val previousActual = PeriodSummary(
-        values = FinancialValues(income = 2800.0, expense = 1600.0),
-        periodModel = PeriodModel.ACTUAL,
-        periodType = PeriodType.MONTH,
+        values = FinancialValues(income = BigDecimal.valueOf(2800.0), expense = BigDecimal.valueOf(1600.0)),
+        model = PeriodModel.ACTUAL,
+        type = PeriodType.MONTH,
+        shift = PeriodShift.PREVIOUS,
         startDate = LocalDate.now().minusMonths(1),
         endDate = LocalDate.now().minusMonths(1)
     )

@@ -2,7 +2,10 @@ package com.money.manager.ex.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.money.manager.ex.data.local.converter.BigDecimalConverter
 import com.money.manager.ex.data.local.dao.AccountDao
+import com.money.manager.ex.data.local.dao.TransactionDao
 import com.money.manager.ex.data.local.entity.*
 
 @Database(
@@ -32,9 +35,11 @@ import com.money.manager.ex.data.local.entity.*
         TagLinkEntityV1::class,
         DeletedRecordLogEntity::class
     ],
-    version = 1,
+    version = 21,
     exportSchema = false
 )
+@TypeConverters(BigDecimalConverter::class)
 abstract class MmexDatabase : RoomDatabase() {
     abstract fun accountDao(): AccountDao
+    abstract fun transactionDao(): TransactionDao
 }

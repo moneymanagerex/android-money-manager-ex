@@ -1,5 +1,7 @@
 package com.money.manager.ex.domain.model
 
+import java.math.BigDecimal
+
 data class Account(
     val id: Int,
     val name: String,
@@ -8,7 +10,7 @@ data class Account(
     val isFavorite: Boolean,
     val currencySymbol: String,
     val currencyPrefix: String?,
-    val balance: Double = 0.0,
-    val ledgerBalance: Double = 0.0,
+    val balance: BigDecimal = BigDecimal.ZERO,
+    val ledgerBalance: BigDecimal = BigDecimal.ZERO,
     val currencyCode: String = ""
 )

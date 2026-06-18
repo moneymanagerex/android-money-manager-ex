@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.money.manager.ex.domain.model.*
 import com.money.manager.ex.presentation.components.AccountCard
 import com.money.manager.ex.presentation.theme.MmexTheme
+import java.math.BigDecimal
 import java.time.LocalDate
 
 @Composable
@@ -86,8 +87,8 @@ fun AccountCarouselPreview() {
             isFavorite = true,
             currencySymbol = "€",
             currencyPrefix = null,
-            balance = 12500.50,
-            ledgerBalance = 12000.00
+            balance = BigDecimal.valueOf(12500.50),
+            ledgerBalance = BigDecimal.valueOf(12000.00)
         ),
         Account(
             id = 2,
@@ -97,14 +98,15 @@ fun AccountCarouselPreview() {
             isFavorite = false,
             currencySymbol = "€",
             currencyPrefix = null,
-            balance = 450.00,
-            ledgerBalance = 450.00
+            balance = BigDecimal.valueOf(450.00),
+            ledgerBalance = BigDecimal.valueOf(450.00)
         )
     )
     val mockForecast = PeriodSummary(
-        values = FinancialValues(income = 200.0, expense = 100.0),
-        periodModel = PeriodModel.FORECAST,
-        periodType = PeriodType.MONTH,
+        values = FinancialValues(income = BigDecimal.valueOf(200.0), expense = BigDecimal.valueOf(100.0)),
+        model = PeriodModel.FORECAST,
+        type = PeriodType.MONTH,
+        shift = PeriodShift.CURRENT,
         startDate = LocalDate.now(),
         endDate = LocalDate.now()
     )

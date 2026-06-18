@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.money.manager.ex.domain.model.*
 import com.money.manager.ex.presentation.theme.MmexTheme
+import java.math.BigDecimal
 import java.text.NumberFormat
 import java.util.*
 
@@ -37,8 +38,8 @@ fun AccountCard(
     )
 
     // EOM Forecast calculation: Account.Balance + currentForecastSummary.income - currentForecastSummary.expense
-    val eomForecast = if (forecastSummary != null && forecastSummary.periodModel == PeriodModel.FORECAST) {
-        account.balance + (forecastSummary.values.income - forecastSummary.values.expense)
+    val eomForecast = if (forecastSummary != null && forecastSummary.model == PeriodModel.FORECAST) {
+        account.balance + forecastSummary.values.income - forecastSummary.values.expense
     } else {
         account.balance
     }
@@ -115,7 +116,7 @@ fun AccountCard(
                     prefix = account.currencyPrefix
                 )
                 BalanceInfo(
-                    label = "EO-${forecastSummary?.periodType?.label ?: "Month"} Forecast",
+                    label = "EO-${forecastSummary?.type?.label ?: "Month"} Forecast",
                     amount = eomForecast,
                     symbol = account.currencySymbol,
                     prefix = account.currencyPrefix,
@@ -129,7 +130,7 @@ fun AccountCard(
 @Composable
 private fun BalanceInfo(
     label: String,
-    amount: Double,
+    amount: BigDecimal,
     symbol: String,
     prefix: String?,
     horizontalAlignment: Alignment.Horizontal = Alignment.Start
@@ -158,7 +159,7 @@ private fun getAccountIcon(type: AccountType): ImageVector {
     }
 }
 
-private fun formatCurrency(amount: Double, symbol: String, prefix: String?): String {
+private fun formatCurrency(amount: BigDecimal, symbol: String, prefix: String?): String {
     val numberFormat = NumberFormat.getNumberInstance(Locale.getDefault()).apply {
         minimumFractionDigits = 2
         maximumFractionDigits = 2
@@ -178,8 +179,8 @@ fun AccountCardPreview() {
         isFavorite = true,
         currencySymbol = "€",
         currencyPrefix = null,
-        balance = 12500.50,
-        ledgerBalance = 12000.00
+        balance = BigDecimal.valueOf(12500.50),
+        ledgerBalance = BigDecimal.valueOf(12000.00)
     )
     MmexTheme {
         AccountCard(account = mockAccount, modifier = Modifier.padding(16.dp))

@@ -21,13 +21,13 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindTransactionRepository(
-        fakeTransactionRepositoryImpl: FakeTransactionRepositoryImpl
+        transactionRepositoryImpl: TransactionRepositoryImpl
     ): TransactionRepository
 
     @Binds
     @Singleton
     abstract fun bindPeriodSummaryRepository(
-        fakePeriodSummaryRepositoryImpl: FakePeriodSummaryRepositoryImpl
+        periodSummaryRepositoryImpl: PeriodSummaryRepositoryImpl
     ): PeriodSummaryRepository
 
     @Binds
