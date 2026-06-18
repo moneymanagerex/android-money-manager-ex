@@ -596,6 +596,10 @@ public class HomeFragment
     // Public
 
     public void startLoaders() {
+        if (!isAdded() || isStateSaved()) {
+            return;
+        }
+
         LoaderManager loaderManager = getLoaderManager();
 //        loaderManager.restartLoader(LOADER_USER_NAME, null, this);
         loadUsername();
