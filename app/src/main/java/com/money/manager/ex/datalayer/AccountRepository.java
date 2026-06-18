@@ -27,6 +27,8 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * Repository for Accounts
  */
@@ -71,21 +73,28 @@ public class AccountRepository
 
         String selection = QueryAccountBills.ACCOUNTID + "=?";
 
-        Cursor cursor = getContext().getContentResolver().query(
-                result.getUri(),
-                result.getAllColumns(),
-                selection,
-                new String[] { Long.toString(id) },
-                null);
-        if (cursor == null) return null;
+        Cursor cursor = null;
+        try {
+            cursor = getContext().getContentResolver().query(
+                    result.getUri(),
+                    result.getAllColumns(),
+                    selection,
+                    new String[] { Long.toString(id) },
+                    null);
+            if (cursor == null) return null;
 
-        if (cursor.moveToFirst()) {
-            result.setValueFromCursor(cursor);
+            if (cursor.moveToFirst()) {
+                result.setValueFromCursor(cursor);
+            }
+            return result;
+        } catch (Exception e) {
+            Timber.e(e, "loading account bills for %d", id);
+            return null;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
-
-        cursor.close();
-
-        return result;
     }
 
     public Long loadCurrencyIdFor(long id) {
