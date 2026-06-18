@@ -64,6 +64,7 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
     private final Context mContext;
     private String mPassword;
 
+    private SupportSQLiteOpenHelper mHelper;
 
     // Dynamic
 
@@ -165,16 +166,23 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
 
     }
 
+    private synchronized SupportSQLiteOpenHelper getHelper() {
+        if (mHelper == null) {
+            SupportSQLiteOpenHelper.Factory factory = new SupportOpenHelperFactory(this.mPassword.getBytes());
+            SupportSQLiteOpenHelper.Configuration configuration =
+                    SupportSQLiteOpenHelper.Configuration.builder(mContext)
+                            .name(this.dbPath)
+                            .callback(this)
+                            .build();
+            mHelper = factory.create(configuration);
+        }
+        return mHelper;
+    }
+
     private SupportSQLiteDatabase getDatabase(boolean writable) {
-        SupportSQLiteOpenHelper.Factory factory = new SupportOpenHelperFactory(this.mPassword.getBytes());
-        SupportSQLiteOpenHelper.Configuration configuration =
-                SupportSQLiteOpenHelper.Configuration.builder(mContext)
-                        .name(this.dbPath)
-                        .callback(this)
-                        .build();
         return writable
-                ? factory.create(configuration).getWritableDatabase()
-                : factory.create(configuration).getReadableDatabase();
+                ? getHelper().getWritableDatabase()
+                : getHelper().getReadableDatabase();
     }
 
     public SupportSQLiteDatabase getReadableDatabase() {
@@ -185,13 +193,28 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         return getDatabase(true);
     }
 
-    public void setPassword(String password) {
-        this.mPassword = password;
+    public synchronized void setPassword(String password) {
+        if (!TextUtils.equals(this.mPassword, password)) {
+            this.mPassword = password;
+            closeHelper();
+        }
     }
+
     public String getPassword() { return this.mPassword;}
 
     public boolean hasPassword() {
         return !TextUtils.isEmpty(this.mPassword);
+    }
+
+    private synchronized void closeHelper() {
+        if (mHelper != null) {
+            try {
+                mHelper.close();
+            } catch (Exception e) {
+                Timber.e(e, "Error closing database helper");
+            }
+            mHelper = null;
+        }
     }
 
     /**
@@ -231,8 +254,9 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         String sqliteVersion = null;
         Cursor cursor = null;
         try {
-            if (getReadableDatabase() != null) {
-                cursor = getReadableDatabase().query("select sqlite_version() AS sqlite_version");
+            SupportSQLiteDatabase db = getReadableDatabase();
+            if (db != null) {
+                cursor = db.query("select sqlite_version() AS sqlite_version");
                 if (cursor != null && cursor.moveToFirst()) {
                     sqliteVersion = cursor.getString(0);
                 }
@@ -342,18 +366,12 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
 
     @Override
     protected void finalize() throws Throwable {
+        closeHelper();
         super.finalize();
     }
 
     public SupportSQLiteOpenHelper provideSupportSQLiteOpenHelper() {
-        SupportSQLiteOpenHelper.Factory factory = new SupportOpenHelperFactory(this.mPassword.getBytes());
-        SupportSQLiteOpenHelper.Configuration configuration =
-                SupportSQLiteOpenHelper.Configuration.builder(mContext)
-                        .name(this.dbPath)
-                        .callback(this)
-                        .build();
-
-        return factory.create(configuration);
+        return getHelper();
     }
 
     public static void createDatabaseBackupOnUpgrade(String currentDbFile, long oldVersion) throws IOException {
