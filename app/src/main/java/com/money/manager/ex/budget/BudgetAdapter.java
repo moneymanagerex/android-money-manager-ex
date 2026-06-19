@@ -328,7 +328,7 @@ public class BudgetAdapter
         if ( ! scheduledTransactionForecastListServices.isReady() ) return 0;
 
         // budget is based on year, Year financial, or monthly
-        MmxDate date = new MmxDate(getDateTo().toDate());
+        MmxDate date = new MmxDate(getDateFrom().toDate());
         Double total = 0.0;
         ScheduleTransactionForecastList list = scheduledTransactionForecastListServices.getRecurringTransactions();
         while (date.toDate().compareTo(getDateTo().toDate()) < 0) {
