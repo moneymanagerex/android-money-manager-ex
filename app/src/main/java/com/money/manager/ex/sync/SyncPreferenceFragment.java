@@ -143,6 +143,10 @@ public class SyncPreferenceFragment
 
         viewHolder.download.setOnPreferenceClickListener(preference -> {
             DatabaseMetadata currentDb = getDatabases().getCurrent();
+            if (currentDb == null) {
+                Toast.makeText(getContext(), R.string.remote_unavailable, Toast.LENGTH_SHORT).show();
+                return false;
+            }
 
             SyncManager sync = new SyncManager(getContext());
             if (sync.canSync()) {
@@ -161,6 +165,10 @@ public class SyncPreferenceFragment
 
         viewHolder.upload.setOnPreferenceClickListener(preference -> {
             DatabaseMetadata currentDb = getDatabases().getCurrent();
+            if (currentDb == null) {
+                Toast.makeText(getContext(), R.string.remote_unavailable, Toast.LENGTH_SHORT).show();
+                return false;
+            }
 
             SyncManager sync = new SyncManager(getContext());
             if (sync.canSync()) {
