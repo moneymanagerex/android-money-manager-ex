@@ -526,23 +526,7 @@ public class SearchParametersFragment
             // Category. Also check the splits.
             if (searchParameters.searchSubCategory) {
                 // build where also for sub category
-                String whereSubCategory = null;
-                QueryNestedCategory subQuery = new QueryNestedCategory(this.getActivity());
-                List<NestedCategoryEntity> subCat = subQuery.getChildrenNestedCategoryEntities(categId);
-                for( NestedCategoryEntity child : subCat) {
-                    if (whereSubCategory != null ) {
-                        whereSubCategory += ", ";
-                    } else {
-                        whereSubCategory = "";
-                    }
-                    whereSubCategory += Long.toString(child.getCategoryId());
-                }
-                whereSubCategory = "(" + whereSubCategory + ")" ;
-
-                // now using QueryMobileData that have split directly at cateId (uniformed both from transaction or Split)
-                where.addStatement(
-                        "(" + QueryAllData.CATEGID + " in " + whereSubCategory + ") "
-                        );
+                where.addStatement(QueryAllData.FULLCATID, " LIKE ", "%:" + categId + ":%");
             } else {
                 // now using QueryMobileData that have split directly at cateId (uniformed both from transaction or Split)
                 where.addStatement(
