@@ -107,17 +107,6 @@
                 android:singleLine="true" />
 
             <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewTransactionAccountName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:textSize="@dimen/mmx_text_view_size_micro"
-                android:textStyle="italic"
-                android:visibility="gone"
-                app:typeface="roboto_condensed_italic" />
-
-            <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewCategorySub"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -190,6 +179,27 @@
             android:orientation="vertical">
 
             <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/textViewTransactionAccountName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:ellipsize="end"
+                android:gravity="center_vertical|end"
+                android:singleLine="true"
+                android:textSize="@dimen/mmx_text_view_size_micro"
+                android:textStyle="italic"
+                android:visibility="gone"
+                app:typeface="roboto_condensed_italic" />
+
+            <com.money.manager.ex.view.RobotoTextView
+                android:id="@+id/textViewAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:gravity="end"
+                android:textStyle="bold" />
+
+            <com.money.manager.ex.view.RobotoTextView
                 android:id="@+id/textViewStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -200,14 +210,6 @@
                 android:textSize="@dimen/mmx_text_view_size_micro"
                 android:textStyle="italic"
                 app:typeface="roboto_condensed_italic" />
-
-            <com.money.manager.ex.view.RobotoTextView
-                android:id="@+id/textViewAmount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|end"
-                android:gravity="end"
-                android:textStyle="bold" />
 
             <!-- balance -->
             <com.money.manager.ex.view.RobotoTextView
