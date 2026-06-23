@@ -27,6 +27,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import timber.log.Timber;
+
 /**
  * Repository for InfoTable
  */
@@ -50,22 +52,26 @@ public class InfoRepositorySql
             .from(TABLE_NAME)
             .where(Info.INFONAME + "=?", infoName);
 
-        Cursor c;
+        Cursor c = null;
         try {
             c = this.query(sql);
+            if (c == null) return null;
+
+            List<Info> results = new ArrayList<>();
+            while (c.moveToNext()) {
+                Info entity = new Info();
+                entity.loadFromCursor(c);
+                results.add(entity);
+            }
+            return results;
         } catch (Exception e) {
-            c = null;
+            Timber.e(e, "loading all info for %s", infoName);
+            return null;
+        } finally {
+            if (c != null) {
+                c.close();
+            }
         }
-        if (c == null) return null;
-
-        List<Info> results = new ArrayList<>();
-        while (c.moveToNext()) {
-            Info entity = new Info();
-            entity.loadFromCursor(c);
-            results.add(entity);
-        }
-
-        return results;
     }
 
     public long delete(long id) {

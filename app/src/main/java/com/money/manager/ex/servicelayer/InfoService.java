@@ -109,7 +109,7 @@ public class InfoService
      * @return value
      */
     public String getInfoValue(String info) {
-        Cursor cursor;
+        Cursor cursor = null;
         String ret = null;
 
         try {
@@ -122,9 +122,12 @@ public class InfoService
             if (cursor.moveToFirst()) {
                 ret = cursor.getString(cursor.getColumnIndexOrThrow(Info.INFOVALUE));
             }
-            cursor.close();
         } catch (Exception e) {
             Timber.e(e, "retrieving info value: %s", info);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
 
         return ret;

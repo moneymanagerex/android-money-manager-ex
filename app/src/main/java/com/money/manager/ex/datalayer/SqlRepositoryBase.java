@@ -52,14 +52,20 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
     }
 
     public boolean exists(Select query) {
-        Cursor c = database.query(query.toString(), query.selectionArgs);
-        if (c == null) return false;
+        Cursor c = null;
+        try {
+            c = database.query(query.toString(), query.selectionArgs);
+            if (c == null) return false;
 
-        boolean result = c.getCount() > 0;
-
-        c.close();
-
-        return result;
+            return c.getCount() > 0;
+        } catch (Exception e) {
+            Timber.e(e, "checking existence");
+            return false;
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
     }
 
     public T first(Class<T> resultType, String[] projection, String selection, String[] args, String sort) {
@@ -71,8 +77,9 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
             .orderBy(sort)
             .toString();
 
+        Cursor c = null;
         try {
-            Cursor c = database.query(sql, args);
+            c = database.query(sql, args);
             if (c == null) return null;
 
             if (c.moveToNext()) {
@@ -84,9 +91,12 @@ abstract class SqlRepositoryBase<T extends EntityBase> {
                     Timber.e(e, "creating %s", resultType.getName());
                 }
             }
-            c.close();
         } catch (Exception ex) {
             Timber.e(ex, "fetching first record");
+        } finally {
+            if (c != null) {
+                c.close();
+            }
         }
 
         return entity;

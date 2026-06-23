@@ -116,15 +116,21 @@ public class CurrencyRepository
     private Currency loadCurrencyInternal(String selection, String[] selectionArgs) {
         Currency currency = new Currency();
 
-        Cursor cursor = openCursor(null, selection, selectionArgs);
-        if (cursor == null) return null;
+        Cursor cursor = null;
+        try {
+            cursor = openCursor(null, selection, selectionArgs);
+            if (cursor == null) return null;
 
-        if (cursor.moveToNext()) {
-            currency.loadFromCursor(cursor);
-        } else {
-            currency = null;
+            if (cursor.moveToNext()) {
+                currency.loadFromCursor(cursor);
+            } else {
+                currency = null;
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
-        cursor.close();
 
         return currency;
     }
@@ -134,18 +140,20 @@ public class CurrencyRepository
     }
 
     public Currency query(String[] projection, String selection, String[] args) {
-        Cursor c = openCursor(projection, selection, args);
+        Cursor c = null;
+        try {
+            c = openCursor(projection, selection, args);
+            if (c == null) return null;
 
-        if (c == null) return null;
-
-        Currency account = null;
-
-        if (c.moveToNext()) {
-            account = Currency.fromCursor(c);
+            Currency account = null;
+            if (c.moveToNext()) {
+                account = Currency.fromCursor(c);
+            }
+            return account;
+        } finally {
+            if (c != null) {
+                c.close();
+            }
         }
-
-        c.close();
-
-        return account;
     }
 }
