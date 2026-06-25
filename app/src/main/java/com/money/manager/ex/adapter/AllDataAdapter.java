@@ -119,6 +119,7 @@ public class AllDataAdapter
         holder.txtAmount = view.findViewById(R.id.textViewAmount);
         holder.txtPayee = view.findViewById(R.id.textViewPayee);
         holder.txtAccountName = view.findViewById(R.id.textViewAccountName);
+        holder.txtTransactionAccountName = view.findViewById(R.id.textViewTransactionAccountName);
         holder.txtCategorySub = view.findViewById(R.id.textViewCategorySub);
         holder.txtNotes = view.findViewById(R.id.textViewNotes);
         holder.txtBalance = view.findViewById(R.id.textViewBalance);
@@ -238,6 +239,13 @@ public class AllDataAdapter
             }
         } else {
             holder.txtAccountName.setVisibility(View.GONE);
+        }
+
+        if (!isShowAccountName() && mAccountId == Constants.NOT_SET) {
+            holder.txtTransactionAccountName.setText(cursor.getString(cursor.getColumnIndexOrThrow(ACCOUNTNAME)));
+            holder.txtTransactionAccountName.setVisibility(View.VISIBLE);
+        } else {
+            holder.txtTransactionAccountName.setVisibility(View.GONE);
         }
 
         // Payee

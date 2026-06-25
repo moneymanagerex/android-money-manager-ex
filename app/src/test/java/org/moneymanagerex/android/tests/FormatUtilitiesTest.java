@@ -16,16 +16,11 @@
  */
 package org.moneymanagerex.android.tests;
 
-import android.content.Context;
-
 import com.money.manager.ex.core.FormatUtilities;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import java.util.Locale;
 
@@ -38,24 +33,22 @@ import static org.junit.Assert.assertEquals;
  * and does not leak the system/default-locale separators.
  *
  * Regression test for issue #2764.
+ *
+ * {@link FormatUtilities#formatNumber} is a pure function with no instance/DB dependencies,
+ * so the test calls it statically and needs no Robolectric/Context setup.
  */
-@RunWith(RobolectricTestRunner.class)
 public class FormatUtilitiesTest {
 
-    private FormatUtilities formatUtilities;
     private Locale originalLocale;
 
     @Before
     public void setUp() {
-        Context context = RuntimeEnvironment.application.getApplicationContext();
-        formatUtilities = new FormatUtilities(context);
         originalLocale = Locale.getDefault();
     }
 
     @After
     public void tearDown() {
         Locale.setDefault(originalLocale);
-        formatUtilities = null;
     }
 
     /**
@@ -63,7 +56,7 @@ public class FormatUtilitiesTest {
      */
     @Test
     public void formatNumberUsesSuppliedSeparators() {
-        String result = formatUtilities.formatNumber(
+        String result = FormatUtilities.formatNumber(
             MoneyFactory.fromString("1234.56"), 2, ",", ".", null, null);
 
         assertEquals("1.234,56", result);
@@ -76,15 +69,15 @@ public class FormatUtilitiesTest {
     @Test
     public void formatNumberIsIndependentOfDefaultLocale() {
         Locale.setDefault(Locale.US);
-        String inUs = formatUtilities.formatNumber(
+        String inUs = FormatUtilities.formatNumber(
             MoneyFactory.fromString("1234.56"), 2, ",", ".", null, null);
 
         Locale.setDefault(Locale.GERMANY);
-        String inGermany = formatUtilities.formatNumber(
+        String inGermany = FormatUtilities.formatNumber(
             MoneyFactory.fromString("1234.56"), 2, ",", ".", null, null);
 
         Locale.setDefault(new Locale("ar", "EG"));
-        String inEgypt = formatUtilities.formatNumber(
+        String inEgypt = FormatUtilities.formatNumber(
             MoneyFactory.fromString("1234.56"), 2, ",", ".", null, null);
 
         assertEquals(inUs, inGermany);
@@ -100,7 +93,7 @@ public class FormatUtilitiesTest {
     public void formatNumberWithEmptySeparatorsUsesLocaleRootDefaults() {
         Locale.setDefault(Locale.GERMANY);
 
-        String result = formatUtilities.formatNumber(
+        String result = FormatUtilities.formatNumber(
             MoneyFactory.fromString("1234.5"), 2, "", "", null, null);
 
         assertEquals("1,234.50", result);
