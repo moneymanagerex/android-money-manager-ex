@@ -233,7 +233,7 @@ public class FormatUtilities {
      * @param suffix the suffix to attach.
      * @return Number formatted.
      */
-    public String formatNumber(Money amount, int decimals, String decimalSeparator, String groupSeparator,
+    public static String formatNumber(Money amount, int decimals, String decimalSeparator, String groupSeparator,
                                String prefix, String suffix) {
         // Decimals
 
@@ -245,10 +245,10 @@ public class FormatUtilities {
         // Separators
 
         DecimalFormatSymbols formatSymbols = new DecimalFormatSymbols(Locale.ROOT);
-        if (!(TextUtils.isEmpty(decimalSeparator))) {
+        if (decimalSeparator != null && !decimalSeparator.isEmpty()) {
             formatSymbols.setDecimalSeparator(decimalSeparator.charAt(0));
         }
-        if (!(TextUtils.isEmpty(groupSeparator))) {
+        if (groupSeparator != null && !groupSeparator.isEmpty()) {
             formatSymbols.setGroupingSeparator(groupSeparator.charAt(0));
         }
         // Group size
@@ -291,7 +291,7 @@ public class FormatUtilities {
 
         // group & decimal symbols
         // currency symbol
-        return this.formatNumber(amount, scale, currency.getDecimalSeparator(),
+        return formatNumber(amount, scale, currency.getDecimalSeparator(),
             currency.getGroupSeparator(), currency.getPfxSymbol(), currency.getSfxSymbol());
     }
 
