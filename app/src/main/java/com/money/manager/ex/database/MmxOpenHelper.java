@@ -206,6 +206,10 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         return !TextUtils.isEmpty(this.mPassword);
     }
 
+    public synchronized void close() {
+        closeHelper();
+    }
+
     private synchronized void closeHelper() {
         if (mHelper != null) {
             try {

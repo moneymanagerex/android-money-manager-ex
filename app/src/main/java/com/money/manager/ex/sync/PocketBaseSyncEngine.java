@@ -18,7 +18,6 @@ import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.utils.MmxFileUtils;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -144,12 +143,6 @@ public class PocketBaseSyncEngine {
         } finally {
             db.endTransaction();
         }
-        try {
-            db.close();
-        } catch (IOException e) {
-            Timber.e(e, "[SYNC_CLOUD] Error closing database");
-        }
-
     }
 
     private void pushTableChanges(SupportSQLiteDatabase db, String tableName) throws IOException {
@@ -187,7 +180,7 @@ public class PocketBaseSyncEngine {
 
                 String currentPbId = pbIdIdx != -1 ? cursor.getString(pbIdIdx) : null;
                 long localId = cursor.getLong(pkIdx);
-                Response<JsonObject> response = null;
+                Response<JsonObject> response;
 
                 try {
                     if (currentPbId == null || TextUtils.isEmpty(currentPbId)) {
@@ -219,7 +212,7 @@ public class PocketBaseSyncEngine {
                 }
             }
         } finally {
-            if (cursor != null) cursor.close();
+            cursor.close();
         }
 
     }
