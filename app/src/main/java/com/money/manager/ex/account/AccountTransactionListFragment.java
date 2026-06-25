@@ -818,6 +818,10 @@ public class AccountTransactionListFragment
         reloadAccountInfo();
         if (mAccount == null) return;
 
+        // Reconciled-row visibility must honor the HideReconciledAmounts preference rather than
+        // being forced visible by this data reload (#2989).
+        applyReconciledVisibility();
+
         if (mAccount.getType() == AccountTypes.INVESTMENT) {
             configureInvestmentHeader();
         } else {
@@ -825,10 +829,6 @@ public class AccountTransactionListFragment
             // against view reuse across account types).
             if (this.viewHolder.txtAccountBalanceTitle != null)
                 this.viewHolder.txtAccountBalanceTitle.setText(R.string.account_balance);
-            if (this.viewHolder.txtAccountReconciledTitle != null)
-                this.viewHolder.txtAccountReconciledTitle.setVisibility(View.VISIBLE);
-            if (this.viewHolder.txtAccountReconciled != null)
-                this.viewHolder.txtAccountReconciled.setVisibility(View.VISIBLE);
             setGone(this.viewHolder.tableRowCashBalance);
             setGone(this.viewHolder.tableRowMarketValue);
             setGone(this.viewHolder.tableRowInvested);
@@ -1075,18 +1075,29 @@ public class AccountTransactionListFragment
     private void refreshSettings() {
         LookAndFeelSettings mLookAndFeelSettings = new AppSettings(getActivity()).getLookAndFeelSettings();
         mSortTransactionsByType = mLookAndFeelSettings.getSortTransactionsByType();
-        boolean mHideReconciled = mLookAndFeelSettings.getHideReconciledAmounts();
 
         updateFilterDateRange();
         updateAllDataListFragmentShowBalance();
 
         getActivity().invalidateOptionsMenu();
 
+        applyReconciledVisibility();
+    }
+
+    /**
+     * Apply the HideReconciledAmounts preference to the reconciled balance row. This is the
+     * single place that decides the reconciled-row visibility so that data reloads (which call
+     * {@link #setTextViewBalance()}) do not override the user's setting (#2989).
+     */
+    private void applyReconciledVisibility() {
+        if (getActivity() == null) return;
+        boolean hideReconciled = new AppSettings(getActivity()).getLookAndFeelSettings().getHideReconciledAmounts();
+        int visibility = hideReconciled ? View.GONE : View.VISIBLE;
         if (this.viewHolder.txtAccountReconciled != null) {
-            this.viewHolder.txtAccountReconciled.setVisibility(mHideReconciled ? View.GONE : View.VISIBLE);
+            this.viewHolder.txtAccountReconciled.setVisibility(visibility);
         }
         if (this.viewHolder.txtAccountReconciledTitle != null) {
-            this.viewHolder.txtAccountReconciledTitle.setVisibility(mHideReconciled ? View.GONE : View.VISIBLE);
+            this.viewHolder.txtAccountReconciledTitle.setVisibility(visibility);
         }
     }
 
