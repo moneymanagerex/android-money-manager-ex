@@ -161,8 +161,15 @@ public class SyncPreferenceFragment
             return false;
         });
 
-        // Upload.
+        // fix #2997.
+        // as workarround simply disable button if cloudsync.
+        // in future evaluate download and upload as force sync
+        if (SyncManager.isCloudSyncEnabled()) {
+            viewHolder.upload.setEnabled(false);
+            viewHolder.download.setEnabled(false);
+        }
 
+        // Upload.
         viewHolder.upload.setOnPreferenceClickListener(preference -> {
             DatabaseMetadata currentDb = getDatabases().getCurrent();
             if (currentDb == null) {
