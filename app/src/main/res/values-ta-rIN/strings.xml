@@ -88,8 +88,17 @@
     <string name="account_empty_list">கணக்குகள் எதுவும் கிடைக்கவில்லை. ஒன்றை உருவாக்க, பச்சை பிளஸ் பட்டனைத் தட்டவும்.</string>
     <string name="account_balance">கணக்கு நிலுவை</string>
     <string name="account_reconciled_balance">சமரசம் செய்யப்பட்ட இருப்பு</string>
+    <string name="total_balance">மொத்த இருப்பு</string>
+    <string name="cash_balance">பண இருப்பு</string>
+    <string name="market_value">Market Value</string>
+    <string name="invested">முதலீடு செய்யப்பட்டது</string>
+    <string name="total_cost">மொத்த செலவு</string>
+    <string name="gain_loss">ஆதாயம் / இழப்பு</string>
+    <string name="unrealized_gain_loss">உணரப்படாத ஜி/எல்</string>
+    <string name="realized_gain_loss">உணரப்பட்ட ஜி/எல்</string>
     <string name="pie_other">மற்றவை</string>
     <string name="delete_account">கணக்கை நீக்கவும்</string>
+    <string name="delete_stock_investment">பங்கு முதலீட்டை நீக்கு</string>
     <string name="account_name">கணக்கு பெயர்</string>
     <string name="account_type">கணக்கு வகைகள்</string>
     <string name="account_number">வங்கிக் கணக்கு எண்</string>
@@ -122,6 +131,7 @@
     <!-- category / subcategory -->
     <string name="category">பிரிவு</string>
     <string name="subcategory">துணைப்பிரிவு</string>
+    <string name="navigation_mode">வழிசெலுத்தல் முறை</string>
     <string name="category_empty_list">வகை எதுவும் கண்டறியப்படவில்லை. ஒன்றை உருவாக்க, பச்சை பிளஸ் பொத்தானைத் தட்டவும்.</string>
     <string name="select_category">வகையைத் தேர்ந்தெடுக்கவும்</string>
     <string name="add_category">வகையைச் சேர்க்கவும்</string>
@@ -148,6 +158,8 @@
     <string name="amount">தொகை</string>
     <string name="total_amount">மொத்த தொகை</string>
     <string name="deposit">வைப்பு</string>
+    <string name="buy">வாங்கு</string>
+    <string name="sell">விற்பனை செய்</string>
     <string name="status">நிலை</string>
     <string name="status_reconciled">சரிபார்க்கப்பட்டது</string>
     <string name="status_void">செல்லாது</string>
@@ -172,6 +184,7 @@
     <string name="about">பற்றி</string>
     <string name="add">சேர்க்க</string>
     <string name="confirmDelete">இந்தப் பதிவை நிச்சயமாக நீக்க விரும்புகிறீர்களா?</string>
+    <string name="confirm_delete_stock_investment">பங்கு முதலீட்டை நீக்க விரும்புகிறீர்களா?</string>
     <string name="date">தேதி</string>
     <string name="delete">நீக்கு</string>
     <string name="download">பதிவிறக்கவும்</string>
@@ -313,7 +326,16 @@
     <string name="title_activity_general_report">பொது அறிக்கைகள்</string>
     <string name="menu_report_income_vs_expenses">பொது அறிக்கை</string>
     <string name="menu_report_cashflow">பணப்புழக்கம்</string>
+    <string name="menu_report_summary_of_accounts">கணக்குகளின் சுருக்கம்</string>
+    <string name="menu_report_summary_of_stocks">பங்குகளின் சுருக்கம்</string>
+    <string name="menu_report_summary_of_assets">சொத்துக்களின் சுருக்கம்</string>
+    <string name="asset_name">சொத்து பெயர்</string>
+    <string name="asset_type">சொத்து வகை</string>
+    <string name="asset_initial_value">ஆரம்ப மதிப்பு</string>
     <string name="asset_current_value">தற்போதைய மதிப்பு</string>
+    <string name="asset_rate_percent">விகிதம் %</string>
+    <string name="report_subtotal">துணைத்தொகை</string>
+    <string name="report_grand_total">பெரிய மொத்தம்</string>
     <string name="total">மொத்தம்</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">எல்லா நேரமும்</string>
@@ -490,6 +512,7 @@
     <string name="title_activity_currency_chart">நாணய மாற்று வீத விளக்கப்படம்</string>
     <string name="sort_by_ascending">ஆண்டு மற்றும் மாதம் ஏறுவரிசைப்படி வரிசைப்படுத்தவும்</string>
     <string name="sort_by_desceding">ஆண்டு மற்றும் மாதத்தின் படி வரிசைப்படுத்தவும்</string>
+    <string name="group_by">குழு மூலம்</string>
     <string name="years">ஆண்டு</string>
     <string name="select_the_years_to_be_displayed">காண்பிக்கப்பட வேண்டிய ஆண்டுகளைத் தேர்ந்தெடுக்கவும்</string>
     <string name="to_date">தேதி வரை</string>
@@ -499,15 +522,29 @@
     <string name="pref_transaction_hide_reconciled_amounts_title">சரிசெய்யப்பட்ட தொகைகளை மறை</string>
     <string name="pref_transaction_sort_by_type_summary">பரிவர்த்தனை வகையின்படி தினசரி பரிவர்த்தனைகளை ஏற்பாடு செய்யுங்கள் (வைப்பு, பரிமாற்றம், திரும்பப் பெறுதல்)</string>
     <string name="pref_transaction_sort_by_type_title">வகையின்படி பரிவர்த்தனைகளை வரிசைப்படுத்தவும்</string>
+    <string name="pref_search_results_group_by_account_title">கணக்கு வாரியாக தேடல் முடிவுகளை குழுவாக்குங்கள்</string>
+    <string name="pref_search_results_group_by_account_summary">செயல்படுத்தப்பட்டால், தேடல் முடிவுகள் கணக்கின் அடிப்படையில் தொகுக்கப்படும். செயலிழக்கச் செய்யப்பட்டால், அனைத்து முடிவுகளும் தேதியின் அடிப்படையில் பட்டியலிடப்படும்.</string>
     <string name="warning">எச்சரிக்கை</string>
     <string name="no_transfer_splits">பரிமாற்றத்திற்கு மாற நீங்கள் தேர்வு செய்துள்ளீர்கள் ஆனால் பரிவர்த்தனையில் பிரிவு வகைகள் உள்ளன. பிளவு வகைகளைத் தொடரவும் அகற்றவும் விரும்புகிறீர்களா?</string>
     <string name="qif_export">Qif ஏற்றுமதி</string>
     <string name="update_prices">விலைகளைப் புதுப்பிக்கவும்</string>
     <string name="update_price">விலையைப் புதுப்பிக்கவும்</string>
     <string name="download_price">பதிவிறக்க விலை</string>
+    <string name="download_all_prices">அனைத்து விலைகளையும் பதிவிறக்கவும்</string>
+    <string name="download_price_selected_date">தேர்ந்தெடுக்கப்பட்ட தேதிக்கான பதிவிறக்க விலை</string>
+    <string name="download_price_history_range">தேதி வரம்பிற்கான விலை வரலாற்றைப் பதிவிறக்கவும்</string>
+    <string name="download_for_date_range">தேதி வரம்பிற்கு பதிவிறக்கவும்</string>
+    <string name="price_history">விலை வரலாறு</string>
+    <string name="stock_name">பங்கு பெயர்</string>
+    <string name="download_prices">பதிவிறக்க விலைகள்</string>
+    <string name="download_prices_explanation">தயவுசெய்து தொடக்கத் தேதியைத் தேர்ந்தெடுக்கவும். இன்றைய தேதி வரையிலான விலைகள் பதிவிறக்கம் செய்யப்படும்.</string>
+    <string name="no_price_history">விலை வரலாறு இல்லை</string>
+    <string name="prices_downloaded">பதிவிறக்கம் செய்யப்பட்ட %1$d விலைகள்</string>
     <string name="price_updated">விலை புதுப்பிக்கப்பட்டது</string>
     <string name="all_prices_updated">அனைத்து விலைகளும் புதுப்பிக்கப்பட்டுள்ளன.</string>
     <string name="download_complete">பதிவிறக்கம் முடிந்தது.</string>
+    <string name="downloaded_price_for_symbol">பதிவிறக்கப்பட்டது: %1$s @ %2$s</string>
+    <string name="downloaded_prices_count">பதிவிறக்கம் செய்யப்பட்ட %1$d/%2$d விலைகள்</string>
     <string name="confirm_price_download">ஆன்லைனில் பாதுகாப்பு விலைகளைப் புதுப்பிக்க விரும்புகிறீர்களா?</string>
     <string name="starting_price_update">விலைகளைப் பதிவிறக்குகிறது, காத்திருக்கவும்&#8230;</string>
     <string name="database_migrate_14_to_20">v1.4 இலிருந்து தரவுத்தளத்தை நகர்த்தவும்</string>
@@ -588,12 +625,15 @@
     <string name="symbol">சின்னம்</string>
     <string name="number_of_shares">பங்குகளின் எண்ணிக்கை</string>
     <string name="purchase_price">கொள்முதல் விலை</string>
+    <string name="share_price">பங்கு விலை</string>
     <string name="current_price">தற்போதைய விலை</string>
     <string name="price_date">விலை தேதி</string>
     <string name="commission">கமிஷன்</string>
     <string name="value">மதிப்பு</string>
     <string name="view_transactions">பரிவர்த்தனைகளைப் பார்க்கவும்</string>
     <string name="view_transactions_sub">துணைப்பிரிவுகளுடன் பரிவர்த்தனைகளைப் பார்க்கவும்</string>
+    <string name="open_yahoo_finance">Yahoo Financeஐத் திறக்கவும்</string>
+    <string name="no_browser_available">உலாவி இல்லை</string>
     <string name="switch_active">செயலில்/செயலற்றதாக மாறவும்</string>
     <string name="error_downloading_symbol">குறியீட்டிற்கான விலையைப் பதிவிறக்குவதில் பிழை</string>
     <string name="error_updating_rates">கட்டணங்களைப் புதுப்பிப்பதில் பிழை</string>
@@ -642,6 +682,7 @@
     <string name="budget_year">பட்ஜெட் ஆண்டு</string>
     <string name="budget_month">பட்ஜெட் மாதம்</string>
     <string name="budget_month_optional">பட்ஜெட் மாதம் (கட்டாயமற்ற)</string>
+    <string name="menu_copy">நகலெடுக்கவும்</string>
     <string name="app_restart">மாற்றங்களைப் பயன்படுத்த, பயன்பாடு இப்போது மூடப்படும். தயவுசெய்து மீண்டும் தொடங்கவும்.</string>
     <string name="print">அச்சிடுக</string>
     <string name="min_19">ஆவணத்தை அச்சிடுவதற்கு உங்களுக்கு குறைந்தபட்சம் Android 4.4 தேவை.</string>
@@ -756,6 +797,7 @@
     <string name="title_pref_budget_financial_year">பட்ஜெட்டில் நிதியாண்டைப் பயன்படுத்துங்கள்</string>
     <string name="summary_pref_budget_financial_year">சரிபார்க்கப்பட்ட பட்ஜெட்கள் காலண்டர் ஆண்டிற்குப் பதிலாக நிதியாண்டைப் பயன்படுத்துகின்றன</string>
     <string name="shares">பங்குகள்</string>
+    <string name="menu_hide_zero_shares">பூஜ்ஜியப் பங்குகளை மறைக்கவும்</string>
     <string name="loan">கடன்</string>
     <string name="loan_account">கடன் கணக்குகள்</string>
     <string name="shares_accounts">பங்கு கணக்குகள்</string>
@@ -776,6 +818,8 @@
     <string name="notification_channel_fileoperation_uploadin">Mmex பதிவேற்றம்</string>
     <string name="notification_channel_fileoperation_complete">Mmex பதிவேற்றம் முடிந்தது</string>
     <string name="notification_channel_fileoperation_conflict">MMEX ஒத்திசைவு முரண்பாடு</string>
+    <string name="notification_channel_syncing">சேனலை ஒத்திசைக்கவும்</string>
+    <string name="notification_channel_syncing__description">ஒத்திசைவு நடைபெற்று வருகிறது அறிவிப்பு சேனல்</string>
     <string name="show">காட்டு</string>
     <string name="attachment_folder">இணைப்பு கோப்புறை</string>
     <string name="attachment_folder_summary">இணைப்புகள் சேமிக்கப்படும் கோப்புறையைத் தேர்ந்தெடுக்கவும்</string>
@@ -799,6 +843,9 @@
     <string name="msg_uploading_overwrite">பதிவேற்றினால் உங்கள் தொலைநிலைப் பதிப்பு மேலெழுதப்படும்.\nதொடர விரும்புகிறீர்களா?</string>
     <string name="msg_downloading_overwrite">பதிவிறக்குவது உங்கள் உள்ளூர் பதிப்பை மேலெழுதும்.\nதொடர விரும்புகிறீர்களா?</string>
     <string name="menu_account_filter_all">அனைத்து கணக்குகளும்</string>
+    <string name="menu_account_filter_open">கணக்குகளைத் திறக்கவும்</string>
+    <string name="menu_account_filter_favorite">பிடித்த கணக்குகள்</string>
+    <string name="menu_account_filter_custom">கணக்குகளைத் தேர்ந்தெடுக்கவும்&#8230;</string>
     <string name="cash_ledger">பண பேரேடு</string>
     <!-- Merge -->
     <string name="merge_take_ours">மொபைல் கோப்புகளை வைத்திருங்கள்</string>
@@ -816,6 +863,31 @@
     <!-- changelog -->
     <string name="changelog">மாற்றங்களின் பதிவு</string>
     <string name="changelog_title">என்ன புதுசு!!</string>
+    <string name="changelog_1086">புதிய பதிப்பு 5.4\n- ஒன்றிணைப்பு இயந்திரத்திற்கான புதிய பீட்டா அம்சம் சேர்க்கப்பட்டுள்ளது. இரண்டு கோப்புகளும் மாற்றப்படும்போது அவற்றை ஒன்றிணைக்க முயற்சிக்கவும். அமைப்புகள் -> ஒத்திசைவு -> ஒன்றிணைப்பு என்பதில் இதை இயக்கவும்.</string>
+    <string name="changelog_1104">புதிய பதிப்பு 5.5\n- எட்ஜ்-டு-எட்ஜ் உடன் ஆண்ட்ராய்டு 16 முழு இணக்கத்தன்மையை இயக்குகிறது</string>
+    <string name="currency_save_error">நாணயத்தைச் சேர்க்கும்போது பிழை ஏற்பட்டது. அநேகமாக %s என்ற நாணயம் ஏற்கனவே வரையறுக்கப்பட்டிருக்கலாம்.</string>
+    <string name="menu_cashflow_24_months">24 மாதக் கண்ணோட்டம்</string>
     <!-- PocketBse Sync -->
+    <string name="pref_sync_url">பாக்கெட் பேஸ் சர்வர் URL</string>
+    <string name="pref_pocketbase_email">பாக்கெட்பேஸ் மின்னஞ்சல்</string>
+    <string name="confirm_cloud_import_title">எல்லா தரவுகளையும் நீக்கிவிட்டு கிளவுடில் இருந்து மீண்டும் ஏற்றவா?</string>
+    <string name="confirm_cloud_import_message">எச்சரிக்கை: இது உங்கள் தற்போதைய உள்ளூர் தரவுத்தளத்தை நீக்கிவிட்டு, கிளவுடுடன் இணைப்பதற்கான ஆரம்ப அமைவு வழிகாட்டியைத் திறக்கும். தொடரவா?</string>
+    <string name="menu_open_from_cloud">மேகத்திலிருந்து திறக்கவும்</string>
+    <string name="checking_session">அமர்வைச் சரிபார்க்கிறது...</string>
+    <string name="session_restored_initializing_database">அமர்வு மீட்டமைக்கப்பட்டது. தரவுத்தளம் துவக்கப்படுகிறது...</string>
+    <string name="please_enter_your_password_to_continue">தொடர உங்கள் கடவுச்சொல்லை உள்ளிடவும்.</string>
+    <string name="session_expired_please_login_again">அமர்வு முடிவடைந்தது. மீண்டும் உள்நுழையவும்.</string>
+    <string name="authenticating">சரிபார்க்கப்படுகிறது...</string>
+    <string name="authentication_successful_initializing_database">சரிபார்ப்பு வெற்றிகரமாக முடிந்தது. தரவுத்தளம் துவக்கப்படுகிறது...</string>
+    <string name="authentication_failed_check_credentials_and_url">அங்கீகாரம் தோல்வியடைந்தது. சான்றுகளையும் URL-ஐயும் சரிபார்க்கவும்.</string>
+    <string name="error_two_dots">"பிழை:"</string>
+    <string name="performing_initial_pull_this_may_take_a_while">ஆரம்பநிலை இழுத்தல் நடைபெறுகிறது (இதற்கு சிறிது நேரம் ஆகலாம்)...</string>
+    <string name="sync_setup_complete">ஒத்திசைவு அமைப்பு நிறைவடைந்தது!</string>
+    <string name="sync_failed">"ஒத்திசைவு தோல்வி:"</string>
+    <string name="sync_your_data_with_pocketbase_cloud">உங்கள் தரவை PocketBase Cloud உடன் ஒத்திசைக்கவும்</string>
     <!-- Show & Hide Balance -->
+    <string name="show_balances">இருப்புகளைக் காட்டு</string>
+    <string name="hide_balances">இருப்புகளை மறை</string>
+    <string name="pref_hide_balances_title">இயல்புநிலையாக இருப்புகளை மறைக்கவும்</string>
+    <string name="pref_hide_balances_summary">முதன்மைத் திரைகளில் கணக்கு இருப்புகளை இயல்பாகவே காண்பிக்கவும்/மறைக்கவும்.</string>
 </resources>
