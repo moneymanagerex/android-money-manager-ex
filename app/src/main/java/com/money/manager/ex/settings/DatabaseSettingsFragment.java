@@ -53,6 +53,9 @@ import timber.log.Timber;
 public class DatabaseSettingsFragment
     extends PreferenceFragmentCompat {
 
+    private static final String DATABASE_MIME_TYPE = "application/octet-stream";
+    private static final String DEFAULT_BACKUP_FILE_NAME = "your_export_db.mmb";
+
     @Inject Lazy<MmxOpenHelper> openHelper;
     @Inject Lazy<RecentDatabasesProvider> mDatabases;
 
@@ -229,13 +232,19 @@ public class DatabaseSettingsFragment
                     });
 
     private void requestBackup() {
-        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("*/*");
-        intent.putExtra(Intent.EXTRA_TITLE, "your_export_db.mmb"); // Set a default file name
+        Intent intent = buildBackupIntent();
 
 //        startActivityForResult(intent, RequestCodes.CODE_BACKUP);
         backupLauncher.launch(intent);
+    }
+
+    static Intent buildBackupIntent() {
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType(DATABASE_MIME_TYPE);
+        intent.putExtra(Intent.EXTRA_TITLE, DEFAULT_BACKUP_FILE_NAME); // Set a default file name
+
+        return intent;
     }
 
 /* Relpace with backupLauncher
