@@ -88,8 +88,14 @@
     <string name="account_empty_list">Не найдено ни одной учетной записи. Чтобы создать её, нажмите на зеленый плюс.</string>
     <string name="account_balance">Баланс счета</string>
     <string name="account_reconciled_balance">Выверенный баланс</string>
+    <string name="invested">Вложено</string>
+    <string name="total_cost">Общая стоимость</string>
+    <string name="gain_loss">Прибыль / Убыток</string>
+    <string name="unrealized_gain_loss">Нереализ. П/У</string>
+    <string name="realized_gain_loss">Реализованные П/У</string>
     <string name="pie_other">Другое</string>
     <string name="delete_account">Удалить счет</string>
+    <string name="delete_stock_investment">Удалить инвестицию</string>
     <string name="account_name">Название счета</string>
     <string name="account_type">Тип счета</string>
     <string name="account_number">Номер счета</string>
@@ -149,6 +155,8 @@
     <string name="amount">Сумма</string>
     <string name="total_amount">Итоговая сумма</string>
     <string name="deposit">Пополнение</string>
+    <string name="buy">Купить</string>
+    <string name="sell">Продать</string>
     <string name="status">Состояние</string>
     <string name="status_reconciled">Выверен</string>
     <string name="status_void">Не учитывать</string>
@@ -173,6 +181,7 @@
     <string name="about">О программе</string>
     <string name="add">Добавить</string>
     <string name="confirmDelete">Вы уверены, что хотите удалить запись?</string>
+    <string name="confirm_delete_stock_investment">Вы хотите удалить инвестицию?</string>
     <string name="date">Дата</string>
     <string name="delete">Удалить</string>
     <string name="download">Скачать</string>
@@ -315,7 +324,15 @@
     <string name="menu_report_income_vs_expenses">Доход/Расход</string>
     <string name="menu_report_cashflow">Движение средств</string>
     <string name="menu_report_summary_of_accounts">Сводка по счетам</string>
+    <string name="menu_report_summary_of_stocks">Сводка инвестиций</string>
+    <string name="menu_report_summary_of_assets">Сводка активов</string>
+    <string name="asset_name">Название актива</string>
+    <string name="asset_type">Тип актива</string>
+    <string name="asset_initial_value">Начальная стоимость</string>
     <string name="asset_current_value">Текущее значение</string>
+    <string name="asset_rate_percent">Оценить %</string>
+    <string name="report_subtotal">В сумме</string>
+    <string name="report_grand_total">Общая сумма</string>
     <string name="total">Итого</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">За все время</string>
@@ -502,6 +519,8 @@
     <string name="pref_transaction_hide_reconciled_amounts_title">Скрыть подтвержденные суммы</string>
     <string name="pref_transaction_sort_by_type_summary">Упорядочить ежедневные операции по типу проводки (доход, перевод, расход)</string>
     <string name="pref_transaction_sort_by_type_title">Сортировать проводки по типу</string>
+    <string name="pref_search_results_group_by_account_title">Группировать результаты поиска по аккаунту</string>
+    <string name="pref_search_results_group_by_account_summary">Когда включено, результаты поиска группируются по аккаунту. Если отключено, они группируются по дате.</string>
     <string name="warning">Предупреждение</string>
     <string name="no_transfer_splits">Вы переключились на перевод между счетами вместо текущей операции, но текущая проводка разделена. Вы хотите продолжить, удалив разделение?</string>
     <string name="qif_export">QIF экспорт</string>
@@ -509,6 +528,15 @@
     <string name="update_price">Обновление цен</string>
     <string name="download_price">Скачать цену</string>
     <string name="download_all_prices">Скачать все цены</string>
+    <string name="download_price_selected_date">Скачать цену за выбранную дату</string>
+    <string name="download_price_history_range">Скачать историю цен за диапазон дат</string>
+    <string name="download_for_date_range">Скачать для диапазона дат</string>
+    <string name="price_history">История цен</string>
+    <string name="stock_name">Название акции</string>
+    <string name="download_prices">Скачать цены</string>
+    <string name="download_prices_explanation">Пожалуйста, выберите дату начала. Цены будут загружены до сегодняшнего дня.</string>
+    <string name="no_price_history">История цен недоступна</string>
+    <string name="prices_downloaded">Цены для %1$d загружены</string>
     <string name="price_updated">Цены обновлены</string>
     <string name="all_prices_updated">Все цены обновлены.</string>
     <string name="download_complete">Загрузка завершена.</string>
@@ -594,12 +622,15 @@
     <string name="symbol">Символ</string>
     <string name="number_of_shares">Количество акций</string>
     <string name="purchase_price">Цена покупки</string>
+    <string name="share_price">Поделиться ценой</string>
     <string name="current_price">Текущая цена</string>
     <string name="price_date">Дата цены</string>
     <string name="commission">Комиссия</string>
     <string name="value">Значение</string>
     <string name="view_transactions">Просмотр проводок</string>
     <string name="view_transactions_sub">Просмотр разделенных проводок</string>
+    <string name="open_yahoo_finance">Открыть Yahoo Finance</string>
+    <string name="no_browser_available">Браузер недоступен</string>
     <string name="switch_active">Активировать/деактивировать</string>
     <string name="error_downloading_symbol">Ошибка загрузки цены для символа</string>
     <string name="error_updating_rates">Ошибка обновление курсов</string>
@@ -648,6 +679,7 @@
     <string name="budget_year">Год бюджета</string>
     <string name="budget_month">Месяц бюджета</string>
     <string name="budget_month_optional">Месяц бюджета (необязательно)</string>
+    <string name="menu_copy">Копировать</string>
     <string name="app_restart">Для принятия изменений программу необходимо перезапустить.</string>
     <string name="print">Печать</string>
     <string name="min_19">Вам нужно по крайней мере Android 4.4, чтобы иметь возможность распечатать документ.</string>
@@ -762,6 +794,7 @@
     <string name="title_pref_budget_financial_year">Использовать финансовый год в бюджете</string>
     <string name="summary_pref_budget_financial_year">Если выбрано, бюджеты используют финансовый год вместо календарного</string>
     <string name="shares">Акции</string>
+    <string name="menu_hide_zero_shares">Скрыть нулевые доли</string>
     <string name="loan">Заем</string>
     <string name="loan_account">Счета займов</string>
     <string name="shares_accounts">Счета акций</string>
@@ -832,5 +865,19 @@
     <string name="currency_save_error">Ошибка при вводе валюты. Вероятно, валюта %s уже определена.</string>
     <string name="menu_cashflow_24_months">Показать 24 месяца</string>
     <!-- PocketBse Sync -->
+    <string name="pref_sync_url">Ссылка на сервер Pocketbase</string>
+    <string name="pref_pocketbase_email">Электронная почта Pocketbase</string>
+    <string name="confirm_cloud_import_title">Удалить все данные и перезагрузить из облака?</string>
+    <string name="confirm_cloud_import_message">Предупреждение: Это удалит текущую локальную базу данных и откроет диалог начальной настройки для подключения к облаку. Продолжить?</string>
+    <string name="menu_open_from_cloud">Открыть из облака</string>
+    <string name="checking_session">Проверка сессии...</string>
+    <string name="session_restored_initializing_database">Сессия восстановлена. Инициализация базы данных...</string>
+    <string name="please_enter_your_password_to_continue">Пожалуйста, введите ваш пароль</string>
+    <string name="session_expired_please_login_again">Сессия истекла. Пожалуйста, войдите снова.</string>
+    <string name="authenticating">Аутентификация...</string>
+    <string name="authentication_successful_initializing_database">Аутентификация успешна. Инициализация базы данных...</string>
+    <string name="authentication_failed_check_credentials_and_url">Ошибка аутентификации. Проверьте учетные данные и URL-адрес.</string>
+    <string name="error_two_dots">"Ошибка: "</string>
+    <string name="performing_initial_pull_this_may_take_a_while">Выполняется первоначальная загрузка (потребуется некоторое время)...</string>
     <!-- Show & Hide Balance -->
 </resources>
