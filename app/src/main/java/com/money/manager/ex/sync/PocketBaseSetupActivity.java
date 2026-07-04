@@ -105,51 +105,29 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
 
     private void loadSavedCredentials() {
         boolean isReLogin = getIntent().getBooleanExtra(EXTRA_RE_LOGIN, false);
+        DatabaseMetadata current = mDatabasesLazy.get().getCurrent();
+        if (current == null) return;
+
+        mEditTextEmail.setText(current.getRemoteUser());
+        mEditTextUrl.setText(current.getRemoteURL());
 
         if (isReLogin) {
-            RecentDatabasesProvider provider = mDatabasesLazy.get();
-            DatabaseMetadata current = provider.getCurrent();
-            if (current != null && current.isPocketBase()) {
-                android.net.Uri uri = android.net.Uri.parse(current.remotePath);
-                String userInfo = uri.getUserInfo();
-                if (userInfo != null && userInfo.startsWith("pocketbase:")) {
-                    String email = android.net.Uri.decode(userInfo.substring("pocketbase:".length()));
-                    mEditTextEmail.setText(email);
-                }
-
-                String host = uri.getHost();
-                int port = uri.getPort();
-                StringBuilder urlBuilder = new StringBuilder("https://");
-                urlBuilder.append(host);
-                if (port != -1 && port != 443) {
-                    urlBuilder.append(":").append(port);
-                }
-                mEditTextUrl.setText(urlBuilder.toString());
-
                 // Disable fields in re-login mode
                 mEditTextUrl.setEnabled(false);
                 mEditTextEmail.setEnabled(false);
                 mEditTextPassword.requestFocus();
                 return;
-            }
         }
 
-        SyncPreferences prefs = new SyncPreferences(this);
-        String savedUrl = prefs.loadPreference(R.string.pref_sync_url, "");
-        String savedEmail = prefs.get(R.string.pref_pocketbase_email, "");
-
-        if (!TextUtils.isEmpty(savedUrl)) {
-            mEditTextUrl.setText(savedUrl);
-        }
-        if (!TextUtils.isEmpty(savedEmail)) {
-            mEditTextEmail.setText(savedEmail);
-        }
     }
 
     private void attemptSilentLogin() {
         SyncPreferences prefs = new SyncPreferences(this);
-        String url = prefs.loadPreference(R.string.pref_sync_url, "");
-        String email = prefs.get(R.string.pref_pocketbase_email, "");
+        DatabaseMetadata current = mDatabasesLazy.get().getCurrent();
+        if (current == null) return;
+
+        String url = current.getRemoteURL();
+        String email = current.getRemoteUser();
 
         if (TextUtils.isEmpty(url) || TextUtils.isEmpty(email)) return;
 
@@ -192,23 +170,24 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
             return;
         }
 
-        // TODO: move into mDatabase
-        SyncPreferences prefs = new SyncPreferences(this);
-        prefs.set(getString(R.string.pref_sync_url), url);
-        prefs.set(getString(R.string.pref_pocketbase_email), email);
-
         setLoading(true);
         mTextViewStatus.setText(R.string.authenticating);
 
         mDisposables.add(Observable.fromCallable(() -> {
             PocketBaseClient client = PocketBaseClient.getInstance(this);
-            return client.authenticate(email, password);
+            return client.authenticate(url, email, password);
         })
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(success -> {
             if (success) {
                 boolean isReLogin = getIntent().getBooleanExtra(EXTRA_RE_LOGIN, false);
+                // update medatada in a safe way
+                DatabaseMetadata metadata = mDatabasesLazy.get().getCurrent();
+                metadata.setRemoteServer(DatabaseMetadata.POCKETBASE,email,url);
+                mDatabasesLazy.get().remove(metadata.localPath);
+                mDatabasesLazy.get().add(metadata);
+
                 if (isReLogin) {
                     setLoading(false);
                     mTextViewStatus.setText(R.string.sync_setup_complete);
@@ -236,10 +215,6 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
         String email = Objects.requireNonNull(mEditTextEmail.getText()).toString().trim();
 
         mDisposables.add(Observable.fromCallable(() -> {
-            // TODO remove from here
-            SyncPreferences prefs = new SyncPreferences(this);
-            prefs.setPocketBaseSyncEnabled(true); // Enable cloud mode to use the correct schema/engine
-
             // create db
             String dbPath = new DatabaseManager(this).getDatabasePath();
             MmxOpenHelper openHelper = new MmxOpenHelper(this, dbPath);
@@ -248,20 +223,10 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
 
             // Setup metadata for the new cloud database
             android.net.Uri inputUri = android.net.Uri.parse(url);
-            String host = inputUri.getHost();
-            int port = inputUri.getPort();
-            String encodedEmail = android.net.Uri.encode(email);
-
-            StringBuilder remotePathBuilder = new StringBuilder("https://pocketbase:");
-            remotePathBuilder.append(encodedEmail).append("@").append(host);
-            if (port != -1 && port != 443) {
-                remotePathBuilder.append(":").append(port);
-            }
-            String remotePath = remotePathBuilder.toString();
 
             DatabaseMetadata metadata = new DatabaseMetadata();
             metadata.localPath = dbPath;
-            metadata.remotePath = remotePath;
+            metadata.setRemoteServer(DatabaseMetadata.POCKETBASE, email, url);
             metadata.localSnapshotTimestamp = java.time.Instant.now().toString();
 
             mDatabasesLazy.get().add(metadata);
@@ -288,8 +253,6 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
             finish();
         }, throwable -> {
             setLoading(false);
-            // In case of error, ensure the cloud mode is disabled so it can be retried or fallback to local
-            new SyncPreferences(this).setPocketBaseSyncEnabled(false);
             mTextViewStatus.setText(getString(R.string.sync_failed) + throwable.getMessage());
             Timber.e(throwable);
         }));
@@ -304,9 +267,6 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
     }
 
     private void cancelSetupAndExit() {
-        // Important: Reset the cloud sync flag if we are exiting without finishing the setup.
-        // This prevents MainActivity from trying to open a half-configured cloud database.
-        new SyncPreferences(this).setPocketBaseSyncEnabled(false);
         finish();
     }
 }

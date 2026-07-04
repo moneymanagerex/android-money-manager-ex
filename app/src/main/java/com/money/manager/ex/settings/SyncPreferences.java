@@ -99,15 +99,6 @@ public class SyncPreferences
      * @deprecated Use RecentDatabasesProvider to manage database metadata with remotePath instead.
      */
     @Deprecated
-    public boolean isPocketBaseSyncEnabled() {
-        return getPreferences().getBoolean(PREF_POCKETBASE_SYNC_ENABLED, false) ;
-        // return com.money.manager.ex.sync.SyncManager.isCloudSyncEnabled();
-    }
-
-    /**
-     * @deprecated Use RecentDatabasesProvider to manage database metadata with remotePath instead.
-     */
-    @Deprecated
     public void setPocketBaseSyncEnabled(boolean enabled) {
         getPreferences().edit().putBoolean(PREF_POCKETBASE_SYNC_ENABLED, enabled).apply();
     }

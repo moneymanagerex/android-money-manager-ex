@@ -638,7 +638,6 @@ public class MainActivity
             helper.showStorageFilePicker();
             // TODO request password 2/3
         } else if (itemId == R.id.menu_create_database) {
-            new SyncPreferences(this).setPocketBaseSyncEnabled(false);
             startActivity(new Intent(MainActivity.this, PasswordActivity.class));
             (new FileStorageHelper(this)).showCreateFilePicker();
             // TODO request password 3/3
