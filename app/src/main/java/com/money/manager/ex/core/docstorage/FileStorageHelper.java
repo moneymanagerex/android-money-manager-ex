@@ -39,7 +39,7 @@ import timber.log.Timber;
  * Functions to assist with selecting database file.
  */
 public class FileStorageHelper {
-    private static final String DATABASE_MIME_TYPE = "application/octet-stream";
+    public static final String DATABASE_MIME_TYPE = "application/octet-stream";
 
     private final Context _host;
 
