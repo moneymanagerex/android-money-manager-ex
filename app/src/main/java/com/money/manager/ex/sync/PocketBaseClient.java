@@ -43,14 +43,17 @@ public class PocketBaseClient {
     private PocketBaseClient(Context context) {
         mContext = context.getApplicationContext();
         initEncryptedPrefs();
-        initializeService();
+        boolean initialized = initializeService();
         
         // Load session from secure storage
         mAuthToken = mEncryptedPrefs.getString(PREF_AUTH_TOKEN, null);
         mAuthCollection = mEncryptedPrefs.getString(PREF_AUTH_COLLECTION, "users");
 
-        // if mAuthToken is empty wee need to pupup passwrod and relogin
-        if (TextUtils.isEmpty(mAuthToken)) {
+        // if mAuthToken is empty we need to popup password and relogin
+        // in some case some parameter are null or not valid. in that case also popup for login
+        if (TextUtils.isEmpty(mAuthToken) ||
+                TextUtils.isEmpty(mCurrentBaseUrl) ||
+                !initialized) {
             android.content.Intent intent = new android.content.Intent(mContext, PocketBaseSetupActivity.class);
             intent.putExtra(PocketBaseSetupActivity.EXTRA_RE_LOGIN, true);
             intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -77,34 +80,9 @@ public class PocketBaseClient {
         }
     }
 
-    private void initializeService() {
-        String baseUrl = "";
-        
-        // Try to get URL from current database metadata
-        RecentDatabasesProvider provider = com.money.manager.ex.MmexApplication.getApp().iocComponent.recentDatabasesProvider();
-        if (provider != null) {
-            DatabaseMetadata current = provider.getCurrent();
-            if (current != null && current.isPocketBase()) {
-                android.net.Uri uri = android.net.Uri.parse(current.remotePath);
-                String host = uri.getHost();
-                int port = uri.getPort();
-                baseUrl = "https://" + host;
-                if (port != -1 && port != 443) {
-                    baseUrl += ":" + port;
-                }
-            }
-        }
 
-        if (TextUtils.isEmpty(baseUrl)) {
-            SyncPreferences preferences = new SyncPreferences(mContext);
-            baseUrl = preferences.loadPreference(com.money.manager.ex.R.string.pref_sync_url, "");
-        }
-        
-        if (TextUtils.isEmpty(baseUrl)) {
-            Timber.w("PocketBase base URL is empty");
-            return;
-        }
-
+    private boolean initializeService(String url) {
+        String baseUrl = url;
         // Add protocol if missing
         if (!baseUrl.startsWith("http://") && !baseUrl.startsWith("https://")) {
             if (baseUrl.startsWith("192.168.") || baseUrl.startsWith("10.") || baseUrl.startsWith("localhost") || baseUrl.startsWith("127.0.0.1")) {
@@ -134,19 +112,58 @@ public class PocketBaseClient {
             mService = retrofit.create(PocketBaseApiService.class);
         } catch (IllegalArgumentException e) {
             Timber.e(e, "Invalid base URL: %s", baseUrl);
+            return false;
         }
+        return true;
+    }
+
+        private boolean initializeService() {
+        String baseUrl = "";
+        
+        // Try to get URL from current database metadata
+        RecentDatabasesProvider provider = com.money.manager.ex.MmexApplication.getApp().iocComponent.recentDatabasesProvider();
+        if (provider != null) {
+            DatabaseMetadata current = provider.getCurrent();
+            if (current != null && current.isPocketBase()) {
+                android.net.Uri uri = android.net.Uri.parse(current.remotePath);
+                String host = uri.getHost();
+                int port = uri.getPort();
+                // Fix some error caused by dirty process
+                if (host.equalsIgnoreCase("null")) {
+                    baseUrl = "";
+                } else {
+                    baseUrl = "https://" + host;
+                    if (port != -1 && port != 443) {
+                        baseUrl += ":" + port;
+                    }
+                }
+            }
+        }
+
+//        if (TextUtils.isEmpty(baseUrl)) {
+//            SyncPreferences preferences = new SyncPreferences(mContext);
+//            baseUrl = preferences.loadPreference(com.money.manager.ex.R.string.pref_sync_url, "");
+//            if (baseUrl.equalsIgnoreCase("null")) baseUrl = "";
+//        }
+        
+        if (TextUtils.isEmpty(baseUrl)) {
+            Timber.w("PocketBase base URL is empty");
+            return false;
+        }
+
+        return initializeService(baseUrl);
     }
 
     public static synchronized PocketBaseClient getInstance(Context context) {
         if (mInstance == null) {
             mInstance = new PocketBaseClient(context);
-        } else {
-            // Check if URL has changed in preferences
-            SyncPreferences preferences = new SyncPreferences(context);
-            String savedUrl = preferences.loadPreference(com.money.manager.ex.R.string.pref_sync_url, "");
-            if (!TextUtils.isEmpty(savedUrl) && mInstance.mCurrentBaseUrl != null && !mInstance.mCurrentBaseUrl.contains(savedUrl)) {
-                mInstance.initializeService();
-            }
+//        } else {
+//            // Check if URL has changed in preferences
+//            SyncPreferences preferences = new SyncPreferences(context);
+//            String savedUrl = preferences.loadPreference(com.money.manager.ex.R.string.pref_sync_url, "");
+//            if (!TextUtils.isEmpty(savedUrl) && mInstance.mCurrentBaseUrl != null && !mInstance.mCurrentBaseUrl.contains(savedUrl)) {
+//                mInstance.initializeService();
+//            }
         }
         return mInstance;
     }
@@ -181,9 +198,13 @@ public class PocketBaseClient {
     /**
      * Attempts authentication. First tries as standard user, then as superuser.
      */
-    public boolean authenticate(String email, String password) {
+    public boolean authenticate(String url, String email, String password) {
+        if (mCurrentBaseUrl != null && !mCurrentBaseUrl.equalsIgnoreCase(url)) {
+            // destroy
+            mService = null;
+        }
         if (mService == null) {
-            initializeService();
+            initializeService(url);
             if (mService == null) return false;
         }
 
@@ -215,7 +236,10 @@ public class PocketBaseClient {
     }
 
     public boolean refreshToken() {
-        if (mService == null || mAuthToken == null || mAuthCollection == null) return false;
+        if (mService == null ||
+                mAuthToken == null ||
+                mAuthCollection == null ||
+                mCurrentBaseUrl == null) return false;
 
         try {
             retrofit2.Response<JsonObject> response = mService.authRefresh(mAuthCollection).execute();

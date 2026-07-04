@@ -148,6 +148,7 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
 
     private void attemptSilentLogin() {
         SyncPreferences prefs = new SyncPreferences(this);
+        // TODO: rimujovere da pref e leggere da metadata
         String url = prefs.loadPreference(R.string.pref_sync_url, "");
         String email = prefs.get(R.string.pref_pocketbase_email, "");
 
@@ -202,13 +203,15 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
 
         mDisposables.add(Observable.fromCallable(() -> {
             PocketBaseClient client = PocketBaseClient.getInstance(this);
-            return client.authenticate(email, password);
+            return client.authenticate(url, email, password);
         })
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(success -> {
             if (success) {
                 boolean isReLogin = getIntent().getBooleanExtra(EXTRA_RE_LOGIN, false);
+                // update medatadata remote to be sure
+                mDatabasesLazy.get().getCurrent().setRemoteServer(DatabaseMetadata.POCKETBASE,email,url);
                 if (isReLogin) {
                     setLoading(false);
                     mTextViewStatus.setText(R.string.sync_setup_complete);
@@ -248,20 +251,10 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
 
             // Setup metadata for the new cloud database
             android.net.Uri inputUri = android.net.Uri.parse(url);
-            String host = inputUri.getHost();
-            int port = inputUri.getPort();
-            String encodedEmail = android.net.Uri.encode(email);
-
-            StringBuilder remotePathBuilder = new StringBuilder("https://pocketbase:");
-            remotePathBuilder.append(encodedEmail).append("@").append(host);
-            if (port != -1 && port != 443) {
-                remotePathBuilder.append(":").append(port);
-            }
-            String remotePath = remotePathBuilder.toString();
 
             DatabaseMetadata metadata = new DatabaseMetadata();
             metadata.localPath = dbPath;
-            metadata.remotePath = remotePath;
+            metadata.setRemoteServer(DatabaseMetadata.POCKETBASE, email, url);
             metadata.localSnapshotTimestamp = java.time.Instant.now().toString();
 
             mDatabasesLazy.get().add(metadata);
