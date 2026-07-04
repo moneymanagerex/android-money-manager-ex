@@ -39,6 +39,10 @@ import timber.log.Timber;
  * Functions to assist with selecting database file.
  */
 public class FileStorageHelper {
+
+    // TODO: evaluate usage of application/x-sqlite3
+    public static final String DATABASE_MIME_TYPE = "application/octet-stream";
+
     private final Context _host;
 
     public FileStorageHelper(Context host) {
@@ -74,16 +78,22 @@ public class FileStorageHelper {
         int requestCode = RequestCodes.CREATE_DOCUMENT;
         AppCompatActivity host = (AppCompatActivity) _host;
         try {
-            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType("*/*");
-            // set default file name as your_data_<creationDateAndTime>.mmb
-            String creationDateAndTime = new MmxDate().toString("yyyyMMdd_HHmmss");
-            intent.putExtra(Intent.EXTRA_TITLE, "your_data_" + creationDateAndTime + ".mmb");
+            Intent intent = buildCreateFileIntent();
             host.startActivityForResult(intent, requestCode);
         } catch (ActivityNotFoundException e) {
             Timber.e(e, "No storage providers found.");
         }
+    }
+
+    static Intent buildCreateFileIntent() {
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType(DATABASE_MIME_TYPE);
+        // set default file name as your_data_<creationDateAndTime>.mmb
+        String creationDateAndTime = new MmxDate().toString("yyyyMMdd_HHmmss");
+        intent.putExtra(Intent.EXTRA_TITLE, "your_data_" + creationDateAndTime + ".mmb");
+
+        return intent;
     }
 
     /**
