@@ -461,7 +461,6 @@ public class PocketBaseSyncEngine {
     // clear all sync engine data, like token, last sync time, etc.
     public void clearSyncEngine() {
         SyncPreferences prefs = new SyncPreferences(mContext);
-        prefs.setPocketBaseSyncEnabled(false);
         prefs.setPocketBaseSyncLastSyncTimeToInitial();
         PocketBaseClient.getInstance(mContext).clearSession();
         new AppSettings(mContext).getDatabaseSettings().setDatabasePath("");
