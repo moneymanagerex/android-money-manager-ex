@@ -11,7 +11,7 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 class FakeTransactionRepositoryImpl @Inject constructor() : TransactionRepository {
-    override fun getRecentTransactions(limit: Int, accountId: Int?): Flow<List<Transaction>> = flow {
+    override fun getRecentTransactions(limit: Int, accountId: Int): Flow<List<Transaction>> = flow {
         delay(300)
         
         val transactions = mutableListOf<Transaction>()

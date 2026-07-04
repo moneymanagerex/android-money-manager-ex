@@ -19,6 +19,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -64,21 +66,22 @@ fun DashboardScreen(
                 } catch (e: Exception) {
                     // Fallback or log if persistable permission cannot be granted
                 }
-                
+
                 // Extract filename
-                val fileName = context.contentResolver.query(it, null, null, null, null)?.use { cursor ->
-                    val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                    if (cursor.moveToFirst()) {
-                        cursor.getString(nameIndex)
-                    } else null
-                } ?: "Unknown Database"
-                
+                val fileName =
+                    context.contentResolver.query(it, null, null, null, null)?.use { cursor ->
+                        val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                        if (cursor.moveToFirst()) {
+                            cursor.getString(nameIndex)
+                        } else null
+                    } ?: "Unknown Database"
+
                 viewModel.onDatabaseSelected(it.toString(), fileName)
                 scope.launch { drawerState.close() }
             }
         }
     )
-    
+
     val lightGreen = Color(0xFFE8F5E9)
     val darkGreen = Color(0xFF00897B)
 
@@ -91,7 +94,7 @@ fun DashboardScreen(
             ) {
                 DashboardDrawerContent(
                     databaseName = uiState.databaseName,
-                    onOpenDatabase = { 
+                    onOpenDatabase = {
                         filePickerLauncher.launch(arrayOf("*/*"))
                     },
                     onClose = { scope.launch { drawerState.close() } }
@@ -173,7 +176,8 @@ fun DashboardScreen(
                 modifier = Modifier
                     .padding(paddingValues)
                     .background(Color.White),
-                onAccountSelected = { viewModel.onAccountSelected(it) }
+                onAccountSelected = { viewModel.onAccountSelected(it) },
+                onRefresh = { viewModel.onRefresh() }
             )
         }
     }
@@ -186,7 +190,7 @@ fun DashboardDrawerContent(
     onClose: () -> Unit
 ) {
     val darkGreen = Color(0xFF00897B)
-    
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -222,9 +226,9 @@ fun DashboardDrawerContent(
                             .padding(2.dp)
                     )
                 }
-                
+
                 Spacer(modifier = Modifier.width(16.dp))
-                
+
                 Column {
                     Text(
                         text = "Alex Thorne",
@@ -240,14 +244,14 @@ fun DashboardDrawerContent(
                     )
                 }
             }
-            
+
             IconButton(onClick = onClose) {
                 Icon(Icons.Default.Close, contentDescription = "Close")
             }
         }
-        
+
         Spacer(modifier = Modifier.height(24.dp))
-        
+
         // Selected Database Indicator
         Surface(
             modifier = Modifier.fillMaxWidth(),
@@ -272,20 +276,20 @@ fun DashboardDrawerContent(
                 )
             }
         }
-        
+
         Spacer(modifier = Modifier.height(32.dp))
         HorizontalDivider(color = Color.LightGray.copy(alpha = 0.5f))
         Spacer(modifier = Modifier.height(16.dp))
-        
+
         // Menu Items
         DrawerMenuItem(
             icon = Icons.Default.AddBox,
             label = "Crea database",
             onClick = { /* TODO */ }
         )
-        
+
         Spacer(modifier = Modifier.height(8.dp))
-        
+
         DrawerMenuItem(
             icon = Icons.Default.FolderOpen,
             label = "Apri database",
@@ -303,7 +307,7 @@ fun DrawerMenuItem(
     onClick: () -> Unit
 ) {
     val darkGreen = Color(0xFF00897B)
-    
+
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -371,51 +375,59 @@ fun PeriodSelector(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardContent(
     uiState: DashboardUiState,
     modifier: Modifier = Modifier,
-    onAccountSelected: (Int?) -> Unit = {}
+    onAccountSelected: (Int?) -> Unit = {},
+    onRefresh: () -> Unit = {}
 ) {
-    if (uiState.isLoading) {
-        Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator()
-        }
-    } else {
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(bottom = 32.dp)
-        ) {
-            Spacer(modifier = Modifier.height(16.dp))
+    PullToRefreshBox(
+        isRefreshing = uiState.isRefreshing,
+        onRefresh = onRefresh,
+        modifier = modifier.fillMaxSize()
+    ) {
+        if (uiState.isLoading && !uiState.isRefreshing) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
+            }
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(bottom = 32.dp)
+            ) {
+                Spacer(modifier = Modifier.height(16.dp))
 
-            // Accounts Carousel
-            if (uiState.accounts.isNotEmpty()) {
-                AccountCarousel(
-                    accounts = uiState.accounts,
-                    forecastSummary = uiState.currentForecastSummary,
-                    onAccountSelected = onAccountSelected
+                // Accounts Carousel
+                if (uiState.accounts.isNotEmpty()) {
+                    AccountCarousel(
+                        accounts = uiState.accounts,
+                        forecastSummary = uiState.currentForecastSummary,
+                        onAccountSelected = onAccountSelected
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                // Summary (Income/Expenses)
+                SummaryRow(
+                    currentActual = uiState.currentActualSummary,
+                    currentForecast = uiState.currentForecastSummary,
+                    previousActual = uiState.previousActualSummary,
+                    previousForecast = null // In futuro caricheremo anche questo
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                // Recent Activity
+                RecentActivityList(
+                    transactions = uiState.recentActivity,
+                    onViewAllClick = { /* TODO */ }
                 )
             }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Summary (Income/Expenses)
-            SummaryRow(
-                currentActual = uiState.currentActualSummary,
-                currentForecast = uiState.currentForecastSummary,
-                previousActual = uiState.previousActualSummary,
-                previousForecast = null // In futuro caricheremo anche questo
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Recent Activity
-            RecentActivityList(
-                transactions = uiState.recentActivity,
-                onViewAllClick = { /* TODO */ }
-            )
         }
     }
 }
@@ -424,7 +436,10 @@ fun DashboardContent(
 @Composable
 fun DashboardScreenPreview() {
     val currentActual = PeriodSummary(
-        values = FinancialValues(income = BigDecimal.valueOf(2000.0), expense = BigDecimal.valueOf(1500.0)),
+        values = FinancialValues(
+            income = BigDecimal.valueOf(2000.0),
+            expense = BigDecimal.valueOf(1500.0)
+        ),
         model = PeriodModel.ACTUAL,
         type = PeriodType.MONTH,
         shift = PeriodShift.CURRENT,
@@ -432,7 +447,10 @@ fun DashboardScreenPreview() {
         endDate = LocalDate.now()
     )
     val currentForecast = PeriodSummary(
-        values = FinancialValues(income = BigDecimal.valueOf(1500.0), expense = BigDecimal.valueOf(300.0)),
+        values = FinancialValues(
+            income = BigDecimal.valueOf(1500.0),
+            expense = BigDecimal.valueOf(300.0)
+        ),
         model = PeriodModel.FORECAST,
         type = PeriodType.MONTH,
         shift = PeriodShift.CURRENT,
@@ -440,7 +458,10 @@ fun DashboardScreenPreview() {
         endDate = LocalDate.now()
     )
     val previousActual = PeriodSummary(
-        values = FinancialValues(income = BigDecimal.valueOf(2800.0), expense = BigDecimal.valueOf(1600.0)),
+        values = FinancialValues(
+            income = BigDecimal.valueOf(2800.0),
+            expense = BigDecimal.valueOf(1600.0)
+        ),
         model = PeriodModel.ACTUAL,
         type = PeriodType.MONTH,
         shift = PeriodShift.PREVIOUS,
@@ -450,8 +471,28 @@ fun DashboardScreenPreview() {
 
     val mockState = DashboardUiState(
         accounts = listOf(
-            Account(1, "Bank", AccountType.CHECKING, "Open", true, "€", null, BigDecimal.valueOf(12000.0), BigDecimal.valueOf(11500.0)),
-            Account(2, "Cash", AccountType.CASH, "Open", false, "€", null, BigDecimal.valueOf(500.0), BigDecimal.valueOf(500.0))
+            Account(
+                1,
+                "Bank",
+                AccountType.CHECKING,
+                "Open",
+                true,
+                "€",
+                null,
+                BigDecimal.valueOf(12000.0),
+                BigDecimal.valueOf(11500.0)
+            ),
+            Account(
+                2,
+                "Cash",
+                AccountType.CASH,
+                "Open",
+                false,
+                "€",
+                null,
+                BigDecimal.valueOf(500.0),
+                BigDecimal.valueOf(500.0)
+            )
         ),
         currentActualSummary = currentActual,
         currentForecastSummary = currentForecast,

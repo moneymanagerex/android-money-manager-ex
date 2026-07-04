@@ -16,9 +16,9 @@ class TransactionRepositoryImpl @Inject constructor(
 ) : TransactionRepository {
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override fun getRecentTransactions(limit: Int, accountId: Int?): Flow<List<Transaction>> {
+    override fun getRecentTransactions(limit: Int, accountId: Int): Flow<List<Transaction>> {
         return databaseManager.database.flatMapLatest { db ->
-            if (db == null || accountId == null) return@flatMapLatest flowOf(emptyList())
+            if (db == null) return@flatMapLatest flowOf(emptyList())
 
             db.transactionDao().getRecentTransactions(limit, accountId)
                 .map { entities -> entities.map { it.toDomain() } }

@@ -49,6 +49,14 @@ class DatabaseManager @Inject constructor(
     private fun copyUriToLocal(uri: Uri): File? {
         return try {
             val localFile = File(context.filesDir, "active_database.db")
+            // Eliminiamo il file locale e i relativi file di log/journal se esistono
+            if (localFile.exists()) {
+                localFile.delete()
+            }
+            File(context.filesDir, "active_database.db-journal").delete()
+            File(context.filesDir, "active_database.db-shm").delete()
+            File(context.filesDir, "active_database.db-wal").delete()
+
             context.contentResolver.openInputStream(uri)?.use { input ->
                 FileOutputStream(localFile).use { output ->
                     input.copyTo(output)
@@ -84,11 +92,16 @@ class DatabaseManager @Inject constructor(
 
     private fun patchEntireDatabaseSchema(localDbFile: File) {
         // 1. Apriamo il database in modalità lettura/scrittura
-        val db = SQLiteDatabase.openDatabase(
-            localDbFile.absolutePath,
-            null,
-            SQLiteDatabase.OPEN_READWRITE
-        )
+        val db = try {
+            SQLiteDatabase.openDatabase(
+                localDbFile.absolutePath,
+                null,
+                SQLiteDatabase.OPEN_READWRITE
+            ) { /* ignore corruption to avoid wipeDetected */ }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return
+        }
 
         try {
             // 2. Sblocchiamo la scrittura sullo schema di sistema
@@ -135,7 +148,11 @@ class DatabaseManager @Inject constructor(
             e.printStackTrace()
         } finally {
             // 6. Rimettiamo il lucchetto e chiudiamo la connessione base
-            db.execSQL("PRAGMA writable_schema = 0;")
+            try {
+                db.execSQL("PRAGMA writable_schema = 0;")
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
             db.close()
         }
     }
@@ -143,11 +160,16 @@ class DatabaseManager @Inject constructor(
 
     private fun patchDatabaseForExport(exportedDbFile: File) {
         // 1. Apriamo la copia del database pronta per l'export
-        val db = SQLiteDatabase.openDatabase(
-            exportedDbFile.absolutePath,
-            null,
-            SQLiteDatabase.OPEN_READWRITE
-        )
+        val db = try {
+            SQLiteDatabase.openDatabase(
+                exportedDbFile.absolutePath,
+                null,
+                SQLiteDatabase.OPEN_READWRITE
+            ) { /* ignore corruption to avoid wipeDetected */ }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return
+        }
 
         try {
             // 2. Sblocchiamo lo schema di sistema
@@ -191,7 +213,11 @@ class DatabaseManager @Inject constructor(
             e.printStackTrace()
         } finally {
             // 6. Blocchiamo lo schema e chiudiamo
-            db.execSQL("PRAGMA writable_schema = 0;")
+            try {
+                db.execSQL("PRAGMA writable_schema = 0;")
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
             db.close()
         }
     }

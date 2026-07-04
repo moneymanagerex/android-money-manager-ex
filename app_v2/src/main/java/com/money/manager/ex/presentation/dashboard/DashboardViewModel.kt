@@ -43,6 +43,10 @@ class DashboardViewModel @Inject constructor(
         _isPeriodMenuVisible.value = false
     }
 
+    fun onRefresh() {
+        loadDashboardData(isRefresh = true)
+    }
+
     fun togglePeriodMenu() {
         _isPeriodMenuVisible.value = !_isPeriodMenuVisible.value
     }
@@ -54,9 +58,13 @@ class DashboardViewModel @Inject constructor(
         }
     }
 
-    private fun loadDashboardData() {
+    private fun loadDashboardData(isRefresh: Boolean = false) {
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true)
+            if (isRefresh) {
+                _uiState.value = _uiState.value.copy(isRefreshing = true)
+            } else {
+                _uiState.value = _uiState.value.copy(isLoading = true)
+            }
 
             combine(
                 accountRepository.getOpenAccounts(),
@@ -67,18 +75,34 @@ class DashboardViewModel @Inject constructor(
             ) { accounts, selectedId, periodType, menuVisible, dbName ->
                 DataParams(accounts, selectedId, periodType, menuVisible, dbName ?: "No database selected")
             }.flatMapLatest { params ->
+                val accountId = params.accountId
+                if (accountId == null) {
+                    return@flatMapLatest flowOf(
+                        DashboardUiState(
+                            isLoading = false,
+                            isRefreshing = false,
+                            accounts = params.accounts,
+                            selectedAccountId = null,
+                            selectedPeriodType = params.periodType,
+                            isPeriodMenuVisible = params.isMenuVisible,
+                            databaseName = params.dbName
+                        )
+                    )
+                }
+
                 val dates = calculateDates(params.periodType)
                 
                 combine(
-                    transactionRepository.getRecentTransactions(5, params.accountId),
-                    periodSummaryRepository.getSummary(dates.currentStart, dates.currentEnd, params.periodType, PeriodModel.ACTUAL, params.accountId),
-                    periodSummaryRepository.getSummary(dates.currentStart, dates.currentEnd, params.periodType, PeriodModel.FORECAST, params.accountId),
-                    periodSummaryRepository.getSummary(dates.prevStart, dates.prevEnd, params.periodType, PeriodModel.ACTUAL, params.accountId)
+                    transactionRepository.getRecentTransactions(5, accountId),
+                    periodSummaryRepository.getSummary(dates.currentStart, dates.currentEnd, params.periodType, PeriodModel.ACTUAL, accountId),
+                    periodSummaryRepository.getSummary(dates.currentStart, dates.currentEnd, params.periodType, PeriodModel.FORECAST, accountId),
+                    periodSummaryRepository.getSummary(dates.prevStart, dates.prevEnd, params.periodType, PeriodModel.ACTUAL, accountId)
                 ) { transactions, currentActual, currentForecast, previousActual ->
                     DashboardUiState(
                         isLoading = false,
+                        isRefreshing = false,
                         accounts = params.accounts,
-                        selectedAccountId = params.accountId,
+                        selectedAccountId = accountId,
                         selectedPeriodType = params.periodType,
                         isPeriodMenuVisible = params.isMenuVisible,
                         recentActivity = transactions,

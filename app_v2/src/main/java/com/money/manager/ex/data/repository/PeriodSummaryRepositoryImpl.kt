@@ -29,7 +29,7 @@ class PeriodSummaryRepositoryImpl @Inject constructor(
         endDate: LocalDate,
         periodType: PeriodType,
         periodModel: PeriodModel,
-        accountId: Int?
+        accountId: Int
     ): Flow<PeriodSummary> {
         return databaseManager.database.flatMapLatest { db ->
             if (db == null) {

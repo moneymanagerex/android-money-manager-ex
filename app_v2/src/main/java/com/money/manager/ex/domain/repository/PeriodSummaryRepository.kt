@@ -12,6 +12,6 @@ interface PeriodSummaryRepository {
         endDate: LocalDate,
         periodType: PeriodType,
         periodModel: PeriodModel,
-        accountId: Int? = null
+        accountId: Int
     ): Flow<PeriodSummary>
 }

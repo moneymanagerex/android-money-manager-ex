@@ -12,6 +12,7 @@ data class SummaryData(
 
 data class DashboardUiState(
     val isLoading: Boolean = false,
+    val isRefreshing: Boolean = false,
     val accounts: List<Account> = emptyList(),
     val selectedAccountId: Int? = null,
     val selectedPeriodType: PeriodType = PeriodType.MONTH,

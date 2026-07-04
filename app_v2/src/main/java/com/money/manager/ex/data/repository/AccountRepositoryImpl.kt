@@ -18,7 +18,7 @@ class AccountRepositoryImpl @Inject constructor(
     
     override fun getOpenAccounts(): Flow<List<Account>> {
         return databaseManager.database.flatMapLatest { db ->
-            if (db == null) {
+            val accountsFlow = if (db == null) {
                 // Se non c'è un database reale, mostriamo i dati fake
                 fakeAccountRepository.getOpenAccounts()
             } else {
@@ -26,6 +26,14 @@ class AccountRepositoryImpl @Inject constructor(
                 db.accountDao().getOpenAccountsWithBalance().map { entities ->
                     entities.map { it.toDomain() }
                 }
+            }
+            
+            // Applichiamo l'ordinamento richiesto: prima i preferiti, poi per nome
+            accountsFlow.map { accounts ->
+                accounts.sortedWith(
+                    compareByDescending<Account> { it.isFavorite }
+                        .thenBy { it.name.lowercase() }
+                )
             }
         }
     }

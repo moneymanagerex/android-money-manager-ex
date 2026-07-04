@@ -15,7 +15,7 @@ class FakePeriodSummaryRepositoryImpl @Inject constructor() : PeriodSummaryRepos
         endDate: LocalDate,
         periodType: PeriodType,
         periodModel: PeriodModel,
-        accountId: Int?
+        accountId: Int
     ): Flow<PeriodSummary> = flow {
         delay(300)
 
