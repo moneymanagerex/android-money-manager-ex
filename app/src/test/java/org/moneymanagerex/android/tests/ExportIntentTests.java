@@ -33,7 +33,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class ExportIntentTests {
-    private static final String DATABASE_MIME_TYPE = "application/octet-stream";
+    private static final String DATABASE_MIME_TYPE = FileStorageHelper.DATABASE_MIME_TYPE;
 
     @Test
     public void databaseSettingsBackupIntentUsesConcreteMimeType() throws Exception {
