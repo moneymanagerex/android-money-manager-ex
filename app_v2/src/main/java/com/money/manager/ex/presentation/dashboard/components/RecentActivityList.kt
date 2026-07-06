@@ -1,23 +1,20 @@
 package com.money.manager.ex.presentation.dashboard.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material.icons.filled.Category
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.DoneAll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.money.manager.ex.domain.model.Transaction
 import com.money.manager.ex.domain.model.TransactionCode
+import com.money.manager.ex.domain.model.TransactionStatus
 import com.money.manager.ex.presentation.theme.MmexTheme
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -25,6 +22,7 @@ import java.util.*
 
 @Composable
 fun RecentActivityList(
+    accountId: Int,
     transactions: List<Transaction>,
     onViewAllClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -56,7 +54,10 @@ fun RecentActivityList(
         Spacer(modifier = Modifier.height(8.dp))
 
         transactions.forEach { transaction ->
-            TransactionRow(transaction = transaction)
+            TransactionRow(
+                transaction = transaction,
+                refAccountId = accountId
+            )
             HorizontalDivider(
                 modifier = Modifier.padding(vertical = 8.dp),
                 thickness = 0.5.dp,
@@ -69,12 +70,23 @@ fun RecentActivityList(
 @Composable
 fun TransactionRow(
     transaction: Transaction,
+    refAccountId: Int,
     modifier: Modifier = Modifier
 ) {
-    val amountColor = when (transaction.transCode) {
-        TransactionCode.DEPOSIT -> Color(0xFF10B981) // Emerald Green
-        TransactionCode.WITHDRAWAL -> Color(0xFFBA1A1A) // Error Red
-        TransactionCode.TRANSFER -> Color(0xFF3B82F6) // Blue for transfers
+    val otherAccount =
+        if (transaction.transCode == TransactionCode.TRANSFER) {
+            "• " + if (transaction.accountId == refAccountId) "→ " + transaction.toAccountName else "← " + transaction.accountName
+        } else ""
+
+    val signedAmount = transaction.getSignedAmount(refAccountId)
+    val amountColor = if (transaction.status == TransactionStatus.VOID) {
+        Color.Gray
+    } else {
+        when (transaction.transCode) {
+            TransactionCode.DEPOSIT -> Color(0xFF10B981) // Emerald Green
+            TransactionCode.WITHDRAWAL -> Color(0xFFBA1A1A) // Error Red
+            TransactionCode.TRANSFER -> Color(0xFF3B82F6) // Blue for transfers
+        }
     }
 
     Row(
@@ -83,24 +95,6 @@ fun TransactionRow(
             .padding(vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Category Icon
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.surfaceVariant),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = Icons.Default.Category,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(20.dp)
-            )
-        }
-
-        Spacer(modifier = Modifier.width(16.dp))
-
         // Details
         Column(modifier = Modifier.weight(1f)) {
             Text(
@@ -121,20 +115,41 @@ fun TransactionRow(
             }
 
             Text(
-                text = "${transaction.transDate.format(DateTimeFormatter.ofPattern("MMM dd"))} • ${transaction.category}",
+                text = "${transaction.transDate.format(DateTimeFormatter.ofPattern("MMM dd"))} • ${transaction.category} $otherAccount",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
 
-        // Amount
-        Text(
-            text = formatAmount(transaction.transAmount),
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.Bold,
-            color = amountColor
-        )
+        // Amount and Status
+        Column(horizontalAlignment = Alignment.End) {
+            Text(
+                text = formatAmount(signedAmount),
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Bold,
+                color = amountColor
+            )
+            TransactionStatusIcon(status = transaction.status)
+        }
     }
+}
+
+@Composable
+fun TransactionStatusIcon(status: TransactionStatus, modifier: Modifier = Modifier) {
+    val icon = if (status == TransactionStatus.VOID) Icons.Default.Done else Icons.Default.DoneAll
+    val color = when (status) {
+        TransactionStatus.NORMAL -> Color.Gray
+        TransactionStatus.RECONCILED -> Color(0xFF3B82F6) // Blue
+        TransactionStatus.FOLLOW_UP -> Color(0xFFFFB100) // Yellow/Amber
+        TransactionStatus.VOID -> Color.Gray
+    }
+
+    Icon(
+        imageVector = icon,
+        contentDescription = status.name,
+        tint = color,
+        modifier = modifier.size(16.dp)
+    )
 }
 
 private fun formatAmount(amount: Double): String {
@@ -151,24 +166,58 @@ fun RecentActivityListPreview() {
             accountId = 1,
             payeeId = 1,
             transCode = TransactionCode.WITHDRAWAL,
-            transAmount = -45.60,
+            transAmount = 45.60,
+            status = TransactionStatus.NORMAL,
             transDate = LocalDate.now(),
             payee = "Supermarket",
             category = "Food",
-            notes = "Spesa settimanale"
+            notes = "Weekly expense"
         ),
         Transaction(
             id = 2,
+            accountId = 1,
+            toAccountId = 2,
+            payeeId = 2,
+            transCode = TransactionCode.TRANSFER,
+            transAmount = 100.0,
+            status = TransactionStatus.RECONCILED,
+            transDate = LocalDate.now().minusDays(1),
+            payee = "",
+            category = "Transfer from",
+            accountName = "myself",
+            toAccountName = "Other Account"
+        ),
+        Transaction(
+            id = 3,
+            accountId = 2,
+            toAccountId = 1,
+            payeeId = 2,
+            transCode = TransactionCode.TRANSFER,
+            transAmount = 100.0,
+            status = TransactionStatus.FOLLOW_UP,
+            transDate = LocalDate.now().minusDays(1),
+            payee = "",
+            category = "Transfer to",
+            accountName = "Other Account",
+            toAccountName = "myself"
+        ),
+        Transaction(
+            id = 4,
             accountId = 1,
             payeeId = 2,
             transCode = TransactionCode.DEPOSIT,
             transAmount = 2500.0,
             transDate = LocalDate.now().minusDays(1),
+            status = TransactionStatus.VOID,
             payee = "Salary",
             category = "Job"
         )
     )
     MmexTheme {
-        RecentActivityList(transactions = mockTransactions, onViewAllClick = {})
+        RecentActivityList(
+            accountId = 1,
+            transactions = mockTransactions,
+            onViewAllClick = {}
+        )
     }
 }

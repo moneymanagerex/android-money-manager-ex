@@ -1,6 +1,7 @@
 package com.money.manager.ex.data.mapper
 
 import com.money.manager.ex.data.local.entity.CheckingAccountEntityV1
+import com.money.manager.ex.data.local.pojo.TransactionPojo
 import com.money.manager.ex.domain.model.Transaction
 import com.money.manager.ex.domain.model.TransactionCode
 import com.money.manager.ex.domain.model.TransactionStatus
@@ -27,7 +28,18 @@ fun CheckingAccountEntityV1.toDomain(): Transaction {
             }
         } ?: LocalDate.now(),
         toTransAmount = toTransAmount?.toDouble(),
-        payee = "", // TODO: Fetch from Payee table if needed
-        category = "" // TODO: Fetch from Category table if needed
+        payee = "",
+        category = "",
+        accountName = "",
+        toAccountName = ""
+    )
+}
+
+fun TransactionPojo.toDomain(): Transaction {
+    return transaction.toDomain().copy(
+        payee = payeeName ?: "",
+        category = categoryName ?: "",
+        accountName = accountName ?: "",
+        toAccountName = toAccountName ?: ""
     )
 }

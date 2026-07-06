@@ -4,7 +4,7 @@ import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.temporal.TemporalAdjusters
 
-enum class PeriodType(val label: String) {
+enum class PeriodElapsed(val label: String) {
     WEEK("Week"),
     MONTH("Month"),
     QUARTER("Quarter"),
@@ -30,7 +30,7 @@ data class FinancialValues(
 data class PeriodSummary(
     val values: FinancialValues,
     val model: PeriodModel,
-    val type: PeriodType,
+    val elapsed: PeriodElapsed,
     val shift: PeriodShift,
     val startDate: LocalDate,
     val endDate: LocalDate
@@ -42,13 +42,13 @@ data class PeriodSummary(
          */
         fun create(
             model: PeriodModel,
-            type: PeriodType,
+            elapsed: PeriodElapsed,
             shift: PeriodShift,
             referenceDate: LocalDate = LocalDate.now()
         ): PeriodSummary {
 
             // 1. Calcola le date esatte in base alla data di riferimento, al tipo di periodo e allo shift
-            val (startDate, endDate) = calculateDates(referenceDate, type, shift)
+            val (startDate, endDate) = calculateDates(referenceDate, elapsed, shift)
 
             // 2. Calcola o recupera i valori finanziari (income/expense)
             // Questa logica potrebbe poi essere spostata in un Use Case o Repository dedicato
@@ -58,7 +58,7 @@ data class PeriodSummary(
             return PeriodSummary(
                 values = values,
                 model = model,
-                type = type,
+                elapsed = elapsed,
                 shift = shift,
                 startDate = startDate,
                 endDate = endDate
@@ -67,7 +67,7 @@ data class PeriodSummary(
 
         private fun calculateDates(
             referenceDate: LocalDate,
-            type: PeriodType,
+            elapsed: PeriodElapsed,
             shift: PeriodShift
         ): Pair<LocalDate, LocalDate> {
             // Esempio di implementazione per il calcolo.
@@ -84,41 +84,41 @@ data class PeriodSummary(
                 PeriodShift.CURRENT -> 0L
             }
 
-            when (type) {
-                PeriodType.MONTH -> {
+            when (elapsed) {
+                PeriodElapsed.MONTH -> {
                     targetDate = targetDate.plusMonths(mod)
                     start = targetDate.withDayOfMonth(1)
                     end = targetDate.with(TemporalAdjusters.lastDayOfMonth())
                 }
-                PeriodType.WEEK -> {
+                PeriodElapsed.WEEK -> {
                     targetDate = targetDate.plusWeeks(mod )
                     start = targetDate.with(TemporalAdjusters.previousOrSame(java.time.DayOfWeek.MONDAY))
                     end = targetDate.with(TemporalAdjusters.nextOrSame(java.time.DayOfWeek.SUNDAY))
                 }
-                PeriodType.QUARTER -> {
+                PeriodElapsed.QUARTER -> {
                     targetDate = targetDate.plusMonths(mod * 3)
                     val month = ((targetDate.monthValue - 1) / 3) * 3 + 1
                     start = targetDate.withMonth(month).withDayOfMonth(1)
                     end = start.plusMonths(2).with(TemporalAdjusters.lastDayOfMonth())
                 }
-                PeriodType.FOUR_MONTH -> {
+                PeriodElapsed.FOUR_MONTH -> {
                     targetDate = targetDate.plusMonths(mod * 4)
                     val month = ((targetDate.monthValue - 1) / 4) * 4 + 1
                     start = targetDate.withMonth(month).withDayOfMonth(1)
                     end = start.plusMonths(3).with(TemporalAdjusters.lastDayOfMonth())
                 }
-                PeriodType.HALF_YEAR -> {
+                PeriodElapsed.HALF_YEAR -> {
                     targetDate = targetDate.plusMonths(mod * 6)
                     val month = ((targetDate.monthValue - 1) / 6) * 6 + 1
                     start = targetDate.withMonth(month).withDayOfMonth(1)
                     end = start.plusMonths(5).with(TemporalAdjusters.lastDayOfMonth())
                 }
-                PeriodType.YEAR -> {
+                PeriodElapsed.YEAR -> {
                     targetDate = targetDate.plusYears(mod)
                     start = targetDate.withDayOfYear(1)
                     end = targetDate.with(TemporalAdjusters.lastDayOfYear())
                 }
-                PeriodType.FISCAL_YEAR -> {
+                PeriodElapsed.FISCAL_YEAR -> {
                     // TODO: Recuperare financialYearStartDay/Month dai settings. 
                     // Per ora default 1 Gennaio (uguale a YEAR).
                     targetDate = targetDate.plusYears(mod)

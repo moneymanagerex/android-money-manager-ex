@@ -13,10 +13,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.money.manager.ex.domain.model.FinancialValues
+import com.money.manager.ex.domain.model.PeriodElapsed
 import com.money.manager.ex.domain.model.PeriodModel
 import com.money.manager.ex.domain.model.PeriodShift
 import com.money.manager.ex.domain.model.PeriodSummary
-import com.money.manager.ex.domain.model.PeriodType
 import com.money.manager.ex.presentation.theme.MmexTheme
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -27,7 +27,6 @@ fun SummaryRow(
     currentActual: PeriodSummary?,
     currentForecast: PeriodSummary?,
     previousActual: PeriodSummary?,
-    previousForecast: PeriodSummary? = null,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -39,12 +38,10 @@ fun SummaryRow(
         val currentIncome = currentActual?.values?.income ?: BigDecimal.ZERO
         val currentForecastIncome = currentForecast?.values?.income ?: BigDecimal.ZERO
         val previousIncome = previousActual?.values?.income ?: BigDecimal.ZERO
-        val previousForecastIncome = previousForecast?.values?.income ?: BigDecimal.ZERO
 
         val currentExpense = currentActual?.values?.expense ?: BigDecimal.ZERO
         val currentForecastExpense = currentForecast?.values?.expense ?: BigDecimal.ZERO
         val previousExpense = previousActual?.values?.expense ?: BigDecimal.ZERO
-        val previousForecastExpense = previousForecast?.values?.expense ?: BigDecimal.ZERO
 
         // Income Card
         SummaryCard(
@@ -54,7 +51,7 @@ fun SummaryRow(
             forecast = currentIncome + currentForecastIncome,
             forecastTrend = calculateTrend(
                 currentIncome + currentForecastIncome,
-                previousIncome + previousForecastIncome
+                previousIncome // previus period is close and don't have additional forecast
             ),
             isIncome = true,
             modifier = Modifier.weight(1f)
@@ -67,7 +64,7 @@ fun SummaryRow(
             forecast = currentExpense + currentForecastExpense,
             forecastTrend = calculateTrend(
                 currentExpense + currentForecastExpense,
-                previousExpense + previousForecastExpense
+                previousExpense
             ),
             isIncome = false,
             modifier = Modifier.weight(1f)
@@ -201,7 +198,7 @@ fun SummaryRowPreview() {
     val currentActual = PeriodSummary(
         values = FinancialValues(income = BigDecimal.valueOf(2000.0), expense = BigDecimal.valueOf(1500.0)),
         model = PeriodModel.ACTUAL,
-        type = PeriodType.MONTH,
+        elapsed = PeriodElapsed.MONTH,
         shift = PeriodShift.CURRENT,
         startDate = LocalDate.now(),
         endDate = LocalDate.now()
@@ -209,7 +206,7 @@ fun SummaryRowPreview() {
     val currentForecast = PeriodSummary(
         values = FinancialValues(income = BigDecimal.valueOf(1500.0), expense = BigDecimal.valueOf(300.0)),
         model = PeriodModel.FORECAST,
-        type = PeriodType.MONTH,
+        elapsed = PeriodElapsed.MONTH,
         shift = PeriodShift.CURRENT,
         startDate = LocalDate.now(),
         endDate = LocalDate.now()
@@ -217,7 +214,7 @@ fun SummaryRowPreview() {
     val previousActual = PeriodSummary(
         values = FinancialValues(income = BigDecimal.valueOf(2800.0), expense = BigDecimal.valueOf(1600.0)),
         model = PeriodModel.ACTUAL,
-        type = PeriodType.MONTH,
+        elapsed = PeriodElapsed.MONTH,
         shift = PeriodShift.PREVIOUS,
         startDate = LocalDate.now().minusMonths(1),
         endDate = LocalDate.now().minusMonths(1)

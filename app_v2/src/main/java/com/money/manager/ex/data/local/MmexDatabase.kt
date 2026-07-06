@@ -5,6 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.money.manager.ex.data.local.converter.BigDecimalConverter
 import com.money.manager.ex.data.local.dao.AccountDao
+import com.money.manager.ex.data.local.dao.BillDepositDao
 import com.money.manager.ex.data.local.dao.TransactionDao
 import com.money.manager.ex.data.local.entity.*
 
@@ -42,4 +43,5 @@ import com.money.manager.ex.data.local.entity.*
 abstract class MmexDatabase : RoomDatabase() {
     abstract fun accountDao(): AccountDao
     abstract fun transactionDao(): TransactionDao
+    abstract fun billDepositDao(): BillDepositDao
 }

@@ -13,7 +13,7 @@ class FakePeriodSummaryRepositoryImpl @Inject constructor() : PeriodSummaryRepos
     override fun getSummary(
         startDate: LocalDate,
         endDate: LocalDate,
-        periodType: PeriodType,
+        periodElapsed: PeriodElapsed,
         periodModel: PeriodModel,
         accountId: Int
     ): Flow<PeriodSummary> = flow {
@@ -53,7 +53,7 @@ class FakePeriodSummaryRepositoryImpl @Inject constructor() : PeriodSummaryRepos
             PeriodSummary(
                 values = values,
                 model = periodModel,
-                type = periodType,
+                elapsed = periodElapsed,
                 shift = PeriodShift.CURRENT,
                 startDate = startDate,
                 endDate = endDate

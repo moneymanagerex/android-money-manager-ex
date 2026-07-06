@@ -1,8 +1,8 @@
 package com.money.manager.ex.presentation.dashboard
 
 import com.money.manager.ex.domain.model.Account
+import com.money.manager.ex.domain.model.PeriodElapsed
 import com.money.manager.ex.domain.model.PeriodSummary
-import com.money.manager.ex.domain.model.PeriodType
 import com.money.manager.ex.domain.model.Transaction
 
 data class SummaryData(
@@ -15,7 +15,7 @@ data class DashboardUiState(
     val isRefreshing: Boolean = false,
     val accounts: List<Account> = emptyList(),
     val selectedAccountId: Int? = null,
-    val selectedPeriodType: PeriodType = PeriodType.MONTH,
+    val selectedPeriodElapsed: PeriodElapsed = PeriodElapsed.MONTH,
     val isPeriodMenuVisible: Boolean = false,
     val currentActualSummary: PeriodSummary? = null,
     val currentForecastSummary: PeriodSummary? = null,

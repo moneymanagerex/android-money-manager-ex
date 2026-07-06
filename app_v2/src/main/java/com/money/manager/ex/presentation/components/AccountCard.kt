@@ -116,7 +116,7 @@ fun AccountCard(
                     prefix = account.currencyPrefix
                 )
                 BalanceInfo(
-                    label = "EO-${forecastSummary?.type?.label ?: "Month"} Forecast",
+                    label = "EO-${forecastSummary?.elapsed?.label ?: "Month"} Forecast",
                     amount = eomForecast,
                     symbol = account.currencySymbol,
                     prefix = account.currencyPrefix,

@@ -20,7 +20,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -163,8 +162,8 @@ fun DashboardScreen(
                         exit = shrinkVertically()
                     ) {
                         PeriodSelector(
-                            selectedPeriod = uiState.selectedPeriodType,
-                            onPeriodSelected = { viewModel.onPeriodTypeSelected(it) },
+                            selectedPeriod = uiState.selectedPeriodElapsed,
+                            onPeriodSelected = { viewModel.onPeriodElapsedSelected(it) },
                             modifier = Modifier.background(lightGreen)
                         )
                     }
@@ -345,8 +344,8 @@ fun DrawerMenuItem(
 
 @Composable
 fun PeriodSelector(
-    selectedPeriod: PeriodType,
-    onPeriodSelected: (PeriodType) -> Unit,
+    selectedPeriod: PeriodElapsed,
+    onPeriodSelected: (PeriodElapsed) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -356,7 +355,7 @@ fun PeriodSelector(
             .padding(horizontal = 16.dp, vertical = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        PeriodType.entries.forEach { period ->
+        PeriodElapsed.entries.forEach { period ->
             val isSelected = period == selectedPeriod
             Surface(
                 color = if (isSelected) Color(0xFF00695C) else Color(0xFFF1F8F7),
@@ -417,16 +416,18 @@ fun DashboardContent(
                     currentActual = uiState.currentActualSummary,
                     currentForecast = uiState.currentForecastSummary,
                     previousActual = uiState.previousActualSummary,
-                    previousForecast = null // In futuro caricheremo anche questo
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
                 // Recent Activity
-                RecentActivityList(
-                    transactions = uiState.recentActivity,
-                    onViewAllClick = { /* TODO */ }
-                )
+                uiState.selectedAccountId?.let { accountId ->
+                    RecentActivityList(
+                        accountId = accountId,
+                        transactions = uiState.recentActivity,
+                        onViewAllClick = { /* TODO */ }
+                    )
+                }
             }
         }
     }
@@ -441,7 +442,7 @@ fun DashboardScreenPreview() {
             expense = BigDecimal.valueOf(1500.0)
         ),
         model = PeriodModel.ACTUAL,
-        type = PeriodType.MONTH,
+        elapsed = PeriodElapsed.MONTH,
         shift = PeriodShift.CURRENT,
         startDate = LocalDate.now(),
         endDate = LocalDate.now()
@@ -452,7 +453,7 @@ fun DashboardScreenPreview() {
             expense = BigDecimal.valueOf(300.0)
         ),
         model = PeriodModel.FORECAST,
-        type = PeriodType.MONTH,
+        elapsed = PeriodElapsed.MONTH,
         shift = PeriodShift.CURRENT,
         startDate = LocalDate.now(),
         endDate = LocalDate.now()
@@ -463,7 +464,7 @@ fun DashboardScreenPreview() {
             expense = BigDecimal.valueOf(1600.0)
         ),
         model = PeriodModel.ACTUAL,
-        type = PeriodType.MONTH,
+        elapsed = PeriodElapsed.MONTH,
         shift = PeriodShift.PREVIOUS,
         startDate = LocalDate.now().minusMonths(1),
         endDate = LocalDate.now().minusMonths(1)

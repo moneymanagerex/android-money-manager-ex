@@ -43,5 +43,23 @@ data class Transaction(
     
     // UI specific/helper fields (keeping some from previous version for convenience if needed)
     val payee: String = "",
-    val category: String = ""
-)
+    val category: String = "",
+    val accountName: String = "",
+    val toAccountName: String = "",
+) {
+    fun getSignedAmount(refAccountId: Int): Double {
+        return when (transCode) {
+            TransactionCode.DEPOSIT -> transAmount
+            TransactionCode.WITHDRAWAL -> -transAmount
+            TransactionCode.TRANSFER -> {
+                if (accountId == refAccountId) {
+                    -transAmount
+                } else if (toAccountId == refAccountId) {
+                    toTransAmount ?: transAmount
+                } else {
+                    0.0
+                }
+            }
+        }
+    }
+}

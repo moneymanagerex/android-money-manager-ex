@@ -26,8 +26,22 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
+    @Actual
+    abstract fun bindPeriodSummaryRepositoryActual(
+        impl: PeriodSummaryRepositoryActualImpl
+    ): PeriodSummaryRepository
+
+    @Binds
+    @Singleton
+    @Forecast
+    abstract fun bindPeriodSummaryRepositoryForecast(
+        impl: PeriodSummaryRepositoryForecastImpl
+    ): PeriodSummaryRepository
+
+    @Binds
+    @Singleton
     abstract fun bindPeriodSummaryRepository(
-        periodSummaryRepositoryImpl: PeriodSummaryRepositoryImpl
+        impl: PeriodSummaryRepositoryImpl
     ): PeriodSummaryRepository
 
     @Binds

@@ -105,7 +105,7 @@ fun AccountCarouselPreview() {
     val mockForecast = PeriodSummary(
         values = FinancialValues(income = BigDecimal.valueOf(200.0), expense = BigDecimal.valueOf(100.0)),
         model = PeriodModel.FORECAST,
-        type = PeriodType.MONTH,
+        elapsed = PeriodElapsed.MONTH,
         shift = PeriodShift.CURRENT,
         startDate = LocalDate.now(),
         endDate = LocalDate.now()

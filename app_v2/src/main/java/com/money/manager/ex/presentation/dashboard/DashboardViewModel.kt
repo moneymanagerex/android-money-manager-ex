@@ -27,7 +27,7 @@ class DashboardViewModel @Inject constructor(
     val uiState: StateFlow<DashboardUiState> = _uiState.asStateFlow()
 
     private val _selectedAccountId = MutableStateFlow<Int?>(null)
-    private val _selectedPeriodType = MutableStateFlow(PeriodType.MONTH)
+    private val _selectedPeriodElapsed = MutableStateFlow(PeriodElapsed.MONTH)
     private val _isPeriodMenuVisible = MutableStateFlow(false)
 
     init {
@@ -38,8 +38,8 @@ class DashboardViewModel @Inject constructor(
         _selectedAccountId.value = accountId
     }
 
-    fun onPeriodTypeSelected(periodType: PeriodType) {
-        _selectedPeriodType.value = periodType
+    fun onPeriodElapsedSelected(periodElapsed: PeriodElapsed) {
+        _selectedPeriodElapsed.value = periodElapsed
         _isPeriodMenuVisible.value = false
     }
 
@@ -69,11 +69,11 @@ class DashboardViewModel @Inject constructor(
             combine(
                 accountRepository.getOpenAccounts(),
                 _selectedAccountId,
-                _selectedPeriodType,
+                _selectedPeriodElapsed,
                 _isPeriodMenuVisible,
                 settingsRepository.getDatabaseName()
-            ) { accounts, selectedId, periodType, menuVisible, dbName ->
-                DataParams(accounts, selectedId, periodType, menuVisible, dbName ?: "No database selected")
+            ) { accounts, selectedId, periodElapsed, menuVisible, dbName ->
+                DataParams(accounts, selectedId, periodElapsed, menuVisible, dbName ?: "No database selected")
             }.flatMapLatest { params ->
                 val accountId = params.accountId
                 if (accountId == null) {
@@ -83,27 +83,27 @@ class DashboardViewModel @Inject constructor(
                             isRefreshing = false,
                             accounts = params.accounts,
                             selectedAccountId = null,
-                            selectedPeriodType = params.periodType,
+                            selectedPeriodElapsed = params.periodElapsed,
                             isPeriodMenuVisible = params.isMenuVisible,
                             databaseName = params.dbName
                         )
                     )
                 }
 
-                val dates = calculateDates(params.periodType)
+                val dates = calculateDates(params.periodElapsed)
                 
                 combine(
-                    transactionRepository.getRecentTransactions(5, accountId),
-                    periodSummaryRepository.getSummary(dates.currentStart, dates.currentEnd, params.periodType, PeriodModel.ACTUAL, accountId),
-                    periodSummaryRepository.getSummary(dates.currentStart, dates.currentEnd, params.periodType, PeriodModel.FORECAST, accountId),
-                    periodSummaryRepository.getSummary(dates.prevStart, dates.prevEnd, params.periodType, PeriodModel.ACTUAL, accountId)
+                    transactionRepository.getRecentTransactions(10, accountId),
+                    periodSummaryRepository.getSummary(dates.currentStart, dates.currentEnd, params.periodElapsed, PeriodModel.ACTUAL, accountId),
+                    periodSummaryRepository.getSummary(dates.currentStart, dates.currentEnd, params.periodElapsed, PeriodModel.FORECAST, accountId),
+                    periodSummaryRepository.getSummary(dates.prevStart, dates.prevEnd, params.periodElapsed, PeriodModel.ACTUAL, accountId)
                 ) { transactions, currentActual, currentForecast, previousActual ->
                     DashboardUiState(
                         isLoading = false,
                         isRefreshing = false,
                         accounts = params.accounts,
                         selectedAccountId = accountId,
-                        selectedPeriodType = params.periodType,
+                        selectedPeriodElapsed = params.periodElapsed,
                         isPeriodMenuVisible = params.isMenuVisible,
                         recentActivity = transactions,
                         currentActualSummary = currentActual,
@@ -124,7 +124,7 @@ class DashboardViewModel @Inject constructor(
     private data class DataParams(
         val accounts: List<Account>,
         val accountId: Int?,
-        val periodType: PeriodType,
+        val periodElapsed: PeriodElapsed,
         val isMenuVisible: Boolean,
         val dbName: String
     )
@@ -136,31 +136,31 @@ class DashboardViewModel @Inject constructor(
         val prevEnd: LocalDate
     )
 
-    private fun calculateDates(periodType: PeriodType): DateRange {
+    private fun calculateDates(periodElapsed: PeriodElapsed): DateRange {
         val now = LocalDate.now()
-        return when (periodType) {
-            PeriodType.WEEK -> {
+        return when (periodElapsed) {
+            PeriodElapsed.WEEK -> {
                 val start = now.minusDays(now.dayOfWeek.value.toLong() - 1)
                 DateRange(start, start.plusDays(6), start.minusWeeks(1), start.minusDays(1))
             }
-            PeriodType.MONTH -> {
+            PeriodElapsed.MONTH -> {
                 val start = now.withDayOfMonth(1)
                 DateRange(start, start.withDayOfMonth(start.lengthOfMonth()), start.minusMonths(1), start.withDayOfMonth(1).minusDays(1))
             }
-            PeriodType.QUARTER -> {
+            PeriodElapsed.QUARTER -> {
                 val quarter = (now.monthValue - 1) / 3
                 val start = LocalDate.of(now.year, quarter * 3 + 1, 1)
                 DateRange(start, start.plusMonths(2).withDayOfMonth(start.plusMonths(2).lengthOfMonth()), start.minusMonths(3), start.minusDays(1))
             }
-            PeriodType.FOUR_MONTH -> {
+            PeriodElapsed.FOUR_MONTH -> {
                 val start = LocalDate.of(now.year, ((now.monthValue - 1) / 4) * 4 + 1, 1)
                 DateRange(start, start.plusMonths(3).withDayOfMonth(start.plusMonths(3).lengthOfMonth()), start.minusMonths(4), start.minusDays(1))
             }
-            PeriodType.HALF_YEAR -> {
+            PeriodElapsed.HALF_YEAR -> {
                 val start = LocalDate.of(now.year, if (now.monthValue <= 6) 1 else 7, 1)
                 DateRange(start, start.plusMonths(5).withDayOfMonth(start.plusMonths(5).lengthOfMonth()), start.minusMonths(6), start.minusDays(1))
             }
-            PeriodType.YEAR, PeriodType.FISCAL_YEAR -> {
+            PeriodElapsed.YEAR, PeriodElapsed.FISCAL_YEAR -> {
                 val start = now.withDayOfYear(1)
                 DateRange(start, start.withDayOfYear(start.lengthOfYear()), start.minusYears(1), start.minusDays(1))
             }
