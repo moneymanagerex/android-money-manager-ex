@@ -46,7 +46,7 @@
     <!--<string name="import_export_failed">Import / Export failed</string>-->
     <!-- preferences -->
     <string name="preferences_general">Général</string>
-    <string name="preferences_perdatabase">Par-Base de données</string>
+    <string name="preferences_perdatabase">Par base de données</string>
     <string name="preferences_display">Apparence</string>
     <string name="preferences_behaviour">Comportement</string>
     <string name="base_currency">Devise de référence</string>
@@ -54,22 +54,22 @@
     <string name="base_currency_change_notification">La devise de référence a été modifiée. Veuillez mettre à jour les taux de change pour obtenir des montants adéquats dans la nouvelle devise de référence.</string>
     <string name="view_accounts_opened">Voir les comptes ouverts</string>
     <string name="if_not_selected_willShowAllAccounts">Si non sélectionné, tous les comptes seront affichés</string>
-    <string name="view_accounts_favorites">Voir les comptes préférés</string>
+    <string name="view_accounts_favorites">Voir les comptes favoris</string>
     <string name="version">Version</string>
     <string name="build">Compilation</string>
     <string name="path">Chemin de la base de données</string>
     <string name="remote_path">Chemin d\'accès distant</string>
-    <string name="database_version">Version de base de données</string>
+    <string name="database_version">Version de la base de données</string>
     <string name="title_show_tutorial">Afficher le tutoriel</string>
     <string name="summary_show_tutorial">Afficher le tutoriel au prochain lancement ?</string>
     <string name="preferences_behaviour_focus_filter_title">Afficher automatiquement le clavier</string>
     <string name="preferences_behaviour_focus_filter_summary">Affiche automatiquement le clavier sur les écrans de sélection.</string>
     <string name="auto_sync_via_wifi">Synchronisation automatique en Wi-Fi uniquement</string>
     <string name="auto_sync_via_wifi_summary">Synchronisation automatique uniquement lorsqu\'une connexion Wi-Fi est disponible.</string>
-    <string name="sync_on_app_start">Synchroniser sur le menu de démarrage de l’application.</string>
-    <string name="sync_on_start">Synchronisation au démarrage</string>
+    <string name="sync_on_app_start">Synchroniser au démarrage de l\'application.</string>
+    <string name="sync_on_start">Synchroniser au démarrage</string>
     <string name="sync_merge_database">EXPÉRIMENTAL : Fusionner les bases de données</string>
-    <string name="sync_merge_database_on_sync">Fusionne les différences lors de la synchronisation.</string>
+    <string name="sync_merge_database_on_sync">Fusionner les différences de base de données à la synchronisation.</string>
     <string name="sync_merge_dialog_msg_format">Fusionne tout %1$s%2$s</string>
     <!-- Receive SMS strings -->
     <string name="title_sms_auto_trans">Traiter les SMS de transaction bancaire</string>
@@ -712,7 +712,7 @@
     <string name="run">Exécuter Money Manager Ex</string>
     <string name="create_db_info_1">L’emplacement de base de données par défaut est :</string>
     <!-- Settings -->
-    <string name="per_database_settings">Par-Base de données</string>
+    <string name="per_database_settings">Par base de données</string>
     <string name="save">Sauvegarder</string>
     <string name="title_budget_show_simple_view">Afficher le budget simple</string>
     <string name="summary_budget_show_simple_view">Si les budgets sont vérifiés, utilisez l\'affichage simplifié</string>
