@@ -27,7 +27,7 @@
     <string name="category_8">Assurance </string>
     <string name="category_9">Vacances</string>
     <string name="category_10">Taxes</string>
-    <string name="category_11">Équipements Divers</string>
+    <string name="category_11">Divers</string>
     <string name="category_12">Cadeaux</string>
     <string name="category_13">Revenu</string>
     <string name="category_14">Autres revenus</string>
@@ -69,7 +69,7 @@
     <string name="subcategory_33">Hébergement</string>
     <string name="subcategory_34">Tourisme</string>
     <string name="subcategory_35">Impôt sur le revenu</string>
-    <string name="subcategory_36">Taxes du domicile</string>
+    <string name="subcategory_36">Taxe foncière</string>
     <string name="subcategory_37">Facture d\'eau</string>
     <string name="subcategory_38">Autres</string>
     <string name="subcategory_39">Salaire</string>
