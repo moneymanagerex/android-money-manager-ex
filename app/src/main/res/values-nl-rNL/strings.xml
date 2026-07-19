@@ -328,7 +328,12 @@
     <string name="menu_report_cashflow">Cash Flow</string>
     <string name="menu_report_summary_of_accounts">Samenvatting van rekeningen</string>
     <string name="menu_report_summary_of_stocks">Overzicht van aandelen</string>
+    <string name="menu_report_summary_of_assets">Samenvatting van rekeningen</string>
+    <string name="asset_name">Naam van de activa</string>
+    <string name="asset_type">Soort activa</string>
+    <string name="asset_initial_value">Initiële waarde</string>
     <string name="asset_current_value">Huidige waarde</string>
+    <string name="asset_rate_percent">Tarief %</string>
     <string name="report_subtotal">Subtotaal</string>
     <string name="report_grand_total">Totaalbedrag</string>
     <string name="total">Totaal</string>
@@ -517,6 +522,8 @@
     <string name="pref_transaction_hide_reconciled_amounts_title">Verberg de bevestigde bedragen</string>
     <string name="pref_transaction_sort_by_type_summary">Organiseer dagelijkse transacties op transactietype (storting, overschrijving, opname)</string>
     <string name="pref_transaction_sort_by_type_title">Sorteer Transacties op Type</string>
+    <string name="pref_search_results_group_by_account_title">Zoekresultaten per klant groeperen</string>
+    <string name="pref_search_results_group_by_account_summary">Wanneer ingeschakeld, worden de zoekresultaten gegroepeerd op account. Indien uitgeschakeld, worden alle resultaten op datum weergegeven.</string>
     <string name="warning">Waarschuwing</string>
     <string name="no_transfer_splits">U hebt ervoor gekozen om over te schakelen naar Overboeking, maar er zijn Split Categorieën op de transactie. Wilt u doorgaan en de Split Categorieën verwijderen?</string>
     <string name="qif_export">QIF exporteren</string>
@@ -879,4 +886,8 @@
     <string name="sync_failed">"Synchronisatie mislukt: "</string>
     <string name="sync_your_data_with_pocketbase_cloud">Synchroniseer je gegevens met PocketBase Cloud</string>
     <!-- Show & Hide Balance -->
+    <string name="show_balances">Saldi weergeven</string>
+    <string name="hide_balances">Verberg saldi</string>
+    <string name="pref_hide_balances_title">Saldi standaard verbergen</string>
+    <string name="pref_hide_balances_summary">Accountsaldi standaard weergeven/verbergen op de hoofdschermen.</string>
 </resources>
