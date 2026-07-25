@@ -68,6 +68,8 @@
     <string name="auto_sync_via_wifi_summary">المزامنة التلقائية عند الإتصال عن طريق WiFi فقط.</string>
     <string name="sync_on_app_start">مزامنة في بدء التطبيق.</string>
     <string name="sync_on_start">مزامنة عند بدء التشغيل</string>
+    <string name="sync_merge_database">تجريبي: دمج قواعد البيانات</string>
+    <string name="sync_merge_database_on_sync">دمج اختلافات قاعدة البيانات عند المزامنة.</string>
     <!-- Receive SMS strings -->
     <string name="title_sms_auto_trans">معالجة الرسائل القصيرة للمعاملات المصرفية</string>
     <string name="summary_sms_auto_trans"></string>
@@ -85,6 +87,12 @@
     <string name="account_empty_list">لم يتم العثور على حساب. لإنشاء حساب. قم بالضغط على زر الزائد الأخضر.</string>
     <string name="account_balance">رصيد الحساب</string>
     <string name="account_reconciled_balance">تسوية الرصيد</string>
+    <string name="total_balance">الرصيد الإجمالي</string>
+    <string name="cash_balance">الرصيد النقدي</string>
+    <string name="market_value">القيمة السوقية</string>
+    <string name="invested">المُستثمر</string>
+    <string name="total_cost">إجمالي التكلفة </string>
+    <string name="gain_loss">المكسب / الخسارة</string>
     <string name="pie_other">آخري</string>
     <string name="delete_account">حذف الحساب</string>
     <string name="account_name">إسم الحساب</string>
