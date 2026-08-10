@@ -805,11 +805,14 @@ public class AllDataListFragment
                     for (long transactionId : transactionIds) {
                         // First delete any splits. See if there are any split records.
                         SplitCategoryRepository splitRepo = new SplitCategoryRepository(getActivity());
-                        Cursor curSplit = getActivity().getContentResolver().query(splitRepo.getUri(), null,
+                        long splitCount = 0;
+                        try (Cursor curSplit = getActivity().getContentResolver().query(splitRepo.getUri(), null,
                                 SplitCategory.TRANSID + "=" + transactionId,
-                                null, SplitCategory.SPLITTRANSID);
-                        long splitCount = curSplit.getCount();
-                        curSplit.close();
+                                null, SplitCategory.SPLITTRANSID)) {
+                            if (curSplit != null) {
+                                splitCount = curSplit.getCount();
+                            }
+                        }
 
                         if (splitCount > 0) {
                             long deleteResult = getActivity().getContentResolver().delete(splitRepo.getUri(),

@@ -118,24 +118,19 @@ public class StockHistoryRepository
     }
 
     public boolean recordExists(String symbol, Date date) {
-        boolean result;
-
         String isoDate = new MmxDate(date).toIsoDateString();
         String selection = StockHistory.SYMBOL + "=? AND " + StockHistory.DATE + "=?";
 
-        Cursor cursor = getContext().getContentResolver().query(getUri(),
+        try (Cursor cursor = getContext().getContentResolver().query(getUri(),
                 null,
                 selection,
                 new String[]{symbol, isoDate},
-                null);
-        if (cursor == null) return false;
+                null)) {
+            if (cursor == null) return false;
 
-        long records = cursor.getCount();
-        result = records > 0;
-
-        cursor.close();
-
-        return result;
+            long records = cursor.getCount();
+            return records > 0;
+        }
     }
 
     /**
@@ -180,57 +175,56 @@ public class StockHistoryRepository
     }
 
     private StockHistory getLatestPriceFor_Internal(String symbol) {
-        Cursor cursor = getContext().getContentResolver().query(getUri(),
+        try (Cursor cursor = getContext().getContentResolver().query(getUri(),
                 null,
                 StockHistory.SYMBOL + "=?",
                 new String[]{ symbol },
-                StockHistory.DATE + " DESC");
-        if (cursor == null) return null;
+                StockHistory.DATE + " DESC")) {
+            if (cursor == null) return null;
 
-        StockHistory history = null;
+            StockHistory history = null;
 
-        boolean recordFound = cursor.moveToFirst();
-        if (recordFound) {
-            history = new StockHistory();
-            history.loadFromCursor(cursor);
+            boolean recordFound = cursor.moveToFirst();
+            if (recordFound) {
+                history = new StockHistory();
+                history.loadFromCursor(cursor);
+            }
+
+            return history;
         }
-
-        cursor.close();
-
-        return history;
     }
 
     public StockHistory getPriceForDate(String symbol, String isoDate) {
-        Cursor cursor = getContext().getContentResolver().query(getUri(),
+        try (Cursor cursor = getContext().getContentResolver().query(getUri(),
                 null,
                 StockHistory.SYMBOL + "=? AND " + StockHistory.DATE + "=?",
                 new String[]{symbol, isoDate},
-                null);
-        if (cursor == null) return null;
-        StockHistory history = null;
-        if (cursor.moveToFirst()) {
-            history = new StockHistory();
-            history.loadFromCursor(cursor);
+                null)) {
+            if (cursor == null) return null;
+            StockHistory history = null;
+            if (cursor.moveToFirst()) {
+                history = new StockHistory();
+                history.loadFromCursor(cursor);
+            }
+            return history;
         }
-        cursor.close();
-        return history;
     }
 
     public List<StockHistory> getAllPricesForSymbol(String symbol) {
-        Cursor cursor = getContext().getContentResolver().query(getUri(),
+        try (Cursor cursor = getContext().getContentResolver().query(getUri(),
                 null,
                 StockHistory.SYMBOL + "=?",
                 new String[]{symbol},
-                StockHistory.DATE + " DESC");
-        if (cursor == null) return new ArrayList<>();
-        List<StockHistory> result = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            StockHistory history = new StockHistory();
-            history.loadFromCursor(cursor);
-            result.add(history);
+                StockHistory.DATE + " DESC")) {
+            if (cursor == null) return new ArrayList<>();
+            List<StockHistory> result = new ArrayList<>();
+            while (cursor.moveToNext()) {
+                StockHistory history = new StockHistory();
+                history.loadFromCursor(cursor);
+                result.add(history);
+            }
+            return result;
         }
-        cursor.close();
-        return result;
     }
 
     public long deleteAutomaticPriceHistory() {

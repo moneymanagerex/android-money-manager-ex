@@ -466,14 +466,10 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                 .columns(reqCurrFields)
                 .orderBy(null)
                 .create();
-        try {
-            Cursor currencyCursor = openHelper.getReadableDatabase().query(query);
-
-            if (currencyCursor.moveToFirst()) {
+        try (Cursor currencyCursor = openHelper.getReadableDatabase().query(query)) {
+            if (currencyCursor != null && currencyCursor.moveToFirst()) {
                 currencySymbl = currencyCursor.getString(currencyCursor.getColumnIndexOrThrow("CURRENCY_SYMBOL"));
             }
-
-            currencyCursor.close();
         } catch (Exception e) {
             Timber.e(e, "getCurrencySymbl");
         }
@@ -817,17 +813,15 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                 "WHERE PAYEENAME LIKE '%" + payeeName + "%' " +
                                 "ORDER BY PAYEENAME LIMIT 1";
 
-                Cursor payeeCursor = openHelper.getReadableDatabase().query(sql);
-
-                if(payeeCursor.moveToFirst()) {
-                    payeeDetails = new String[] {
-                            payeeCursor.getString(payeeCursor.getColumnIndexOrThrow("PAYEEID")),
-                            payeeCursor.getString(payeeCursor.getColumnIndexOrThrow("PAYEENAME")),
-                            payeeCursor.getString(payeeCursor.getColumnIndexOrThrow("CATEGID"))
-                    };
+                try (Cursor payeeCursor = openHelper.getReadableDatabase().query(sql)) {
+                    if(payeeCursor.moveToFirst()) {
+                        payeeDetails = new String[] {
+                                payeeCursor.getString(payeeCursor.getColumnIndexOrThrow("PAYEEID")),
+                                payeeCursor.getString(payeeCursor.getColumnIndexOrThrow("PAYEENAME")),
+                                payeeCursor.getString(payeeCursor.getColumnIndexOrThrow("CATEGID"))
+                        };
+                    }
                 }
-
-                payeeCursor.close();
             }
         }
         catch(Exception e)
@@ -854,13 +848,11 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                 "AND TRANSDATE ='" + transDate + "' " +
                                 "ORDER BY TRANSID LIMIT 1";
 
-                Cursor txnCursor = openHelper.getReadableDatabase().query(sql);
-
-                if(txnCursor.moveToFirst()) {
-                    txnId = Long.parseLong(txnCursor.getString(txnCursor.getColumnIndexOrThrow("TRANSID")));
+                try (Cursor txnCursor = openHelper.getReadableDatabase().query(sql)) {
+                    if(txnCursor.moveToFirst()) {
+                        txnId = Long.parseLong(txnCursor.getString(txnCursor.getColumnIndexOrThrow("TRANSID")));
+                    }
                 }
-
-                txnCursor.close();
             }
         }
         catch(Exception e)
@@ -886,16 +878,14 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                 "ORDER BY PARENTID desc, CATEGNAME asc  LIMIT 1";
 
                 //Log.d("SQL", sql);
-                Cursor cCursor = openHelper.getReadableDatabase().query(sql);
-
-                if(cCursor.moveToFirst()) {
-                    cTran = new String[]{
-                            cCursor.getString(cCursor.getColumnIndexOrThrow("CATEGID")),
-                            cCursor.getString(cCursor.getColumnIndexOrThrow("PARENTID"))
-                    };
+                try (Cursor cCursor = openHelper.getReadableDatabase().query(sql)) {
+                    if(cCursor.moveToFirst()) {
+                        cTran = new String[]{
+                                cCursor.getString(cCursor.getColumnIndexOrThrow("CATEGID")),
+                                cCursor.getString(cCursor.getColumnIndexOrThrow("PARENTID"))
+                        };
+                    }
                 }
-
-                cCursor.close();
             }
         }
         catch(Exception e)
@@ -927,18 +917,18 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                     "ORDER BY A.ACCOUNTID " +
                                     "LIMIT 1";
 
-                    Cursor accountCursor = openHelper.getReadableDatabase().query(sql);
-
-                    if(accountCursor.moveToFirst()) {
-                        accountDetails = new String[] {
-                                accountCursor.getString(accountCursor.getColumnIndexOrThrow("ACCOUNTID")),
-                                accountCursor.getString(accountCursor.getColumnIndexOrThrow("ACCOUNTNAME")),
-                                accountCursor.getString(accountCursor.getColumnIndexOrThrow("CURRENCYID")),
-                                accountCursor.getString(accountCursor.getColumnIndexOrThrow("CURRENCY_SYMBOL")),
-                                accountCursor.getString(accountCursor.getColumnIndexOrThrow("DECIMAL_POINT")),
-                                accountCursor.getString(accountCursor.getColumnIndexOrThrow("GROUP_SEPARATOR")),
-                                reqMatch[j]
-                        };
+                    try (Cursor accountCursor = openHelper.getReadableDatabase().query(sql)) {
+                        if(accountCursor.moveToFirst()) {
+                            accountDetails = new String[] {
+                                    accountCursor.getString(accountCursor.getColumnIndexOrThrow("ACCOUNTID")),
+                                    accountCursor.getString(accountCursor.getColumnIndexOrThrow("ACCOUNTNAME")),
+                                    accountCursor.getString(accountCursor.getColumnIndexOrThrow("CURRENCYID")),
+                                    accountCursor.getString(accountCursor.getColumnIndexOrThrow("CURRENCY_SYMBOL")),
+                                    accountCursor.getString(accountCursor.getColumnIndexOrThrow("DECIMAL_POINT")),
+                                    accountCursor.getString(accountCursor.getColumnIndexOrThrow("GROUP_SEPARATOR")),
+                                    reqMatch[j]
+                            };
+                        }
                     }
 
                     switch (j)
@@ -950,8 +940,6 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                             toAccountDetails = accountDetails;
                             break;
                     }
-
-                    accountCursor.close();
                 }
             }
         }

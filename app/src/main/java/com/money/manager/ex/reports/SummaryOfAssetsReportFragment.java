@@ -100,11 +100,10 @@ public class SummaryOfAssetsReportFragment extends Fragment {
                 Asset.VALUECHANGERATE +
                 " FROM assets_v1 ORDER BY " + Asset.ASSETNAME;
 
-        Cursor cursor = requireContext().getContentResolver().query(new SQLDataSet().getUri(), null,
-                query, null, null);
+        try (Cursor cursor = requireContext().getContentResolver().query(new SQLDataSet().getUri(), null,
+                query, null, null)) {
 
-        if (cursor != null) {
-            try {
+            if (cursor != null) {
                 while (cursor.moveToNext()) {
                     String name = cursor.getString(cursor.getColumnIndexOrThrow(Asset.ASSETNAME));
                     String type = cursor.getString(cursor.getColumnIndexOrThrow(Asset.ASSETTYPE));
@@ -118,8 +117,6 @@ public class SummaryOfAssetsReportFragment extends Fragment {
 
                     rows.add(new AssetRow(name, type, currentValue, initialValue, rate));
                 }
-            } finally {
-                cursor.close();
             }
         }
         return rows;

@@ -326,18 +326,18 @@ public class MmexApplication
             where = "LOWER(FAVORITEACCT)='true'";
         }
         QueryAccountBills accountBills = new QueryAccountBills(context);
-        Cursor cursor = context.getContentResolver().query(accountBills.getUri(),
+        try (Cursor cursor = context.getContentResolver().query(accountBills.getUri(),
                 null,
                 where,
                 null,
-                null);
-        if (cursor == null) return 0;
+                null)) {
+            if (cursor == null) return 0;
 
-        // calculate summary
-        while (cursor.moveToNext()) {
-            curTotal = curTotal + cursor.getDouble(cursor.getColumnIndexOrThrow(QueryAccountBills.TOTALBASECONVRATE));
+            // calculate summary
+            while (cursor.moveToNext()) {
+                curTotal = curTotal + cursor.getDouble(cursor.getColumnIndexOrThrow(QueryAccountBills.TOTALBASECONVRATE));
+            }
         }
-        cursor.close();
 
         return curTotal;
     }

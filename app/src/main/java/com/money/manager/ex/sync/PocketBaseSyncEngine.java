@@ -154,9 +154,7 @@ public class PocketBaseSyncEngine {
 
         // Handle Dirty records
         String selection = "pb_is_dirty = 1 OR pb_id IS NULL OR pb_id = ''";
-        Cursor cursor = db.query("SELECT * FROM " + tableName + " WHERE " + selection);
-
-        try {
+        try (Cursor cursor = db.query("SELECT * FROM " + tableName + " WHERE " + selection)) {
             int pkIdx = cursor.getColumnIndex(config.pk);
             int pbIdIdx = cursor.getColumnIndex("pb_id");
 
@@ -211,8 +209,6 @@ public class PocketBaseSyncEngine {
                     Timber.e(e, "[SYNC_CLOUD] Network error pushing record %d in %s", localId, tableName);
                 }
             }
-        } finally {
-            cursor.close();
         }
 
     }
@@ -326,9 +322,10 @@ public class PocketBaseSyncEngine {
         }
 
         // Check if exists locally
-        Cursor localCursor = db.query("SELECT " + config.pk + " FROM " + tableName + " WHERE pb_id = ?", new Object[]{pbId});
-        boolean existsLocally = localCursor != null && localCursor.moveToFirst();
-        if (localCursor != null) localCursor.close();
+        boolean existsLocally = false;
+        try (Cursor localCursor = db.query("SELECT " + config.pk + " FROM " + tableName + " WHERE pb_id = ?", new Object[]{pbId})) {
+            existsLocally = localCursor != null && localCursor.moveToFirst();
+        }
 
         int dirtyValue = markAsSynced ? 0 : 2;
 
@@ -420,10 +417,9 @@ public class PocketBaseSyncEngine {
 
     private void processTableDeletions(SupportSQLiteDatabase db, String tableName) throws IOException {
         String logTable = "pb_DELETED_RECORDS_LOG";
-        Cursor cursor = db.query("SELECT * FROM " + logTable + " WHERE table_name = ?", new Object[]{tableName});
-        if (cursor == null) return;
+        try (Cursor cursor = db.query("SELECT * FROM " + logTable + " WHERE table_name = ?", new Object[]{tableName})) {
+            if (cursor == null) return;
 
-        try {
             int idIdx = cursor.getColumnIndex("id");
             int pbIdIdx = cursor.getColumnIndex("pb_id");
 
@@ -436,14 +432,12 @@ public class PocketBaseSyncEngine {
                 // Use soft-delete on PocketBase as per sync_core.js logic
                 JsonObject payload = new JsonObject();
                 payload.addProperty("_is_deleted", 1);
-                
+
                 Response<JsonObject> response = mService.update(tableName, pbId, payload).execute();
                 if (response.isSuccessful()) {
                     db.execSQL("DELETE FROM " + logTable + " WHERE id = ?", new Object[]{logId});
                 }
             }
-        } finally {
-            cursor.close();
         }
     }
 

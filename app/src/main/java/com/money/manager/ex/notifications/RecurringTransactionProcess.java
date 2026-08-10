@@ -72,18 +72,18 @@ public class RecurringTransactionProcess {
           the parameters will not work (for whatever reason).
         */
 
-        Cursor cursor = mContext.getContentResolver().query(billDeposits.getUri(),
+        try (Cursor cursor = mContext.getContentResolver().query(billDeposits.getUri(),
                 null,
                 QueryBillDeposits.DAYSLEFT + "<=0",
                 null,
-                QueryBillDeposits.NEXTOCCURRENCEDATE);
-        if (cursor == null) return;
+                QueryBillDeposits.NEXTOCCURRENCEDATE)) {
+            if (cursor == null) return;
 
-        if (cursor.getCount() > 0) {
-            SyncNotificationModel model = getNotificationContent(cursor);
-            showNotification(model);
+            if (cursor.getCount() > 0) {
+                SyncNotificationModel model = getNotificationContent(cursor);
+                showNotification(model);
+            }
         }
-        cursor.close();
     }
 
     private void showNotification(SyncNotificationModel model) {
