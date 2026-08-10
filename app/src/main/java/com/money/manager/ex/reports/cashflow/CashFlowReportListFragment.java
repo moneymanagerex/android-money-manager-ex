@@ -299,18 +299,18 @@ public class CashFlowReportListFragment
         QueryAccountBills queryAccountBills = new QueryAccountBills(context);
         selectedAccounts = new ArrayList<>();
 
-        Cursor c = context.getContentResolver().query(queryAccountBills.getUri(),
+        try (Cursor c = context.getContentResolver().query(queryAccountBills.getUri(),
                 null,
                 where,
                 null,
-                QueryAccountBills.ACCOUNTTYPE + ", upper(" + QueryAccountBills.ACCOUNTNAME + ")");
-        if (c != null) {
-            totalAmount = 0;
-            while (c.moveToNext()) {
-                selectedAccounts.add(c.getLong(c.getColumnIndexOrThrow(QueryAccountBills.ACCOUNTID)));
-                totalAmount += c.getDouble(c.getColumnIndexOrThrow(QueryAccountBills.TOTALBASECONVRATE));
+                QueryAccountBills.ACCOUNTTYPE + ", upper(" + QueryAccountBills.ACCOUNTNAME + ")")) {
+            if (c != null) {
+                totalAmount = 0;
+                while (c.moveToNext()) {
+                    selectedAccounts.add(c.getLong(c.getColumnIndexOrThrow(QueryAccountBills.ACCOUNTID)));
+                    totalAmount += c.getDouble(c.getColumnIndexOrThrow(QueryAccountBills.TOTALBASECONVRATE));
+                }
             }
-            c.close();
         }
     }
 

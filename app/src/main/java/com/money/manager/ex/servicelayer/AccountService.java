@@ -129,56 +129,55 @@ public class AccountService
 
         AccountTransactionRepository repo = new AccountTransactionRepository(getContext());
 
-        Cursor cursor = getContext().getContentResolver().query(repo.getUri(),
+        try (Cursor cursor = getContext().getContentResolver().query(repo.getUri(),
             null,
             selection,
             null,
-            null);
-        if (cursor == null) return total;
+            null)) {
+            if (cursor == null) return total;
 
-        AccountTransactionDisplay tx = new AccountTransactionDisplay();
-        Money amount;
+            AccountTransactionDisplay tx = new AccountTransactionDisplay();
+            Money amount;
 
-        // calculate balance.
-        while (cursor.moveToNext()) {
-            tx.contentValues.clear();
-            String transType = cursor.getString(cursor.getColumnIndexOrThrow(ITransactionEntity.TRANSCODE));
+            // calculate balance.
+            while (cursor.moveToNext()) {
+                tx.contentValues.clear();
+                String transType = cursor.getString(cursor.getColumnIndexOrThrow(ITransactionEntity.TRANSCODE));
 
-            // Some users have invalid Transaction Type. Should we check .contains()?
+                // Some users have invalid Transaction Type. Should we check .contains()?
 
-            switch (TransactionTypes.valueOf(transType)) {
-                case Withdrawal:
-                    DatabaseUtils.cursorDoubleToContentValues(cursor, ITransactionEntity.TRANSAMOUNT,
-                            tx.contentValues, QueryAllData.AMOUNT);
-                    amount = tx.getAmount();
-                    total = total.subtract(amount);
-                    break;
-                case Deposit:
-                    DatabaseUtils.cursorDoubleToContentValues(cursor, ITransactionEntity.TRANSAMOUNT,
-                            tx.contentValues, QueryAllData.AMOUNT);
-                    amount = tx.getAmount();
-                    total = total.add(amount);
-                    break;
-                case Transfer:
-                    DatabaseUtils.cursorDoubleToContentValues(cursor, ITransactionEntity.ACCOUNTID,
-                            tx.contentValues, QueryAllData.ACCOUNTID);
-
-                    if (tx.getAccountId().equals(accountId)) {
+                switch (TransactionTypes.valueOf(transType)) {
+                    case Withdrawal:
                         DatabaseUtils.cursorDoubleToContentValues(cursor, ITransactionEntity.TRANSAMOUNT,
                                 tx.contentValues, QueryAllData.AMOUNT);
                         amount = tx.getAmount();
                         total = total.subtract(amount);
-                    } else {
-                        DatabaseUtils.cursorDoubleToContentValues(cursor, ITransactionEntity.TOTRANSAMOUNT,
+                        break;
+                    case Deposit:
+                        DatabaseUtils.cursorDoubleToContentValues(cursor, ITransactionEntity.TRANSAMOUNT,
                                 tx.contentValues, QueryAllData.AMOUNT);
                         amount = tx.getAmount();
                         total = total.add(amount);
-                    }
-                    break;
+                        break;
+                    case Transfer:
+                        DatabaseUtils.cursorDoubleToContentValues(cursor, ITransactionEntity.ACCOUNTID,
+                                tx.contentValues, QueryAllData.ACCOUNTID);
+
+                        if (tx.getAccountId().equals(accountId)) {
+                            DatabaseUtils.cursorDoubleToContentValues(cursor, ITransactionEntity.TRANSAMOUNT,
+                                    tx.contentValues, QueryAllData.AMOUNT);
+                            amount = tx.getAmount();
+                            total = total.subtract(amount);
+                        } else {
+                            DatabaseUtils.cursorDoubleToContentValues(cursor, ITransactionEntity.TOTRANSAMOUNT,
+                                    tx.contentValues, QueryAllData.AMOUNT);
+                            amount = tx.getAmount();
+                            total = total.add(amount);
+                        }
+                        break;
+                }
             }
         }
-
-        cursor.close();
         return total;
     }
 
@@ -326,19 +325,19 @@ public class AccountService
         Money curTotal = MoneyFactory.fromString("0");
 
         QueryAccountBills accountBills = new QueryAccountBills(getContext());
-        Cursor cursor = getContext().getContentResolver().query(accountBills.getUri(),
+        try (Cursor cursor = getContext().getContentResolver().query(accountBills.getUri(),
                 null,
                 where,
                 null,
-                null);
-        if (cursor == null) return curTotal;
+                null)) {
+            if (cursor == null) return curTotal;
 
-        // calculate summary
-        while (cursor.moveToNext()) {
+            // calculate summary
+            while (cursor.moveToNext()) {
 //            curTotal = curTotal.add(MoneyFactory.fromDouble(cursor.getDouble(cursor.getColumnIndexOrThrow(QueryAccountBills.TOTAL))));
-            curTotal = curTotal.add(MoneyFactory.fromString(cursor.getString(cursor.getColumnIndexOrThrow(QueryAccountBills.TOTAL))));
+                curTotal = curTotal.add(MoneyFactory.fromString(cursor.getString(cursor.getColumnIndexOrThrow(QueryAccountBills.TOTAL))));
+            }
         }
-        cursor.close();
 
         return curTotal;
     }

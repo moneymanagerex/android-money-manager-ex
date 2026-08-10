@@ -78,16 +78,14 @@ public class StockViewModel extends AndroidViewModel {
         executor.execute(() -> {
             QueryAccountBills query = new QueryAccountBills(getApplication());
             Select select = new Select().where(QueryAccountBills.ACCOUNTID + "=?", Long.toString(accountId));
-            Cursor c = getApplication().getContentResolver().query(
-                    query.getUri(), null,
-                    select.selection, select.selectionArgs, null);
             Money balance = MoneyFactory.fromDouble(0);
-            if (c != null) {
-                if (c.moveToFirst()) {
+            try (Cursor c = getApplication().getContentResolver().query(
+                    query.getUri(), null,
+                    select.selection, select.selectionArgs, null)) {
+                if (c != null && c.moveToFirst()) {
                     balance = MoneyFactory.fromString(
                             Double.toString(c.getDouble(c.getColumnIndexOrThrow(QueryAccountBills.TOTAL))));
                 }
-                c.close();
             }
             accountBalance.postValue(balance);
         });

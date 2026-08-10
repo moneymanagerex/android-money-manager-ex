@@ -74,24 +74,24 @@ public class SplitCategoryRepository
      * @return list of split categories for the given transaction.
      */
     public ArrayList<ISplitTransaction> loadSplitCategoriesFor(long transId) {
-        Cursor curSplit = getContext().getContentResolver().query(getUri(), null,
-            SplitCategory.TRANSID + "=" + transId,
-            null,
-            SplitCategory.SPLITTRANSID);
-        if (curSplit == null) return null;
-
         ArrayList<ISplitTransaction> listSplitTrans = new ArrayList<>();
 
-        while (curSplit.moveToNext()) {
-            SplitCategory splitCategory = new SplitCategory();
-            splitCategory.loadFromCursor(curSplit);
+        try (Cursor curSplit = getContext().getContentResolver().query(getUri(), null,
+            SplitCategory.TRANSID + "=" + transId,
+            null,
+            SplitCategory.SPLITTRANSID)) {
+            if (curSplit == null) return null;
 
-            // load tags from table
-            splitCategory.setTagLinks(loadTagLinks(splitCategory.getId()));
+            while (curSplit.moveToNext()) {
+                SplitCategory splitCategory = new SplitCategory();
+                splitCategory.loadFromCursor(curSplit);
 
-            listSplitTrans.add(splitCategory);
+                // load tags from table
+                splitCategory.setTagLinks(loadTagLinks(splitCategory.getId()));
+
+                listSplitTrans.add(splitCategory);
+            }
         }
-        curSplit.close();
 
         return listSplitTrans;
     }

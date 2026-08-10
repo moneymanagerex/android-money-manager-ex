@@ -192,16 +192,14 @@ public class BudgetService
         QueryMobileData mobileData = new QueryMobileData(getContext());
         builder.setTables(mobileData.getSource());
         String sql = builder.buildQuery(projectionIn, where.getWhere(), QueryMobileData.CATEGID, null, null, null);
-        Cursor cursor = databaseLazy.get().query(sql);
-
-        if (cursor == null) return 0;
-        // add all the categories and subcategories together.
-        double total = 0;
-        while (cursor.moveToNext()) {
-            total += cursor.getDouble(cursor.getColumnIndexOrThrow("TOTAL"));
+        try (Cursor cursor = databaseLazy.get().query(sql)) {
+            if (cursor == null) return 0;
+            // add all the categories and subcategories together.
+            double total = 0;
+            while (cursor.moveToNext()) {
+                total += cursor.getDouble(cursor.getColumnIndexOrThrow("TOTAL"));
+            }
+            return total;
         }
-        cursor.close();
-
-        return total;
     }
 }

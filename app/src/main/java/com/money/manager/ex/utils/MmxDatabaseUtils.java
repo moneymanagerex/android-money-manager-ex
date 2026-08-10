@@ -337,14 +337,14 @@ public class MmxDatabaseUtils {
     private ArrayList<String> getTableNamesFromDb() {
         SupportSQLiteDatabase db = openHelper.get().getReadableDatabase();
 
-        Cursor c = db.query("SELECT name FROM sqlite_master WHERE type='table'");
         ArrayList<String> result = new ArrayList<>();
-        int i = 0;
-        while (c.moveToNext()) {
-            String temp = c.getString(i);
-            result.add(temp);
+        try (Cursor c = db.query("SELECT name FROM sqlite_master WHERE type='table'")) {
+            int i = 0;
+            while (c.moveToNext()) {
+                String temp = c.getString(i);
+                result.add(temp);
+            }
         }
-        c.close();
 
         return result;
     }
