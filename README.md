@@ -58,4 +58,4 @@ To build the project, the following settings are recommended:
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=moneymanagerex/android-money-manager-ex&type=Date)](https://star-history.com/#moneymanagerex/android-money-manager-ex&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=moneymanagerex/android-money-manager-ex&type=Date)](https://star-history.dera.page/#moneymanagerex/android-money-manager-ex&Date)
