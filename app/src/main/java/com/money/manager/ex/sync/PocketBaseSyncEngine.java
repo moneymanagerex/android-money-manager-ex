@@ -154,7 +154,6 @@ public class PocketBaseSyncEngine {
 
         // Handle Dirty records
         String selection = "pb_is_dirty = 1 OR pb_id IS NULL OR pb_id = ''";
-
         try (Cursor cursor = db.query("SELECT * FROM " + tableName + " WHERE " + selection)) {
             int pkIdx = cursor.getColumnIndex(config.pk);
             int pbIdIdx = cursor.getColumnIndex("pb_id");
@@ -322,7 +321,7 @@ public class PocketBaseSyncEngine {
         }
 
         // Check if exists locally
-        boolean existsLocally;
+        boolean existsLocally = false;
         try (Cursor localCursor = db.query("SELECT " + config.pk + " FROM " + tableName + " WHERE pb_id = ?", new Object[]{pbId})) {
             existsLocally = localCursor.moveToFirst();
         }
@@ -417,7 +416,7 @@ public class PocketBaseSyncEngine {
 
     private void processTableDeletions(SupportSQLiteDatabase db, String tableName) throws IOException {
         String logTable = "pb_DELETED_RECORDS_LOG";
-        try (Cursor cursor = db.query("SELECT * FROM " + logTable + " WHERE table_name = ?", new Object[]{tableName})){
+        try (Cursor cursor = db.query("SELECT * FROM " + logTable + " WHERE table_name = ?", new Object[]{tableName})) {
             int idIdx = cursor.getColumnIndex("id");
             int pbIdIdx = cursor.getColumnIndex("pb_id");
 
@@ -430,7 +429,7 @@ public class PocketBaseSyncEngine {
                 // Use soft-delete on PocketBase as per sync_core.js logic
                 JsonObject payload = new JsonObject();
                 payload.addProperty("_is_deleted", 1);
-                
+
                 Response<JsonObject> response = mService.update(tableName, pbId, payload).execute();
                 if (response.isSuccessful()) {
                     db.execSQL("DELETE FROM " + logTable + " WHERE id = ?", new Object[]{logId});
@@ -453,6 +452,7 @@ public class PocketBaseSyncEngine {
     // clear all sync engine data, like token, last sync time, etc.
     public void clearSyncEngine() {
         SyncPreferences prefs = new SyncPreferences(mContext);
+        prefs.setPocketBaseSyncEnabled(false);
         prefs.setPocketBaseSyncLastSyncTimeToInitial();
         PocketBaseClient.getInstance(mContext).clearSession();
         new AppSettings(mContext).getDatabaseSettings().setDatabasePath("");

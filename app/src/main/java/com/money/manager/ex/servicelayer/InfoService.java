@@ -109,25 +109,21 @@ public class InfoService
      * @return value
      */
     public String getInfoValue(String info) {
-        Cursor cursor = null;
         String ret = null;
 
         try {
             Select query = new Select()
                     .from(InfoRepositorySql.TABLE_NAME)
                     .where(Info.INFONAME + "=?", info);
-            cursor = repository.query(query);
-            if (cursor == null) return null;
+            try (Cursor cursor = repository.query(query)) {
+                if (cursor == null) return null;
 
-            if (cursor.moveToFirst()) {
-                ret = cursor.getString(cursor.getColumnIndexOrThrow(Info.INFOVALUE));
+                if (cursor.moveToFirst()) {
+                    ret = cursor.getString(cursor.getColumnIndexOrThrow(Info.INFOVALUE));
+                }
             }
         } catch (Exception e) {
             Timber.e(e, "retrieving info value: %s", info);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
         }
 
         return ret;

@@ -85,28 +85,28 @@ public class BudgetEntryRepository
         WhereStatementGenerator where = new WhereStatementGenerator();
         where.addStatement(BudgetEntry.BUDGETYEARID, "=", budgetYearId);
 
-        Cursor cursor = getContext().getContentResolver().query(getUri(),
+        HashMap<String, BudgetEntry> budgetEntryHashMap = new HashMap<>();
+
+        try (Cursor cursor = getContext().getContentResolver().query(getUri(),
                 null,
                 where.getWhere(),
                 null,
-                null);
-        if (cursor == null) return null;
+                null)) {
+            if (cursor == null) return null;
 
-        HashMap<String, BudgetEntry> budgetEntryHashMap = new HashMap<>();
+            // use nested category
+            QueryNestedCategory categoryRepositoryNested = new QueryNestedCategory(null);
+            while (cursor.moveToNext()) {
+                BudgetEntry budgetEntry = new BudgetEntry();
+                budgetEntry.loadFromCursor(cursor);
 
-        // use nested category
-        QueryNestedCategory categoryRepositoryNested = new QueryNestedCategory(null);
-        while (cursor.moveToNext()) {
-            BudgetEntry budgetEntry = new BudgetEntry();
-            budgetEntry.loadFromCursor(cursor);
-
-            NestedCategoryEntity nestedCategory = categoryRepositoryNested.getOneCategoryEntity(budgetEntry.getCategoryId());
-            if (nestedCategory == null) {
-                continue;
+                NestedCategoryEntity nestedCategory = categoryRepositoryNested.getOneCategoryEntity(budgetEntry.getCategoryId());
+                if (nestedCategory == null) {
+                    continue;
+                }
+                budgetEntryHashMap.put(getKeyForCategories(nestedCategory.getCategoryId()), budgetEntry);
             }
-            budgetEntryHashMap.put(getKeyForCategories(nestedCategory.getCategoryId()), budgetEntry);
         }
-        cursor.close();
 
         return budgetEntryHashMap;
     }

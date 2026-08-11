@@ -457,15 +457,14 @@ public class CurrencyService
                 .orderBy(sortOrder)
                 .create();
 
-        Cursor cursor = db.query(query);
+        try (Cursor cursor = db.query(query)) {
+            if (cursor == null) return result;
 
-        if (cursor == null) return result;
-
-        // set BaseCurrencyId
-        if (cursor.moveToFirst()) {
-            result = cursor.getInt(cursor.getColumnIndexOrThrow(Currency.CURRENCYID));
+            // set BaseCurrencyId
+            if (cursor.moveToFirst()) {
+                result = cursor.getInt(cursor.getColumnIndexOrThrow(Currency.CURRENCYID));
+            }
         }
-        cursor.close();
 
         return result;
     }

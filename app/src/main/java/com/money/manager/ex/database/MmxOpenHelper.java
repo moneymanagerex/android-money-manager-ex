@@ -256,20 +256,17 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
      */
     public String getSQLiteVersion() {
         String sqliteVersion = null;
-        Cursor cursor = null;
         try {
             SupportSQLiteDatabase db = getReadableDatabase();
             if (db != null) {
-                cursor = db.query("select sqlite_version() AS sqlite_version");
-                if (cursor != null && cursor.moveToFirst()) {
-                    sqliteVersion = cursor.getString(0);
+                try (Cursor cursor = db.query("select sqlite_version() AS sqlite_version")) {
+                    if (cursor != null && cursor.moveToFirst()) {
+                        sqliteVersion = cursor.getString(0);
+                    }
                 }
             }
         } catch (Exception e) {
             Timber.e(e, "getting sqlite version");
-        } finally {
-            if (cursor != null) cursor.close();
-//            if (database != null) database.close();
         }
         return sqliteVersion;
     }
@@ -330,19 +327,20 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
 //                .where(Info.INFONAME + "=?", InfoKeys.BASECURRENCYID)
 //                .toString();
 
-        Cursor currencyCursor = db.query(
+        long recordId = Constants.NOT_SET;
+        boolean recordExists = false;
+        try (Cursor currencyCursor = db.query(
             "SELECT * FROM " + InfoRepositorySql.TABLE_NAME +
             " WHERE " + Info.INFONAME + "=?",
-            new String[]{ InfoKeys.BASECURRENCYID});
-        if (currencyCursor == null) return;
+            new String[]{ InfoKeys.BASECURRENCYID})) {
+            if (currencyCursor == null) return;
 
-        // Get id of the base currency record.
-        long recordId = Constants.NOT_SET;
-        boolean recordExists = currencyCursor.moveToFirst();
-        if (recordExists) {
-            recordId = currencyCursor.getInt(currencyCursor.getColumnIndexOrThrow(Info.INFOID));
+            // Get id of the base currency record.
+            recordExists = currencyCursor.moveToFirst();
+            if (recordExists) {
+                recordId = currencyCursor.getInt(currencyCursor.getColumnIndexOrThrow(Info.INFOID));
+            }
         }
-        currencyCursor.close();
 
         // Use the system default currency.
         long currencyId = currencyService.loadCurrencyIdFromSymbolRaw(db, systemCurrency.getCurrencyCode());

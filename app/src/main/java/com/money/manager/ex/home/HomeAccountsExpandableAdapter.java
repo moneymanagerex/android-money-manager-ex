@@ -30,7 +30,6 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.R;
 import com.money.manager.ex.account.AccountTypes;
@@ -46,6 +45,7 @@ import java.util.List;
 
 import info.javaperformance.money.Money;
 import info.javaperformance.money.MoneyFactory;
+import timber.log.Timber;
 
 /**
  * Adapter for the Home screen expandable accounts list.
@@ -259,30 +259,37 @@ public class HomeAccountsExpandableAdapter
             return cached;
         }
 
-        InvestmentSummary summary = new InvestmentSummary();
-        StockRepository stockRepository = new StockRepository(mContext);
-        long baseCurrencyId = mCurrencyService.getBaseCurrencyId();
+        try {
 
-        Money marketValue = MoneyFactory.fromDouble(0);
-        Money invested = MoneyFactory.fromDouble(0);
+            InvestmentSummary summary = new InvestmentSummary();
+            StockRepository stockRepository = new StockRepository(mContext);
+            long baseCurrencyId = mCurrencyService.getBaseCurrencyId();
 
-        List<Stock> stocks = stockRepository.loadByAccount(account.getAccountId());
-        for (Stock stock : stocks) {
-            marketValue = marketValue.add(stock.getCurrentPrice().multiply(stock.getNumberOfShares()));
-            // invested uses cost basis (VALUE field) which includes commission
-            invested = invested.add(stock.getValue());
+            Money marketValue = MoneyFactory.fromDouble(0);
+            Money invested = MoneyFactory.fromDouble(0);
+
+            List<Stock> stocks = stockRepository.loadByAccount(account.getAccountId());
+            for (Stock stock : stocks) {
+                marketValue = marketValue.add(stock.getCurrentPrice().multiply(stock.getNumberOfShares()));
+                // invested uses cost basis (VALUE field) which includes commission
+                invested = invested.add(stock.getValue());
+            }
+
+            summary.totalBase = MoneyFactory.fromDouble(account.getTotalBaseConvRate());
+            summary.marketValue = mCurrencyService.doCurrencyExchange(
+                    baseCurrencyId, marketValue, account.getCurrencyId());
+            summary.invested = mCurrencyService.doCurrencyExchange(
+                    baseCurrencyId, invested, account.getCurrencyId());
+            summary.cashBalance = summary.totalBase.subtract(summary.marketValue);
+            summary.reconciledCash = MoneyFactory.fromDouble(account.getReconciledBaseConvRate()).subtract(summary.marketValue);
+            summary.gainLoss = summary.marketValue.subtract(summary.invested);
+            mInvestmentSummaries.put(account.getAccountId(), summary);
+            return summary;
+        } catch ( Exception e) {
+            // catch error and prevent dump #3017
+            Timber.e(e);
+            return new InvestmentSummary();
         }
-
-        summary.totalBase = MoneyFactory.fromDouble(account.getTotalBaseConvRate());
-        summary.marketValue = mCurrencyService.doCurrencyExchange(
-                baseCurrencyId, marketValue, account.getCurrencyId());
-        summary.invested = mCurrencyService.doCurrencyExchange(
-                baseCurrencyId, invested, account.getCurrencyId());
-        summary.cashBalance = summary.totalBase.subtract(summary.marketValue);
-        summary.reconciledCash = MoneyFactory.fromDouble(account.getReconciledBaseConvRate()).subtract(summary.marketValue);
-        summary.gainLoss = summary.marketValue.subtract(summary.invested);
-        mInvestmentSummaries.put(account.getAccountId(), summary);
-        return summary;
     }
 
     private String formatGainLoss(Money gainLoss, Money invested) {

@@ -157,27 +157,26 @@ public class CurrencyEditActivity
 
     private boolean loadData(long currencyId) {
         CurrencyRepository repo = new CurrencyRepository(this);
-        Cursor cursor = getContentResolver().query(repo.getUri(),
+        try (Cursor cursor = getContentResolver().query(repo.getUri(),
                 repo.getAllColumns(),
                 Currency.CURRENCYID + "=?",
-                new String[]{Long.toString(currencyId)}, null);
-        // check if cursor is valid and open
-        if ((cursor == null) || (!cursor.moveToFirst())) {
-            return false;
+                new String[]{Long.toString(currencyId)}, null)) {
+            // check if cursor is valid and open
+            if ((cursor == null) || (!cursor.moveToFirst())) {
+                return false;
+            }
+            // populate values
+            holder.edtCurrencyName.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.CURRENCYNAME)));
+            holder.editCurrencySymbol.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.CURRENCY_SYMBOL)));
+            holder.edtUnitName.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.UNIT_NAME)));
+            holder.edtCentsName.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.CENT_NAME)));
+            holder.edtPrefix.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.PFX_SYMBOL)));
+            holder.edtSuffix.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.SFX_SYMBOL)));
+            holder.edtDecimal.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.DECIMAL_POINT)));
+            holder.edtGroup.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.GROUP_SEPARATOR)));
+            holder.edtScale.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.SCALE)));
+            holder.edtConversion.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.BASECONVRATE)));
         }
-        // populate values
-        holder.edtCurrencyName.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.CURRENCYNAME)));
-        holder.editCurrencySymbol.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.CURRENCY_SYMBOL)));
-        holder.edtUnitName.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.UNIT_NAME)));
-        holder.edtCentsName.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.CENT_NAME)));
-        holder.edtPrefix.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.PFX_SYMBOL)));
-        holder.edtSuffix.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.SFX_SYMBOL)));
-        holder.edtDecimal.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.DECIMAL_POINT)));
-        holder.edtGroup.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.GROUP_SEPARATOR)));
-        holder.edtScale.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.SCALE)));
-        holder.edtConversion.setText(cursor.getString(cursor.getColumnIndexOrThrow(Currency.BASECONVRATE)));
-
-        cursor.close();
 
         return true;
     }
