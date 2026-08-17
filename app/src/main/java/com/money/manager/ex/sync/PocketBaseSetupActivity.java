@@ -60,10 +60,6 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        if (SyncManager.getIsInCloudCreationMode()) {
-            return;
-        }
-
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pocketbase_setup);
@@ -166,6 +162,8 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
     }
 
     private void startSetup() {
+        SyncManager.setIsInCloudCreationMode(true);
+
         String url = Objects.requireNonNull(mEditTextUrl.getText()).toString().trim();
         String email = Objects.requireNonNull(mEditTextEmail.getText()).toString().trim();
         String password = Objects.requireNonNull(mEditTextPassword.getText()).toString().trim();

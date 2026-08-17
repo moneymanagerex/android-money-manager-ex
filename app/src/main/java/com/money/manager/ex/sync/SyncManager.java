@@ -371,7 +371,7 @@ public class SyncManager {
         Timber.d("Triggering PocketBase cloud sync");
 
         PocketBaseClient client = PocketBaseClient.getInstance(mContext);
-        if (!client.isAuthenticated()) {
+        if (!client.isAuthenticated() && !SyncManager.getIsInCloudCreationMode()) {
             Timber.w("PocketBase not authenticated. Showing setup screen.");
             Intent intent = new Intent(mContext, PocketBaseSetupActivity.class);
 
