@@ -59,6 +59,11 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        if (SyncManager.getIsInCloudCreationMode()) {
+            return;
+        }
+
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pocketbase_setup);
@@ -182,11 +187,16 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
         .subscribe(success -> {
             if (success) {
                 boolean isReLogin = getIntent().getBooleanExtra(EXTRA_RE_LOGIN, false);
+
                 // update medatada in a safe way
                 DatabaseMetadata metadata = mDatabasesLazy.get().getCurrent();
-                metadata.setRemoteServer(DatabaseMetadata.POCKETBASE,email,url);
-                mDatabasesLazy.get().remove(metadata.localPath);
-                mDatabasesLazy.get().add(metadata);
+                if (metadata != null ) { // we have an histgory
+                    metadata.setRemoteServer(DatabaseMetadata.POCKETBASE, email, url);
+                    mDatabasesLazy.get().remove(metadata.localPath);
+                    mDatabasesLazy.get().add(metadata);
+                } else {
+                    SyncManager.setIsInCloudCreationMode(true);
+                }
 
                 if (isReLogin) {
                     setLoading(false);

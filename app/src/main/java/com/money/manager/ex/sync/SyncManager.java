@@ -87,15 +87,27 @@ public class SyncManager {
     private final Context mContext;
     private SyncPreferences mPreferences;
 
+    static private Boolean isInCloudCreationMode = false;
+
     /**
      * Checks if cloud sync (PocketBase) is enabled for the current database.
      */
     public static boolean isCloudSyncEnabled() {
 
         RecentDatabasesProvider provider = MmexApplication.getApp().iocComponent.recentDatabasesProvider();
-        if (provider == null) return false;
+        if (provider == null) return isInCloudCreationMode;
         DatabaseMetadata current = provider.getCurrent();
-        return current != null && current.isRemoteSyncServer();
+        if (current == null) return isInCloudCreationMode;
+
+        return current.isRemoteSyncServer();
+    }
+
+    public static void setIsInCloudCreationMode(Boolean mode) {
+        isInCloudCreationMode = mode;
+    }
+
+    public static Boolean getIsInCloudCreationMode() {
+        return isInCloudCreationMode ;
     }
 
     public void abortScheduledUpload() {
