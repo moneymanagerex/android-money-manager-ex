@@ -54,10 +54,12 @@ public class PocketBaseClient {
         if (TextUtils.isEmpty(mAuthToken) ||
                 TextUtils.isEmpty(mCurrentBaseUrl) ||
                 !initialized) {
-            android.content.Intent intent = new android.content.Intent(mContext, PocketBaseSetupActivity.class);
-            intent.putExtra(PocketBaseSetupActivity.EXTRA_RE_LOGIN, true);
-            intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
-            mContext.startActivity(intent);
+            if (!SyncManager.getIsInCloudCreationMode()) {
+                android.content.Intent intent = new android.content.Intent(mContext, PocketBaseSetupActivity.class);
+                intent.putExtra(PocketBaseSetupActivity.EXTRA_RE_LOGIN, true);
+                intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent);
+            }
         } else {
             // if mAuthToken is not empty, then perform autorefresh
             new Thread(this::refreshToken).start();
