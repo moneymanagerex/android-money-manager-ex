@@ -61,29 +61,32 @@ android {
         release.setRoot('build-types/release')
     }
 
-
     signingConfigs {
         debug {
-            // storeFile file("debug.keystore")
             v2SigningEnabled true
         }
         release {
-            // 1. load from local.properties
             Properties localProperties = new Properties()
             File localPropertiesFile = rootProject.file("local.properties")
             if (localPropertiesFile.exists()) {
                 localProperties.load(new FileInputStream(localPropertiesFile))
             }
 
-            // 2. define value using fallback on local.properties
             keyAlias localProperties.getProperty("signing.key.alias") ?: "androiddebugkey"
 
             def storeFilePath = localProperties.getProperty("signing.store.file")
+            File keystoreFile = null
             if (storeFilePath) {
-                storeFile file(storeFilePath)
+                keystoreFile = file(storeFilePath)
             } else {
-                // Fallback per GitHub Action
-                storeFile file("release.keystore")
+                File defaultKeystore = file("release.keystore")
+                if (defaultKeystore.exists()) {
+                    keystoreFile = defaultKeystore
+                }
+            }
+
+            if (keystoreFile != null && keystoreFile.exists()) {
+                storeFile keystoreFile
             }
 
             storePassword localProperties.getProperty("signing.store.password") ?: System.getenv("SIGNING_STORE_PASSWORD") ?: ""
