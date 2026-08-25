@@ -52,6 +52,8 @@ To build the project, the following settings are recommended:
 - use embedded JDK (now compatible with JDK17+),
 - use gradle wrapper.
 
+See [BUILD_AND_RELEASE](BUILD_AND_RELEASE.md) for detail.
+
 ## Continuous Integration
 
 // TODO: Add a Continuous Integration test to cover all unit tests and integration tests and UI tests service
