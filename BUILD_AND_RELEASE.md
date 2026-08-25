@@ -13,7 +13,6 @@ In the root directory of the project, create a file named `local.properties` (th
 
 ### Step 2: Configure Signing Properties
 Add your keystore path and passwords to `local.properties` using the following template:
-
 ```properties
 signing.store.file=path/to/your/release.keystore
 signing.store.password=YOUR_STORE_PASSWORD
@@ -23,6 +22,8 @@ signing.key.password=YOUR_KEY_PASSWORD
 ```
 
 *(Note: On Windows, use double backslashes `\\` for file paths or forward slashes `/`).*
+
+You can copy [example.local.properties](example.local.properties)
 
 ---
 

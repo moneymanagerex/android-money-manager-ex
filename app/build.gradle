@@ -82,8 +82,6 @@ android {
                 keystoreFile = file("release.keystore")
             }
 
-            // Se trova un file di keystore (locale o decodificato dalla Action), lo usa.
-            // Altrimenti evita di assegnarlo per non fare fallire la CI di test (come AppVeyor).
             if (keystoreFile != null && keystoreFile.exists()) {
                 storeFile keystoreFile
                 storePassword localProperties.getProperty("signing.store.password") ?: System.getenv("SIGNING_STORE_PASSWORD") ?: ""
@@ -94,20 +92,16 @@ android {
 
     buildTypes {
         debug {
-//            applicationIdSuffix ".debug"
             versionNameSuffix "-debug-" + getCurrentBranch() + "-" + getVersionAsDate()
         }
-//        beta {
-//            applicationIdSuffix ".beta"
-//            versionNameSuffix "-beta"
-//        }
-         release {
-//             minifyEnabled true
-//             shrinkResources true
-//             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-             versionNameSuffix "-release"
-             signingConfig signingConfigs.release
-         }
+        release {
+            versionNameSuffix "-release"
+
+            // Collega la firma di release solo se il file del keystore è stato effettivamente trovato e impostato
+            if (signingConfigs.release.storeFile != null && signingConfigs.release.storeFile.exists()) {
+                signingConfig signingConfigs.release
+            }
+        }
     }
 
     flavorDimensions "distribution"
