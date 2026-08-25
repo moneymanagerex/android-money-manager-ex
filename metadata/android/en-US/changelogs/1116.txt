@@ -1,0 +1,4 @@
+## What's Changed
+* New Crowdin Translations
+* Fix setup issue and double setup screen request in sync cloud
+* Correct handle of unique record on remote server in sync cloud
