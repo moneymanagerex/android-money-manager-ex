@@ -68,21 +68,21 @@ android {
             v2SigningEnabled true
         }
         release {
-            // 1. Proviamo a caricare il file local.properties (se siamo sul tuo PC)
+            // 1. load from local.properties
             Properties localProperties = new Properties()
             File localPropertiesFile = rootProject.file("local.properties")
             if (localPropertiesFile.exists()) {
                 localProperties.load(new FileInputStream(localPropertiesFile))
             }
 
-            // 2. Definiamo le credenziali privilegiando local.properties, con fallback sulle env variables (per GitHub Actions)
+            // 2. define value using fallback on local.properties
             keyAlias localProperties.getProperty("signing.key.alias") ?: "androiddebugkey"
 
             def storeFilePath = localProperties.getProperty("signing.store.file")
             if (storeFilePath) {
                 storeFile file(storeFilePath)
             } else {
-                // Fallback per GitHub Action (dove decodifichiamo in app/release.keystore)
+                // Fallback per GitHub Action
                 storeFile file("release.keystore")
             }
 
