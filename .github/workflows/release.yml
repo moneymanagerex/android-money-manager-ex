@@ -1,0 +1,92 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - 'release/v*' # Si attiva su qualsiasi branch che inizia con "release/v" (es. release/v5.5, release/v6.0)
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fondamentale per leggere lo storico dei tag e delle PR
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Decode Keystore
+        env:
+          ENCODED_KEYSTORE: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
+        run: |
+          echo "$ENCODED_KEYSTORE" | base64 --decode > app/release.keystore
+
+      - name: Build All Release Bundles and APKs
+        env:
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+        run: |
+          ./gradlew bundleRelease assembleRelease
+
+      - name: Get Version Code and Name
+        id: version
+        run: |
+          # Estrae sia versionCode che versionName dal build.gradle
+          VERSION_NAME=$(grep -m 1 'versionName' app/build.gradle | cut -d'"' -f2)
+          VERSION_CODE=$(grep -m 1 'versionCode' app/build.gradle | awk '{print $2}')
+          
+          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "version_code=$VERSION_CODE" >> $GITHUB_OUTPUT
+
+      - name: Prepare GPlay Changelog
+        run: |
+          CODE="${{ steps.version.outputs.version_code }}"
+          # Percorso del file che usi per F-Droid
+          SRC="metadata/android/en-US/changelogs/$CODE.txt"
+          
+          # Crea la cartella temporanea per GPlay e copia/rinomina il file
+          mkdir -p gplay-changelogs/en-US
+          if [ -f "$SRC" ]; then
+            cp "$SRC" "gplay-changelogs/en-US/whatsnew-$CODE"
+            echo "Changelog trovato e copiato per GPlay."
+          else
+            echo "Attenzione: File changelog per il versionCode $CODE non trovato!"
+            # Crea un file di fallback vuoto o con un testo generico se manca
+            echo "Bug fixes and improvements" > "gplay-changelogs/en-US/whatsnew-$CODE"
+          fi
+
+      - name: Publish GPlay to Beta Track
+        if: false # Riabilitalo impostando 'true'
+        uses: r0adkll/upload-google-play@v1
+        with:
+          service_account_json_PlainText: ${{ secrets.PLAY_CONSOLE_JSON }}
+          packageName: 'com.money.manager.ex.android'
+          releaseFiles: app/build/outputs/bundle/gplayRelease/app-gplay-release.aab
+          track: beta
+          status: completed
+          whatsNewDirectory: 'gplay-changelogs'
+
+      - name: Create GitHub Release with Auto-Generated Notes
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }} # Usa direttamente la versione del gradle come tag (es. v5.5.10)
+          name: "Release v${{ steps.version.outputs.version }}"
+          generate_release_notes: true
+          files: |
+            app/build/outputs/bundle/fdroidRelease/*.aab
+            app/build/outputs/bundle/gplayRelease/*.aab
+            app/build/outputs/bundle/syncRelease/*.aab
+            app/build/outputs/apk/fdroid/release/*.apk
+            app/build/outputs/apk/gplay/release/*.apk
+            app/build/outputs/apk/sync/release/*.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

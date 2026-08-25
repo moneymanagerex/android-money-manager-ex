@@ -31,9 +31,9 @@ android {
     defaultConfig {
         manifestPlaceholders = [appName: "Money Manager Ex"]
         applicationId "com.money.manager.ex"
-        versionCode 1115
+        versionCode 1116
         //versionName getVersionAsDate() + "." + versionCode
-        versionName "5.5.10"
+        versionName "5.5.11"
         // versionName getVersionAsDate()
 
         minSdkVersion rootProject.ext.minSdkVersion
@@ -61,6 +61,36 @@ android {
         release.setRoot('build-types/release')
     }
 
+
+    signingConfigs {
+        debug {
+            // storeFile file("debug.keystore")
+            v2SigningEnabled true
+        }
+        release {
+            // 1. Proviamo a caricare il file local.properties (se siamo sul tuo PC)
+            Properties localProperties = new Properties()
+            File localPropertiesFile = rootProject.file("local.properties")
+            if (localPropertiesFile.exists()) {
+                localProperties.load(new FileInputStream(localPropertiesFile))
+            }
+
+            // 2. Definiamo le credenziali privilegiando local.properties, con fallback sulle env variables (per GitHub Actions)
+            keyAlias localProperties.getProperty("signing.key.alias") ?: "androiddebugkey"
+
+            def storeFilePath = localProperties.getProperty("signing.store.file")
+            if (storeFilePath) {
+                storeFile file(storeFilePath)
+            } else {
+                // Fallback per GitHub Action (dove decodifichiamo in app/release.keystore)
+                storeFile file("release.keystore")
+            }
+
+            storePassword localProperties.getProperty("signing.store.password") ?: System.getenv("SIGNING_STORE_PASSWORD") ?: ""
+            keyPassword localProperties.getProperty("signing.key.password") ?: System.getenv("SIGNING_KEY_PASSWORD") ?: ""
+        }
+    }
+
     buildTypes {
         debug {
 //            applicationIdSuffix ".debug"
@@ -70,12 +100,13 @@ android {
 //            applicationIdSuffix ".beta"
 //            versionNameSuffix "-beta"
 //        }
-//        release {
-//            minifyEnabled true
-//            shrinkResources true
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//            versionNameSuffix "-release"
-//        }
+         release {
+//             minifyEnabled true
+//             shrinkResources true
+//             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+             versionNameSuffix "-release"
+             signingConfig signingConfigs.release
+         }
     }
 
     flavorDimensions "distribution"
@@ -106,17 +137,6 @@ android {
     packagingOptions {
         resources {
             excludes += ['META-INF/LICENSE.txt', 'META-INF/LICENSE', 'META-INF/NOTICE', 'META-INF/NOTICE.txt', 'META-INF/DEPENDENCIES']
-        }
-    }
-
-
-    signingConfigs {
-        debug {
-            // storeFile file("debug.keystore")
-            v2SigningEnabled true
-        }
-        release {
-            keyAlias 'ammex'
         }
     }
 
