@@ -78,19 +78,17 @@ android {
             File keystoreFile = null
             if (storeFilePath) {
                 keystoreFile = file(storeFilePath)
-            } else {
-                File defaultKeystore = file("release.keystore")
-                if (defaultKeystore.exists()) {
-                    keystoreFile = defaultKeystore
-                }
+            } else if (file("release.keystore").exists()) {
+                keystoreFile = file("release.keystore")
             }
 
+            // Se trova un file di keystore (locale o decodificato dalla Action), lo usa.
+            // Altrimenti evita di assegnarlo per non fare fallire la CI di test (come AppVeyor).
             if (keystoreFile != null && keystoreFile.exists()) {
                 storeFile keystoreFile
+                storePassword localProperties.getProperty("signing.store.password") ?: System.getenv("SIGNING_STORE_PASSWORD") ?: ""
+                keyPassword localProperties.getProperty("signing.key.password") ?: System.getenv("SIGNING_KEY_PASSWORD") ?: ""
             }
-
-            storePassword localProperties.getProperty("signing.store.password") ?: System.getenv("SIGNING_STORE_PASSWORD") ?: ""
-            keyPassword localProperties.getProperty("signing.key.password") ?: System.getenv("SIGNING_KEY_PASSWORD") ?: ""
         }
     }
 

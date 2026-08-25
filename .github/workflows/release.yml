@@ -81,6 +81,7 @@ jobs:
           tag_name: ${{ steps.version.outputs.version_name }} # Uses the gradle version directly as a tag (e.g., v5.5.10)
           name: "Release v${{ steps.version.outputs.version_name }}"
           generate_release_notes: true
+          prerelease: true
           files: |
             app/build/outputs/bundle/fdroidRelease/*.aab
             app/build/outputs/bundle/gplayRelease/*.aab
