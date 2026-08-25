@@ -47,9 +47,9 @@ The Push phase sends all local changes accumulated offline to the PocketBase ser
 1. **Submission:** Perform a `CREATE` request on the PocketBase server.
 2. **Successful Outcome (OK):** Save the `pb_id` returned by the server into the local record and set `pb_is_dirty = 0`.
 3. **Unsuccessful Outcome (KO):** If the creation fails due to a primary key (PK) violation or a uniqueness (Unique) constraint:
-* If the error returned by the server is `validation_not_unique`, extract the list of fields involved in the uniqueness violation (e.g., `REFTYPE`, `REFID`, `TAGID` for `TAGLINK_V1`). Otherwise, refer to the primary key (PK) of the record.
-* Execute a search query on the PocketBase server to find a remote record with the same PK or with the same values for the extracted Unique fields.
-* **If the remote record is found:** Resolve the conflict by replacing the local record with the remote one. Physically delete the local record with the original key and insert the remote record, correctly populating the `pb_id`, connected columns, and setting `pb_is_dirty = 0`.
+* If the error returned by the server is `validation_not_unique`, extract the list of fields involved in the uniqueness violation. **Note:** The `unique` configuration (from `table_config.json`) defines an array of constraints; the engine must check each constraint set (e.g., `[["field1"], ["field2", "field3"]]` represents two independent unique indexes).
+* Execute search queries on the PocketBase server to find a remote record matching any of the Unique field combinations defined for the table.
+*   **If the remote record is found:** Resolve the conflict by replacing the local record with the remote one. Physically delete the local record with the original key and insert the remote record, correctly populating the `pb_id`, connected columns, and setting `pb_is_dirty = 0`. **Perform cascading updates on all affected foreign keys (using `FK_MAP`) to maintain referential integrity across the database.**
 
 
 
@@ -60,7 +60,7 @@ The Push phase sends all local changes accumulated offline to the PocketBase ser
 3. **Unsuccessful Outcome (KO):** If the update fails, it means the record was deleted from the server (404 error).
 * **Resolution:** Attempt to recreate the record on the PocketBase server via a `CREATE` call, explicitly passing the original local `pb_id` (which is no longer present on the server).
 * **If the `CREATE` succeeds:** Set `pb_is_dirty = 0` on the local record.
-* **If the `CREATE` fails:** It means the operation runs into a uniqueness constraint. Use the same mechanism described in *Scenario A* (KO) to identify the PK or Unique fields, search for the record on the server, and perform a local replacement of the record with the remote one.
+* **If the `CREATE` fails:** It means the operation runs into a uniqueness constraint. Use the same mechanism described in *Scenario A* (KO) to identify the PK or Unique fields (iterating through all constraints in the `unique` list), search for the record on the server, and perform a local replacement of the record with the remote one (including cascading FK updates).
 
 
 
@@ -78,9 +78,9 @@ In any `UPDATE` or `CREATE` call (in case the server handles row version control
 2. **Forced Synchronization (Force Mode):** Ignore the timestamp and download all data.
 3. **Applying Changes:**
 * **If the remote record does NOT exist locally:** If `_is_deleted = 0`, insert it into the local DB by temporarily setting `pb_is_dirty = 2`, write the data, and then update it to `0`.
-* **If the remote record ALREADY exists locally:**
-* If `_is_deleted != 0` on the server, physically delete the local record.
-* Otherwise, update all local fields with the server values, setting `pb_is_dirty = 2` during the write process, and finally set it to `0`.
+*   **If the remote record ALREADY exists locally:**
+    *   If `_is_deleted != 0` on the server, physically delete the local record.
+    *   Otherwise, update all local fields with the server values (including `pb_updated_at` from `_updated_at`), setting `pb_is_dirty = 2` during the write process, and finally set it to `0`.
 
 
 

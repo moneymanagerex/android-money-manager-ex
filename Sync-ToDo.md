@@ -1,5 +1,5 @@
 * [x] Move preference URL and user into remote URL (database metafile)
-* [ ] Move `isSyncCloud` check into the metafile
+* [X] Move `isSyncCloud` check into the metafile
 * [ ] Add the ability to switch from remote file to remote server (so any actual DB can be migrated to mmex-sync)
 * [ ] Add a welcome message and instructions for subscription or PocketBase server setup
 * [ ] Introduce an Abstract Class so `SyncManager` can reference `ISyncClient`, and implement it via `PocketBaseClient`
