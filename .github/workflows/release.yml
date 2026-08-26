@@ -41,9 +41,9 @@ jobs:
         id: version
         run: |
           # Extracts both versionCode and versionName from build.gradle
-          VERSION_NAME=$(grep 'versionName "' app/build.gradle | cut -d'"' -f2)
-          VERSION_CODE=$(grep 'versionCode ' app/build.gradle | awk '{print $2}')
-          
+          VERSION_NAME=$(grep -m 1 'versionName "' app/build.gradle | cut -d'"' -f2)
+          VERSION_CODE=$(grep -m 1 'versionCode ' app/build.gradle | awk '{print $2}')
+  
           echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
           echo "version_code=$VERSION_CODE" >> $GITHUB_OUTPUT
         
