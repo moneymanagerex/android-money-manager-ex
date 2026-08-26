@@ -80,6 +80,7 @@ public class ScheduledTransactionRepository
     @Override
     public RecurringTransaction load(Long id) {
         RecurringTransaction txn = super.load(id);
+        if (txn == null) return null;
 
         txn.setAttachments(loadAttachments(id));
         /// TODO other associated items
