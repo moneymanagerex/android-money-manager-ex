@@ -88,6 +88,9 @@ jobs:
           # Creates the temporary folder for GPlay and copies the file strictly
           mkdir -p gplay-changelogs/en-US
           cp "$SRC" "gplay-changelogs/en-US/whatsnew-$CODE"
+          echo "=== GPLAY CHANGELOG CONTENT ==="
+          cat "gplay-changelogs/en-US/whatsnew-$CODE"
+          echo "==============================="
           echo "Changelog successfully prepared for GPlay."
 
       - name: Create GitHub Release with Auto-Generated Notes
