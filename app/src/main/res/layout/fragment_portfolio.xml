@@ -110,7 +110,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_width="120dp"
+                            android:layout_width="140dp"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:gravity="end"
@@ -134,7 +134,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_width="120dp"
+                            android:layout_width="140dp"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:gravity="end"
@@ -158,7 +158,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_width="120dp"
+                            android:layout_width="140dp"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:gravity="end"
@@ -182,7 +182,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_width="120dp"
+                            android:layout_width="140dp"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:gravity="end"

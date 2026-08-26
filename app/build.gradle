@@ -29,10 +29,11 @@ android {
     }
 
     defaultConfig {
+        manifestPlaceholders = [appName: "Money Manager Ex"]
         applicationId "com.money.manager.ex"
-        versionCode 1112
+        versionCode 1116
         //versionName getVersionAsDate() + "." + versionCode
-        versionName "5.5.7"
+        versionName "5.5.11"
         // versionName getVersionAsDate()
 
         minSdkVersion rootProject.ext.minSdkVersion
@@ -41,6 +42,8 @@ android {
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "boolean", "IS_SYNC_ENABLED", "false"
     }
 
     base {
@@ -58,21 +61,47 @@ android {
         release.setRoot('build-types/release')
     }
 
+    signingConfigs {
+        debug {
+            v2SigningEnabled true
+        }
+        release {
+            Properties localProperties = new Properties()
+            File localPropertiesFile = rootProject.file("local.properties")
+            if (localPropertiesFile.exists()) {
+                localProperties.load(new FileInputStream(localPropertiesFile))
+            }
+
+            keyAlias localProperties.getProperty("signing.key.alias") ?: "androiddebugkey"
+
+            def storeFilePath = localProperties.getProperty("signing.store.file")
+            File keystoreFile = null
+            if (storeFilePath) {
+                keystoreFile = file(storeFilePath)
+            } else if (file("release.keystore").exists()) {
+                keystoreFile = file("release.keystore")
+            }
+
+            if (keystoreFile != null && keystoreFile.exists()) {
+                storeFile keystoreFile
+                storePassword localProperties.getProperty("signing.store.password") ?: System.getenv("SIGNING_STORE_PASSWORD") ?: ""
+                keyPassword localProperties.getProperty("signing.key.password") ?: System.getenv("SIGNING_KEY_PASSWORD") ?: ""
+            }
+        }
+    }
+
     buildTypes {
         debug {
-//            applicationIdSuffix ".debug"
             versionNameSuffix "-debug-" + getCurrentBranch() + "-" + getVersionAsDate()
         }
-//        beta {
-//            applicationIdSuffix ".beta"
-//            versionNameSuffix "-beta"
-//        }
-//        release {
-//            minifyEnabled true
-//            shrinkResources true
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//            versionNameSuffix "-release"
-//        }
+        release {
+            versionNameSuffix "-release"
+
+            // Collega la firma di release solo se il file del keystore è stato effettivamente trovato e impostato
+            if (signingConfigs.release.storeFile != null && signingConfigs.release.storeFile.exists()) {
+                signingConfig signingConfigs.release
+            }
+        }
     }
 
     flavorDimensions "distribution"
@@ -85,6 +114,13 @@ android {
             dimension "distribution"
             applicationIdSuffix ".android"
         }
+        sync {
+            dimension "distribution"
+            applicationIdSuffix ".synccloud"
+            versionNameSuffix "-synccloud"
+            manifestPlaceholders = [appName: "Money Manager Ex (Cloud version)"]
+            buildConfigField "boolean", "IS_SYNC_ENABLED", "true"
+        }
         // beta {
         //     applicationId "com.money.manager.ex.beta"
         //     versionName "latestBeta"
@@ -96,17 +132,6 @@ android {
     packagingOptions {
         resources {
             excludes += ['META-INF/LICENSE.txt', 'META-INF/LICENSE', 'META-INF/NOTICE', 'META-INF/NOTICE.txt', 'META-INF/DEPENDENCIES']
-        }
-    }
-
-
-    signingConfigs {
-        debug {
-            // storeFile file("debug.keystore")
-            v2SigningEnabled true
-        }
-        release {
-            keyAlias 'ammex'
         }
     }
 
@@ -171,6 +196,7 @@ dependencies {
             , 'androidx.documentfile:documentfile:1.0.1'
             , 'com.caverock:androidsvg-aar:1.4'
             , 'androidx.core:core-splashscreen:1.0.1' // splash screen for Android 15
+            , 'androidx.security:security-crypto:1.0.0' // Security-crypto for EncryptedSharedPreferences
     )
     implementation libs.core
     implementation libs.appcompat

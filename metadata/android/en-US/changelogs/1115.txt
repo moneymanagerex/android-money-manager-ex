@@ -1,0 +1,13 @@
+## What's Changed
+* Show account name in transaction list item by @AZKZero in https://github.com/moneymanagerex/android-money-manager-ex/pull/2991
+* Search category recursively
+* Fix visibility of reconciled balance
+* Use concrete MIME for Google Drive export
+* improve Sync with pocketbase by @wolfsolver in https://github.com/moneymanagerex/android-money-manager-ex/pull/3008
+* Various fixes
+
+## New Contributors
+* @AZKZero
+* @PingouinFerreux
+
+**Full Changelog**: https://github.com/moneymanagerex/android-money-manager-ex/compare/5.5.9...5.5.10

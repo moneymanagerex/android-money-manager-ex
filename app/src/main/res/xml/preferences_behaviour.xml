@@ -63,6 +63,13 @@
 
     <SwitchPreference
         android:icon="@null"
+        android:defaultValue="true"
+        android:key="@string/pref_search_results_group_by_account"
+        android:summary="@string/pref_search_results_group_by_account_summary"
+        android:title="@string/pref_search_results_group_by_account_title" />
+
+    <SwitchPreference
+        android:icon="@null"
         android:defaultValue="false"
         android:key="@string/pref_sms_auto_trans"
         android:summary="@string/summary_sms_auto_trans"

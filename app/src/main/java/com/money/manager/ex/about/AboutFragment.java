@@ -199,8 +199,9 @@ public class AboutFragment extends Fragment {
         // donate
         Button donateInAppButton = view.findViewById(R.id.buttonDonateInApp);
         OnClickListenerUrl donateUrl = new OnClickListenerUrl();
-        donateUrl.setUrl("https://www.paypal.com/donate/?cmd=_donations&business=moneymanagerex@gmail.com&currency_code=USD");
-        donateInAppButton.setOnClickListener( donateUrl );
+        // donateUrl.setUrl("https://www.paypal.com/donate/?cmd=_donations&business=moneymanagerex@gmail.com&currency_code=USD");
+    donateUrl.setUrl("https://www.buymeacoffee.com/wolfsolver");
+       donateInAppButton.setOnClickListener( donateUrl );
 
         return view;
     }

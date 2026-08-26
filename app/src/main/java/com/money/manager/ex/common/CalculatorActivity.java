@@ -307,7 +307,7 @@ public class CalculatorActivity extends MmxBaseFragmentActivity {
                         formatUtilitiesLazy.get().getDecimalSeparatorForAppLocale(),
                         formatUtilitiesLazy.get().getGroupingSeparatorForAppLocale());
             } else {
-                result = formatUtilitiesLazy.get().formatNumber(amount, Constants.DEFAULT_PRECISION,
+                result = FormatUtilities.formatNumber(amount, Constants.DEFAULT_PRECISION,
                         displayCurrency.getDecimalSeparator(), displayCurrency.getGroupSeparator(),
                         null, null);
             }

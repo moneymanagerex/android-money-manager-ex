@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.documentfile.provider.DocumentFile;
 
+import com.money.manager.ex.Constants;
 import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.utils.MmxDate;
 
@@ -33,8 +34,16 @@ public class DocFileMetadata {
     public static DocFileMetadata fromUri(Context context, Uri uri) {
         DocFileMetadata result = new DocFileMetadata();
         result.Uri = uri.toString();
-        result.lastModified = new MmxDate(0); // Default value
+        result.lastModified = new MmxDate(); // Default to NOW for remote servers
 
+        // If it's a remote sync server, return default metadata
+        if (uri.getScheme() != null && uri.getScheme().equals("https")) {
+            result.Name = Constants.DEFAULT_DB_FILENAME;
+            result.Size = -1;
+            return result;
+        }
+
+        result.lastModified = new MmxDate(0); // Reset for document files
         try {
             context.getContentResolver().notifyChange(uri, null);
             Timber.d("Metadata refresh triggered for URI: %s", uri);

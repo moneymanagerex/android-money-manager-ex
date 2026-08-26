@@ -77,6 +77,7 @@
     <string name="account_empty_list">Hiçbir hesap bulunamadı. Yeni bir hesap oluşturmak için yeşil artı butonuna dokun.</string>
     <string name="account_balance">Hesap bakiyesi</string>
     <string name="account_reconciled_balance">Onaylanmış Bakiye</string>
+    <string name="pie_other">Diğer</string>
     <string name="delete_account">Hesabı Sil</string>
     <string name="account_name">Hesap adı</string>
     <string name="account_type">Hesap tipi</string>
@@ -279,6 +280,7 @@
     <string name="month">Ay</string>
     <string name="year">Yıl</string>
     <string name="menu_report_income_vs_expenses">Gelir ve Giderler</string>
+    <string name="asset_current_value">Geçerli Değer</string>
     <string name="total">Toplam</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Tüm Zamanlar</string>
@@ -747,4 +749,6 @@
     <!-- Error Handling -->
     <!-- changelog -->
     <string name="changelog">Sürüm Bilgileri</string>
+    <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>

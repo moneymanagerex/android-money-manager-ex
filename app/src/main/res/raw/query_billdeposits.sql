@@ -1,7 +1,7 @@
-WITH RECURSIVE categories(categid, categname, parentid) AS
-    (SELECT a.categid, a.categname, a.parentid FROM category_v1 a WHERE parentid = '-1'
+WITH RECURSIVE categories(categid, categname, parentid, fullcatid) AS
+    (SELECT a.categid, a.categname, a.parentid, ":" || a.categid || ":" FROM category_v1 a WHERE parentid = '-1'
         UNION ALL
-     SELECT c.categid, r.categname || ':' || c.categname, c.parentid
+     SELECT c.categid, r.categname || ':' || c.categname, c.parentid, r.fullcatid || c.categid || ":"
      FROM categories r, category_v1 c
 	 WHERE r.categid = c.parentid
 	 )
@@ -16,6 +16,7 @@ SELECT
     ACCOUNTLIST_V1.CURRENCYID,
     categories.CATEGID AS CATEGID,
     categories.CATEGNAME AS CATEGNAME,
+    categories.FULLCATID AS FULLCATID,
     BILLSDEPOSITS_V1.TRANSCODE,
     BILLSDEPOSITS_V1.TRANSAMOUNT,
     BILLSDEPOSITS_V1.NEXTOCCURRENCEDATE,

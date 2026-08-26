@@ -92,7 +92,11 @@
     <string name="cash_balance">Contant saldo</string>
     <string name="market_value">Marktwaarde</string>
     <string name="invested">Geïnvesteerd</string>
+    <string name="total_cost">Totale kosten</string>
     <string name="gain_loss">Winst / Verlies</string>
+    <string name="unrealized_gain_loss">Niet-gerealiseerde w/v</string>
+    <string name="realized_gain_loss">Gerealiseerde w/v</string>
+    <string name="pie_other">Overig</string>
     <string name="delete_account">Verwijder rekening</string>
     <string name="delete_stock_investment">Verwijder Belegging</string>
     <string name="account_name">Rekeningnaam</string>
@@ -323,6 +327,15 @@
     <string name="menu_report_income_vs_expenses">Inkomsten vs Uitgaven</string>
     <string name="menu_report_cashflow">Cash Flow</string>
     <string name="menu_report_summary_of_accounts">Samenvatting van rekeningen</string>
+    <string name="menu_report_summary_of_stocks">Overzicht van aandelen</string>
+    <string name="menu_report_summary_of_assets">Samenvatting van rekeningen</string>
+    <string name="asset_name">Naam van de activa</string>
+    <string name="asset_type">Soort activa</string>
+    <string name="asset_initial_value">Initiële waarde</string>
+    <string name="asset_current_value">Huidige waarde</string>
+    <string name="asset_rate_percent">Tarief %</string>
+    <string name="report_subtotal">Subtotaal</string>
+    <string name="report_grand_total">Totaalbedrag</string>
     <string name="total">Totaal</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Sinds het begin</string>
@@ -509,6 +522,8 @@
     <string name="pref_transaction_hide_reconciled_amounts_title">Verberg de bevestigde bedragen</string>
     <string name="pref_transaction_sort_by_type_summary">Organiseer dagelijkse transacties op transactietype (storting, overschrijving, opname)</string>
     <string name="pref_transaction_sort_by_type_title">Sorteer Transacties op Type</string>
+    <string name="pref_search_results_group_by_account_title">Zoekresultaten per klant groeperen</string>
+    <string name="pref_search_results_group_by_account_summary">Wanneer ingeschakeld, worden de zoekresultaten gegroepeerd op account. Indien uitgeschakeld, worden alle resultaten op datum weergegeven.</string>
     <string name="warning">Waarschuwing</string>
     <string name="no_transfer_splits">U hebt ervoor gekozen om over te schakelen naar Overboeking, maar er zijn Split Categorieën op de transactie. Wilt u doorgaan en de Split Categorieën verwijderen?</string>
     <string name="qif_export">QIF exporteren</string>
@@ -516,7 +531,11 @@
     <string name="update_price">Prijs bijwerken</string>
     <string name="download_price">Prijs downloaden</string>
     <string name="download_all_prices">Download alle prijzen</string>
+    <string name="download_price_selected_date">Download de prijs voor de geselecteerde datum.</string>
+    <string name="download_price_history_range">Download de prijsgeschiedenis voor een datumbereik.</string>
+    <string name="download_for_date_range">Downloaden voor een datumbereik</string>
     <string name="price_history">Prijsgeschiedenis</string>
+    <string name="stock_name">Aandelennaam</string>
     <string name="download_prices">Download alle prijzen</string>
     <string name="download_prices_explanation">Selecteer de gewenste startdatum. De prijzen worden tot en met vandaag gedownload.</string>
     <string name="no_price_history">Geen prijsgeschiedenis beschikbaar</string>
@@ -848,4 +867,27 @@
     <string name="changelog_1104">Nieuwe versie 5.5\n- Android 16 volledige compatibiliteit met Edge-To-Edge inschakelen</string>
     <string name="currency_save_error">Fout tijdens het toevoegen van valuta. Valuta %s is waarschijnlijk al gedefinieerd.</string>
     <string name="menu_cashflow_24_months">24 maanden overzicht</string>
+    <!-- PocketBse Sync -->
+    <string name="pref_sync_url">Pocketbase server URL</string>
+    <string name="pref_pocketbase_email">Pocketbase e-mail</string>
+    <string name="confirm_cloud_import_title">Alle gegevens verwijderen en opnieuw laden vanuit de cloud?</string>
+    <string name="confirm_cloud_import_message">Waarschuwing: Hiermee wordt uw huidige lokale database verwijderd en de installatiewizard geopend om verbinding te maken met de cloud. Doorgaan?</string>
+    <string name="menu_open_from_cloud">Open vanuit de cloud</string>
+    <string name="checking_session">Sessie controleren...</string>
+    <string name="session_restored_initializing_database">Sessie hersteld. Database initialiseren...</string>
+    <string name="please_enter_your_password_to_continue">Voer je wachtwoord in om verder te gaan.</string>
+    <string name="session_expired_please_login_again">Sessie verlopen. Log aub opnieuw in.</string>
+    <string name="authenticating">Bezig met authenticeren...</string>
+    <string name="authentication_successful_initializing_database">Verificatie gelukt. Database initialiseren...</string>
+    <string name="authentication_failed_check_credentials_and_url">Authenticatie mislukt. Controleer inloggegevens en URL.</string>
+    <string name="error_two_dots">"Fout: "</string>
+    <string name="performing_initial_pull_this_may_take_a_while">Begin met pull uitvoeren (dit kan een tijdje duren)...</string>
+    <string name="sync_setup_complete">Synchronisatie voltooid!</string>
+    <string name="sync_failed">"Synchronisatie mislukt: "</string>
+    <string name="sync_your_data_with_pocketbase_cloud">Synchroniseer je gegevens met PocketBase Cloud</string>
+    <!-- Show & Hide Balance -->
+    <string name="show_balances">Saldi weergeven</string>
+    <string name="hide_balances">Verberg saldi</string>
+    <string name="pref_hide_balances_title">Saldi standaard verbergen</string>
+    <string name="pref_hide_balances_summary">Accountsaldi standaard weergeven/verbergen op de hoofdschermen.</string>
 </resources>

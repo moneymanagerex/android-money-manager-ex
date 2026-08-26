@@ -228,7 +228,7 @@ public class SummaryOfAccountsReportFragment extends Fragment {
     }
 
     private void loadAccounts(BuildState state, String accountWhere) {
-        Cursor accountCursor = executeSqlQuery("SELECT "
+        try (Cursor accountCursor = executeSqlQuery("SELECT "
                 + "a.ACCOUNTID, "
                 + "a.ACCOUNTNAME, "
                 + "a.ACCOUNTTYPE, "
@@ -237,13 +237,12 @@ public class SummaryOfAccountsReportFragment extends Fragment {
                 + "FROM ACCOUNTLIST_V1 a "
                 + "LEFT JOIN CURRENCYFORMATS_V1 c ON a.CURRENCYID = c.CURRENCYID "
                 + accountWhere
-                + " ORDER BY a.ACCOUNTTYPE, upper(a.ACCOUNTNAME)");
+                + " ORDER BY a.ACCOUNTTYPE, upper(a.ACCOUNTNAME)")) {
 
-        if (accountCursor == null) {
-            return;
-        }
+            if (accountCursor == null) {
+                return;
+            }
 
-        try {
             while (accountCursor.moveToNext()) {
                 long accountId = accountCursor.getLong(accountCursor.getColumnIndexOrThrow(COL_ACCOUNT_ID));
                 String accountName = accountCursor.getString(accountCursor.getColumnIndexOrThrow(COL_ACCOUNT_NAME));
@@ -262,13 +261,11 @@ public class SummaryOfAccountsReportFragment extends Fragment {
 
                 state.minDate = minDate(state.minDate, initialDate);
             }
-        } finally {
-            accountCursor.close();
         }
     }
 
     private void loadTransactions(BuildState state) {
-        Cursor transactionCursor = executeSqlQuery("SELECT "
+        try (Cursor transactionCursor = executeSqlQuery("SELECT "
                 + "date(t.TRANSDATE) AS TRANSDATE, "
                 + "t.TRANSCODE, "
                 + "t.ACCOUNTID, "
@@ -282,13 +279,12 @@ public class SummaryOfAccountsReportFragment extends Fragment {
                 + "LEFT JOIN CURRENCYFORMATS_V1 cfTo ON cfTo.CURRENCYID = aTo.CURRENCYID "
                 + "WHERE (t.DELETEDTIME IS NULL OR t.DELETEDTIME = '') "
                 + "AND t.STATUS IN ('R', 'F', 'D', '') "
-                + "ORDER BY date(t.TRANSDATE), t.TRANSID");
+                + "ORDER BY date(t.TRANSDATE), t.TRANSID")) {
 
-        if (transactionCursor == null) {
-            return;
-        }
+            if (transactionCursor == null) {
+                return;
+            }
 
-        try {
             while (transactionCursor.moveToNext()) {
                 LocalDate txDate = parseDate(transactionCursor.getString(transactionCursor.getColumnIndexOrThrow(COL_TRANS_DATE)));
                 if (txDate == null) {
@@ -304,8 +300,6 @@ public class SummaryOfAccountsReportFragment extends Fragment {
                 addTransactionEvents(state.events, txDate, transCode, fromAccountId, toAccountId, fromAmountBase, toAmountBase);
                 updateDateBoundsForIncludedAccounts(state, txDate, fromAccountId, toAccountId);
             }
-        } finally {
-            transactionCursor.close();
         }
     }
 
@@ -317,7 +311,7 @@ public class SummaryOfAccountsReportFragment extends Fragment {
     // Adds one event per stock transaction so the market value follows the shares held on that date
     // instead of the stock row's current NUMSHARES.
     private void loadStockShareEvents(BuildState state) {
-        Cursor cursor = executeSqlQuery("SELECT "
+        try (Cursor cursor = executeSqlQuery("SELECT "
                 + "s.HELDAT AS ACCOUNTID, "
                 + "date(t.TRANSDATE) AS SHAREDATE, "
                 + "ifnull(si.SHARENUMBER, 0) * ifnull("
@@ -332,13 +326,12 @@ public class SummaryOfAccountsReportFragment extends Fragment {
                 + "JOIN CHECKINGACCOUNT_V1 t ON t.TRANSID = tl.CHECKINGACCOUNTID "
                 + "JOIN SHAREINFO_V1 si ON si.CHECKINGACCOUNTID = t.TRANSID "
                 + "WHERE (t.DELETEDTIME IS NULL OR t.DELETEDTIME = '') "
-                + "AND t.STATUS IN ('R', 'F', 'D', '')");
+                + "AND t.STATUS IN ('R', 'F', 'D', '')")) {
 
-        if (cursor == null) {
-            return;
-        }
+            if (cursor == null) {
+                return;
+            }
 
-        try {
             while (cursor.moveToNext()) {
                 long accountId = cursor.getLong(cursor.getColumnIndexOrThrow(COL_ACCOUNT_ID));
                 if (!AccountTypes.INVESTMENT.equalsName(state.accountTypeById.get(accountId))) {
@@ -354,8 +347,6 @@ public class SummaryOfAccountsReportFragment extends Fragment {
                 state.events.add(new BalanceEvent(shareDate, accountId, valueDelta));
                 state.minDate = minDate(state.minDate, shareDate);
             }
-        } finally {
-            cursor.close();
         }
     }
 
@@ -363,7 +354,7 @@ public class SummaryOfAccountsReportFragment extends Fragment {
     // based on the shares held on that price date, so the running total tracks historical prices
     // and historical share counts.
     private void loadStockPriceDeltas(BuildState state) {
-        Cursor cursor = executeSqlQuery("SELECT "
+        try (Cursor cursor = executeSqlQuery("SELECT "
                 + "s.HELDAT AS ACCOUNTID, "
                 + "date(h.DATE) AS PRICEDATE, "
                 + "ifnull((SELECT SUM(si2.SHARENUMBER) FROM TRANSLINK_V1 tl2 "
@@ -385,13 +376,12 @@ public class SummaryOfAccountsReportFragment extends Fragment {
                 + "FROM stock_v1 s "
                 + "JOIN ACCOUNTLIST_V1 a ON s.HELDAT = a.ACCOUNTID "
                 + "LEFT JOIN CURRENCYFORMATS_V1 c ON a.CURRENCYID = c.CURRENCYID "
-                + "JOIN STOCKHISTORY_V1 h ON h.SYMBOL = s.SYMBOL AND date(h.DATE) > date(s.PURCHASEDATE)");
+                + "JOIN STOCKHISTORY_V1 h ON h.SYMBOL = s.SYMBOL AND date(h.DATE) > date(s.PURCHASEDATE)")) {
 
-        if (cursor == null) {
-            return;
-        }
+            if (cursor == null) {
+                return;
+            }
 
-        try {
             while (cursor.moveToNext()) {
                 long accountId = cursor.getLong(cursor.getColumnIndexOrThrow(COL_ACCOUNT_ID));
                 if (!AccountTypes.INVESTMENT.equalsName(state.accountTypeById.get(accountId))) {
@@ -406,8 +396,6 @@ public class SummaryOfAccountsReportFragment extends Fragment {
                 double valueDelta = cursor.getDouble(cursor.getColumnIndexOrThrow(COL_STOCK_VALUE_DELTA));
                 state.events.add(new BalanceEvent(priceDate, accountId, valueDelta));
             }
-        } finally {
-            cursor.close();
         }
     }
 

@@ -46,6 +46,13 @@
     <SwitchPreferenceCompat
         android:defaultValue="false"
         android:icon="@null"
+        android:key="@string/pref_hide_balances"
+        android:summary="@string/pref_hide_balances_summary"
+        android:title="@string/pref_hide_balances_title"/>
+
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:icon="@null"
         android:key="@string/pref_transaction_hide_reconciled_amounts"
         android:summary="@string/pref_transaction_hide_reconciled_amounts_summary"
         android:title="@string/pref_transaction_hide_reconciled_amounts_title"/>

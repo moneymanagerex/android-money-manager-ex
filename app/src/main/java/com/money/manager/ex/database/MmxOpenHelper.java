@@ -36,6 +36,7 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.datalayer.InfoRepositorySql;
 import com.money.manager.ex.domainmodel.Info;
 import com.money.manager.ex.servicelayer.InfoService;
+import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.utils.MmxFileUtils;
 
 import net.zetetic.database.sqlcipher.SupportOpenHelperFactory;
@@ -63,6 +64,7 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
     private final Context mContext;
     private String mPassword;
 
+    private SupportSQLiteOpenHelper mHelper;
 
     // Dynamic
 
@@ -104,8 +106,16 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         Timber.d("OpenHelper onCreate");
 
         try {
-            executeRawSql(db, R.raw.tables_v1);
-            initDatabase(db);
+            boolean isCloudEnabled = SyncManager.isCloudSyncEnabled();
+            int tableSqlResource = isCloudEnabled ? R.raw.table_v1_completo : R.raw.tables_v1;
+            
+            executeRawSql(db, tableSqlResource);
+            
+            // If cloud sync is enabled, we don't initialize the database with default records
+            // because they will be pulled from the cloud.
+            if (!isCloudEnabled) {
+                initDatabase(db);
+            }
         } catch (Exception e) {
             Timber.e(e, "initializing database");
         }
@@ -156,16 +166,23 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
 
     }
 
+    private synchronized SupportSQLiteOpenHelper getHelper() {
+        if (mHelper == null) {
+            SupportSQLiteOpenHelper.Factory factory = new SupportOpenHelperFactory(this.mPassword.getBytes());
+            SupportSQLiteOpenHelper.Configuration configuration =
+                    SupportSQLiteOpenHelper.Configuration.builder(mContext)
+                            .name(this.dbPath)
+                            .callback(this)
+                            .build();
+            mHelper = factory.create(configuration);
+        }
+        return mHelper;
+    }
+
     private SupportSQLiteDatabase getDatabase(boolean writable) {
-        SupportSQLiteOpenHelper.Factory factory = new SupportOpenHelperFactory(this.mPassword.getBytes());
-        SupportSQLiteOpenHelper.Configuration configuration =
-                SupportSQLiteOpenHelper.Configuration.builder(mContext)
-                        .name(this.dbPath)
-                        .callback(this)
-                        .build();
         return writable
-                ? factory.create(configuration).getWritableDatabase()
-                : factory.create(configuration).getReadableDatabase();
+                ? getHelper().getWritableDatabase()
+                : getHelper().getReadableDatabase();
     }
 
     public SupportSQLiteDatabase getReadableDatabase() {
@@ -176,13 +193,32 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
         return getDatabase(true);
     }
 
-    public void setPassword(String password) {
-        this.mPassword = password;
+    public synchronized void setPassword(String password) {
+        if (!TextUtils.equals(this.mPassword, password)) {
+            this.mPassword = password;
+            closeHelper();
+        }
     }
+
     public String getPassword() { return this.mPassword;}
 
     public boolean hasPassword() {
         return !TextUtils.isEmpty(this.mPassword);
+    }
+
+    public synchronized void close() {
+        closeHelper();
+    }
+
+    private synchronized void closeHelper() {
+        if (mHelper != null) {
+            try {
+                mHelper.close();
+            } catch (Exception e) {
+                Timber.e(e, "Error closing database helper");
+            }
+            mHelper = null;
+        }
     }
 
     /**
@@ -191,7 +227,9 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
      */
     private void executeRawSql(SupportSQLiteDatabase db, int rawId) {
         String sqlRaw = MmxFileUtils.getRawAsString(getContext(), rawId);
-        String[] sqlStatement = sqlRaw.split(";");
+        // Use ;; as delimiter for cloud sync to handle complex statements like triggers
+        String delimiter = SyncManager.isCloudSyncEnabled() ? ";;" : ";";
+        String[] sqlStatement = sqlRaw.split(delimiter);
 
         // process all statements
         for (String aSqlStatement : sqlStatement) {
@@ -218,19 +256,17 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
      */
     public String getSQLiteVersion() {
         String sqliteVersion = null;
-        Cursor cursor = null;
         try {
-            if (getReadableDatabase() != null) {
-                cursor = getReadableDatabase().query("select sqlite_version() AS sqlite_version");
-                if (cursor != null && cursor.moveToFirst()) {
-                    sqliteVersion = cursor.getString(0);
+            SupportSQLiteDatabase db = getReadableDatabase();
+            if (db != null) {
+                try (Cursor cursor = db.query("select sqlite_version() AS sqlite_version")) {
+                    if (cursor != null && cursor.moveToFirst()) {
+                        sqliteVersion = cursor.getString(0);
+                    }
                 }
             }
         } catch (Exception e) {
             Timber.e(e, "getting sqlite version");
-        } finally {
-            if (cursor != null) cursor.close();
-//            if (database != null) database.close();
         }
         return sqliteVersion;
     }
@@ -291,19 +327,20 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
 //                .where(Info.INFONAME + "=?", InfoKeys.BASECURRENCYID)
 //                .toString();
 
-        Cursor currencyCursor = db.query(
+        long recordId = Constants.NOT_SET;
+        boolean recordExists = false;
+        try (Cursor currencyCursor = db.query(
             "SELECT * FROM " + InfoRepositorySql.TABLE_NAME +
             " WHERE " + Info.INFONAME + "=?",
-            new String[]{ InfoKeys.BASECURRENCYID});
-        if (currencyCursor == null) return;
+            new String[]{ InfoKeys.BASECURRENCYID})) {
+            if (currencyCursor == null) return;
 
-        // Get id of the base currency record.
-        long recordId = Constants.NOT_SET;
-        boolean recordExists = currencyCursor.moveToFirst();
-        if (recordExists) {
-            recordId = currencyCursor.getInt(currencyCursor.getColumnIndexOrThrow(Info.INFOID));
+            // Get id of the base currency record.
+            recordExists = currencyCursor.moveToFirst();
+            if (recordExists) {
+                recordId = currencyCursor.getInt(currencyCursor.getColumnIndexOrThrow(Info.INFOID));
+            }
         }
-        currencyCursor.close();
 
         // Use the system default currency.
         long currencyId = currencyService.loadCurrencyIdFromSymbolRaw(db, systemCurrency.getCurrencyCode());
@@ -331,18 +368,12 @@ public class MmxOpenHelper extends SupportSQLiteOpenHelper.Callback {
 
     @Override
     protected void finalize() throws Throwable {
+        closeHelper();
         super.finalize();
     }
 
     public SupportSQLiteOpenHelper provideSupportSQLiteOpenHelper() {
-        SupportSQLiteOpenHelper.Factory factory = new SupportOpenHelperFactory(this.mPassword.getBytes());
-        SupportSQLiteOpenHelper.Configuration configuration =
-                SupportSQLiteOpenHelper.Configuration.builder(mContext)
-                        .name(this.dbPath)
-                        .callback(this)
-                        .build();
-
-        return factory.create(configuration);
+        return getHelper();
     }
 
     public static void createDatabaseBackupOnUpgrade(String currentDbFile, long oldVersion) throws IOException {

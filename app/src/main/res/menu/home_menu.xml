@@ -18,13 +18,20 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- Hide/Show balances toggle (Icon set programmatically in HomeFragment) -->
+	<item
+        android:id="@+id/menu_hide_balances"
+        android:title="@string/hide_balances"
+        app:showAsAction="always"/>
+
     <!-- Search, should appear as action button -->
-    <item
+	<item
         android:id="@+id/menu_search"
         android:icon="?attr/ic_action_search"
         android:title="@string/search"
         app:showAsAction="ifRoom"/>
-    <!-- Settings, should always be in the overflow -->
+		
+	<!-- Settings, should always be in the overflow -->
     <!--<item android:id="@+id/action_settings"-->
     <!--android:title="@string/action_settings"-->
     <!--app:showAsAction="never" />-->
@@ -33,4 +40,5 @@
         <!--android:icon="?attr/ic_action_dropbox"-->
         <!--android:title="@string/synchronize"-->
         <!--app:showAsAction="never" />-->
+
 </menu>

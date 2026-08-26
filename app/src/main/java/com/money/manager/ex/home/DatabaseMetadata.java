@@ -17,6 +17,7 @@
 package com.money.manager.ex.home;
 
 import android.content.Context;
+import android.net.Uri;
 import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
@@ -36,6 +37,9 @@ import timber.log.Timber;
  */
 public class DatabaseMetadata {
     private static final String EXT_SYNC_TMP = ".synctmp";
+    public static final String HTTPS_PREFIX = "https://";
+    public static final String POCKETBASE = "pocketbase";
+
     public String localPath;
     public boolean isLocalFileChanged;
     /**
@@ -65,6 +69,18 @@ public class DatabaseMetadata {
     }
 
     public String getRemoteContentProvider() {
+        if (isRemoteSyncServer()) {
+            Uri uri = Uri.parse(remotePath);
+            StringBuilder provider = new StringBuilder(uri.getScheme())
+                    .append("://")
+                    .append(uri.getHost());
+
+            if (uri.getPort() != -1 && uri.getPort() != 443) {
+                provider.append(':').append(uri.getPort());
+            }
+            return provider.toString();
+        }
+
         URI uri;
         try {
             uri = new URI(remotePath);
@@ -89,6 +105,9 @@ public class DatabaseMetadata {
      * @return The date/time of the last change
      */
     public MmxDate getRemoteFileModifiedDate(Context context) {
+        if (isRemoteSyncServer()) {
+            return new MmxDate();
+        }
         DocFileMetadata remote = DocFileMetadata.fromDatabaseMetadata(context, this);
         // This is current dateModified at the remote file.
         return remote.lastModified;
@@ -119,6 +138,9 @@ public class DatabaseMetadata {
      * @return true if the remote file has changed, false otherwise
      */
     public boolean isRemoteFileChanged(Context context) {
+        if (isRemoteSyncServer()) {
+            return true;
+        }
         Date remoteModified = this.getRemoteFileModifiedDate(context).toDate();
         // Check if the remote file was modified since fetched.
         Date remoteSnapshot = MmxDate.fromIso8601(this.remoteLastChangedDate).toDate();
@@ -126,6 +148,108 @@ public class DatabaseMetadata {
         Timber.d("Remote file modified time: %s, snapshot time: %s", remoteModified.toString(), remoteSnapshot.toString());
 
         return remoteModified.after(remoteSnapshot);
+    }
+
+    public boolean isRemoteSyncServer() {
+        return !TextUtils.isEmpty(remotePath) && remotePath.startsWith(HTTPS_PREFIX);
+    }
+
+
+    /**
+     * Sets the remote server details in the remotePath field.
+     * The format is: https://serverType:encodedUser@server[:port]
+     * @param serverType The type of sync server (e.g., "pocketbase")
+     * @param user The username or email
+     * @param server The server address (hostname)
+     */
+    public void setRemoteServer(String serverType, String user, String server) {
+        setRemoteServer(serverType, user, server, null) ;
+    }
+    /**
+     * Sets the remote server details in the remotePath field.
+     * The format is: https://serverType:encodedUser@server[:port]
+     * @param serverType The type of sync server (e.g., "pocketbase")
+     * @param user The username or email
+     * @param server The server address (hostname)
+     * @param port The port number (optional, use null or -1 if not specified)
+     */
+    public void setRemoteServer(String serverType, String user, String server, Integer port) {
+        StringBuilder remote = new StringBuilder(HTTPS_PREFIX)
+                .append(serverType)
+                .append(':')
+                .append(Uri.encode(user))
+                .append('@')
+                .append(server);
+
+        if (port != null && port != -1) {
+            remote.append(':').append(port);
+        }
+
+        this.remotePath = remote.toString();
+    }
+
+    /**
+     * Extracts the server type from the remote path.
+     * @return The server type (e.g., "pocketbase") or an empty string if not applicable.
+     */
+    public String getRemoteServerType() {
+        if (!isRemoteSyncServer()) return "";
+        Uri uri = Uri.parse(remotePath);
+        String userInfo = uri.getUserInfo();
+        if (TextUtils.isEmpty(userInfo)) return "";
+        int colonIndex = userInfo.indexOf(':');
+        return colonIndex != -1 ? userInfo.substring(0, colonIndex) : userInfo;
+    }
+
+    /**
+     * Extracts and decodes the username from the remote path.
+     * @return The decoded username or an empty string if not applicable.
+     */
+    public String getRemoteUser() {
+        if (!isRemoteSyncServer()) return "";
+        Uri uri = Uri.parse(remotePath);
+        String userInfo = uri.getUserInfo();
+        if (TextUtils.isEmpty(userInfo)) return "";
+        int colonIndex = userInfo.indexOf(':');
+        return colonIndex != -1 ? Uri.decode(userInfo.substring(colonIndex + 1)) : "";
+    }
+
+    /**
+     * Gets the full remote URL including port if available.
+     * @return The server URL (host:port) or an empty string if not applicable.
+     */
+    public String getRemoteURL() {
+        if (!isRemoteSyncServer()) return "";
+        Uri uri = Uri.parse(remotePath);
+        String url = uri.getHost();
+        if (uri.getPort() != -1) {
+            url += ":" + uri.getPort();
+        }
+        return url;
+    }
+
+    /**
+     * Gets the remote server hostname.
+     * @return The server host or an empty string if not applicable.
+     */
+    public String getRemoteServer() {
+        if (!isRemoteSyncServer()) return "";
+        Uri uri = Uri.parse(remotePath);
+        return uri.getHost();
+    }
+
+    /**
+     * Gets the remote server port.
+     * @return The port number or -1 if not specified or not applicable.
+     */
+    public int getRemotePort() {
+        if (!isRemoteSyncServer()) return -1;
+        Uri uri = Uri.parse(remotePath);
+        return uri.getPort();
+    }
+
+    public boolean isPocketBase() {
+        return POCKETBASE.equals(getRemoteServerType());
     }
 
     public static DatabaseMetadata fromDocFileMetadata(Context context, DocFileMetadata docFileMetadata) {

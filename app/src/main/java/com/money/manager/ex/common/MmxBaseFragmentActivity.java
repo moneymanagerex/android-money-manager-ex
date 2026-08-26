@@ -118,13 +118,16 @@ public abstract class MmxBaseFragmentActivity
             @Override
             public void handleOnBackPressed() {
                 if (!onHandleOnBackPressed()) {
+                    // Disable this callback and call onBackPressed again to let the next
+                    // handler (e.g., FragmentManager) take over.
                     setEnabled(false);
-                    // back can has null pointer
                     try {
                         getOnBackPressedDispatcher().onBackPressed();
                     } catch (Exception e) {
-                        //
+                        Timber.e(e, "Error calling onBackPressed from dispatcher");
                     }
+                    // Re-enable so it can handle the next back press if the activity stays alive.
+                    setEnabled(true);
                 }
             }
         };
@@ -133,13 +136,13 @@ public abstract class MmxBaseFragmentActivity
     }
 
     public boolean onHandleOnBackPressed() {
-        Fragment fragment;
         if (FRAGMENTTAG != null) {
-            fragment = getSupportFragmentManager()
-                    .findFragmentByTag(FRAGMENTTAG);
-            if (fragment != null && fragment.getActivity() != null ) {
-                fragment.getActivity().setResult(RESULT_CANCELED);
-                fragment.getActivity().finish();
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag(FRAGMENTTAG);
+            // If the fragment is found and it is the current fragment, we finish the activity.
+            // We should check if the activity is already finishing to avoid redundant calls.
+            if (fragment != null && fragment.isAdded() && !isFinishing()) {
+                setResult(RESULT_CANCELED);
+                finish();
                 return true;
             }
         }
@@ -238,7 +241,7 @@ public abstract class MmxBaseFragmentActivity
 
     @Override
     protected void onDestroy() {
-        if (!compositeSubscription.isUnsubscribed()) {
+        if (compositeSubscription != null && !compositeSubscription.isUnsubscribed()) {
             compositeSubscription.unsubscribe();
         }
 

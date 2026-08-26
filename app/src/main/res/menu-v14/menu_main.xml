@@ -133,6 +133,9 @@
                 <item
                     android:id="@+id/menu_report_summary_of_stocks"
                     android:title="@string/menu_report_summary_of_stocks"/>
+                <item
+                    android:id="@+id/menu_report_summary_of_assets"
+                    android:title="@string/menu_report_summary_of_assets"/>
             </menu>
         </item>
         <item

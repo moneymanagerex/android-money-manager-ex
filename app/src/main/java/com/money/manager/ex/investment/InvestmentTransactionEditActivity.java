@@ -27,7 +27,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
@@ -59,7 +58,6 @@ import com.money.manager.ex.domainmodel.ShareInfo;
 import com.money.manager.ex.domainmodel.Stock;
 import com.money.manager.ex.domainmodel.StockHistory;
 import com.money.manager.ex.domainmodel.TransactionLink;
-import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.servicelayer.AccountService;
 import com.money.manager.ex.utils.MmxDate;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
@@ -200,7 +198,7 @@ public class InvestmentTransactionEditActivity
             }
 
             mIsShareTransactionMode = mLinkedTransaction != null;
-            mIsStockOverviewMode = !mIsShareTransactionMode && mStock.getId() != null;
+            mIsStockOverviewMode = !mIsShareTransactionMode && mStock != null && mStock.getId() != null;
         }
 
         initializeForm();
@@ -286,8 +284,7 @@ public class InvestmentTransactionEditActivity
 
             case RequestCodes.CATEGORY:
                 if (mCommon != null) {
-                    long selectedId = mLinkedTransaction.getCategoryId() == null ? Constants.NOT_SET : mLinkedTransaction.getCategoryId();
-                    mCategoryId = selectedId;
+                    mCategoryId = mLinkedTransaction.getCategoryId() == null ? Constants.NOT_SET : mLinkedTransaction.getCategoryId();
                     mCategoryName = mCommon.categoryName;
                     displayCategoryName();
                 } else {
@@ -318,11 +315,27 @@ public class InvestmentTransactionEditActivity
         // as you specify a parent activity in AndroidManifest.xml.
         long id = item.getItemId();
 
-        if (id == MenuHelper.save) {
+        if (id == android.R.id.home) {
+            return onActionCancelClick();
+        } else if (id == MenuHelper.save) {
             return onActionDoneClick();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onActionCancelClick() {
+        if (mCommon != null) {
+            return mCommon.onActionCancelClick();
+        }
+        finish();
+        return true;
+    }
+
+    @Override
+    public boolean onHandleOnBackPressed() {
+        return onActionCancelClick();
     }
 
     @Override
@@ -338,6 +351,9 @@ public class InvestmentTransactionEditActivity
     }
 
     public void setDirty(boolean dirty) {
+        if (mCommon != null) {
+            mCommon.setDirty(dirty);
+        }
     }
 
     private void onNumSharesClick() {
@@ -498,37 +514,20 @@ public class InvestmentTransactionEditActivity
         mViewHolder.notesEdit.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(GoogleMaterial.Icon.gmd_content_paste), null, null, null);
         mViewHolder.numSharesView.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_hashtag), null, null, null);
 
-        mViewHolder.numSharesView.setOnClickListener(view -> {
-            onNumSharesClick();
-        });
+        mViewHolder.numSharesView.setOnClickListener(view -> onNumSharesClick());
 
-        mViewHolder.purchasePriceView.setOnClickListener(view -> {
-            onPurchasePriceClick();
-        });
+        mViewHolder.purchasePriceView.setOnClickListener(view -> onPurchasePriceClick());
 
-        mViewHolder.commissionView.setOnClickListener(view -> {
-            onCommissionClick();
-        });
+        mViewHolder.commissionView.setOnClickListener(view -> onCommissionClick());
 
-        mViewHolder.currentPriceView.setOnClickListener(view -> {
-            onCurrentPriceClick();
-        });
+        mViewHolder.currentPriceView.setOnClickListener(view -> onCurrentPriceClick());
 
-        mViewHolder.buyButton.setOnClickListener(view -> {
-            openShareTransaction(TransactionTypes.Withdrawal);
-        });
+        mViewHolder.buyButton.setOnClickListener(view -> openShareTransaction(TransactionTypes.Withdrawal));
 
-        mViewHolder.sellButton.setOnClickListener(view -> {
-            openShareTransaction(TransactionTypes.Deposit);
-        });
+        mViewHolder.sellButton.setOnClickListener(view -> openShareTransaction(TransactionTypes.Deposit));
 
         if (mViewHolder.transferCheckBox != null) {
-            mViewHolder.transferCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    setDirty(true);
-                }
-            });
+            mViewHolder.transferCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> setDirty(true));
         }
 
         // Hide buttons by default (only show in stock overview mode)
@@ -603,27 +602,22 @@ public class InvestmentTransactionEditActivity
     private void initDateControl(final InvestmentTransactionViewHolder viewHolder) {
         // Purchase Date
 
-        viewHolder.dateView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(mStock.getPurchaseDate());
+        viewHolder.dateView.setOnClickListener(v -> {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(mStock.getPurchaseDate());
 
-                DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> {
-                    setDate(new MmxDate(year, month, dayOfMonth).toDate());
-                };
+            DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> setDate(new MmxDate(year, month, dayOfMonth).toDate());
 
-                DatePickerDialog datePicker = new DatePickerDialog(
-                        InvestmentTransactionEditActivity.this,
-                        listener,
-                        calendar.get(Calendar.YEAR),
-                        calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.DAY_OF_MONTH)
-                );
+            DatePickerDialog datePicker = new DatePickerDialog(
+                    InvestmentTransactionEditActivity.this,
+                    listener,
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH)
+            );
 
-                // Customize the DatePickerDialog if needed
-                datePicker.show();
-            }
+            // Customize the DatePickerDialog if needed
+            datePicker.show();
         });
 
         // Icon
@@ -631,19 +625,13 @@ public class InvestmentTransactionEditActivity
         viewHolder.dateView.setCompoundDrawablesWithIntrinsicBounds(ui.getIcon(FontAwesome.Icon.faw_calendar), null, null, null);
 
         // prev/next day
-        viewHolder.previousDayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MmxDate dateTime = new MmxDate(mStock.getPurchaseDate()).minusDays(1);
-                setDate(dateTime.toDate());
-            }
+        viewHolder.previousDayButton.setOnClickListener(view -> {
+            MmxDate dateTime = new MmxDate(mStock.getPurchaseDate()).minusDays(1);
+            setDate(dateTime.toDate());
         });
-        viewHolder.nextDayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MmxDate dateTime = new MmxDate(mStock.getPurchaseDate()).plusDays(1);
-                setDate(dateTime.toDate());
-            }
+        viewHolder.nextDayButton.setOnClickListener(view -> {
+            MmxDate dateTime = new MmxDate(mStock.getPurchaseDate()).plusDays(1);
+            setDate(dateTime.toDate());
         });
     }
 
@@ -666,7 +654,6 @@ public class InvestmentTransactionEditActivity
         if (view == null) return;
 
         // todo: format the number of shares based on selected locale?
-
         view.setText(mStock.getNumberOfShares().toString());
     }
 
@@ -733,7 +720,7 @@ public class InvestmentTransactionEditActivity
         if (mLinkedTransaction != null && mLinkedTransaction.hasId()) {
             // Editing an existing share transaction.
             // Only update name/symbol on the stock — do not overwrite its cumulative position.
-            if (mStock.getId() != null) {
+            if (mStock != null && mStock.getId() != null) {
                 Stock current = stockRepo.load(mStock.getId());
                 if (current != null) {
                     current.setName(mStock.getName());
@@ -757,7 +744,9 @@ public class InvestmentTransactionEditActivity
                 mStock.setPurchaseDate(mOriginalStockDate);
             }
 
-            if (mStock.getId() == null) {
+            if (mStock == null) {
+                return false;
+            } else if (mStock.getId() == null) {
                 // Brand-new stock: initialize CURRENTPRICE from purchase price before inserting.
                 if (mStock.getCurrentPrice().isZero()) {
                     mStock.setCurrentPrice(mStock.getPurchasePrice());
@@ -769,12 +758,12 @@ public class InvestmentTransactionEditActivity
             } else {
                 // Existing stock + new share transaction: update only name/symbol here;
                 // the cumulative position is recalculated below after recording the trade.
-                Stock current = stockRepo.load(mStock.getId());
-                if (current != null) {
-                    current.setName(mStock.getName());
-                    current.setSymbol(mStock.getSymbol());
-                    stockRepo.save(current);
-                }
+                    Stock current = stockRepo.load(mStock.getId());
+                    if (current != null) {
+                        current.setName(mStock.getName());
+                        current.setSymbol(mStock.getSymbol());
+                        stockRepo.save(current);
+                    }
             }
 
             if (mLinkedTransaction != null) {
@@ -1100,7 +1089,7 @@ public class InvestmentTransactionEditActivity
             totals.entries.add(entry);
         }
 
-        Collections.sort(totals.entries, (left, right) -> {
+        totals.entries.sort((left, right) -> {
             Date leftDate = left.date;
             Date rightDate = right.date;
 

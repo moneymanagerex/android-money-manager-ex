@@ -72,6 +72,7 @@
     <string name="account_empty_list">Nebyl nalezen žádný účet. Klepněte na zelené tlačítko se symbolem plus pro jeho vytvoření.</string>
     <string name="account_balance">Zůstatek na účtu</string>
     <string name="account_reconciled_balance">Ověřený zůstatek</string>
+    <string name="pie_other">Další</string>
     <string name="delete_account">Odstranit účet</string>
     <string name="account_name">Název účtu</string>
     <string name="account_type">Typ účtu</string>
@@ -261,6 +262,7 @@
     <string name="month">Měsíc</string>
     <string name="year">Rok</string>
     <string name="menu_report_income_vs_expenses">Příjmy a výdaje</string>
+    <string name="asset_current_value">Současná hodnota</string>
     <string name="total">Celkem</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Celkem</string>
@@ -666,4 +668,6 @@
     <!-- Error Handling -->
     <!-- changelog -->
     <string name="changelog">Přehled změn</string>
+    <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>

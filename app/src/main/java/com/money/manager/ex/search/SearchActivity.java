@@ -30,7 +30,6 @@ import com.money.manager.ex.R;
 import com.money.manager.ex.common.AllDataListFragment;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.UIHelper;
-import com.money.manager.ex.database.QueryAllData;
 import com.money.manager.ex.settings.AppSettings;
 
 import org.parceler.Parcels;
@@ -183,6 +182,8 @@ public class SearchActivity
     }
 
     private void showSearchResultsFragment(String where) {
+        AppSettings settings = new AppSettings(this);
+
         //create a fragment for search results.
         AllDataListFragment searchResultsFragment = (AllDataListFragment) this.getSupportFragmentManager()
             .findFragmentByTag(AllDataListFragment.class.getSimpleName());
@@ -202,20 +203,17 @@ public class SearchActivity
 
 
         searchResultsFragment.showTotalsFooter();
+        this.ShowAccountHeaders = settings.getSearchResultsGroupByAccount();
 
         //create parameter bundle
         Bundle args = new Bundle();
         args.putString(AllDataListFragment.KEY_ARGUMENTS_WHERE, where);
 
         // Sorting
-        String sortDirection = (new AppSettings(this)).getTransactionSort() == 0 ? "DESC" : "ASC";
         args.putString(AllDataListFragment.KEY_ARGUMENTS_SORT,
-            QueryAllData.TOACCOUNTID + ", " + QueryAllData.Date + " " + sortDirection + ", " +
-                QueryAllData.TransactionType + ", " + QueryAllData.ID + " " + sortDirection);
+            AllDataListFragment.getSearchResultsSortOrder(this));
         //set arguments
         searchResultsFragment.getArguments().putAll(args);
-
-        this.ShowAccountHeaders = true;
 
         //add fragment
         FragmentTransaction transaction = this.getSupportFragmentManager().beginTransaction();

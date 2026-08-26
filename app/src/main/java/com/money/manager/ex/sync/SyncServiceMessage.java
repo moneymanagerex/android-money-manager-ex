@@ -32,7 +32,8 @@ public enum SyncServiceMessage {
     SYNC_DISABLED(1),
     CONFLICT(2),
     USER_DIALOG_CONFLICT(3),
-    USER_DIALOD_NOTIF(9999)
+    USER_DIALOD_NOTIF(9999),
+    SYNC_COMPLETE(100)
     ;
 
     SyncServiceMessage(int value) {

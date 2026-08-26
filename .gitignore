@@ -14,6 +14,7 @@ gen/
 
 # Local configuration file (sdk path, etc)
 local.properties
+local.properties.*
 
 # Windows thumbnail db
 Thumbs.db
@@ -47,3 +48,6 @@ session_analytics_to_send
 /app/beta/
 /app/release/
 /app/debug/
+
+# Claude settings
+.claude/

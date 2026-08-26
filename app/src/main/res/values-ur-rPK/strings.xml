@@ -72,6 +72,7 @@
     <string name="account_empty_list">کوئی بھی اکاونٹ نہیں ملا. ایک اکاؤنٹ بنانے کے لیے، بلاکچین کے سبز بٹ کلک کریں.</string>
     <string name="account_balance">اکاؤنٹ کا بیلنس</string>
     <string name="account_reconciled_balance">جمع بیلنس</string>
+    <string name="pie_other">دیگر</string>
     <string name="delete_account">ڈلیٹ اکاونٹ</string>
     <string name="account_name">اکاؤنٹ نام</string>
     <string name="account_type">اکاؤنٹ ٹایپ</string>
@@ -262,6 +263,7 @@
     <string name="month">ماہ</string>
     <string name="year">سال</string>
     <string name="menu_report_income_vs_expenses">آمدنی بمقابلہ اخراجات</string>
+    <string name="asset_current_value">حالیہ قدر</string>
     <string name="total">کل</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">ہر وقت</string>
@@ -677,4 +679,6 @@
     <!-- Error Handling -->
     <!-- changelog -->
     <string name="changelog">لاگ تبدیل کریں</string>
+    <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>

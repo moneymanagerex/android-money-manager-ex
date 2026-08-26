@@ -53,7 +53,7 @@
 
                 <!-- Column 2: Market Value | Shares -->
                 <LinearLayout
-                    android:layout_width="120dp"
+                    android:layout_width="140dp"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:gravity="end"
@@ -79,7 +79,7 @@
 
                 <!-- Column 3: Current Price | Purchase Price -->
                 <LinearLayout
-                    android:layout_width="120dp"
+                    android:layout_width="140dp"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:gravity="end"
@@ -105,7 +105,7 @@
 
                 <!-- Column 4: Unrealized G/L | % -->
                 <LinearLayout
-                    android:layout_width="120dp"
+                    android:layout_width="140dp"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:gravity="end"
@@ -131,7 +131,7 @@
 
                 <!-- Column 5: Realized G/L | % -->
                 <LinearLayout
-                    android:layout_width="120dp"
+                    android:layout_width="140dp"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:gravity="end"

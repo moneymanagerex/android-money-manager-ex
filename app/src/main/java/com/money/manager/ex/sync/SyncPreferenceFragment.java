@@ -143,6 +143,10 @@ public class SyncPreferenceFragment
 
         viewHolder.download.setOnPreferenceClickListener(preference -> {
             DatabaseMetadata currentDb = getDatabases().getCurrent();
+            if (currentDb == null) {
+                Toast.makeText(getContext(), R.string.remote_unavailable, Toast.LENGTH_SHORT).show();
+                return false;
+            }
 
             SyncManager sync = new SyncManager(getContext());
             if (sync.canSync()) {
@@ -157,10 +161,21 @@ public class SyncPreferenceFragment
             return false;
         });
 
-        // Upload.
+        // fix #2997.
+        // as workarround simply disable button if cloudsync.
+        // in future evaluate download and upload as force sync
+        if (SyncManager.isCloudSyncEnabled()) {
+            viewHolder.upload.setEnabled(false);
+            viewHolder.download.setEnabled(false);
+        }
 
+        // Upload.
         viewHolder.upload.setOnPreferenceClickListener(preference -> {
             DatabaseMetadata currentDb = getDatabases().getCurrent();
+            if (currentDb == null) {
+                Toast.makeText(getContext(), R.string.remote_unavailable, Toast.LENGTH_SHORT).show();
+                return false;
+            }
 
             SyncManager sync = new SyncManager(getContext());
             if (sync.canSync()) {

@@ -68,6 +68,9 @@
     <string name="auto_sync_via_wifi_summary">المزامنة التلقائية عند الإتصال عن طريق WiFi فقط.</string>
     <string name="sync_on_app_start">مزامنة في بدء التطبيق.</string>
     <string name="sync_on_start">مزامنة عند بدء التشغيل</string>
+    <string name="sync_merge_database">تجريبي: دمج قواعد البيانات</string>
+    <string name="sync_merge_database_on_sync">دمج اختلافات قاعدة البيانات عند المزامنة.</string>
+    <string name="sync_merge_dialog_msg_format">%1$s</string>
     <!-- Receive SMS strings -->
     <string name="title_sms_auto_trans">معالجة الرسائل القصيرة للمعاملات المصرفية</string>
     <string name="summary_sms_auto_trans"></string>
@@ -85,7 +88,18 @@
     <string name="account_empty_list">لم يتم العثور على حساب. لإنشاء حساب. قم بالضغط على زر الزائد الأخضر.</string>
     <string name="account_balance">رصيد الحساب</string>
     <string name="account_reconciled_balance">تسوية الرصيد</string>
+    <string name="total_balance">الرصيد الإجمالي</string>
+    <string name="cash_balance">الرصيد النقدي</string>
+    <string name="market_value">القيمة السوقية</string>
+    <string name="invested">المُستثمر</string>
+    <string name="total_cost">إجمالي التكلفة </string>
+    <string name="gain_loss">المكسب / الخسارة</string>
+    <string name="unrealized_gain_loss"></string>
+    <string name="realized_gain_loss"></string>
+    <string name="pie_other">آخري</string>
     <string name="delete_account">حذف الحساب</string>
+    <string name="delete_stock_investment">UQAAiBzLtQ55oJWakjmZ5LNgjaInx3bVCnvovhTUUKGOnI9E
+</string>
     <string name="account_name">إسم الحساب</string>
     <string name="account_type">نوع الحساب</string>
     <string name="account_number">رقم الحساب</string>
@@ -118,6 +132,7 @@
     <!-- category / subcategory -->
     <string name="category">الفئة</string>
     <string name="subcategory">فئة فرعية</string>
+    <string name="navigation_mode"></string>
     <string name="category_empty_list">لم يتم العثور على فئة. لإنشاء فئة إضغط على الزر \"+\" الأخضر.</string>
     <string name="select_category">إختر الفئة</string>
     <string name="add_category">إضافة فئة</string>
@@ -142,6 +157,8 @@
     <string name="amount">المبلغ</string>
     <string name="total_amount">المبلغ الإجمالي</string>
     <string name="deposit">إيداع</string>
+    <string name="buy"></string>
+    <string name="sell"></string>
     <string name="status">الحالة</string>
     <string name="status_reconciled">تم تسويتها</string>
     <string name="status_void">ملغية</string>
@@ -158,6 +175,7 @@
     <string name="delete_transaction">حذف المعاملة</string>
     <string name="new_transaction">معاملة جديدة</string>
     <string name="error_payee_not_selected">المستفيد مطلوب</string>
+    <string name="error_fromaccount_not_selected"></string>
     <string name="error_toaccount_not_selected">مطلوب للحساب</string>
     <string name="error_category_not_selected">الصنف مطلوب</string>
     <string name="error_totamount_empty">المجموع مطلوب</string>
@@ -252,6 +270,7 @@
     <string name="skip_next_occurrence_confirmation">هل تريد تخطي التواجد التالي؟</string>
     <string name="notification_repeating_transaction_expired"></string>
     <string name="notification_click_to_check_repeating_transaction">اللمس للتحقق من المعاملات المتأخرة</string>
+    <string name="num_repeating_transaction_expired"></string>
     <string name="skip">تخطي</string>
     <string name="enter">ادخال</string>
     <string name="enter_amount">أدخل القيمة</string>
@@ -275,6 +294,7 @@
     <string name="enter_your_previous_passcode">قم بإدخال رمز المرور السابق</string>
     <!--<string name="passcode_update">passcode is updated</string>-->
     <string name="passcode_not_update">لم يتم تحديث رمز المرور</string>
+    <string name="fingerprint_passcode_deactivated"></string>
     <!-- 20121217 -->
     <string name="lookups_wildcard">يمكنك استخدام حرف البدل % للمشاهدة</string>
     <string name="income_vs_expenses_current_month">الإيرادات مقابل المصروفات: الشهر الحالي</string>
@@ -290,6 +310,9 @@
     <string name="title_activity_general_report">تقرير عام</string>
     <string name="menu_report_income_vs_expenses">الإيرادات مقابل المصروفات</string>
     <string name="menu_report_cashflow">التدفق النقدي</string>
+    <string name="menu_report_summary_of_accounts">مُلخص الحسابات</string>
+    <string name="menu_report_summary_of_assets"></string>
+    <string name="asset_current_value">القيمة الحالية</string>
     <string name="total">المجموع</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">جميع الأوقات</string>
@@ -339,6 +362,7 @@
     <string name="open_database">فتح قاعدة البيانات</string>
     <string name="synchronization_interval">المزامنة كل...</string>
     <string name="summary_synchronization_interval">كل كم تجب المُزامنة؟</string>
+    <string name="tips_new_version_dropbox"></string>
     <string name="title_transaction_shown_balance">عرض الرصيد لكل مُعاملة</string>
     <string name="summary_transaction_shown_balance">يتم إظهار الرصيد بعد كل عملية. قد يجعل التطبيق أبطئ.</string>
     <string name="menu_open_database">فتح قاعدة البيانات</string>
@@ -359,6 +383,7 @@
     <string name="summary_check_repeating_transaction">ما هو الوقت الذي تريد التحقق فيه من إذا كانت هناك معاملات مجدولة متأخرة؟ (الافتراضي 08:00)</string>
     <string name="credits">المساهمون في العمل</string>
     <string name="libraries">المكتبات</string>
+    <string name="top_withdrawals_last_30_days"></string>
     <string name="top_payees_last_30_days">أعلى المٌستفيدون: آخر 30 يوماً</string>
     <string name="upcoming_transactions">المُعاملات القادمة</string>
     <string name="quantity">الكمية</string>
@@ -578,8 +603,13 @@
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_account_filter_all">كافة الحسابات</string>
+    <string name="menu_account_filter_open">الحسابات المفتوحة</string>
+    <string name="menu_account_filter_favorite">الحسابات المفضلة</string>
+    <string name="menu_account_filter_custom">الحسابات المحددة...</string>
     <!-- Merge -->
     <!-- Error Handling -->
     <!-- changelog -->
     <string name="changelog">سِجل التغييرات</string>
+    <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>

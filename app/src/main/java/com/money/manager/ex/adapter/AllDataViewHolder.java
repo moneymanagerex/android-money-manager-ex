@@ -33,6 +33,7 @@ public class AllDataViewHolder {
     public TextView txtAmount;
     public TextView txtPayee;
     public TextView txtAccountName;
+    public TextView txtTransactionAccountName;
     public TextView txtCategorySub;
     public TextView txtNotes;
     public TextView txtBalance;

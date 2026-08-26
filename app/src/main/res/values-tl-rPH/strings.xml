@@ -72,6 +72,7 @@
     <string name="account_empty_list">Walang akawnts ang nahanap. Upang makagawa ng isa, i-tap ang berdeng dagdagan na button.</string>
     <string name="account_balance">Balanse ng Akawnt</string>
     <string name="account_reconciled_balance">Reconciled na Balanse</string>
+    <string name="pie_other">Iba</string>
     <string name="delete_account">Ibura ang Account</string>
     <string name="account_name">Pangalan ng account</string>
     <string name="account_type">Uri ng Account</string>
@@ -262,6 +263,7 @@
     <string name="month">Buwan</string>
     <string name="year">Taon</string>
     <string name="menu_report_income_vs_expenses">Kita Vs Gastos</string>
+    <string name="asset_current_value">Kasalukuyang Halaga</string>
     <string name="total">Kabuuan</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Buong Kasaysayan</string>
@@ -677,4 +679,6 @@
     <!-- Error Handling -->
     <!-- changelog -->
     <string name="changelog">Changelog</string>
+    <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>

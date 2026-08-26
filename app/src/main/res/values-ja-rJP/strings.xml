@@ -72,6 +72,7 @@
     <string name="account_empty_list">口座が見つかりません。作成するには緑のプラスボタンをタップします。</string>
     <string name="account_balance">口座の残高</string>
     <string name="account_reconciled_balance">調整残高</string>
+    <string name="pie_other">その他</string>
     <string name="delete_account">口座を削除</string>
     <string name="account_name">口座名</string>
     <string name="account_type">口座の種類</string>
@@ -262,6 +263,7 @@
     <string name="month">月</string>
     <string name="year">年</string>
     <string name="menu_report_income_vs_expenses">収入と支出</string>
+    <string name="asset_current_value">現在価値</string>
     <string name="total">合計</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">すべての期間</string>
@@ -677,4 +679,6 @@
     <!-- Error Handling -->
     <!-- changelog -->
     <string name="changelog">変更履歴</string>
+    <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>

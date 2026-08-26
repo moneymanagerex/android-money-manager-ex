@@ -466,7 +466,7 @@ public class AmountInputDialog
 
             } else {
                 // Use default precision and no currency markup.
-                result = formatUtilities.formatNumber(amount, Constants.DEFAULT_PRECISION,
+                result = FormatUtilities.formatNumber(amount, Constants.DEFAULT_PRECISION,
                     displayCurrency.getDecimalSeparator(), displayCurrency.getGroupSeparator(),
                     null, null);
             }

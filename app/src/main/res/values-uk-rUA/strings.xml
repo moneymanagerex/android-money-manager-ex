@@ -85,6 +85,7 @@
     <string name="account_empty_list">Рахунки не виявлено. Для створення натисніть зелений плюс.</string>
     <string name="account_balance">Залишок на рахунку</string>
     <string name="account_reconciled_balance">Погоджений баланс</string>
+    <string name="pie_other">Інше</string>
     <string name="delete_account">Видалити рахунок</string>
     <string name="account_name">Назва рахунку</string>
     <string name="account_type">Тип рахунку</string>
@@ -280,6 +281,7 @@
     <string name="month">Місяць</string>
     <string name="year">Рік</string>
     <string name="menu_report_income_vs_expenses">Доходи проти витрат</string>
+    <string name="asset_current_value">Поточне значення</string>
     <string name="total">Всього</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">За весь час</string>
@@ -722,4 +724,6 @@
     <!-- Error Handling -->
     <!-- changelog -->
     <string name="changelog">Журнал змін</string>
+    <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>

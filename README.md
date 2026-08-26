@@ -52,10 +52,12 @@ To build the project, the following settings are recommended:
 - use embedded JDK (now compatible with JDK17+),
 - use gradle wrapper.
 
+See [BUILD_AND_RELEASE](BUILD_AND_RELEASE.md) for detail.
+
 ## Continuous Integration
 
 // TODO: Add a Continuous Integration test to cover all unit tests and integration tests and UI tests service
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=moneymanagerex/android-money-manager-ex&type=Date)](https://star-history.com/#moneymanagerex/android-money-manager-ex&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=moneymanagerex/android-money-manager-ex&type=Date)](https://star-history.dera.page/#moneymanagerex/android-money-manager-ex&Date)

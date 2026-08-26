@@ -72,6 +72,7 @@
     <string name="account_empty_list">Δεν έχουν βρεθεί Λογαριασμοί. Για να δημιουργήσετε ένα, πατήστε το πράσινο συν (+) κουμπί.</string>
     <string name="account_balance">Υπόλοιπο Λογαριασμού</string>
     <string name="account_reconciled_balance">Τακτοποιημένο Υπόλοιπο</string>
+    <string name="pie_other">Άλλα</string>
     <string name="delete_account">Διαγραφή λογαριασμού</string>
     <string name="account_name">Όνομα λογαριασμού</string>
     <string name="account_type">Τύπος λογαριασμού</string>
@@ -262,6 +263,7 @@
     <string name="month">Μήνας</string>
     <string name="year">Έτος</string>
     <string name="menu_report_income_vs_expenses">Έσοδα vs  Έξοδα</string>
+    <string name="asset_current_value">Τρέχουσα Αξία</string>
     <string name="total">Σύνολο </string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Τα πάντα</string>
@@ -676,4 +678,6 @@
     <!-- Error Handling -->
     <!-- changelog -->
     <string name="changelog">Καταγραφή αλλαγών</string>
+    <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>

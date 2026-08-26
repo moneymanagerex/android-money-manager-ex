@@ -74,23 +74,23 @@ public class SplitScheduledCategoryRepository
      * @return list of split categories for the given transaction.
      */
     public ArrayList<ISplitTransaction> loadSplitCategoriesFor(long transId) {
-        Cursor curSplit = getContext().getContentResolver().query(getUri(), null,
-            SplitRecurringCategory.TRANSID + "=" + transId,
-            null,
-            SplitRecurringCategory.SPLITTRANSID);
-        if (curSplit == null) return null;
-
         ArrayList<ISplitTransaction> listSplitTrans = new ArrayList<>();
 
-        while (curSplit.moveToNext()) {
-            SplitRecurringCategory splitRecurringCategory = new SplitRecurringCategory();
-            splitRecurringCategory.loadFromCursor(curSplit);
+        try (Cursor curSplit = getContext().getContentResolver().query(getUri(), null,
+            SplitRecurringCategory.TRANSID + "=" + transId,
+            null,
+            SplitRecurringCategory.SPLITTRANSID)) {
+            if (curSplit == null) return null;
 
-            splitRecurringCategory.setTagLinks(loadTagLinks(splitRecurringCategory.getId()));
+            while (curSplit.moveToNext()) {
+                SplitRecurringCategory splitRecurringCategory = new SplitRecurringCategory();
+                splitRecurringCategory.loadFromCursor(curSplit);
 
-            listSplitTrans.add(splitRecurringCategory);
+                splitRecurringCategory.setTagLinks(loadTagLinks(splitRecurringCategory.getId()));
+
+                listSplitTrans.add(splitRecurringCategory);
+            }
         }
-        curSplit.close();
 
         return listSplitTrans;
     }

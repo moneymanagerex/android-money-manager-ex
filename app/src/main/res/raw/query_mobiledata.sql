@@ -1,10 +1,10 @@
 /*
     Query mobiledata. This is the base for most other queries.
 */
-WITH RECURSIVE categories(categid, categname, catshortname, parentid, parentcategname ) AS
-    (SELECT a.categid, a.categname, a.categname AS catshortname, a.parentid, NULL AS parentcategname FROM category_v1 a WHERE parentid = '-1'
+WITH RECURSIVE categories(categid, categname, catshortname, parentid, parentcategname, fullcatid ) AS
+    (SELECT a.categid, a.categname, a.categname AS catshortname, a.parentid, NULL AS parentcategname, ":" || a.categid || ":" FROM category_v1 a WHERE parentid = '-1'
         UNION ALL
-     SELECT c.categid, r.categname || ':' || c.categname, c.CATEGNAME AS catshortname, c.parentid, r.categname AS parentcategname
+     SELECT c.categid, r.categname || ':' || c.categname, c.CATEGNAME AS catshortname, c.parentid, r.categname AS parentcategname, r.fullcatid || c.categid || ":"
      FROM categories r, category_v1 c
 	 WHERE r.categid = c.parentid
 	 )
@@ -14,6 +14,7 @@ SELECT
     date( TX.TransDate ) AS Date,
     COALESCE( SCAT.categname, CAT.categname, "" ) AS Category,
 	coalesce( st.CategId, TX.CategId, -1 ) AS CategID,
+    COALESCE( SCAT.fullcatid, CAT.fullcatid, "" ) AS FullCatID,
     TX.Status AS Status,
     TX.NOTES AS Notes,
     ifnull(cf.BaseConvRate, cfTo.BaseConvRate) AS BaseConvRate,

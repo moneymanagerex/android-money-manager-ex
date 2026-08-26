@@ -27,6 +27,7 @@ import com.money.manager.ex.core.Passcode;
 import com.money.manager.ex.core.UIHelper;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricManager;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
@@ -175,6 +176,15 @@ public class SecuritySettingsFragment
             findPreference(getString(PreferenceConstants.PREF_EDIT_PASSCODE)).setEnabled(passcode.hasPasscode());
         if (findPreference(getString(PreferenceConstants.PREF_DISABLE_PASSCODE)) != null)
             findPreference(getString(PreferenceConstants.PREF_DISABLE_PASSCODE)).setEnabled(passcode.hasPasscode());
+
+        // disable fingerprint authentication if no hardware
+        Preference fingerprintPreference = findPreference(getString(PreferenceConstants.PREF_FINGERPRINT));
+        if (fingerprintPreference != null) {
+            BiometricManager biometricManager = BiometricManager.from(getActivity());
+            if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE) {
+                fingerprintPreference.setVisible(false);
+            }
+        }
     }
 
     private void startActivityPasscode(CharSequence message, int request) {

@@ -84,6 +84,7 @@
     <string name="account_empty_list">Ingen konti fundet. Tryk på den grønne plus-knap for at oprette én.</string>
     <string name="account_balance">Kontosaldo</string>
     <string name="account_reconciled_balance">Afstemt saldo</string>
+    <string name="pie_other">Andet</string>
     <string name="delete_account">Slet konto</string>
     <string name="account_name">Kontonavn</string>
     <string name="account_type">Kontotype</string>
@@ -279,6 +280,7 @@
     <string name="month">Måned</string>
     <string name="year">År</string>
     <string name="menu_report_income_vs_expenses">Indtægter og udgifter</string>
+    <string name="asset_current_value">Aktuel værdi</string>
     <string name="total">I alt</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">For altid</string>
@@ -721,4 +723,6 @@
     <!-- Error Handling -->
     <!-- changelog -->
     <string name="changelog">Ændringsoversigt</string>
+    <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>

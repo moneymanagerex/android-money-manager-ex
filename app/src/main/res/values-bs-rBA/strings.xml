@@ -72,6 +72,7 @@
     <string name="account_empty_list">Nemate računa. Da biste napravili jedan, dodirnite zeleno plus dugme.</string>
     <string name="account_balance">Stanje računa</string>
     <string name="account_reconciled_balance">Poravnati bilans</string>
+    <string name="pie_other">Drugo</string>
     <string name="delete_account">Obriši račun</string>
     <string name="account_name">Ime računa</string>
     <string name="account_type">Tip računa</string>
@@ -262,6 +263,7 @@
     <string name="month">Mjesec</string>
     <string name="year">Godina</string>
     <string name="menu_report_income_vs_expenses">Prihodi / Rashodi</string>
+    <string name="asset_current_value">Trenutna vrijednost</string>
     <string name="total">Ukupno</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Svo vrijeme</string>
@@ -677,4 +679,6 @@
     <!-- Error Handling -->
     <!-- changelog -->
     <string name="changelog">Log promjena</string>
+    <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>

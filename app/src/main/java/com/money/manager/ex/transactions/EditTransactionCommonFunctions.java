@@ -729,26 +729,26 @@ public class EditTransactionCommonFunctions {
                 ITransactionEntity.ACCOUNTID + "=?";
 
             String accountId = transactionEntity.getAccountId().toString();
-            Cursor cursor = mDatabase.query(sql, accountId);
-            if (cursor == null) return;
+            try (Cursor cursor = mDatabase.query(sql, accountId)) {
+                if (cursor == null) return;
 
-            if (cursor.moveToFirst()) {
-                String transNumber = cursor.getString(0);
-                if (TextUtils.isEmpty(transNumber)) {
-                    transNumber = "0";
-                }
-                if ((!TextUtils.isEmpty(transNumber)) && TextUtils.isDigitsOnly(transNumber)) {
-                    try {
-                        // Use Money type to support very large numbers.
-                        Money transactionNumber = MoneyFactory.fromString(transNumber);
-                        viewHolder.edtTransNumber.setText(transactionNumber.add(MoneyFactory.fromString("1"))
-                            .toString());
-                    } catch (Exception e) {
-                        Timber.e(e, "increasing transaction number");
+                if (cursor.moveToFirst()) {
+                    String transNumber = cursor.getString(0);
+                    if (TextUtils.isEmpty(transNumber)) {
+                        transNumber = "0";
+                    }
+                    if ((!TextUtils.isEmpty(transNumber)) && TextUtils.isDigitsOnly(transNumber)) {
+                        try {
+                            // Use Money type to support very large numbers.
+                            Money transactionNumber = MoneyFactory.fromString(transNumber);
+                            viewHolder.edtTransNumber.setText(transactionNumber.add(MoneyFactory.fromString("1"))
+                                    .toString());
+                        } catch (Exception e) {
+                            Timber.e(e, "increasing transaction number");
+                        }
                     }
                 }
             }
-            cursor.close();
         });
 
         if (!transactionEntity.hasId() && transactionEntity.getTransactionNumber().isEmpty() && (new BehaviourSettings(getContext()).getAutoTransactionNumber())) {

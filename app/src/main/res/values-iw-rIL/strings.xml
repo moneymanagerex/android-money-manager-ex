@@ -72,6 +72,7 @@
     <string name="account_empty_list">לא נמצאו חשבונות. כדי ליצור חשבון, הקש על כפתור סימן הפלוס הירוק.</string>
     <string name="account_balance">יתרת חשבון</string>
     <string name="account_reconciled_balance">יתרה מותאמת</string>
+    <string name="pie_other">אחר</string>
     <string name="delete_account">מחק חשבון</string>
     <string name="account_name">שם חשבון</string>
     <string name="account_type">סוג חשבון</string>
@@ -262,6 +263,7 @@
     <string name="month">חודש</string>
     <string name="year">השנה</string>
     <string name="menu_report_income_vs_expenses">הכנסה לעומת הוצאות</string>
+    <string name="asset_current_value">ערך נוכחי</string>
     <string name="total">סך הכל</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">בכל הזמנים</string>
@@ -677,4 +679,6 @@
     <!-- Error Handling -->
     <!-- changelog -->
     <string name="changelog">יומן שינוים</string>
+    <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>

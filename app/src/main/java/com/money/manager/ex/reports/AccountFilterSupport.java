@@ -131,50 +131,47 @@ public final class AccountFilterSupport {
     public static void showAccountSelectionDialog(Context context, List<Long> selected,
             OnAccountsSelectedListener listener) {
         QueryAccountBills queryAccountBills = new QueryAccountBills(context);
-        Cursor cursor = context.getContentResolver().query(
+        try (Cursor cursor = context.getContentResolver().query(
                 queryAccountBills.getUri(),
                 null,
                 null,
                 null,
-                QueryAccountBills.ACCOUNTTYPE + ", upper(" + QueryAccountBills.ACCOUNTNAME + ")");
+                QueryAccountBills.ACCOUNTTYPE + ", upper(" + QueryAccountBills.ACCOUNTNAME + ")")) {
 
-        if (cursor == null) {
-            return;
-        }
+            if (cursor == null) {
+                return;
+            }
 
-        final ArrayList<Long> accountIds = new ArrayList<>();
-        final ArrayList<String> accountNames = new ArrayList<>();
-        try {
+            final ArrayList<Long> accountIds = new ArrayList<>();
+            final ArrayList<String> accountNames = new ArrayList<>();
             while (cursor.moveToNext()) {
                 long accountId = cursor.getLong(cursor.getColumnIndexOrThrow(QueryAccountBills.ACCOUNTID));
                 String accountName = cursor.getString(cursor.getColumnIndexOrThrow(QueryAccountBills.ACCOUNTNAME));
                 accountIds.add(accountId);
                 accountNames.add(accountName);
             }
-        } finally {
-            cursor.close();
-        }
 
-        final boolean[] checkedItems = new boolean[accountIds.size()];
-        for (int i = 0; i < accountIds.size(); i++) {
-            checkedItems[i] = selected.contains(accountIds.get(i));
-        }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.menu_account_filter_custom);
-        builder.setMultiChoiceItems(accountNames.toArray(new CharSequence[0]), checkedItems,
-                (dialog, which, isChecked) -> checkedItems[which] = isChecked);
-        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
-            ArrayList<Long> selectedIds = new ArrayList<>();
+            final boolean[] checkedItems = new boolean[accountIds.size()];
             for (int i = 0; i < accountIds.size(); i++) {
-                if (checkedItems[i]) {
-                    selectedIds.add(accountIds.get(i));
-                }
+                checkedItems[i] = selected.contains(accountIds.get(i));
             }
-            listener.onAccountsSelected(selectedIds);
-        });
-        builder.setNegativeButton(android.R.string.cancel, null);
-        builder.show();
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle(R.string.menu_account_filter_custom);
+            builder.setMultiChoiceItems(accountNames.toArray(new CharSequence[0]), checkedItems,
+                    (dialog, which, isChecked) -> checkedItems[which] = isChecked);
+            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                ArrayList<Long> selectedIds = new ArrayList<>();
+                for (int i = 0; i < accountIds.size(); i++) {
+                    if (checkedItems[i]) {
+                        selectedIds.add(accountIds.get(i));
+                    }
+                }
+                listener.onAccountsSelected(selectedIds);
+            });
+            builder.setNegativeButton(android.R.string.cancel, null);
+            builder.show();
+        }
     }
 
     private static String joinIds(List<Long> ids) {

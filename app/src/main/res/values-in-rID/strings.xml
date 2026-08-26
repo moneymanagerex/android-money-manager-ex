@@ -72,6 +72,7 @@
     <string name="account_empty_list">Tidak ada akun ditemukan. Ketuk tombol tambah hijau untuk membuat baru.</string>
     <string name="account_balance">Saldo Akun</string>
     <string name="account_reconciled_balance">Saldo yang direkonsiliasi</string>
+    <string name="pie_other">Lain</string>
     <string name="delete_account">Hapus Akun</string>
     <string name="account_name">Nama akun</string>
     <string name="account_type">Jenis akun</string>
@@ -262,6 +263,7 @@
     <string name="month">Bulan</string>
     <string name="year">Tahun</string>
     <string name="menu_report_income_vs_expenses">Pendapatan Vs Biaya</string>
+    <string name="asset_current_value">Nilai sekarang</string>
     <string name="total">Seluruh</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Semua waktu</string>
@@ -677,4 +679,6 @@
     <!-- Error Handling -->
     <!-- changelog -->
     <string name="changelog">Catatan perubahan</string>
+    <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>

@@ -88,6 +88,7 @@
     <string name="account_empty_list">Nessun conto è stato trovato. Per crearne uno, toccare il pulsante più verde.</string>
     <string name="account_balance">Saldo</string>
     <string name="account_reconciled_balance">Saldo Riconciliato</string>
+    <string name="pie_other">Altro</string>
     <string name="delete_account">Elimina Conto</string>
     <string name="account_name">Nome del conto</string>
     <string name="account_type">Tipo di conto</string>
@@ -313,6 +314,7 @@
     <string name="menu_report_income_vs_expenses">Entrate Vs Uscite</string>
     <string name="menu_report_cashflow">Flusso Di Cassa</string>
     <string name="menu_report_summary_of_accounts">Saldo dei Conti</string>
+    <string name="asset_current_value">Valore Attuale</string>
     <string name="total">Totale</string>
     <!--<string name="option">Option</string>-->
     <string name="all_time">Storico</string>
@@ -825,4 +827,6 @@
     <string name="changelog_1104">Nuova versione 5.5\n-Compatibilità completa con Android 16 e modalità edge-to-edge</string>
     <string name="currency_save_error">Errore durante l\'inserimento della valuta. Probabilmente la valuta %s è già definita.</string>
     <string name="menu_cashflow_24_months">Vista 24 mesi</string>
+    <!-- PocketBse Sync -->
+    <!-- Show & Hide Balance -->
 </resources>

@@ -26,6 +26,9 @@
         <menu>
             <group android:checkableBehavior="single">
                 <item
+                    android:id="@+id/menu_custom_dates"
+                    android:title="@string/custom_dates"/>
+                <item
                     android:id="@+id/menu_today"
                     android:title="@string/today" />
                 <item
@@ -59,9 +62,6 @@
                     android:id="@+id/menu_all_time"
                     android:title="@string/all_time"/>
                 <!--
-                <item
-                    android:id="@+id/menu_custom_dates"
-                    android:title="@string/custom_dates"/>
                 <item
                     android:id="@+id/menu_last_month"
                     android:title="@string/last_month"/>

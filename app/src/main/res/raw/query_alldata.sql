@@ -1,8 +1,8 @@
 -- Account Transactions list
-WITH RECURSIVE categories(categid, categname, parentid) AS
-    (SELECT a.categid, a.categname, a.parentid FROM category_v1 a WHERE parentid = '-1'
+WITH RECURSIVE categories(categid, categname, parentid, fullcatid) AS
+    (SELECT a.categid, a.categname, a.parentid, ":" || a.categid || ":" FROM category_v1 a WHERE parentid = '-1'
         UNION ALL
-     SELECT c.categid, r.categname || ':' || c.categname, c.parentid
+     SELECT c.categid, r.categname || ':' || c.categname, c.parentid, r.fullcatid || c.categid || ":"
      FROM categories r, category_v1 c
 	 WHERE r.categid = c.parentid
 	 )
@@ -12,6 +12,7 @@ SELECT
     date( TX.TransDate ) AS Date,
     CAT.categName AS Category,
     TX.CATEGID AS CategID,
+    CAT.fullcatid AS FullCatID,
     TX.Status AS Status,
     TX.NOTES AS Notes,
     ifnull(cf.BaseConvRate, cfTo.BaseConvRate) AS BaseConvRate,

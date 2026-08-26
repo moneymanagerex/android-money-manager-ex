@@ -208,6 +208,14 @@ public class SyncService
     }
 
     private void triggerSync(Messenger outMessenger, File localFile, boolean prefMergeOnSync) {
+        if (SyncManager.isCloudSyncEnabled()) {
+            Timber.d("Starting PocketBase Synchronization");
+            PocketBaseSyncEngine engine = new PocketBaseSyncEngine(getApplicationContext());
+            engine.synchronize();
+            sendMessage(outMessenger, SyncServiceMessage.SYNC_COMPLETE);
+            return;
+        }
+
         DatabaseMetadata currentDb = this.recentDatabasesProvider.get(localFile.getAbsolutePath());
         FileStorageHelper storage = new FileStorageHelper(getApplicationContext());
         // download remote file into tmp (this forces also a refresh of the meta data)

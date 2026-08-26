@@ -69,10 +69,13 @@ import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.about.WhatNewManager;
 import com.money.manager.ex.datalayer.ReportRepository;
 import com.money.manager.ex.domainmodel.Report;
+import com.money.manager.ex.reports.SummaryOfAssetsReportActivity;
 import com.money.manager.ex.reports.cashflow.CashFlowReportActivity;
 import com.money.manager.ex.scheduled.ScheduledTransactionForecastListServices;
 import com.money.manager.ex.settings.DatabaseSettingsFragment;
 import com.money.manager.ex.settings.SecuritySettingsFragment;
+import com.money.manager.ex.sync.PocketBaseClient;
+import com.money.manager.ex.sync.PocketBaseSyncEngine;
 import com.money.manager.ex.tag.TagListFragment;
 import com.money.manager.ex.nestedcategory.NestedCategoryListFragment;
 import com.money.manager.ex.passcode.PasscodeActivity;
@@ -115,6 +118,7 @@ import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.PreferenceConstants;
 import com.money.manager.ex.settings.SettingsActivity;
 import com.money.manager.ex.settings.SyncPreferences;
+import com.money.manager.ex.sync.PocketBaseSetupActivity;
 import com.money.manager.ex.sync.SyncConstants;
 import com.money.manager.ex.sync.SyncManager;
 import com.money.manager.ex.sync.events.DbFileDownloadedEvent;
@@ -126,6 +130,7 @@ import com.money.manager.ex.utils.MmxDatabaseUtils;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
@@ -142,6 +147,8 @@ import dagger.Lazy;
 import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
+
+import com.money.manager.ex.BuildConfig;
 
 /**
  * Main activity of the application.
@@ -621,7 +628,7 @@ public class MainActivity
         long itemId = item.getId();
 
         if (itemId == R.id.menu_home) {
-            initHomeFragment();
+            showFragment(HomeFragment.class);
         } else if (itemId == R.id.menu_sync) {
             SyncManager sync = new SyncManager(this);
             sync.triggerSynchronization();
@@ -634,6 +641,8 @@ public class MainActivity
             startActivity(new Intent(MainActivity.this, PasswordActivity.class));
             (new FileStorageHelper(this)).showCreateFilePicker();
             // TODO request password 3/3
+        } else if (itemId == R.id.menu_open_cloud_database) {
+            onOpenCloudDatabaseClick();
         } else if (itemId == R.id.menu_account) {
             showFragment(AccountListFragment.class);
         } else if (itemId == R.id.menu_category) {
@@ -679,6 +688,8 @@ public class MainActivity
             startActivity(new Intent(this, SummaryOfAccountsReportActivity.class));
         } else if (itemId == R.id.menu_report_summary_of_stocks) {
             startActivity(new Intent(this, SummaryOfStocksReportActivity.class));
+        } else if (itemId == R.id.menu_report_summary_of_assets) {
+            startActivity(new Intent(this, SummaryOfAssetsReportActivity.class));
         } else if (itemId == R.id.menu_help) {
             startActivity(new Intent(MainActivity.this, HelpActivity.class));
         } else if (itemId == R.id.menu_about) {
@@ -695,8 +706,6 @@ public class MainActivity
      * for the change setting restart process application
      */
     public void restartActivity() {
-        if (!mRestartActivity) return;
-
         setRestartActivity(false);
 
         // kill process
@@ -708,6 +717,39 @@ public class MainActivity
         startActivity(intent);
 
         finish();
+    }
+
+    /**
+     * Refresh the current displayed data by notifying the visible fragment.
+     */
+    public void refreshData() {
+        runOnUiThread(() -> {
+            // 1. Refresh HomeFragment if it exists (might be in background or secondary panel)
+            String homeTag = HomeFragment.class.getSimpleName();
+            Fragment homeFragment = getSupportFragmentManager().findFragmentByTag(homeTag);
+            if (homeFragment instanceof HomeFragment) {
+                ((HomeFragment) homeFragment).startLoaders();
+                Timber.d("[SYNC_CLOUD] HomeFragment loaders restarted.");
+            }
+
+            // 2. Refresh the currently visible fragment in the main container
+            int containerId = isDualPanel() ? R.id.fragmentDetail : R.id.fragmentMain;
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(containerId);
+            
+            if (currentFragment != null && currentFragment != homeFragment) {
+                // Use reflection to call startLoaders() if it exists on the fragment
+                try {
+                    Method startLoadersMethod = currentFragment.getClass().getMethod("startLoaders");
+                    startLoadersMethod.invoke(currentFragment);
+                    Timber.d("[SYNC_CLOUD] Refreshed visible fragment: %s", currentFragment.getClass().getSimpleName());
+                } catch (Exception e) {
+                    // Fragment doesn't have startLoaders, ignore
+                    Timber.v("[SYNC_CLOUD] Fragment %s does not support startLoaders()", currentFragment.getClass().getSimpleName());
+                }
+            }
+
+            Timber.d("[SYNC_CLOUD] Data refresh requested after sync.");
+        });
     }
 
 //    private void shutdownApp() {
@@ -921,6 +963,11 @@ public class MainActivity
         // summary of stocks
         childReports.add(new DrawerMenuItem().withId(R.id.menu_report_summary_of_stocks)
             .withText(getString(R.string.menu_report_summary_of_stocks))
+            .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
+                .color(iconColor)));
+        // summary of assets
+        childReports.add(new DrawerMenuItem().withId(R.id.menu_report_summary_of_assets)
+            .withText(getString(R.string.menu_report_summary_of_assets))
             .withIconDrawable(uiHelper.getIcon(MMXIconFont.Icon.mmx_reports)
                 .color(iconColor)));
         // CashFlow
@@ -1165,6 +1212,16 @@ public class MainActivity
                 .withText(getString(R.string.other));
         childDatabases.add(item);
 
+        if (BuildConfig.IS_SYNC_ENABLED) {
+            // Menu item 'Open from Cloud'
+            DrawerMenuItem cloudItem = new DrawerMenuItem()
+                    .withId(R.id.menu_open_cloud_database)
+                    .withIconDrawable(getUiHelper().getIcon(GoogleMaterial.Icon.gmd_cloud_download)
+                            .color(iconColor))
+                    .withText(getString(R.string.menu_open_from_cloud));
+            childDatabases.add(cloudItem);
+        }
+
         return childDatabases;
     }
 
@@ -1320,8 +1377,7 @@ public class MainActivity
 
         // See if the fragment is already there.
         Fragment existingFragment = getSupportFragmentManager().findFragmentByTag(tag);
-        // If the Home fragment exists and is already visible, nothing to do.
-        if (existingFragment != null && existingFragment.isVisible()) return;
+        if (existingFragment != null) return;
 
         // Create new Home fragment.
         HomeFragment fragment = new HomeFragment();
@@ -1642,6 +1698,37 @@ public class MainActivity
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
     }
 
+    private void onOpenCloudDatabaseClick() {
+        String currentDbPath = new DatabaseManager(this).getDatabasePath();
+        File dbFile = !TextUtils.isEmpty(currentDbPath) ? new File(currentDbPath) : null;
 
+        if (dbFile != null && dbFile.exists()) {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.confirm_cloud_import_title)
+                    .setMessage(R.string.confirm_cloud_import_message)
+                    .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                        // Delete current database
+                        if (dbFile.delete()) {
+                            Timber.d("Current database deleted successfully.");
+                            startCloudSetup();
+                        } else {
+                            Timber.w("Failed to delete current database.");
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, null)
+                    .show();
+        } else {
+            startCloudSetup();
+        }
+    }
+
+    private void startCloudSetup() {
+        // Reset preferences and old data.
+        new PocketBaseSyncEngine(this).clearSyncEngine();
+
+        // Start the PocketBase setup wizard directly
+        Intent intent = new Intent(this, PocketBaseSetupActivity.class);
+        startActivity(intent);
+    }
 
 }

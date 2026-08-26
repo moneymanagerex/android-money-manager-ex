@@ -102,37 +102,35 @@ public class ScheduledTransactionForecastListServices {
 
         QueryBillDeposits billDeposits = new QueryBillDeposits(context);
 
-        Cursor cursor = null;
-        try {
-            cursor = context.getContentResolver().query(billDeposits.getUri(),
-                    billDeposits.getAllColumns(),
-                    null,
-                    null,
-                    QueryBillDeposits.NEXTOCCURRENCEDATE);
+        try (Cursor cursor = context.getContentResolver().query(billDeposits.getUri(),
+                billDeposits.getAllColumns(),
+                null,
+                null,
+                QueryBillDeposits.NEXTOCCURRENCEDATE)) {
+
+            if (cursor == null || cursor.getCount() == 0)
+                return scheduleTransactionForecastList; // is empty
+
+            while (cursor.moveToNext()) {
+                @SuppressLint("Range") RecurringTransactionService recurringTransactionService = new RecurringTransactionService(cursor.getLong(cursor.getColumnIndexOrThrow(QueryBillDeposits.BDID)), context);
+                RecurringTransaction rx = recurringTransactionService.getSimulatedTransactionAsClone();
+                Timber.d("Recurring Transaction: %s", rx.toString());
+                if (rx.getPaymentDate().after(mDateTo.toDate())) {
+                    // first occurrence of this transaction is over cash flow visibility
+                    continue;
+                }
+                scheduleTransactionForecastList.add(rx); // add first entry of series
+                while (recurringTransactionService.simulateMoveNext() && recurringTransactionService.getSimulatedTransaction().getPaymentDate().before(mDateTo.toDate())) {
+                    RecurringTransaction rx2 = recurringTransactionService.getSimulatedTransactionAsClone();
+                    // Timber.d("Recurring Transaction Occurrence: " + rx2.toString());
+                    scheduleTransactionForecastList.add(rx2);
+                }
+
+            }
         } catch (Exception e) {
             Timber.d(e);
         }
-        if (cursor == null ||
-                cursor.getCount() == 0)
-            return scheduleTransactionForecastList; // is empty
 
-        while (cursor.moveToNext()) {
-            @SuppressLint("Range") RecurringTransactionService recurringTransactionService = new RecurringTransactionService(cursor.getLong(cursor.getColumnIndexOrThrow(QueryBillDeposits.BDID)), context);
-            RecurringTransaction rx = recurringTransactionService.getSimulatedTransactionAsClone();
-            Timber.d("Recurring Transaction: %s", rx.toString());
-            if (rx.getPaymentDate().after(mDateTo.toDate())) {
-                // first occurrence of this transaction is over cash flow visibility
-                continue;
-            }
-            scheduleTransactionForecastList.add(rx); // add first entry of series
-            while (recurringTransactionService.simulateMoveNext() && recurringTransactionService.getSimulatedTransaction().getPaymentDate().before(mDateTo.toDate())) {
-                RecurringTransaction rx2 = recurringTransactionService.getSimulatedTransactionAsClone();
-                // Timber.d("Recurring Transaction Occurrence: " + rx2.toString());
-                scheduleTransactionForecastList.add(rx2);
-            }
-
-        }
-        cursor.close();
         scheduleTransactionForecastList.orderByDateAscending();
         return scheduleTransactionForecastList;
     }

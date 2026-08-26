@@ -50,6 +50,7 @@ public class QueryMobileData
 	public static final String ToCurrencyID = "ToCurrencyID";
 	public static final String Splitted  = "SPLITTED";
 	public static final String CATEGID = "CategID";
+	public static final String FULLCATID = "FullCatID";
 	public static final String PAYEENAME = "PayeeName";
 	public static final String PAYEEID = "PayeeID";
 	public static final String TransactionNumber = "TransactionNumber";
@@ -75,7 +76,7 @@ public class QueryMobileData
 	public String[] getAllColumns() {
 		return new String[] {"ID AS _id", ID, TransactionType, Date, Year, Month, Day, ATTACHMENTCOUNT,
 				Category, Amount, BaseConvRate, CURRENCYID, AccountName, ACCOUNTID, ACCOUNTTYPE,
-                ToAccountName, ToAccountID, TOACCOUNTTYPE, TOTRANSAMOUNT, ToCurrencyID, Splitted , CATEGID,
+                ToAccountName, ToAccountID, TOACCOUNTTYPE, TOTRANSAMOUNT, ToCurrencyID, Splitted , CATEGID, FULLCATID,
                 PAYEENAME, PAYEEID, TransactionNumber, Status, Notes, currency,
                 AmountBaseConvRate, TAGS, COLOR };
 	}

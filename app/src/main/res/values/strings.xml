@@ -104,6 +104,7 @@
     <string name="unrealized_gain_loss">Unrealized G/L</string>
     <string name="realized_gain_loss">Realized G/L</string>
     <string name="percentage" translatable="false">%</string>
+    <string name="pie_other">Other</string>
     <string name="delete_account">Delete Account</string>
     <string name="delete_stock_investment">Delete Stock Investment</string>
     <string name="account_name">Account name</string>
@@ -347,6 +348,12 @@
     <string name="menu_report_cashflow">Cash Flow</string>
     <string name="menu_report_summary_of_accounts">Summary of Accounts</string>
     <string name="menu_report_summary_of_stocks">Summary of Stocks</string>
+	<string name="menu_report_summary_of_assets">Summary of Assets</string>
+    <string name="asset_name">Asset Name</string>
+    <string name="asset_type">Asset Type</string> 
+	<string name="asset_initial_value">Initial Value</string>
+    <string name="asset_current_value">Current Value</string>
+    <string name="asset_rate_percent">Rate %</string>	
     <string name="report_subtotal">Subtotal</string>
     <string name="report_grand_total">Grand total</string>
     <string name="total">Total</string>
@@ -583,6 +590,8 @@
     <string name="pref_transaction_hide_reconciled_amounts_title">Hide Reconciled Amounts</string>
     <string name="pref_transaction_sort_by_type_summary">Arrange daily transactions by transaction type (deposit, transfer, withdrawal)</string>
     <string name="pref_transaction_sort_by_type_title">Sort Transactions by Type</string>
+    <string name="pref_search_results_group_by_account_title">Group Search Results by Account</string>
+    <string name="pref_search_results_group_by_account_summary">When enabled, search results are grouped by account. When disabled, all results are listed by date.</string>
     <string name="warning">Warning</string>
     <string name="no_transfer_splits">You have chosen to switch to Transfer but there are Split Categories on the transaction. Do you want to proceed and remove the Split Categories?</string>
     <string name="qif_export">Qif Export</string>
@@ -963,4 +972,29 @@
     <string name="currency_save_error">Error while insert Currency. Probably currency %s is already defined.</string>
     <string name="menu_cashflow_24_months">24 months view</string>
 
+
+    <!-- PocketBse Sync -->
+    <string name="pref_sync_url">Pocketbase server Url</string>
+    <string name="pref_pocketbase_email">Pocketbase email</string>
+    <string name="confirm_cloud_import_title">Delete all data and reload from cloud?</string>
+    <string name="confirm_cloud_import_message">Warning: This will delete your current local database and open the initial setup wizard to connect to the cloud. Proceed?</string>
+    <string name="menu_open_from_cloud">Open from cloud</string>
+    <string name="checking_session">Checking session...</string>
+    <string name="session_restored_initializing_database">Session restored. Initializing database...</string>
+    <string name="please_enter_your_password_to_continue">Please enter your password to continue.</string>
+    <string name="session_expired_please_login_again">Session expired. Please login again.</string>
+    <string name="authenticating">Authenticating...</string>
+    <string name="authentication_successful_initializing_database">Authentication successful. Initializing database...</string>
+    <string name="authentication_failed_check_credentials_and_url">Authentication failed. Check credentials and URL.</string>
+    <string name="error_two_dots">"Error: "</string>
+    <string name="performing_initial_pull_this_may_take_a_while">Performing initial pull (this may take a while)...</string>
+    <string name="sync_setup_complete">Sync Setup Complete!</string>
+    <string name="sync_failed">"Sync failed: "</string>
+    <string name="sync_your_data_with_pocketbase_cloud">Sync your data with PocketBase Cloud</string>
+	
+	<!-- Show & Hide Balance -->
+    <string name="show_balances">Show Balances</string>
+    <string name="hide_balances">Hide Balances</string>
+	<string name="pref_hide_balances_title">Hide Balances by default</string>
+    <string name="pref_hide_balances_summary">Show/Hide account balances on the main screens by default.</string>
 </resources>

@@ -56,8 +56,9 @@
         android:backupAgent=".core.MoneyManagerBackupAgentHelper"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:label="@string/application_name"
+        android:label="${appName}"
         android:theme="@style/Theme.Splash"
+        android:networkSecurityConfig="@xml/network_security_config"
         tools:replace="android:label"
         android:supportsRtl="true">
 
@@ -297,6 +298,9 @@
             android:name=".reports.SummaryOfAccountsChartActivity"
             android:label="@string/menu_report_summary_of_accounts" />
         <activity
+            android:name=".reports.SummaryOfAssetsReportActivity"
+            android:label="@string/menu_report_summary_of_assets" />
+        <activity
                 android:name=".settings.SyncPreferencesActivity"
                 android:label="@string/synchronization"
                 android:launchMode="singleTask" android:exported="true">
@@ -370,6 +374,8 @@
         <activity
             android:name=".common.CalculatorActivity"
             android:label="@string/app_name" />
+
+        <activity android:name=".sync.PocketBaseSetupActivity" />
 
         <!-- providers -->
 

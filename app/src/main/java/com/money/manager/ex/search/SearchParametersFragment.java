@@ -285,36 +285,46 @@ public class SearchParametersFragment
 
         switch (requestCode) {
             case RequestCodes.PAYEE:
-                viewHolder.txtSelectPayee.setTag(data.getLongExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET));
-                viewHolder.txtSelectPayee.setText(data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME));
+                long payeeId = data.getLongExtra(PayeeActivity.INTENT_RESULT_PAYEEID, Constants.NOT_SET);
+                String payeeName = data.getStringExtra(PayeeActivity.INTENT_RESULT_PAYEENAME);
+
+                searchParameters = collectSearchCriteria();
+                searchParameters.payeeId = (payeeId == Constants.NOT_SET) ? null : payeeId;
+                searchParameters.payeeName = payeeName;
+                setSearchParameters(searchParameters);
                 break;
             case RequestCodes.TAG:
-                viewHolder.txtSelectTag.setTag(data.getLongExtra(TagActivity.INTENT_RESULT_TAGID, Constants.NOT_SET));
-                viewHolder.txtSelectTag.setText(data.getStringExtra(TagActivity.INTENT_RESULT_TAGNAME));
+                long tagId = data.getLongExtra(TagActivity.INTENT_RESULT_TAGID, Constants.NOT_SET);
+                String tagName = data.getStringExtra(TagActivity.INTENT_RESULT_TAGNAME);
+
+                searchParameters = collectSearchCriteria();
+                searchParameters.tagId = (tagId == Constants.NOT_SET) ? null : tagId;
+                searchParameters.tagName = tagName;
+                setSearchParameters(searchParameters);
                 break;
             case RequestCodes.CATEGORY:
                 //create class for store data
                 CategorySub categorySub = new CategorySub();
                 categorySub.categId = data.getLongExtra(CategoryListActivity.INTENT_RESULT_CATEGID, Constants.NOT_SET);
                 categorySub.categName = data.getStringExtra(CategoryListActivity.INTENT_RESULT_CATEGNAME);
-                //update into button
-                displayCategory(categorySub);
+
+                searchParameters = collectSearchCriteria();
+                searchParameters.category = categorySub;
+                setSearchParameters(searchParameters);
                 break;
 
             case RequestCodes.AMOUNT_FROM:
                 stringExtra = data.getStringExtra(CalculatorActivity.RESULT_AMOUNT);
-                searchParameters = getSearchParameters();
+                searchParameters = collectSearchCriteria();
                 searchParameters.amountFrom = MoneyFactory.fromString(stringExtra);
                 setSearchParameters(searchParameters);
-                displayAmountFrom();
                 break;
 
             case RequestCodes.AMOUNT_TO:
                 stringExtra = data.getStringExtra(CalculatorActivity.RESULT_AMOUNT);
-                searchParameters = getSearchParameters();
+                searchParameters = collectSearchCriteria();
                 searchParameters.amountTo = MoneyFactory.fromString(stringExtra);
                 setSearchParameters(searchParameters);
-                displayAmountTo();
                 break;
         }
     }
@@ -395,12 +405,9 @@ public class SearchParametersFragment
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         MmxDate date = new MmxDate(year, month, dayOfMonth);
 
-                        SearchParameters parameters = getSearchParameters();
+                        SearchParameters parameters = collectSearchCriteria();
                         parameters.dateFrom = date.toDate();
                         setSearchParameters(parameters);
-
-                        String displayText = new MmxDateTimeUtils().getUserFormattedDate(getActivity(), date.toDate());
-                        viewHolder.txtDateFrom.setText(displayText);
                     }
                 },
                 currentValue.getYear(),
@@ -421,12 +428,9 @@ public class SearchParametersFragment
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         MmxDate date = new MmxDate(year, month, dayOfMonth);
 
-                        SearchParameters parameters = getSearchParameters();
+                        SearchParameters parameters = collectSearchCriteria();
                         parameters.dateTo = date.toDate();
                         setSearchParameters(parameters);
-
-                        String displayText = new MmxDateTimeUtils().getUserFormattedDate(getActivity(), date.toDate());
-                        viewHolder.txtDateTo.setText(displayText);
                     }
                 },
                 currentValue.getYear(),
@@ -493,9 +497,9 @@ public class SearchParametersFragment
         }
 
         // status
-        if (searchParameters.status != null &&
-                !searchParameters.status.equals(SearchParameters.STRING_NULL_VALUE) &&
-                !searchParameters.status.isEmpty()) {
+        if (searchParameters.status != null  &&
+                !searchParameters.status.equals(SearchParameters.STRING_NULL_VALUE) ) { // &&
+//                !searchParameters.status.isEmpty()) {
             where.addStatement(QueryAllData.STATUS, "=", searchParameters.status);
         }
 
@@ -522,23 +526,7 @@ public class SearchParametersFragment
             // Category. Also check the splits.
             if (searchParameters.searchSubCategory) {
                 // build where also for sub category
-                String whereSubCategory = null;
-                QueryNestedCategory subQuery = new QueryNestedCategory(this.getActivity());
-                List<NestedCategoryEntity> subCat = subQuery.getChildrenNestedCategoryEntities(categId);
-                for( NestedCategoryEntity child : subCat) {
-                    if (whereSubCategory != null ) {
-                        whereSubCategory += ", ";
-                    } else {
-                        whereSubCategory = "";
-                    }
-                    whereSubCategory += Long.toString(child.getCategoryId());
-                }
-                whereSubCategory = "(" + whereSubCategory + ")" ;
-
-                // now using QueryMobileData that have split directly at cateId (uniformed both from transaction or Split)
-                where.addStatement(
-                        "(" + QueryAllData.CATEGID + " in " + whereSubCategory + ") "
-                        );
+                where.addStatement(QueryAllData.FULLCATID, " LIKE ", "%:" + categId + ":%");
             } else {
                 // now using QueryMobileData that have split directly at cateId (uniformed both from transaction or Split)
                 where.addStatement(
@@ -615,15 +603,16 @@ public class SearchParametersFragment
         }
 
         SearchParameters searchParameters = getSearchParameters();
+        if (searchParameters == null) {
+            searchParameters = new SearchParameters();
+        }
 
         // Account
         if (this.spinAccount != null) {
             int selectedAccountPosition = spinAccount.getSelectedItemPosition();
             if (selectedAccountPosition != AdapterView.INVALID_POSITION) {
                 long selectedAccountId = mAccountIdList.get(selectedAccountPosition);
-                if (selectedAccountId != Constants.NOT_SET) {
-                    searchParameters.accountId = selectedAccountId;
-                }
+                searchParameters.accountId = (selectedAccountId == Constants.NOT_SET) ? null : selectedAccountId;
             }
         }
 
@@ -632,9 +621,7 @@ public class SearchParametersFragment
             int position = spinCurrency.getSelectedItemPosition();
             if (position != AdapterView.INVALID_POSITION) {
                 long currencyId = mCurrencyIdList.get(position);
-                if (currencyId != Constants.NOT_SET) {
-                    searchParameters.currencyId = currencyId;
-                }
+                searchParameters.currencyId = (currencyId == Constants.NOT_SET) ? null : currencyId;
             }
         }
 
@@ -644,7 +631,7 @@ public class SearchParametersFragment
         searchParameters.withdrawal = cbxWithdrawal.isChecked();
 
         // Status
-        if (spinStatus.getSelectedItemPosition() > 0) {
+        if (spinStatus != null && spinStatus.getSelectedItemPosition() >= 0) {
             searchParameters.status = mStatusValues.get(spinStatus.getSelectedItemPosition());
         }
 
@@ -652,11 +639,15 @@ public class SearchParametersFragment
         Object tag = viewHolder.txtAmountFrom.getTag();
         if (tag != null) {
             searchParameters.amountFrom = MoneyFactory.fromString((String) tag);
+        } else {
+            searchParameters.amountFrom = null;
         }
         // Amount to
         tag = viewHolder.txtAmountTo.getTag();
         if (tag != null) {
             searchParameters.amountTo = MoneyFactory.fromString((String) tag);
+        } else {
+            searchParameters.amountTo = null;
         }
 
 //        // Date from
@@ -668,28 +659,37 @@ public class SearchParametersFragment
 //            String dateString = viewHolder.txtDateTo.getTag().toString();
 //            searchParameters.dateTo = new MmxDate(dateString).toDate();
 //        }
+
         // Payee
         if (viewHolder.txtSelectPayee.getTag() != null) {
             searchParameters.payeeId = Long.parseLong(viewHolder.txtSelectPayee.getTag().toString());
             searchParameters.payeeName = viewHolder.txtSelectPayee.getText().toString();
+        } else {
+            searchParameters.payeeId = null;
+            searchParameters.payeeName = null;
         }
         // tag
         if (viewHolder.txtSelectTag.getTag() != null) {
             searchParameters.tagId = Long.parseLong(viewHolder.txtSelectTag.getTag().toString());
             searchParameters.tagName = viewHolder.txtSelectTag.getText().toString();
+        } else {
+            searchParameters.tagId = null;
+            searchParameters.tagName = null;
         }
         // Category
         if (txtSelectCategory.getTag() != null) {
-            searchParameters.category = (CategorySub) txtSelectCategory.getTag();
-            searchParameters.searchSubCategory = cbxSearchSubCategory.isChecked();
+        searchParameters.category = (CategorySub) txtSelectCategory.getTag();
+        searchParameters.searchSubCategory = cbxSearchSubCategory.isChecked();
         }
+
         // Transaction number
         if (!TextUtils.isEmpty(viewHolder.txtTransNumber.getText())) {
-            searchParameters.transactionNumber = viewHolder.txtTransNumber.getText().toString();
+        searchParameters.transactionNumber = viewHolder.txtTransNumber.getText().toString();
         }
+		
         // Notes
         if (!TextUtils.isEmpty(txtNotes.getText())) {
-            searchParameters.notes = txtNotes.getText().toString();
+        searchParameters.notes = txtNotes.getText().toString();
         }
 
         return searchParameters;
@@ -727,8 +727,20 @@ public class SearchParametersFragment
         SearchParameters searchParameters = getSearchParameters();
 
         // Account
-        this.spinAccount.setSelection(0);
-        this.spinCurrency.setSelection(0);
+        if (searchParameters.accountId != null) {
+            int index = mAccountIdList.indexOf(searchParameters.accountId);
+            this.spinAccount.setSelection(index >= 0 ? index : 0);
+        } else {
+            this.spinAccount.setSelection(0);
+        }
+
+        // Currency
+        if (searchParameters.currencyId != null) {
+            int index = mCurrencyIdList.indexOf(searchParameters.currencyId);
+            this.spinCurrency.setSelection(index >= 0 ? index : 0);
+        } else {
+            this.spinCurrency.setSelection(0);
+        }
 
         // Transaction Type
         viewHolder.cbxDeposit.setChecked(searchParameters.deposit);
@@ -736,7 +748,12 @@ public class SearchParametersFragment
         cbxWithdrawal.setChecked(searchParameters.withdrawal);
 
         // Status
-        this.spinStatus.setSelection(0);
+        if (searchParameters.status != null) {
+            int index = mStatusValues.indexOf(searchParameters.status);
+            this.spinStatus.setSelection(index >= 0 ? index : 0);
+        } else {
+            this.spinStatus.setSelection(0);
+        }
 
         // Amount from
         if (searchParameters.amountFrom != null) {
@@ -771,13 +788,17 @@ public class SearchParametersFragment
         viewHolder.txtSelectPayee.setText(searchParameters.payeeName);
         // Category
         displayCategory(searchParameters.category);
-        cbxSearchSubCategory.setEnabled(true);
-        cbxSearchSubCategory.setChecked(true);
+        cbxSearchSubCategory.setChecked(searchParameters.searchSubCategory);
+        cbxSearchSubCategory.setEnabled(searchParameters.category != null);
 
         // Transaction number
         viewHolder.txtTransNumber.setText(searchParameters.transactionNumber);
         // Notes
         txtNotes.setText(searchParameters.notes);
+
+        // Tag
+        viewHolder.txtSelectTag.setTag(searchParameters.tagId);
+        viewHolder.txtSelectTag.setText(searchParameters.tagName);
 
         // color
         TransactionColorUtils tsc = new TransactionColorUtils(getContext());

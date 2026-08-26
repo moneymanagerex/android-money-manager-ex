@@ -199,6 +199,11 @@ public class CheckingTransactionEditActivity
         }
     }
 
+    @Override
+    public boolean onHandleOnBackPressed() {
+        return onActionCancelClick();
+    }
+
     // Events
 
     @Subscribe

@@ -43,6 +43,8 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.currency.CurrencyService;
+import info.javaperformance.money.MoneyFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -91,13 +93,51 @@ public class PieChartFragment
         ArrayList<Entry> yVals1 = new ArrayList<>();
         ArrayList<String> xVals = new ArrayList<>();
 
-        long length = mPieCharts.size() < MAX_NUM_ITEMS ? mPieCharts.size() : MAX_NUM_ITEMS;
-
-        for (int i = 0; i < length; i++) {
-            Entry e = new Entry((float) mPieCharts.get(i).getValue(), i);
-            yVals1.add(e);
-            xVals.add(mPieCharts.get(i).getText());
+        // compute total of all slices so percentages can be relative to the whole
+        double totalSum = 0d;
+        for (ValuePieEntry v : mPieCharts) {
+            totalSum += Math.abs(v.getValue());
         }
+
+        // decide how many top items to show; optionally add an "Other" slice appended last
+        boolean addOther = mPieCharts.size() > MAX_NUM_ITEMS;
+        int topCount;
+        if (addOther) {
+            topCount = MAX_NUM_ITEMS - 1; // reserve one slot for "Other"
+        } else {
+            topCount = mPieCharts.size();
+        }
+
+        ArrayList<ValuePieEntry> displayPieCharts = new ArrayList<>();
+        double sumShown = 0d;
+        for (int i = 0; i < topCount; i++) {
+            ValuePieEntry v = mPieCharts.get(i);
+            Entry e = new Entry((float) v.getValue(), yVals1.size());
+            yVals1.add(e);
+            xVals.add(v.getText());
+            displayPieCharts.add(v);
+            sumShown += Math.abs(v.getValue());
+        }
+
+        if (addOther) {
+            // compute Other = remainder (may be 0)
+            double otherValue = totalSum - sumShown;
+            ValuePieEntry otherItem = new ValuePieEntry(getString(R.string.pie_other), otherValue);
+            // try to produce a formatted value for the Other slice if possible
+            try {
+                CurrencyService currencyService = new CurrencyService(getActivity().getApplicationContext());
+                otherItem.setValueFormatted(currencyService.getBaseCurrencyFormatted(MoneyFactory.fromDouble(otherValue)));
+            } catch (Exception ex) {
+                // ignore formatting errors
+            }
+            Entry eOther = new Entry((float) otherValue, yVals1.size());
+            yVals1.add(eOther);
+            xVals.add(otherItem.getText());
+            displayPieCharts.add(otherItem);
+        }
+
+        // replace mPieCharts with the subset(+other) so selection maps correctly
+        mPieCharts = displayPieCharts;
 
         PieDataSet dataSet = new PieDataSet(yVals1, "");
         dataSet.setSliceSpace(3f);
