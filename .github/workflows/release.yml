@@ -87,12 +87,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish GPlay to Beta Track
-        if: false # Re-enable by setting to 'true'
         uses: r0adkll/upload-google-play@v1
         with:
-          service_account_json_PlainText: ${{ secrets.SERVICE_ACCOUNT_JSON_GPLAY }}
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON_GPLAY }}
           packageName: 'com.money.manager.ex.android'
-          releaseFiles: app/build/outputs/bundle/gplayRelease/app-gplay-release.aab
-          track: beta
-          status: completed
+          releaseFiles: app/build/outputs/bundle/gplayRelease/*.aab
+          tracks: 'beta'
           whatsNewDirectory: 'gplay-changelogs'
+          releaseName: "${{ steps.version.outputs.version_code }} (${{ steps.version.outputs.version_name }})"
