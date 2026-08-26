@@ -75,7 +75,7 @@ jobs:
           tag_name: ${{ steps.version.outputs.version_name }} 
           name: "${{ steps.version.outputs.version_name }}"   
           generate_release_notes: true
-          prerelease: true
+          prerelease: false
           files: |
             app/build/outputs/bundle/fdroidRelease/*.aab
             app/build/outputs/bundle/gplayRelease/*.aab
@@ -90,7 +90,7 @@ jobs:
         if: false # Re-enable by setting to 'true'
         uses: r0adkll/upload-google-play@v1
         with:
-          service_account_json_PlainText: ${{ secrets.PLAY_CONSOLE_JSON }}
+          service_account_json_PlainText: ${{ secrets.SERVICE_ACCOUNT_JSON_GPLAY }}
           packageName: 'com.money.manager.ex.android'
           releaseFiles: app/build/outputs/bundle/gplayRelease/app-gplay-release.aab
           track: beta
