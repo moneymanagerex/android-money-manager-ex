@@ -75,7 +75,7 @@ jobs:
           tag_name: ${{ steps.version.outputs.version_name }} 
           name: "${{ steps.version.outputs.version_name }}"   
           generate_release_notes: true
-          prerelease: true
+          prerelease: false
           files: |
             app/build/outputs/bundle/fdroidRelease/*.aab
             app/build/outputs/bundle/gplayRelease/*.aab
