@@ -40,9 +40,8 @@ jobs:
       - name: Publish GPlay to Beta Track (Test)
         uses: r0adkll/upload-google-play@v1
         with:
-          service_account_json_PlainText: ${{ secrets.SERVICE_ACCOUNT_JSON_GPLAY }}
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON_GPLAY }}
           packageName: 'com.money.manager.ex.android'
           releaseFiles: app/build/outputs/bundle/gplayRelease/*.aab
-          track: 'beta'
-          status: 'completed'
+          tracks: 'beta'
           whatsNewDirectory: 'gplay-changelogs'
