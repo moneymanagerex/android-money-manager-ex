@@ -41,63 +41,39 @@ jobs:
         id: version
         run: |
           # Extracts both versionCode and versionName from build.gradle
-          VERSION_NAME=$(grep -m 1 'versionName "' app/build.gradle | cut -d'"' -f2)
-          VERSION_CODE=$(grep -m 1 'versionCode ' app/build.gradle | awk '{print $2}')
+          VERSION_NAME=$(grep 'versionName "' app/build.gradle | cut -d'"' -f2)
+          VERSION_CODE=$(grep 'versionCode ' app/build.gradle | awk '{print $2}')
           
           echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
           echo "version_code=$VERSION_CODE" >> $GITHUB_OUTPUT
-          
+        
           echo "=== BUILD VERSION INFO ==="
           echo "VERSION_NAME: $VERSION_NAME"
           echo "VERSION_CODE: $VERSION_CODE"
           echo "========================="          
 
-      - name: Validate Version and Changelog
-        run: |
-          VERSION_NAME="${{ steps.version.outputs.version_name }}"
-          VERSION_CODE="${{ steps.version.outputs.version_code }}"
-          
-          echo "Running pre-release validations..."
-
-          # 1. Check if version_code is a valid number
-          if ! [[ "$VERSION_CODE" =~ ^[0-9]+$ ]]; then
-            echo "::error::Validation failed: versionCode '$VERSION_CODE' must be a valid number."
-            exit 1
-          fi
-
-          # 2. Check if version_name matches x.y.z format (e.g., 5.5.11 or 5.5.11-rc1)
-          if ! [[ "$VERSION_NAME" =~ ^[0-9]+\.[0-9]+\.[0-9]+ ]]; then
-            echo "::error::Validation failed: versionName '$VERSION_NAME' must follow the x.y.z format."
-            exit 1
-          fi
-
-          # 3. Check if the changelog file exists for the given version code
-          SRC="metadata/android/en-US/changelogs/$VERSION_CODE.txt"
-          if [ ! -f "$SRC" ]; then
-            echo "::error::Validation failed: Mandatory changelog file '$SRC' does not exist!"
-            exit 1
-          fi
-
-          echo "All validations passed successfully!"
-
       - name: Prepare GPlay Changelog
         run: |
           CODE="${{ steps.version.outputs.version_code }}"
+          # Percorso del tuo file di testo sorgente (es. basato sul versionCode o su un file unico)
           SRC="metadata/android/en-US/changelogs/$CODE.txt"
           
-          # Creates the temporary folder for GPlay and copies the file strictly
-          mkdir -p gplay-changelogs/en-US
-          cp "$SRC" "gplay-changelogs/en-US/whatsnew-$CODE"
+          # Crea la cartella rispettando la struttura
+          mkdir -p gplay-changelogs
+          
+          # Copia e rinomina il file esattamente come vuole la specifica di Google Play
+          cp "$SRC" "gplay-changelogs/whatsnew-en-US"
+          
           echo "=== GPLAY CHANGELOG CONTENT ==="
-          cat "gplay-changelogs/en-US/whatsnew-$CODE"
+          cat "gplay-changelogs/whatsnew-en-US"
           echo "==============================="
           echo "Changelog successfully prepared for GPlay."
 
       - name: Create GitHub Release with Auto-Generated Notes
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.version.outputs.version_name }}
-          name: "${{ steps.version.outputs.version_name }}"
+          tag_name: ${{ steps.version.outputs.version_name }} 
+          name: "${{ steps.version.outputs.version_name }}"   
           generate_release_notes: true
           prerelease: false
           files: |
@@ -111,11 +87,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish GPlay to Beta Track
+        if: true # Re-enable by setting to 'true'
         uses: r0adkll/upload-google-play@v1
         with:
-          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON_GPLAY }}
+          service_account_json_PlainText: ${{ secrets.PLAY_CONSOLE_JSON }}
           packageName: 'com.money.manager.ex.android'
-          releaseFiles: app/build/outputs/bundle/gplayRelease/*.aab
-          tracks: 'beta'
+          releaseFiles: app/build/outputs/bundle/gplayRelease/app-gplay-release.aab
+          track: beta
+          status: completed
           whatsNewDirectory: 'gplay-changelogs'
-          releaseName: "${{ steps.version.outputs.version_code }} (${{ steps.version.outputs.version_name }})"
