@@ -19,8 +19,8 @@ import android.provider.OpenableColumns;
  * Metadata for the file selected in the document storage, using Storage Access Framework.
  */
 public class DocFileMetadata {
-    public String Uri;
-    public String Name;
+    public String Uri = "";
+    public String Name = "";
     public long Size;
     public MmxDate lastModified;
 
@@ -33,7 +33,10 @@ public class DocFileMetadata {
      */
     public static DocFileMetadata fromUri(Context context, Uri uri) {
         DocFileMetadata result = new DocFileMetadata();
+        if (uri == null) return result;
+
         result.Uri = uri.toString();
+        result.Name = "Unknown";
         result.lastModified = new MmxDate(); // Default to NOW for remote servers
 
         // If it's a remote sync server, return default metadata
@@ -76,7 +79,8 @@ public class DocFileMetadata {
             int sizeIndex = cursor.getColumnIndexOrThrow(OpenableColumns.SIZE);
             int lastModifiedIndex = cursor.getColumnIndexOrThrow(DocumentsContract.Document.COLUMN_LAST_MODIFIED);
 
-            result.Name = displayNameIndex != -1 ? cursor.getString(displayNameIndex) : "Unknown";
+            String name = displayNameIndex != -1 ? cursor.getString(displayNameIndex) : "Unknown";
+            result.Name = name != null ? name : "Unknown";
             result.Size = (sizeIndex != -1 && !cursor.isNull(sizeIndex)) ? cursor.getLong(sizeIndex) : -1;
             result.lastModified = (lastModifiedIndex != -1 && !cursor.isNull(lastModifiedIndex))
                     ? new MmxDate(cursor.getLong(lastModifiedIndex))
