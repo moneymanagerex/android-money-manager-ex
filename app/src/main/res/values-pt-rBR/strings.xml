@@ -148,6 +148,7 @@
     <string name="amount">Valor</string>
     <string name="total_amount">Valor total</string>
     <string name="deposit">Crédito</string>
+    <string name="sell">Vender</string>
     <string name="status">Estado</string>
     <string name="status_reconciled">Pago</string>
     <string name="status_void">Inativo</string>

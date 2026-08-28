@@ -581,7 +581,7 @@
     <string name="default_account">默认账户</string>
     <string name="default_account_summary">请选择新建交易时的默认使用账户。</string>
     <string name="default_account_not_set">尚未设置默认账户。</string>
-    <string name="balance_account">资产负债表账户</string>
+    <string name="balance_account">对齐余额</string>
     <string name="balance_adjustment">余额调整</string>
     <string name="cash">现金</string>
     <string name="select_account">选择账户</string>
