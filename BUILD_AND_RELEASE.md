@@ -56,7 +56,8 @@ The workflow performs the following steps:
 3. Decodes the secure keystore from GitHub Secrets.
 4. Compiles all product flavors (`fdroid`, `gplay`, `sync`) in both AAB and APK formats.
 5. Automatically generates standard GitHub release notes containing merged Pull Requests and contributors.
-6. Publishes all built assets directly to the GitHub Releases page, under [wolfsolver](https://play.google.com/store/apps/dev?id=7247021252165625264) account.
+6. Publishes all built assets directly to the GitHub Releases page
+7. Publishea gplay asset on gplay under [wolfsolver](https://play.google.com/store/apps/dev?id=7247021252165625264) account in open test channel.
 
 ---
 
