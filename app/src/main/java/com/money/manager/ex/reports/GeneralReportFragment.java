@@ -23,6 +23,16 @@ import info.javaperformance.money.MoneyFactory;
 
 public class GeneralReportFragment extends Fragment {
 
+    public static final String KEY_REPORT_NAME = "GeneralReportFragment:ReportName";
+
+    public static GeneralReportFragment newInstance(String reportName) {
+        GeneralReportFragment fragment = new GeneralReportFragment();
+        Bundle args = new Bundle();
+        args.putString(KEY_REPORT_NAME, reportName);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup group,
                              Bundle saved) {
         return inflater.inflate(R.layout.fragment_general_report, group, false);
@@ -42,7 +52,8 @@ public class GeneralReportFragment extends Fragment {
     public void onStart() {
         super.onStart();
         WebView webView = (WebView) getActivity().findViewById(R.id.GeneralReportWebView);
-        String htmlContent = getHtmlReport(GeneralReportActivity.currentReportName);
+        String reportName = getArguments() != null ? getArguments().getString(KEY_REPORT_NAME, "") : "";
+        String htmlContent = getHtmlReport(reportName);
 
         webView.setWebViewClient(new WebViewClient());
         webView.loadDataWithBaseURL(null, htmlContent, "text/html", "UTF-8", null);
