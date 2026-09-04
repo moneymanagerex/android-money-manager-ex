@@ -28,6 +28,11 @@ android {
         targetCompatibility JavaVersion.VERSION_11
     }
 
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
+
     defaultConfig {
         manifestPlaceholders = [appName: "Money Manager Ex"]
         applicationId "com.money.manager.ex"
