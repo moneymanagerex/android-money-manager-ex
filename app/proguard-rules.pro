@@ -1,44 +1,35 @@
-# Taken from https://gist.github.com/Jackgris/c4a71328b1ae346cba04
-# This is a configuration file for ProGuard.
-# http://proguard.sourceforge.net/index.html#manual/usage.html
+# ProGuard / R8 Configuration for Money Manager Ex (AMMX)
+
 -dontusemixedcaseclassnames
 -dontskipnonpubliclibraryclasses
 -verbose
-
-# Optimization is turned off by default. Dex does not like code run
-# through the ProGuard optimize and preverify steps (and performs some
-# of these optimizations on its own).
--dontoptimize
-#-dontpreverify
-
-# If you want to enable optimization, you should include the
-# following:
-#-optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
-#-optimizationpasses 5
 -allowaccessmodification
+-keepparameternames
+-renamesourcefileattribute SourceFile
+-keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,*Annotation*,EnclosingMethod
 
+# Standard Android Entry Points
 -keep public class * extends android.app.Activity
 -keep public class * extends android.app.Application
 -keep public class * extends android.app.Service
 -keep public class * extends android.content.BroadcastReceiver
 -keep public class * extends android.content.ContentProvider
 -keep public class * extends android.app.backup.BackupAgent
--keep public class * extends android.preference.Preference
--keep public class * extends android.support.v4.app.Fragment
--keep public class * extends android.support.v4.app.DialogFragment
--keep public class * extends android.app.Fragment
--keep public class com.android.vending.licensing.ILicensingService
+-keep public class * extends androidx.preference.Preference
+-keep public class * extends androidx.fragment.app.Fragment
+-keep public class * extends androidx.fragment.app.DialogFragment
 
-# For native methods, see http://proguard.sourceforge.net/manual/examples.html#native
+# Native methods
 -keepclasseswithmembernames class * {
     native <methods>;
 }
 
+# Custom Views
 -keep public class * extends android.view.View {
- public <init>(android.content.Context);
- public <init>(android.content.Context, android.util.AttributeSet);
- public <init>(android.content.Context, android.util.AttributeSet, int);
- public void set*(...);
+    public <init>(android.content.Context);
+    public <init>(android.content.Context, android.util.AttributeSet);
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+    public void set*(...);
 }
 
 -keepclasseswithmembers class * {
@@ -53,134 +44,92 @@
     public void *(android.view.View);
 }
 
-# For enumeration classes, see http://proguard.sourceforge.net/manual/examples.html#enumerations
+# Enumerations
 -keepclassmembers enum * {
     public static **[] values();
     public static ** valueOf(java.lang.String);
 }
 
+# R resources
 -keepclassmembers class **.R$* {
     public static <fields>;
 }
 
-# MMEX classes
-#-keep class com.money.manager.ex.**
-#-keep class com.money.manager.ex.home.RecentDatabasesProvider { *; }
-#-keep class com.money.manager.ex.home.**
--keepclassmembers class com.money.manager.ex.home.DatabaseMetadata { <fields>; }
+# MMEX Data Models & Persistent Serialization
+-keep class com.money.manager.ex.home.RecentDatabasesProvider { *; }
+-keep class com.money.manager.ex.home.DatabaseMetadata { *; }
+-keep class com.money.manager.ex.sync.PocketBaseSyncEngine$SyncConfig { *; }
+-keep class com.money.manager.ex.sync.PocketBaseSyncEngine$TableConfig { *; }
+-keep class com.money.manager.ex.investment.yahoofinance.** { *; }
 
-#Icon font
--keep class .R
--keep class **.R$* {
-    <fields>;
+# Gson
+-keepclassmembers class * {
+    @com.google.gson.annotations.SerializedName <fields>;
+    @com.google.gson.annotations.Expose <fields>;
 }
 
-# Parceler library
+# Parceler
 -keep class * implements android.os.Parcelable {
-  public static final android.os.Parcelable$Creator *;
+    public static final android.os.Parcelable$Creator *;
 }
--keep class org.parceler.Parceler$$Parcels
+-keep class **$$Parcelable { *; }
+-keep class org.parceler.** { *; }
+-dontwarn org.parceler.**
+-keep @org.parceler.Parcel class * { *; }
+-keepclassmembers class * {
+    @org.parceler.ParcelProperty <methods>;
+    @org.parceler.ParcelProperty <fields>;
+}
 
--keep class android.support.v4.app.** { *; }
--keep interface android.support.v4.app.** { *; }
+# Dagger 2
+-keepclassmembers class * {
+    @javax.inject.Inject *;
+}
+-keep class **$$ModuleAdapter
+-keep class **$$InjectAdapter
+-keep class **$$ViewInjector
+-keep class dagger.** { *; }
+-dontwarn dagger.**
 
--keep class com.github.mikephil.charting.** { *; }
--dontwarn io.realm.**
-
-# Retrofit
--dontwarn retrofit2.**
--keep class retrofit2.** { *; }
--keepattributes Signature
--keepattributes Exceptions
-
-# EventBus
-#-keepclassmembers class ** {
-#    public void onEvent*(***);
-#}
-# EventBus 3.0, http://greenrobot.org/eventbus/documentation/proguard/
-#-keep class de.greenrobot.event.** { *; }
-#-keep class * {
-#    @de.greenrobot.event.* <methods>;
-#}
--keepattributes *Annotation*
--keepclassmembers class ** {
+# EventBus 3
+-keepclassmembers class * {
     @org.greenrobot.eventbus.Subscribe <methods>;
 }
 -keep enum org.greenrobot.eventbus.ThreadMode { *; }
-# Only required if you use AsyncExecutor
 -keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
     <init>(java.lang.Throwable);
 }
 
-# IcePick
--dontwarn icepick.**
--keep class icepick.** { *; }
--keep class **$$Icepick { *; }
--keepclasseswithmembernames class * {
-    @icepick.* <fields>;
-}
--keepnames class * { @icepick.State *;}
+# SQLCipher / Zetetic
+-keep class net.sqlcipher.** { *; }
+-keep class net.zetetic.** { *; }
+-dontwarn net.sqlcipher.**
+-dontwarn net.zetetic.**
 
-##---------------Begin: proguard configuration for Gson  ----------
-# Gson uses generic type information stored in a class file when working with fields. Proguard
-# removes such information by default, so configure it to keep all of it.
--keepattributes Signature
-# For using GSON @Expose annotation
--keepattributes *Annotation*
-# Gson specific classes
--keep class sun.misc.Unsafe { *; }
-#-keep class com.google.gson.stream.** { *; }
-# Application classes that will be serialized/deserialized over Gson
--keep class com.google.gson.examples.android.model.** { *; }
-##---------------End: proguard configuration for Gson  ----------
-
-#SQLCipher
-#-keep class net.sqlcipher.** { *; }
-
-# Ignore warnings
--dontwarn org.apache.**
--dontwarn com.opencsv.bean.**
--dontwarn com.google.common.**
--dontwarn sun.misc.Unsafe
-# https://github.com/square/okio/issues/60
+# Retrofit, OkHttp, RxJava
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
 -dontwarn okio.**
-# picasso
 -dontwarn com.squareup.okhttp.**
+-dontwarn io.reactivex.**
+-dontwarn rx.**
 
-# Test for debugging
-#-renamesourcefileattribute SourceFile
-#-keepattributes SourceFile,LineNumberTable
-#-printmapping build/outputs/mapping/release/mapping.txt
-#-dontobfuscate
-
-# ?
-#-keepattributes InnerClasses
-
-# RxJava
-#-dontwarn sun.misc.**
--dontwarn sun.misc.Unsafe
--keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
-   long producerIndex;
-   long consumerIndex;
-}
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode producerNode;
-}
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode consumerNode;
-}
-
-# Changelog
+# Charts & UI Libraries
+-dontwarn io.realm.**
+-keep class com.github.mikephil.charting.** { *; }
+-keep class com.mikepenz.iconics.** { *; }
 -keep class it.gmariotti.changelibs.library.internal.ChangeLogAdapter { *; }
 
-# Joda Time. This is supposedly included in the lib itself(?).
+# External Utilities & Ignore Warnings
+-dontwarn com.opencsv.**
+-keep class com.opencsv.** { *; }
+-keep class net.objecthunter.exp4j.** { *; }
+-dontwarn org.jsoup.**
+-keep class org.jsoup.** { *; }
+-dontwarn com.jakewharton.timber.**
+-dontwarn org.apache.**
+-dontwarn com.google.common.**
 -dontwarn org.joda.convert.**
 -dontwarn org.joda.time.**
--keep class org.joda.time.** { *; }
--keep interface org.joda.time.** { *; }
-
-# fix for build errors
--keepattributes EnclosingMethod
-
-# Xiaomi issue
+-dontwarn sun.misc.Unsafe
 -keepnames class org.apache.commons.lang3.** { *; }

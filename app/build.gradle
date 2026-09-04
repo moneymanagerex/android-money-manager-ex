@@ -96,6 +96,9 @@ android {
         }
         release {
             versionNameSuffix "-release"
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
             // Collega la firma di release solo se il file del keystore è stato effettivamente trovato e impostato
             if (signingConfigs.release.storeFile != null && signingConfigs.release.storeFile.exists()) {
