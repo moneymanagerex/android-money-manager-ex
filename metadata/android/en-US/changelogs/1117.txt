@@ -1,0 +1,2 @@
+* Better management for emb (password is stored in secure store)
+* Fix some ANR
