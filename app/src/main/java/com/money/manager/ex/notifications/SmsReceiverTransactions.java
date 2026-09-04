@@ -73,12 +73,12 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
     BriteDatabase database;
 
     // Db setup
-    public static MmxOpenHelper openHelper;
+    private MmxOpenHelper openHelper;
 
     private EditTransactionCommonFunctions mCommon;
 
-    static String[] fromAccountDetails;
-    static String[] toAccountDetails;
+    private String[] fromAccountDetails;
+    private String[] toAccountDetails;
 
     public static String CHANNEL_ID = "SmsTransaction_NotificationChannel";
     private static final long ID_NOTIFICATION = 0x000A;
@@ -451,7 +451,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
     }
 
     @SuppressLint("Range")
-    private static String getCurrencySymbl(long currencyID)
+    private String getCurrencySymbl(long currencyID)
     {
         //Get the currency sysmbl
         String currencySymbl = "";
@@ -478,7 +478,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
     }
 
-    private static boolean isTransactionSms(String smsSender)
+    private boolean isTransactionSms(String smsSender)
     {
         boolean reqMatch = true;
 
@@ -502,7 +502,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         return reqMatch;
     }
 
-    private static boolean validateTransType(String[] keySearch, String smsMsg)
+    private boolean validateTransType(String[] keySearch, String smsMsg)
     {
         boolean reqMatch = false;
 
@@ -527,7 +527,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         return reqMatch;
     }
 
-    private static void extractAccountDetails(String smsMsg, String transType)
+    private void extractAccountDetails(String smsMsg, String transType)
     {
         String[] reqMatch =  new String[]{"", ""};
 
@@ -609,7 +609,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         }
     }
 
-    private static String searchForAccountNum(String smsMsg, long mIndx)
+    private String searchForAccountNum(String smsMsg, long mIndx)
     {
         String reqMatch =  "";
 
@@ -671,7 +671,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         return reqMatch;
     }
 
-    private static String extractTransAmount(long indexOfAmt, String smsMsg, String fromAccCurrencySymbl)
+    private String extractTransAmount(long indexOfAmt, String smsMsg, String fromAccCurrencySymbl)
     {
         String reqMatch = "";
         smsMsg = smsMsg.replace(",", "");
@@ -715,7 +715,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         return reqMatch;
     }
 
-    private static String[] extractTransPayee(String smsMsg)
+    private String[] extractTransPayee(String smsMsg)
     {
         // - ((\s)at\s(.*?)\s+using) added for LBP currency. Request from HussienH
         String[] searchFor = {
@@ -756,7 +756,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         return reqMatch;
     }
 
-    private static String extractTransRefNo(String smsMsg)
+    private String extractTransRefNo(String smsMsg)
     {
         String reqMatch = "";
         String[] searchFor = {"(Cheque\\sNo[.*?](\\d+))", "(Ref\\s[Nn]o([.:])?\\s(\\d+))", "(\\s(\\d+(.*?)\\d+)TXN\\s)",
@@ -801,7 +801,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
     }
 
     @SuppressLint("Range")
-    private static String[] getPayeeDetails(String payeeName)
+    private String[] getPayeeDetails(String payeeName)
     {
         String[] payeeDetails = new String[]{"", payeeName.trim(), ""};
 
@@ -833,7 +833,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
     }
 
     @SuppressLint("Range")
-    private static Long getTxnId(String refNumber, String transDate)
+    private Long getTxnId(String refNumber, String transDate)
     {
         long txnId = 0;
 
@@ -864,7 +864,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
     }
 
     @SuppressLint("Range")
-    private static String[] getCategoryOrSubCategoryByName(String searchName)
+    private String[] getCategoryOrSubCategoryByName(String searchName)
     {
         String[] cTran = new String[]{"", ""};
 
@@ -897,7 +897,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
     }
 
     @SuppressLint("Range")
-    private static void getAccountDetails(String[] reqMatch)
+    private void getAccountDetails(String[] reqMatch)
     {
         String[] accountDetails = new String[]{"", "", "", "", "", "", ""};
 

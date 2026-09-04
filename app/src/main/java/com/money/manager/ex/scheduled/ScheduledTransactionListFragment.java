@@ -84,7 +84,7 @@ public class ScheduledTransactionListFragment
 
     private static final int ID_LOADER_REPEATING = 0;
 
-    private static QueryBillDeposits mBillDeposits;
+    private QueryBillDeposits mBillDeposits;
 
     @Inject
     Lazy<MmxDateTimeUtils> dateTimeUtilsLazy;
