@@ -21,6 +21,8 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteException;
+import net.zetetic.database.sqlcipher.SQLiteNotADatabaseException;
 import android.net.Uri;
 import android.os.Message;
 import android.os.Messenger;
@@ -162,21 +164,38 @@ public class SyncService
             DatabaseMetadata currentDb = this.recentDatabasesProvider.get(localFile.getAbsolutePath());
             FileStorageHelper storage = new FileStorageHelper(getApplicationContext());
 
-            // Execute action.
-            switch (action) {
-                case SyncConstants.INTENT_ACTION_DOWNLOAD:
-                    storage.pullDatabase(currentDb);
-                    sendMessage(outMessenger, SyncServiceMessage.DOWNLOAD_COMPLETE);
-                    break;
-                case SyncConstants.INTENT_ACTION_UPLOAD:
-                    storage.pushDatabase(currentDb);
-                    sendMessage(outMessenger, SyncServiceMessage.UPLOAD_COMPLETE);
-                    break;
-                case SyncConstants.INTENT_ACTION_SYNC:
-                    triggerSync(outMessenger, localFile, prefMergeOnSync);
-                    break;
-                default:
-                    break;
+            if (localFilename.endsWith(".emb") && TextUtils.isEmpty(MmexApplication.getApp().getPassword())) {
+                Timber.w("Cannot sync .emb database: password is missing.");
+                sendMessage(outMessenger, SyncServiceMessage.ERROR);
+                return;
+            }
+
+            try {
+                // Execute action.
+                switch (action) {
+                    case SyncConstants.INTENT_ACTION_DOWNLOAD:
+                        storage.pullDatabase(currentDb);
+                        sendMessage(outMessenger, SyncServiceMessage.DOWNLOAD_COMPLETE);
+                        break;
+                    case SyncConstants.INTENT_ACTION_UPLOAD:
+                        storage.pushDatabase(currentDb);
+                        sendMessage(outMessenger, SyncServiceMessage.UPLOAD_COMPLETE);
+                        break;
+                    case SyncConstants.INTENT_ACTION_SYNC:
+                        triggerSync(outMessenger, localFile, prefMergeOnSync);
+                        break;
+                    default:
+                        break;
+                }
+            } catch (SQLiteNotADatabaseException e) {
+                Timber.e(e, "Database error during sync: invalid password or corrupt file");
+                sendMessage(outMessenger, SyncServiceMessage.ERROR);
+            } catch (SQLiteException e) {
+                Timber.e(e, "SQLite exception during sync");
+                sendMessage(outMessenger, SyncServiceMessage.ERROR);
+            } catch (Exception e) {
+                Timber.e(e, "Error executing sync action: %s", action);
+                sendMessage(outMessenger, SyncServiceMessage.ERROR);
             }
         } finally {
             // If we promoted the service to foreground we must call stopForeground;

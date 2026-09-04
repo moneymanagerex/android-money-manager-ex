@@ -17,6 +17,7 @@
 package com.money.manager.ex;
 
 import static timber.log.Timber.plant;
+import timber.log.Timber;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -41,6 +42,7 @@ import com.money.manager.ex.core.ioc.MmxComponent;
 import com.money.manager.ex.core.ioc.MmxModule;
 import com.money.manager.ex.database.MmxOpenHelper;
 import com.money.manager.ex.database.QueryAccountBills;
+import com.money.manager.ex.database.SecureDatabasePasswordManager;
 import com.money.manager.ex.log.DebugTree;
 import com.money.manager.ex.log.ScreenTree;
 import com.money.manager.ex.log.SysLogTree;
@@ -88,8 +90,47 @@ public class MmexApplication
         return mAmplitude;
     }
 
-    public String getPassword () {return this.mPassword;}
-    public void setPassword(String password) { this.mPassword = password ;}
+    public String getPassword() {
+        if (!TextUtils.isEmpty(this.mPassword)) {
+            return this.mPassword;
+        }
+        try {
+            String dbPath = new AppSettings(this).getDatabaseSettings().getDatabasePath();
+            if (!TextUtils.isEmpty(dbPath)) {
+                String savedPassword = SecureDatabasePasswordManager.getInstance(this).getPassword(dbPath);
+                if (!TextUtils.isEmpty(savedPassword)) {
+                    this.mPassword = savedPassword;
+                    return savedPassword;
+                }
+            }
+        } catch (Exception e) {
+            Timber.e(e, "Error loading saved database password");
+        }
+        return "";
+    }
+
+    public void setPassword(String password) {
+        this.mPassword = password;
+        try {
+            String dbPath = new AppSettings(this).getDatabaseSettings().getDatabasePath();
+            if (!TextUtils.isEmpty(dbPath)) {
+                SecureDatabasePasswordManager.getInstance(this).savePassword(dbPath, password);
+            }
+        } catch (Exception e) {
+            Timber.e(e, "Error saving database password");
+        }
+    }
+
+    public void setPassword(String dbPath, String password) {
+        this.mPassword = password;
+        try {
+            if (!TextUtils.isEmpty(dbPath)) {
+                SecureDatabasePasswordManager.getInstance(this).savePassword(dbPath, password);
+            }
+        } catch (Exception e) {
+            Timber.e(e, "Error saving database password for path: %s", dbPath);
+        }
+    }
     public static float getTextSize() {
         return MmexApplication.mTextSize;
     }
@@ -272,12 +313,14 @@ public class MmexApplication
     }
 
     public String loadUserNameFromDatabase(Context context) {
-        InfoService service = new InfoService(context);
-        String username = service.getInfoValue(InfoKeys.USERNAME);
-
-        String result = TextUtils.isEmpty(username) ? "" : username;
-
-        return result;
+        try {
+            InfoService service = new InfoService(context);
+            String username = service.getInfoValue(InfoKeys.USERNAME);
+            return TextUtils.isEmpty(username) ? "" : username;
+        } catch (Exception e) {
+            Timber.e(e, "Error loading username from database");
+            return "";
+        }
     }
 
     /**

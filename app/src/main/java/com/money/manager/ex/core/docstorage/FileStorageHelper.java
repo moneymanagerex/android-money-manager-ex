@@ -258,8 +258,13 @@ public class FileStorageHelper {
     private void uploadDatabase(DatabaseMetadata metadata) {
         ContentResolver resolver = getContext().getContentResolver();
         MmxDatabaseUtils utils = new MmxDatabaseUtils(getContext());
-        MmxDate lastSyncDateBackup = utils.getLastSyncDate(); // in case the sync fails
-        utils.setLastSyncDate(new MmxDate(new Date()));
+        MmxDate lastSyncDateBackup = null;
+        try {
+            lastSyncDateBackup = utils.getLastSyncDate(); // in case the sync fails
+            utils.setLastSyncDate(new MmxDate(new Date()));
+        } catch (Exception e) {
+            Timber.e(e, "Failed to update last sync date in database during upload");
+        }
         boolean successfullySynced = false;
         Uri remoteUri = Uri.parse(metadata.remotePath);
 
@@ -285,9 +290,13 @@ public class FileStorageHelper {
         } catch (Exception e) {
             Timber.e(e, "Error during upload: %s", remoteUri);
         } finally {
-            if (!successfullySynced) {
-                // reset lastSync Date
-                utils.setLastSyncDate(lastSyncDateBackup);
+            if (!successfullySynced && lastSyncDateBackup != null) {
+                try {
+                    // reset lastSync Date
+                    utils.setLastSyncDate(lastSyncDateBackup);
+                } catch (Exception e) {
+                    Timber.e(e, "Failed to restore last sync date backup");
+                }
             }
         }
     }
