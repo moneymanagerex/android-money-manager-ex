@@ -25,6 +25,7 @@ android {
 
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
+        consumerProguardFiles 'proguard-rules.pro'
     }
 
     compileOptions {
@@ -35,17 +36,14 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
-//            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         beta {
-            minifyEnabled true
-//            shrinkResources true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
-            minifyEnabled true
-//            shrinkResources true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

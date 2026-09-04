@@ -4,22 +4,19 @@ import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.MmxBaseFragmentActivity;
-import android.text.TextUtils;
 
 public class GeneralReportActivity extends MmxBaseFragmentActivity {
 
     public static final String GENERAL_REPORT_NAME = "GeneralReportActivity:ReportName";
     public static final String GENERAL_REPORT_GROUP_NAME = "GeneralReportActivity:GroupName";
-    public static String currentReportName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_general_report);
 
-        if (getIntent() != null && !TextUtils.isEmpty(getIntent().getStringExtra(GENERAL_REPORT_NAME)) ) {
-            currentReportName = getIntent().getStringExtra(GENERAL_REPORT_NAME);
-        }
+        String reportName = (getIntent() != null && getIntent().getStringExtra(GENERAL_REPORT_NAME) != null)
+                ? getIntent().getStringExtra(GENERAL_REPORT_NAME) : "";
 
         Toolbar toolbar = findViewById(R.id.toolbar);
 
@@ -28,10 +25,10 @@ public class GeneralReportActivity extends MmxBaseFragmentActivity {
             showStandardToolbarActions(getToolbar());
             // enable returning back from toolbar.
             setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle(currentReportName);
+            getSupportActionBar().setTitle(reportName);
         }
 
-        GeneralReportFragment fragment = new GeneralReportFragment();
+        GeneralReportFragment fragment = GeneralReportFragment.newInstance(reportName);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.GeneralReportFragment, fragment, GeneralReportFragment.class.getSimpleName())
                 .commit();

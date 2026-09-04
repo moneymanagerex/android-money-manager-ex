@@ -59,16 +59,11 @@ import dagger.Lazy;
 import timber.log.Timber;
 
 public class AboutFragment extends Fragment {
-    private static Fragment mInstance;
     @Inject
     Lazy<RecentDatabasesProvider> mDatabases;
 
     public static Fragment newInstance() {
-        if (mInstance == null) {
-            mInstance = new AboutFragment();
-        }
-
-        return mInstance;
+        return new AboutFragment();
     }
 
     @SuppressLint("SetTextI18n")

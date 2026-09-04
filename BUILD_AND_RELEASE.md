@@ -56,8 +56,8 @@ The workflow performs the following steps:
 3. Decodes the secure keystore from GitHub Secrets.
 4. Compiles all product flavors (`fdroid`, `gplay`, `sync`) in both AAB and APK formats.
 5. Automatically generates standard GitHub release notes containing merged Pull Requests and contributors.
-6. Publishes all built assets directly to the GitHub Releases page.
-   *(Note: Google Play automated deployment can also be enabled within the workflow if configured).*
+6. Publishes all built assets directly to the GitHub Releases page
+7. Publishes gplay asset on gplay under [wolfsolver](https://play.google.com/store/apps/dev?id=7247021252165625264) account in open test channel.
 
 ---
 
@@ -71,12 +71,3 @@ To allow the GitHub Action to sign the app and interact with services, the follo
 | `SIGNING_STORE_PASSWORD` | The password for your keystore. |
 | `SIGNING_KEY_PASSWORD` | The password for the specific signing key alias. |
 | `PLAY_CONSOLE_JSON` | Service account JSON key for Google Play Console integration (optional/future use). |
-
-### How to generate the Base64 Keystore Secret:
-
-Run the following command in your terminal where your keystore file is located:
-
-* **Linux / macOS:** `base64 -i your-keystore-file.keystore`
-* **Windows (PowerShell):** `[Convert]::ToBase64String([IO.File]::ReadAllBytes("your-keystore-file.keystore"))`
-
-Copy the resulting text string and paste it into the `RELEASE_KEYSTORE_BASE64` GitHub Secret.

@@ -103,6 +103,7 @@ public class FileStorageHelper {
      */
     public DatabaseMetadata selectDatabase(Intent activityResultData) {
         Uri docUri = getDatabaseUriFromProvider(activityResultData);
+        if (docUri == null) return null;
         DocFileMetadata fileMetadata = DocFileMetadata.fromUri(_host, docUri);
         DatabaseMetadata metadata = DatabaseMetadata.fromDocFileMetadata(_host, fileMetadata);
 
@@ -113,13 +114,14 @@ public class FileStorageHelper {
 
     public DatabaseMetadata createDatabase(Intent activityResultData) {
         Uri docUri = getDatabaseUriFromProvider(activityResultData);
+        if (docUri == null) return null;
         DocFileMetadata fileMetadata = DocFileMetadata.fromUri(_host, docUri);
 
         // During creation if user select a file that already exists file name will be in form
         // fileMetadata.Name = "<existing file name with extention> (1)"
         // this cause subsequent issue becouse filename has no .mmb or emb extension
         // see https://issuetracker.google.com/issues/37136466
-        if (!(fileMetadata.Name.endsWith(".mmb") || fileMetadata.Name.endsWith(".emb"))) {
+        if (fileMetadata.Name == null || !(fileMetadata.Name.endsWith(".mmb") || fileMetadata.Name.endsWith(".emb"))) {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(_host);
             alertDialog.setTitle("Invalid file name")
                     .setMessage("Please select unique filename or use Open")
@@ -188,7 +190,6 @@ public class FileStorageHelper {
             this.downloadDatabase(uri, metadata.getTmpFilePath());
         } catch (Exception e) {
             Timber.e(e);
-            return;
         }
     }
 
@@ -257,8 +258,13 @@ public class FileStorageHelper {
     private void uploadDatabase(DatabaseMetadata metadata) {
         ContentResolver resolver = getContext().getContentResolver();
         MmxDatabaseUtils utils = new MmxDatabaseUtils(getContext());
-        MmxDate lastSyncDateBackup = utils.getLastSyncDate(); // in case the sync fails
-        utils.setLastSyncDate(new MmxDate(new Date()));
+        MmxDate lastSyncDateBackup = null;
+        try {
+            lastSyncDateBackup = utils.getLastSyncDate(); // in case the sync fails
+            utils.setLastSyncDate(new MmxDate(new Date()));
+        } catch (Exception e) {
+            Timber.e(e, "Failed to update last sync date in database during upload");
+        }
         boolean successfullySynced = false;
         Uri remoteUri = Uri.parse(metadata.remotePath);
 
@@ -284,9 +290,13 @@ public class FileStorageHelper {
         } catch (Exception e) {
             Timber.e(e, "Error during upload: %s", remoteUri);
         } finally {
-            if (!successfullySynced) {
-                // reset lastSync Date
-                utils.setLastSyncDate(lastSyncDateBackup);
+            if (!successfullySynced && lastSyncDateBackup != null) {
+                try {
+                    // reset lastSync Date
+                    utils.setLastSyncDate(lastSyncDateBackup);
+                } catch (Exception e) {
+                    Timber.e(e, "Failed to restore last sync date backup");
+                }
             }
         }
     }
