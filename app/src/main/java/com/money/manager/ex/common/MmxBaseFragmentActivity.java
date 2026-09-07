@@ -76,6 +76,7 @@ public abstract class MmxBaseFragmentActivity
     }
 
     protected void handleActivityResult(int requestCode, int resultCode, Intent data) {
+// need to be overwrite by sub class
     }
 
     @Override
