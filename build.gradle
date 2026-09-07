@@ -56,6 +56,7 @@ allprojects {
         }
         // removes warnings about commons-logging on build.
         exclude group: 'commons-logging', module: 'commons-logging'
+        exclude group: 'com.android.support'
     }
 
     //

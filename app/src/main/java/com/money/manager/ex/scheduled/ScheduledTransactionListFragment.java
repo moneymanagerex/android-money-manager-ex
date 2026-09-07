@@ -21,7 +21,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.ContextMenu;
@@ -57,8 +56,6 @@ import com.money.manager.ex.servicelayer.RecurringTransactionService;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
-import com.roomorama.caldroid.CaldroidFragment;
-import com.roomorama.caldroid.CaldroidListener;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -136,29 +133,7 @@ public class ScheduledTransactionListFragment
         startRecurringTransactionEditActivity(null, REQUEST_ADD_REPEATING_TRANSACTION);
     }
 
-    // Menu
 
-    @Override
-    public void old_onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.old_onCreateOptionsMenu(menu, inflater);
-
-//        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_item_calendar, menu);
-        MenuItem calendar = menu.findItem(R.id.menuCalendar);
-        if (calendar != null) {
-            Drawable icon = new UIHelper(getActivity()).getIcon(MMXIconFont.Icon.mmx_calendar);
-            calendar.setIcon(icon);
-        }
-    }
-
-    @Override
-    public boolean old_onOptionsItemSelected(@NonNull MenuItem item) {
-        // handle calendar
-        if (item.getItemId() == R.id.menuCalendar) {
-            showCaldroidFragment();
-        }
-        return super.old_onOptionsItemSelected(item);
-    }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
@@ -366,76 +341,7 @@ public class ScheduledTransactionListFragment
                 .show();
     }
 
-    private void showCaldroidFragment() {
-        Locale appLocale = MmexApplication.getApp().getAppLocale();
-        CaldroidFragment caldroidFragment = new CaldroidFragment();
 
-
-        // Customization
-        Bundle args = new Bundle();
-        Calendar cal = Calendar.getInstance(appLocale);
-        args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
-        args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
-        args.putInt(CaldroidFragment.START_DAY_OF_WEEK, dateTimeUtilsLazy.get().getFirstDayOfWeek());
-        if (new UIHelper(getActivity()).isUsingDarkTheme()) {
-            args.putInt(CaldroidFragment.THEME_RESOURCE, com.caldroid.R.style.CaldroidDefaultDark);
-        }
-        // disable switching month for now.
-        args.putBoolean(CaldroidFragment.SHOW_NAVIGATION_ARROWS, Boolean.FALSE);
-        args.putBoolean(CaldroidFragment.ENABLE_SWIPE, Boolean.FALSE);
-        caldroidFragment.setArguments(args);
-
-        // add different background for dates with events.
-        showDatesWithEvents(caldroidFragment);
-
-        // behaviour
-        caldroidFragment.setCaldroidListener(getCalendarListener());
-
-        FragmentTransaction t = getActivity().getSupportFragmentManager()
-                .beginTransaction();
-        t.replace(R.id.fragmentMain, caldroidFragment);
-        t.addToBackStack(null);
-        t.commit();
-    }
-
-    private CaldroidListener getCalendarListener() {
-        return new CaldroidListener() {
-
-            @Override
-            public void onSelectDate(Date date, View view) {
-//                fragment.setCalendarDate(date);
-                // todo show the recurring transactions on this date.
-            }
-
-            @Override
-            public void onChangeMonth(int month, int year) {
-            }
-
-            @Override
-            public void onLongClickDate(Date date, View view) {
-            }
-
-            @Override
-            public void onCaldroidViewCreated() {
-            }
-
-        };
-    }
-
-    private void showDatesWithEvents(CaldroidFragment caldroid) {
-        ListAdapter adapter = getListAdapter();
-        if (adapter == null) return;
-        int count = adapter.getCount();
-        ColorDrawable orange = new ColorDrawable(ContextCompat.getColor(requireActivity(), R.color.holo_orange_dark));
-        RecurringTransaction tx = RecurringTransaction.createInstance();
-
-        for (int i = 0; i < count; i++) {
-            Cursor cursor = (Cursor) adapter.getItem(i);
-            tx.loadFromCursor(cursor);
-
-            caldroid.setBackgroundDrawableForDate(orange, tx.getPaymentDate());
-        }
-    }
 
     private void showCreateTransactionActivity(long scheduledTransactionId) {
         ScheduledTransactionRepository repo = new ScheduledTransactionRepository(getActivity());
