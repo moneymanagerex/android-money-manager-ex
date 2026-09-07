@@ -315,6 +315,11 @@ public class PayeeListFragment
             // Get whether to show inactive payees from app settings
             boolean showInactive = new AppSettings(getContext()).getShowInactive();
 
+            if (mAction != null && mAction.equals(Intent.ACTION_PICK)) {
+                // force disable of inactive record in pick. fix #3056
+                showInactive = false;
+            }
+
             // Use repository method to get the Cursor
             return payeeRepository.getPayees(mCurFilter, showInactive, sortOrder);
         }
