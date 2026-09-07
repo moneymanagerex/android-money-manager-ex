@@ -638,7 +638,7 @@ public class MainActivity
             // TODO request password 2/3
         } else if (itemId == R.id.menu_create_database) {
             startActivity(new Intent(MainActivity.this, PasswordActivity.class));
-            launchActivityForResult(new FileStorageHelper(this).buildCreateFileIntent(), RequestCodes.CREATE_DOCUMENT);
+            launchActivityForResult(FileStorageHelper.buildCreateFileIntent(), RequestCodes.CREATE_DOCUMENT);
             // TODO request password 3/3
         } else if (itemId == R.id.menu_open_cloud_database) {
             onOpenCloudDatabaseClick();

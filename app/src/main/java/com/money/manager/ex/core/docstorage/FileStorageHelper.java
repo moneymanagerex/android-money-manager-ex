@@ -57,7 +57,7 @@ public class FileStorageHelper {
         return intent;
     }
 
-    public Intent buildCreateFileIntent() {
+    public static Intent buildCreateFileIntent() {
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType(DATABASE_MIME_TYPE);

@@ -113,8 +113,7 @@ public class SelectDatabaseActivity extends MmxBaseFragmentActivity {
 
     private void onCreateDatabaseClick() {
         startActivity(new Intent(this, PasswordActivity.class));
-        FileStorageHelper helper = new FileStorageHelper(this);
-        launchActivityForResult(helper.buildCreateFileIntent(), RequestCodes.CREATE_DOCUMENT);
+        launchActivityForResult(FileStorageHelper.buildCreateFileIntent(), RequestCodes.CREATE_DOCUMENT);
     }
 
     private void onOpenDatabaseClick() {
