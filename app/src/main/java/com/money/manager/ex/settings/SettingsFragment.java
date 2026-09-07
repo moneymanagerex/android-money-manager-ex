@@ -20,6 +20,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
@@ -40,6 +43,8 @@ public class SettingsFragment
     extends PreferenceFragmentCompat {
 
     public static final int REQUEST_GENERAL_PREFERENCES = 1;
+        private final ActivityResultLauncher<Intent> generalPreferencesLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> getActivity().recreate());
 
     private UIHelper uiHelper;
 
@@ -198,15 +203,6 @@ public class SettingsFragment
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQUEST_GENERAL_PREFERENCES) {// always recreate activity when returning from general preferences, instead of
-            // trying to figure out if something has changed.
-            getActivity().recreate();
-        }
-    }
-
     private UIHelper getUiHelper() {
         if (this.uiHelper == null) {
             uiHelper = new UIHelper(getActivity());
@@ -227,7 +223,7 @@ public class SettingsFragment
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 Intent intent = new Intent(getActivity(), GeneralSettingsActivity.class);
-                startActivityForResult(intent, REQUEST_GENERAL_PREFERENCES);
+                generalPreferencesLauncher.launch(intent);
                 return true;
             }
         });

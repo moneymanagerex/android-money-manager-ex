@@ -21,6 +21,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
 import com.money.manager.ex.passcode.PasscodeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.Passcode;
@@ -43,6 +46,10 @@ public class SecuritySettingsFragment
     private static final int REQUEST_REINSERT_PASSCODE = 10;
     public static final int REQUEST_DELETE_PASSCODE = 3;
     public static final int REQUEST_LOGIN_PASSCODE = 0;
+    private int pendingRequestCode;
+    private final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
+        new ActivityResultContracts.StartActivityForResult(), result ->
+            handleActivityResult(pendingRequestCode, result.getResultCode(), result.getData()));
 
     private String passcode = null;
 
@@ -94,9 +101,7 @@ public class SecuritySettingsFragment
 //        Timber.d("creating");
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    private void handleActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (resultCode != AppCompatActivity.RESULT_OK) return;
         if (data == null) return;
@@ -194,6 +199,9 @@ public class SecuritySettingsFragment
         intent.putExtra(PasscodeActivity.INTENT_MESSAGE_TEXT, message);
         intent.putExtra(PasscodeActivity.PASSCODE_REQUEST, String.valueOf(request));
 
-        startActivityForResult(intent, request);
+        pendingRequestCode = request;
+        resultLauncher.launch(intent);
+        pendingRequestCode = request;
+        resultLauncher.launch(intent);
     }
 }

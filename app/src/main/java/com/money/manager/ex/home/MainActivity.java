@@ -296,7 +296,7 @@ public class MainActivity
                     intent.putExtra(PasscodeActivity.INTENT_MESSAGE_TEXT, getString(R.string.enter_your_passcode));
                     intent.putExtra(PasscodeActivity.PASSCODE_REQUEST, String.valueOf(SecuritySettingsFragment.REQUEST_LOGIN_PASSCODE)); // passing zero as default value
                     // start activity
-                    startActivityForResult(intent, RequestCodes.PASSCODE);
+                    launchActivityForResult(intent, RequestCodes.PASSCODE);
                     // set in authentication
                 }
 
@@ -336,8 +336,7 @@ public class MainActivity
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    protected void handleActivityResult(int requestCode, int resultCode, Intent data) {
 
         // don't accidentally bypass passcode (failures), e.g. pressing physical back button
         // see old merge #1338 and issue #1293
@@ -490,7 +489,7 @@ public class MainActivity
     @Subscribe
     public void onEvent(RequestOpenDatabaseEvent event) {
         FileStorageHelper helper = new FileStorageHelper(this);
-        helper.showStorageFilePicker();
+        launchActivityForResult(FileStorageHelper.buildOpenFileIntent(), RequestCodes.SELECT_DOCUMENT);
     }
 
     @Subscribe
@@ -618,7 +617,7 @@ public class MainActivity
                 // TODO request password 1/3 upon testing instead of extension
                 Intent intent = new Intent(MainActivity.this, PasswordActivity.class);
                 intent.putExtra(EXTRA_DATABASE_PATH, key);
-                startActivityForResult(intent, RequestCodes.REQUEST_PASSWORD);
+                launchActivityForResult(intent, RequestCodes.REQUEST_PASSWORD);
 
                 return result;
             }
@@ -635,11 +634,11 @@ public class MainActivity
         } else if (itemId == R.id.menu_open_database) {
             startActivity(new Intent(MainActivity.this, PasswordActivity.class));
             FileStorageHelper helper = new FileStorageHelper(this);
-            helper.showStorageFilePicker();
+            launchActivityForResult(FileStorageHelper.buildOpenFileIntent(), RequestCodes.SELECT_DOCUMENT);
             // TODO request password 2/3
         } else if (itemId == R.id.menu_create_database) {
             startActivity(new Intent(MainActivity.this, PasswordActivity.class));
-            (new FileStorageHelper(this)).showCreateFilePicker();
+            launchActivityForResult(new FileStorageHelper(this).buildCreateFileIntent(), RequestCodes.CREATE_DOCUMENT);
             // TODO request password 3/3
         } else if (itemId == R.id.menu_open_cloud_database) {
             onOpenCloudDatabaseClick();
@@ -1278,7 +1277,7 @@ public class MainActivity
         if (intent.getAction() != null && intent.getAction().equals(SyncConstants.REQUEST_CONFLICT_OPEN)) {
             startActivity(new Intent(this, PasswordActivity.class));
             FileStorageHelper helper = new FileStorageHelper(this);
-            helper.showStorageFilePicker();
+            launchActivityForResult(FileStorageHelper.buildOpenFileIntent(), RequestCodes.SELECT_DOCUMENT);
             this.dbUpdateCheckDone = true;
             return;
         }
@@ -1442,8 +1441,8 @@ public class MainActivity
 //        // request password
 //        Intent intent = new Intent(this, PasswordActivity.class);
 //        intent.putExtra(EXTRA_DATABASE_PATH, dbFilePath);
-//        startActivityForResult(intent, REQUEST_PASSWORD);
-//        // continues in onActivityResult.
+//        launchActivityForResult(intent, REQUEST_PASSWORD);
+//        // continues in the result callback.
 //    }
 
     private void restoreInstanceState(Bundle savedInstanceState) {

@@ -29,6 +29,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
@@ -63,6 +66,23 @@ import info.javaperformance.money.MoneyFactory;
  */
 public class AccountEditActivity
     extends MmxBaseFragmentActivity {
+
+    private final ActivityResultLauncher<Intent> amountLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() != RESULT_OK || result.getData() == null) return;
+                String value = result.getData().getStringExtra(CalculatorActivity.RESULT_AMOUNT);
+                refreshAmount(MoneyFactory.fromString(value));
+            });
+    private final ActivityResultLauncher<Intent> currencyLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() != RESULT_OK || result.getData() == null) return;
+                Intent data = result.getData();
+                mAccount.setCurrencyId(data.getLongExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID, Constants.NOT_SET));
+                mCurrencyName = data.getStringExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYNAME);
+                refreshCurrencyName();
+                Money initialBalance = mAccount.getInitialBalance();
+                if (initialBalance != null) refreshAmount(initialBalance);
+            });
 
     public static final String KEY_ACCOUNT_ENTITY = "AccountEditActivity:AccountEntity";
     public static final String KEY_ACCOUNT_ID = "AccountEditActivity:AccountId";
@@ -139,36 +159,6 @@ public class AccountEditActivity
         setDisplayHomeAsUpEnabled(true);
 
         initializeControls();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode != Activity.RESULT_OK) return;
-
-        switch (requestCode) {
-            case RequestCodes.CURRENCY:
-                if (data == null) return;
-                long currencyId = data.getLongExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYID, Constants.NOT_SET);
-                mAccount.setCurrencyId(currencyId);
-
-                mCurrencyName = data.getStringExtra(CurrencyListActivity.INTENT_RESULT_CURRENCYNAME);
-                refreshCurrencyName();
-
-                // refresh amount
-                Money initialBalance = mAccount.getInitialBalance();
-                if (initialBalance != null) {
-                    refreshAmount(initialBalance);
-                }
-                break;
-
-            case RequestCodes.AMOUNT:
-                String stringExtra = data.getStringExtra(CalculatorActivity.RESULT_AMOUNT);
-                Money amount = MoneyFactory.fromString(stringExtra);
-                refreshAmount(amount);
-                break;
-        }
     }
 
     @Override
@@ -296,10 +286,13 @@ public class AccountEditActivity
         ArrayAdapter<String> adapterSymbol = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new String[]{"+", "-"});
         mViewHolder.spinSymbolInitialBalance.setAdapter(adapterSymbol);
 
-        mViewHolder.txtInitialBalance.setOnClickListener(v -> Calculator.forActivity(AccountEditActivity.this)
+        mViewHolder.txtInitialBalance.setOnClickListener(v -> {
+            Intent intent = Calculator.forActivity(AccountEditActivity.this)
                 .currency(mAccount.getCurrencyId())
                 .amount(mAccount.getInitialBalance())
-                .show(RequestCodes.AMOUNT));
+                .buildIntent();
+            amountLauncher.launch(intent);
+        });
 
         // Account Type adapters and values
 
@@ -383,7 +376,7 @@ public class AccountEditActivity
         mViewHolder.txtSelectCurrency.setOnClickListener(v -> {
             Intent intent = new Intent(AccountEditActivity.this, CurrencyListActivity.class);
             intent.setAction(Intent.ACTION_PICK);
-            startActivityForResult(intent, RequestCodes.CURRENCY);
+            currencyLauncher.launch(intent);
         });
 
         //Date picker

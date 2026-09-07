@@ -93,8 +93,7 @@ public class TutorialActivity extends FragmentActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    protected void handleActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == REQUEST_GENERAL_PREFERENCES) { // back from general preferences.
             setResult(AppCompatActivity.RESULT_OK);
@@ -110,7 +109,7 @@ public class TutorialActivity extends FragmentActivity {
         // show general preferences (language)
         Intent intent = new Intent(this, GeneralSettingsActivity.class);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        startActivityForResult(intent, REQUEST_GENERAL_PREFERENCES);
+        launchActivityForResult(intent, REQUEST_GENERAL_PREFERENCES);
     }
 
     @Override

@@ -37,6 +37,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
@@ -87,6 +89,16 @@ import timber.log.Timber;
  */
 public class SearchParametersFragment
     extends Fragment {
+
+        private int pendingRequestCode;
+        private final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(), result ->
+                        handleActivityResult(pendingRequestCode, result.getResultCode(), result.getData()));
+
+        private void launchActivityForResult(Intent intent, int requestCode) {
+            pendingRequestCode = requestCode;
+            resultLauncher.launch(intent);
+        }
 
     private static final String KEY_SEARCH_CRITERIA = "KEY_SEARCH_CRITERIA";
     public static final String DATEPICKER_TAG = "datepicker";
@@ -226,7 +238,7 @@ public class SearchParametersFragment
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), PayeeActivity.class);
                 intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(intent, RequestCodes.PAYEE);
+                launchActivityForResult(intent, RequestCodes.PAYEE);
             }
         });
 
@@ -236,7 +248,7 @@ public class SearchParametersFragment
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), TagActivity.class);
                 intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(intent, RequestCodes.TAG);
+                launchActivityForResult(intent, RequestCodes.TAG);
             }
         });
 
@@ -246,7 +258,7 @@ public class SearchParametersFragment
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), CategoryListActivity.class);
                 intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(intent, RequestCodes.CATEGORY);
+                launchActivityForResult(intent, RequestCodes.CATEGORY);
             }
         });
 
@@ -275,8 +287,7 @@ public class SearchParametersFragment
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    private void handleActivityResult(int requestCode, int resultCode, Intent data) {
 
         if ((resultCode == AppCompatActivity.RESULT_CANCELED) || data == null) return;
 
@@ -447,7 +458,7 @@ public class SearchParametersFragment
             amount = MoneyFactory.fromDouble(0);
         }
 
-        Calculator.forFragment(this).amount(amount).show(RequestCodes.AMOUNT_FROM);
+        launchActivityForResult(Calculator.forFragment(this).amount(amount).buildIntent(), RequestCodes.AMOUNT_FROM);
     }
 
     private void onAmountToClicked() {
@@ -456,7 +467,7 @@ public class SearchParametersFragment
             amount = MoneyFactory.fromDouble(0);
         }
 
-        Calculator.forFragment(this).amount(amount).show(RequestCodes.AMOUNT_TO);
+        launchActivityForResult(Calculator.forFragment(this).amount(amount).buildIntent(), RequestCodes.AMOUNT_TO);
     }
 
     // Private
