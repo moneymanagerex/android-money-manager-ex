@@ -48,8 +48,6 @@ import androidx.lifecycle.Lifecycle;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
-import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
-import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 import com.money.manager.ex.payee.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.Calculator;
@@ -233,33 +231,24 @@ public class SearchParametersFragment
         viewHolder.txtAmountTo.setOnClickListener(v -> onAmountToClicked());
 
         //Payee
-        viewHolder.txtSelectPayee.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), PayeeActivity.class);
-                intent.setAction(Intent.ACTION_PICK);
-                launchActivityForResult(intent, RequestCodes.PAYEE);
-            }
+        viewHolder.txtSelectPayee.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), PayeeActivity.class);
+            intent.setAction(Intent.ACTION_PICK);
+            launchActivityForResult(intent, RequestCodes.PAYEE);
         });
 
         //tag
-        viewHolder.txtSelectTag.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), TagActivity.class);
-                intent.setAction(Intent.ACTION_PICK);
-                launchActivityForResult(intent, RequestCodes.TAG);
-            }
+        viewHolder.txtSelectTag.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), TagActivity.class);
+            intent.setAction(Intent.ACTION_PICK);
+            launchActivityForResult(intent, RequestCodes.TAG);
         });
 
         //Category
-        txtSelectCategory.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), CategoryListActivity.class);
-                intent.setAction(Intent.ACTION_PICK);
-                launchActivityForResult(intent, RequestCodes.CATEGORY);
-            }
+        txtSelectCategory.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), CategoryListActivity.class);
+            intent.setAction(Intent.ACTION_PICK);
+            launchActivityForResult(intent, RequestCodes.CATEGORY);
         });
 
         // Status
@@ -286,7 +275,6 @@ public class SearchParametersFragment
         return view;
     }
 
-    @Override
     private void handleActivityResult(int requestCode, int resultCode, Intent data) {
 
         if ((resultCode == AppCompatActivity.RESULT_CANCELED) || data == null) return;
@@ -385,8 +373,7 @@ public class SearchParametersFragment
         Parcelable searchParcel = arguments.getParcelable(KEY_SEARCH_CRITERIA);
         if (searchParcel == null) return null;
 
-        SearchParameters parameters = Parcels.unwrap(searchParcel);
-        return parameters;
+        return Parcels.unwrap(searchParcel);
     }
 
     public String getWhereStatement() {

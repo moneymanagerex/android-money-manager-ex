@@ -16,7 +16,6 @@
  */
 package com.money.manager.ex.account;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -41,7 +40,6 @@ import com.money.manager.ex.common.MmxBaseFragmentActivity;
 import com.money.manager.ex.core.Core;
 import com.money.manager.ex.core.FormatUtilities;
 import com.money.manager.ex.core.MenuHelper;
-import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.UIHelper;
 import com.money.manager.ex.currency.CurrencyRepository;
 import com.money.manager.ex.currency.CurrencyService;
@@ -66,6 +64,8 @@ import info.javaperformance.money.MoneyFactory;
  */
 public class AccountEditActivity
     extends MmxBaseFragmentActivity {
+
+    private Account mAccount;
 
     private final ActivityResultLauncher<Intent> amountLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -93,8 +93,6 @@ public class AccountEditActivity
     // Constant
     private static final int PLUS = 0;
     private static final int MINUS = 1;
-
-    private Account mAccount;
 
     private final MmxDateTimeUtils dateTimeUtils = new MmxDateTimeUtils();
 
@@ -273,9 +271,8 @@ public class AccountEditActivity
     private AccountTypes getSelectedAccountType() {
         int accountTypePosition = mViewHolder.accountTypeSpinner.getSelectedItemPosition();
         String accountTypeName = mAccountTypeValues[accountTypePosition];
-        AccountTypes accountType = AccountTypes.get(accountTypeName);
 
-        return accountType;
+        return AccountTypes.get(accountTypeName);
     }
 
     private void initializeControls() {
@@ -325,6 +322,7 @@ public class AccountEditActivity
         } else {
             String selectedStatus = (String) mViewHolder.spinAccountStatus.getSelectedItem();
             AccountStatuses status = AccountStatuses.get(selectedStatus);
+            assert status != null;
             mAccount.setStatus(status);
         }
 
@@ -346,6 +344,7 @@ public class AccountEditActivity
                     //ArrayAdapter<String> adapter = (ArrayAdapter<String>) parent.getAdapter();
                     String accountTypeValue = mAccountTypeValues[position];
                     AccountTypes accountType = AccountTypes.get(accountTypeValue);
+                    assert accountType != null;
                     mAccount.setType(accountType);
                 }
             }
@@ -361,6 +360,7 @@ public class AccountEditActivity
                 if ((position >= 0) && (position <= mAccountStatusValues.length)) {
                     String selectedStatus = mAccountStatusValues[position];
                     AccountStatuses status = AccountStatuses.get(selectedStatus);
+                    assert status != null;
                     mAccount.setStatus(status);
                 }
             }
