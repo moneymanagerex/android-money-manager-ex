@@ -18,6 +18,7 @@ package com.money.manager.ex.transactions;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -82,12 +83,14 @@ import com.money.manager.ex.utils.TagLinkUtils;
 import com.shamanland.fonticon.FontIconView;
 import com.squareup.sqlbrite3.BriteDatabase;
 
+
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -134,6 +137,29 @@ public class EditTransactionCommonFunctions {
     private String[] mStatusValues;    // arrays to manage trans.code and status
     private String mUserDateFormat;
 
+    private void setTime(Date date) {
+        if (date == null) return;
+
+        transactionEntity.setDate(date);
+
+        showTime(date);
+        setDirty(true);
+    }
+
+    private void showTime(Date date) {
+        if (date == null || viewHolder.txtTime == null) return;
+
+        MmxDate mmxDate = new MmxDate(date);
+
+        String formattedTime = String.format(
+                Locale.getDefault(),
+                "%02d:%02d",
+                mmxDate.getHour(),
+                mmxDate.getMinute()
+        );
+
+        viewHolder.txtTime.setText(formattedTime);
+    }
 
     public EditTransactionCommonFunctions(MmxBaseFragmentActivity parentActivity,
                                           ITransactionEntity transactionEntity, BriteDatabase database) {
@@ -551,6 +577,35 @@ public class EditTransactionCommonFunctions {
         viewHolder.nextDayButton.setOnClickListener(view -> {
             Date dateTime = new MmxDate(transactionEntity.getDate()).plusDays(1).toDate();
             setDate(dateTime);
+        });
+    }
+
+    public void initTimeSelector() {
+        // Show current time
+        Date date = transactionEntity.getDate();
+        if (date == null) {
+            date = new MmxDate().toDate();
+            transactionEntity.setDate(date);
+        }
+        showTime(date);
+
+        viewHolder.txtTime.setOnClickListener(v -> {
+            MmxDate dateTime = new MmxDate(transactionEntity.getDate());
+
+            TimePickerDialog dialog = new TimePickerDialog(
+                    getContext(),
+                    (timePicker, hour, minute) -> {
+                        dateTime.setHour(hour);
+                        dateTime.setMinute(minute);
+
+                        setTime(dateTime.toDate()); // must update UI inside setTime()
+                    },
+                    dateTime.getHour(),
+                    dateTime.getMinute(),
+                    true
+            );
+
+            dialog.show();
         });
     }
 

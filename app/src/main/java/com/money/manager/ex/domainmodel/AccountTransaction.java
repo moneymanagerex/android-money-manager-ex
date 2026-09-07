@@ -181,17 +181,22 @@ public class AccountTransaction
     public Date getDate() {
         String dateString = getDateString();
         return dateString != null
-            ? new MmxDate(dateString).toDate()
-            : null;
+                ? new MmxDate(dateString, "yyyy-MM-dd'T'HH:mm:ss").toDate()
+                : null;
     }
 
-    public void setDate(Date value) {
+//    public void setDate(Date value) {
 // Probabily we need to use
 //        String dateString = new MmxDate(value).toIsoCombinedString();
 // but this need to be checked because has the timezone inside (so in italy if record at 2025-03-14 at 01am will record 2025-03-13T23:00:00 becouse GMT is +2
-        String dateString = new MmxDate(value).toIsoDateString()+"T00:00:00";
+//        String dateString = new MmxDate(value).toIsoDateString()+"T00:00:00";
+//        setString(ITransactionEntity.TRANSDATE, dateString);
+//    }
+    @Override
+    public void setDate(Date value) {
+        String dateString = new MmxDate(value).toIsoCombinedString();
         setString(ITransactionEntity.TRANSDATE, dateString);
-    }
+}
 
     public Long getFollowUpId() {
         return getLong(FOLLOWUPID);

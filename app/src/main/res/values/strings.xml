@@ -199,6 +199,7 @@
     <string name="confirmDelete">Are you sure you want to delete the record?</string>
     <string name="confirm_delete_stock_investment">Do you want to delete the stock investment?</string>
     <string name="date">Date</string>
+    <string name="time">Time</string>
     <string name="delete">Delete</string>
     <string name="download">Download</string>
     <string name="edit">Edit</string>

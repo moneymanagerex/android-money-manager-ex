@@ -27,6 +27,9 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.app.TimePickerDialog;
+
+import java.util.Calendar;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -277,6 +280,49 @@ public class AccountEditActivity
 
     private void initializeControls() {
         mViewHolder = new AccountEditViewHolder(this);
+
+        // Time picker (optional view)
+        if (mViewHolder.txtTime != null) {
+
+            mViewHolder.txtTime.setOnClickListener(v -> {
+
+                Date currentDate = mAccount.getInitialDate();
+                if (currentDate == null) {
+                    currentDate = new Date();
+                    mAccount.setInitialDate(currentDate);
+                }
+
+                MmxDate currentValue = new MmxDate(currentDate);
+                int hour = currentValue.getHourOfDay();
+                int minute = currentValue.getMinuteOfHour();
+
+                TimePickerDialog.OnTimeSetListener listener = (view, hourOfDay, minuteOfHour) -> {
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(mAccount.getInitialDate());
+                    cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                    cal.set(Calendar.MINUTE, minuteOfHour);
+                    cal.set(Calendar.SECOND, 0);
+                    cal.set(Calendar.MILLISECOND, 0);
+
+                    Date updatedDate = cal.getTime();
+                    mAccount.setInitialDate(updatedDate);
+
+                    java.text.DateFormat timeFormat =
+                            android.text.format.DateFormat.getTimeFormat(AccountEditActivity.this);
+                    mViewHolder.txtTime.setText(timeFormat.format(updatedDate));
+                };
+
+                new TimePickerDialog(
+                        AccountEditActivity.this,
+                        listener,
+                        hour,
+                        minute,
+                        android.text.format.DateFormat.is24HourFormat(AccountEditActivity.this)
+                ).show();
+            });
+
+        }
+
 
         // Initial balance.
 

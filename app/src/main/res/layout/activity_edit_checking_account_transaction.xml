@@ -201,6 +201,19 @@
                     app:iiv_color="?android:textColorPrimary"
                     app:iiv_size="@dimen/mmx_icon_size"
                     android:background="?attr/selectableItemBackground" />
+                <com.money.manager.ex.view.RobotoTextView
+                    android:id="@+id/textViewTime"
+                    style="@style/Money.TextView.Widget.EditText"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:hint="@string/time"
+                    android:text="--:--"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true" />
             </LinearLayout>
 
             <!-- Account title -->

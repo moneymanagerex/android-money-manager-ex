@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.UIHelper;
+import com.money.manager.ex.view.RobotoTextView;
 import com.shamanland.fonticon.FontIconView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -70,12 +71,14 @@ public class EditTransactionViewHolder {
     public RecyclerView recyclerAttachments;
     public TextView tagsListTextView;
     public TextView colorTextView;
+    public RobotoTextView txtTime;
 
     public EditTransactionViewHolder(AppCompatActivity activity) {
         // Initialize views using findViewById
         dateTextView = activity.findViewById(R.id.textViewDate);
         previousDayButton = activity.findViewById(R.id.previousDayButton);
         nextDayButton = activity.findViewById(R.id.nextDayButton);
+        txtTime = activity.findViewById(R.id.textViewTime);
 
         categoryTextView = activity.findViewById(R.id.textViewCategory);
         txtSelectPayee = activity.findViewById(R.id.textViewPayee);
