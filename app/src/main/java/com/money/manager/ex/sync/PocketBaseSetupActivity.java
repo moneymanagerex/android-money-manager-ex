@@ -29,7 +29,9 @@ import com.money.manager.ex.scheduled.ScheduledTransactionForecastListServices;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DatabaseSettings;
 import com.money.manager.ex.settings.SyncPreferences;
+import com.money.manager.ex.utils.MmxDatabaseUtils;
 
+import java.io.File;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -223,15 +225,25 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
         String email = Objects.requireNonNull(mEditTextEmail.getText()).toString().trim();
 
         mDisposables.add(Observable.fromCallable(() -> {
-            // create db
+            SyncManager.setIsInCloudCreationMode(true);
+
+            // Close existing database references and delete old file at dbPath if present for clean creation
             String dbPath = new DatabaseManager(this).getDatabasePath();
+            File dbFile = new File(dbPath);
+            if (dbFile.exists()) {
+                new MmxDatabaseUtils(this).closeCurrentDatabase();
+                dbFile.delete();
+                new File(dbPath + "-wal").delete();
+                new File(dbPath + "-shm").delete();
+                new File(dbPath + "-journal").delete();
+            }
+
+            // Create new cloud database with table_v1_completo schema
             MmxOpenHelper openHelper = new MmxOpenHelper(this, dbPath);
             SupportSQLiteDatabase db = openHelper.getWritableDatabase();
             db.close();
 
             // Setup metadata for the new cloud database
-            android.net.Uri inputUri = android.net.Uri.parse(url);
-
             DatabaseMetadata metadata = new DatabaseMetadata();
             metadata.localPath = dbPath;
             metadata.setRemoteServer(DatabaseMetadata.POCKETBASE, email, url);
@@ -241,9 +253,15 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
             DatabaseSettings dbSetting = (new AppSettings(this).getDatabaseSettings());
             dbSetting.setDatabasePath(dbPath);
 
+            // Re-initialize app database references with the new path
+            MmexApplication.getApp().initDb(dbPath);
+            new MmxDatabaseUtils(this).resetContentProvider();
+
             PocketBaseSyncEngine engine = new PocketBaseSyncEngine(this);
             ScheduledTransactionForecastListServices.destroyInstance();
             engine.synchronize(); // This will perform full pull if pb_last_sync_time is empty
+
+            SyncManager.setIsInCloudCreationMode(false);
             return true;
         })
         .subscribeOn(Schedulers.io())
@@ -260,6 +278,7 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
 
             finish();
         }, throwable -> {
+            SyncManager.setIsInCloudCreationMode(false);
             setLoading(false);
             mTextViewStatus.setText(getString(R.string.sync_failed) + throwable.getMessage());
             Timber.e(throwable);
