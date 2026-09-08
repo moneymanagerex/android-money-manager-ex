@@ -234,7 +234,6 @@ public class DatabaseSettingsFragment
     private void requestBackup() {
         Intent intent = buildBackupIntent();
 
-//        startActivityForResult(intent, RequestCodes.CODE_BACKUP);
         backupLauncher.launch(intent);
     }
 
@@ -246,21 +245,6 @@ public class DatabaseSettingsFragment
 
         return intent;
     }
-
-/* Relpace with backupLauncher
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == RequestCodes.CODE_BACKUP && resultCode == RESULT_OK) {
-            Uri uri = data.getData();
-            if (uri != null) {
-                // Perform the backup operation using the selected URI
-                backupDatabase(uri);
-            }
-        }
-    }
-*/
 
     private void backupDatabase(Uri destinationUri) {
         try {

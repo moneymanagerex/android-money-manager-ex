@@ -1,6 +1,5 @@
 package com.money.manager.ex.core.docstorage;
 
-import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,13 +10,11 @@ import android.os.ParcelFileDescriptor;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import java.nio.file.Files;
 
 import com.google.common.io.ByteStreams;
 import com.money.manager.ex.MmexApplication;
-import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxDate;
@@ -53,39 +50,14 @@ public class FileStorageHelper {
         return _host;
     }
 
-    /**
-     * Opens a file dialog using the Storage Access Framework.
-     * Uses RequestCodes.SELECT_DOCUMENT as a request code.
-     * The result needs to be handled in onActivityResult.
-     */
-    public void showStorageFilePicker() {
-        // show the file picker
-        int requestCode = RequestCodes.SELECT_DOCUMENT;
-        AppCompatActivity host = (AppCompatActivity) _host;
-        try {
-            // ACTION_GET_CONTENT in older versions of Android.
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType("*/*");
-            host.startActivityForResult(intent, requestCode);
-        } catch (ActivityNotFoundException e) {
-            Timber.e(e, "No storage providers found.");
-        }
+    public static Intent buildOpenFileIntent() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+        return intent;
     }
 
-    public void showCreateFilePicker() {
-        // show the file picker
-        int requestCode = RequestCodes.CREATE_DOCUMENT;
-        AppCompatActivity host = (AppCompatActivity) _host;
-        try {
-            Intent intent = buildCreateFileIntent();
-            host.startActivityForResult(intent, requestCode);
-        } catch (ActivityNotFoundException e) {
-            Timber.e(e, "No storage providers found.");
-        }
-    }
-
-    static Intent buildCreateFileIntent() {
+    public static Intent buildCreateFileIntent() {
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType(DATABASE_MIME_TYPE);
@@ -98,7 +70,7 @@ public class FileStorageHelper {
 
     /**
      * Open the selected database file from Storage Access Framework.
-     * @param activityResultData the intent received in onActivityResult after the file
+    * @param activityResultData the intent received by the activity result callback after the file
      *                           is selected in the picker.
      */
     public DatabaseMetadata selectDatabase(Intent activityResultData) {

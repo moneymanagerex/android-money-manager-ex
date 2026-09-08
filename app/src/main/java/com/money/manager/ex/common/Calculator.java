@@ -49,7 +49,7 @@ public final class Calculator {
     }
 
     /**
-     * Extracts the entered amount in onActivityResult.
+    * Extracts the entered amount from an activity result.
      * @return Amount entered
      */
     public static Money getAmountFromResult(Intent data) {
@@ -74,12 +74,8 @@ public final class Calculator {
     private Fragment fragment;
     private final Intent intent;
 
-    public void show(int requestCode) {
-        if (fragment == null) {
-            activity.startActivityForResult(intent, requestCode);
-        } else {
-            fragment.startActivityForResult(intent, requestCode);
-        }
+    public Intent buildIntent() {
+        return intent;
     }
 
     public Calculator currency(long currencyId) {

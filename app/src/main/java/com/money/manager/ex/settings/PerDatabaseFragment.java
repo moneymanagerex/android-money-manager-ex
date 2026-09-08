@@ -254,7 +254,6 @@ public class PerDatabaseFragment
         showCurrentDefaultCurrency();
 
         // After the currency is selected in the Currencies screen, the change is handled
-        // in onActivityResult
 
         baseCurrency.setOnPreferenceClickListener(preference -> {
             // show the currencies activity

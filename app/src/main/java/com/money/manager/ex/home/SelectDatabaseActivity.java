@@ -84,8 +84,7 @@ public class SelectDatabaseActivity extends MmxBaseFragmentActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    protected void handleActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (resultCode != RESULT_OK) {
             Timber.w("The activity result is not OK");
@@ -114,14 +113,13 @@ public class SelectDatabaseActivity extends MmxBaseFragmentActivity {
 
     private void onCreateDatabaseClick() {
         startActivity(new Intent(this, PasswordActivity.class));
-        FileStorageHelper helper = new FileStorageHelper(this);
-        helper.showCreateFilePicker();
+        launchActivityForResult(FileStorageHelper.buildCreateFileIntent(), RequestCodes.CREATE_DOCUMENT);
     }
 
     private void onOpenDatabaseClick() {
         startActivity(new Intent(this, PasswordActivity.class));
         FileStorageHelper helper = new FileStorageHelper(this);
-        helper.showStorageFilePicker();
+        launchActivityForResult(FileStorageHelper.buildOpenFileIntent(), RequestCodes.SELECT_DOCUMENT);
     }
 
     private void onOpenCloudDatabaseClick() {

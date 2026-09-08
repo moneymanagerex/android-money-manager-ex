@@ -52,7 +52,7 @@ import timber.log.Timber;
 /**
  * Activity for the full-screen numeric input.
  * Additional functionality includes currency conversion.
- * The result is returned in onActivityResult in the calling activity.
+ * The result is returned through the calling activity's result launcher.
  */
 
 public class CalculatorActivity extends MmxBaseFragmentActivity {

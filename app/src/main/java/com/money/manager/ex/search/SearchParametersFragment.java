@@ -37,6 +37,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
@@ -46,8 +48,6 @@ import androidx.lifecycle.Lifecycle;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.MmexApplication;
-import com.money.manager.ex.nestedcategory.NestedCategoryEntity;
-import com.money.manager.ex.nestedcategory.QueryNestedCategory;
 import com.money.manager.ex.payee.PayeeActivity;
 import com.money.manager.ex.R;
 import com.money.manager.ex.common.Calculator;
@@ -87,6 +87,16 @@ import timber.log.Timber;
  */
 public class SearchParametersFragment
     extends Fragment {
+
+        private int pendingRequestCode;
+        private final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(), result ->
+                        handleActivityResult(pendingRequestCode, result.getResultCode(), result.getData()));
+
+        private void launchActivityForResult(Intent intent, int requestCode) {
+            pendingRequestCode = requestCode;
+            resultLauncher.launch(intent);
+        }
 
     private static final String KEY_SEARCH_CRITERIA = "KEY_SEARCH_CRITERIA";
     public static final String DATEPICKER_TAG = "datepicker";
@@ -221,33 +231,24 @@ public class SearchParametersFragment
         viewHolder.txtAmountTo.setOnClickListener(v -> onAmountToClicked());
 
         //Payee
-        viewHolder.txtSelectPayee.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), PayeeActivity.class);
-                intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(intent, RequestCodes.PAYEE);
-            }
+        viewHolder.txtSelectPayee.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), PayeeActivity.class);
+            intent.setAction(Intent.ACTION_PICK);
+            launchActivityForResult(intent, RequestCodes.PAYEE);
         });
 
         //tag
-        viewHolder.txtSelectTag.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), TagActivity.class);
-                intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(intent, RequestCodes.TAG);
-            }
+        viewHolder.txtSelectTag.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), TagActivity.class);
+            intent.setAction(Intent.ACTION_PICK);
+            launchActivityForResult(intent, RequestCodes.TAG);
         });
 
         //Category
-        txtSelectCategory.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), CategoryListActivity.class);
-                intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(intent, RequestCodes.CATEGORY);
-            }
+        txtSelectCategory.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), CategoryListActivity.class);
+            intent.setAction(Intent.ACTION_PICK);
+            launchActivityForResult(intent, RequestCodes.CATEGORY);
         });
 
         // Status
@@ -274,9 +275,7 @@ public class SearchParametersFragment
         return view;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    private void handleActivityResult(int requestCode, int resultCode, Intent data) {
 
         if ((resultCode == AppCompatActivity.RESULT_CANCELED) || data == null) return;
 
@@ -374,8 +373,7 @@ public class SearchParametersFragment
         Parcelable searchParcel = arguments.getParcelable(KEY_SEARCH_CRITERIA);
         if (searchParcel == null) return null;
 
-        SearchParameters parameters = Parcels.unwrap(searchParcel);
-        return parameters;
+        return Parcels.unwrap(searchParcel);
     }
 
     public String getWhereStatement() {
@@ -447,7 +445,7 @@ public class SearchParametersFragment
             amount = MoneyFactory.fromDouble(0);
         }
 
-        Calculator.forFragment(this).amount(amount).show(RequestCodes.AMOUNT_FROM);
+        launchActivityForResult(Calculator.forFragment(this).amount(amount).buildIntent(), RequestCodes.AMOUNT_FROM);
     }
 
     private void onAmountToClicked() {
@@ -456,7 +454,7 @@ public class SearchParametersFragment
             amount = MoneyFactory.fromDouble(0);
         }
 
-        Calculator.forFragment(this).amount(amount).show(RequestCodes.AMOUNT_TO);
+        launchActivityForResult(Calculator.forFragment(this).amount(amount).buildIntent(), RequestCodes.AMOUNT_TO);
     }
 
     // Private

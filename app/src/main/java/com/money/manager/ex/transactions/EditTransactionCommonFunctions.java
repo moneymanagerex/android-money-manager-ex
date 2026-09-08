@@ -470,11 +470,10 @@ public class EditTransactionCommonFunctions {
             Money amount = transactionEntity.getAmount();
 
 //                Intent intent = IntentFactory.getNumericInputIntent(getContext(), amount, currencyId);
-//                getActivity().startActivityForResult(intent, REQUEST_AMOUNT);
-            Calculator.forActivity(getActivity())
+        activity.launchActivityForResult(Calculator.forActivity(getActivity())
                     .currency(currencyId)
                     .amount(amount)
-                    .show(RequestCodes.AMOUNT);
+            .buildIntent(), RequestCodes.AMOUNT);
         });
 
         // amount to
@@ -484,10 +483,9 @@ public class EditTransactionCommonFunctions {
             Money amount = transactionEntity.getToAmount();
 
 //                Intent intent = IntentFactory.getNumericInputIntent(getContext(), amount, currencyId);
-//                getActivity().startActivityForResult(intent, REQUEST_AMOUNT_TO);
-            Calculator.forActivity(getActivity())
+        activity.launchActivityForResult(Calculator.forActivity(getActivity())
                     .amount(amount).currency(currencyId)
-                    .show(RequestCodes.AMOUNT_TO);
+            .buildIntent(), RequestCodes.AMOUNT_TO);
         });
     }
 
@@ -504,13 +502,13 @@ public class EditTransactionCommonFunctions {
                 // select first category.
                 Intent intent = new Intent(getActivity(), CategoryListActivity.class);
                 intent.setAction(Intent.ACTION_PICK);
-                getActivity().startActivityForResult(intent, RequestCodes.CATEGORY);
+                activity.launchActivityForResult(intent, RequestCodes.CATEGORY);
             } else {
                 // select split categories.
                 showSplitCategoriesForm(mSplitCategoryEntityName);
             }
 
-            // results are handled in onActivityResult.
+            // Results are handled by the parent activity.
         });
     }
 
@@ -613,9 +611,9 @@ public class EditTransactionCommonFunctions {
         this.viewHolder.txtSelectPayee.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), PayeeActivity.class);
             intent.setAction(Intent.ACTION_PICK);
-            getActivity().startActivityForResult(intent, RequestCodes.PAYEE);
+            activity.launchActivityForResult(intent, RequestCodes.PAYEE);
 
-            // the result is handled in onActivityResult
+            // The result is handled by the parent activity.
         });
 
         viewHolder.removePayeeButton.setOnClickListener(v -> {
@@ -923,7 +921,7 @@ public class EditTransactionCommonFunctions {
         return true;
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void handleActivityResult(int requestCode, int resultCode, Intent data) {
         if ((resultCode != AppCompatActivity.RESULT_OK) || (data == null)) return;
 
         setDirty(true);
@@ -1609,7 +1607,7 @@ public class EditTransactionCommonFunctions {
         Long fromCurrencyId = getSourceCurrencyId();
         intent.putExtra(SplitCategoriesActivity.KEY_CURRENCY_ID, fromCurrencyId);
 
-        getActivity().startActivityForResult(intent, RequestCodes.SPLIT_TX);
+        activity.launchActivityForResult(intent, RequestCodes.SPLIT_TX);
     }
 
     /**

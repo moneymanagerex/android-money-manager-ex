@@ -33,6 +33,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.loader.app.LoaderManager;
@@ -73,6 +75,13 @@ import timber.log.Timber;
 public class ScheduledTransactionListFragment
     extends BaseListFragment
     implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    private final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == ScheduledTransactionListActivity.RESULT_OK) {
+                    getLoaderManager().restartLoader(ID_LOADER_REPEATING, null, this);
+                }
+            });
 
     private static final int REQUEST_ADD_REPEATING_TRANSACTION = 1001;
     private static final int REQUEST_ADD_TRANSACTION = 1002;
@@ -261,24 +270,6 @@ public class ScheduledTransactionListFragment
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == ScheduledTransactionListActivity.RESULT_OK) {
-//                switch (requestCode) {
-//                    case REQUEST_ADD_REPEATING_TRANSACTION:
-//                        break;
-//                    case REQUEST_ADD_TRANSACTION:
-//                        break;
-//                    case REQUEST_EDIT_REPEATING_TRANSACTION:
-//                        break;
-//                }
-            // Always reload the activity?
-            getLoaderManager().restartLoader(ID_LOADER_REPEATING, null, this);
-        }
-    }
-
-    @Override
     public String getSubTitle() {
         return getString(R.string.recurring_transactions);
     }
@@ -353,7 +344,7 @@ public class ScheduledTransactionListFragment
         intent.putExtra(EditTransactionActivityConstants.KEY_BDID_ID, scheduledTransactionId);
         intent.putExtra(EditTransactionActivityConstants.KEY_TRANS_SOURCE, "ScheduledTransactionListFragment.java");
         // start for insert new transaction
-        startActivityForResult(intent, REQUEST_ADD_TRANSACTION);
+        resultLauncher.launch(intent);
     }
 
     /**
@@ -378,6 +369,6 @@ public class ScheduledTransactionListFragment
             intent.setAction(Intent.ACTION_INSERT);
         }
         // launch activity
-        startActivityForResult(intent, purposeCode);
+        resultLauncher.launch(intent);
     }
 }
