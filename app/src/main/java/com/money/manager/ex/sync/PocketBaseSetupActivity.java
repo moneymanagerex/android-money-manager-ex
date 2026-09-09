@@ -50,7 +50,10 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
 
     public static final String EXTRA_RE_LOGIN = "PocketBaseSetupActivity:ReLogin";
 
-    private TextInputEditText mEditTextAlias, mEditTextUrl, mEditTextEmail, mEditTextPassword;
+    private TextInputEditText mEditTextAlias;
+    private TextInputEditText mEditTextUrl;
+    private TextInputEditText mEditTextEmail;
+    private TextInputEditText mEditTextPassword;
     private Button mButtonConnect;
     private ProgressBar mProgressBar;
     private TextView mTextViewStatus;
