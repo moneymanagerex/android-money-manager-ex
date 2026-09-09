@@ -459,8 +459,9 @@ public class HomeFragment
                 DatabaseMetadata metadata = mDatabasesLazy.get().get(dbPath);
                 if (metadata != null && metadata.isRemoteSyncServer() && !TextUtils.isEmpty(metadata.remotePath)) {
                     String type = metadata.getRemoteServerType(); // "pocketbase"
-                    String url  = metadata.getRemoteURL();         // "server" or "server:8090"
-                    activity.getSupportActionBar().setSubtitle(type + " @ " + url);
+                    // String url  = metadata.getRemoteURL();         // "server" or "server:8090"
+                    // activity.getSupportActionBar().setSubtitle(type + " @ " + url);
+                    activity.getSupportActionBar().setSubtitle(type + ":" + Paths.get(dbPath).getFileName().toString());
                 } else {
                     activity.getSupportActionBar().setSubtitle(Paths.get(dbPath).getFileName().toString());
                 }

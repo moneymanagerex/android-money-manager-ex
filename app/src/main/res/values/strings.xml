@@ -976,8 +976,8 @@
     <!-- PocketBse Sync -->
     <string name="pref_sync_url">Pocketbase server Url</string>
     <string name="pref_pocketbase_email">Pocketbase email</string>
-    <string name="confirm_cloud_import_title">Delete all data and reload from cloud?</string>
-    <string name="confirm_cloud_import_message">Warning: This will delete your current local database and open the initial setup wizard to connect to the cloud. Proceed?</string>
+    <string name="confirm_cloud_import_title">Clear all data and reload from cloud?</string>
+    <string name="confirm_cloud_import_message">Warning: This will clear your current configuration and open the initial setup wizard to connect to the cloud. Proceed?</string>
     <string name="menu_open_from_cloud">Open from cloud</string>
     <string name="checking_session">Checking session...</string>
     <string name="session_restored_initializing_database">Session restored. Initializing database...</string>
@@ -991,7 +991,10 @@
     <string name="sync_setup_complete">Sync Setup Complete!</string>
     <string name="sync_failed">"Sync failed: "</string>
     <string name="sync_your_data_with_pocketbase_cloud">Sync your data with PocketBase Cloud</string>
-	
+    <string name="database_alias">Database Alias</string>
+    <string name="confirm_overwrite_title">Database already exists</string>
+    <string name="confirm_overwrite_message">A local database named \'%1$s\' already exists. Do you want to delete it and reload from cloud?</string>
+
 	<!-- Show & Hide Balance -->
     <string name="show_balances">Show Balances</string>
     <string name="hide_balances">Hide Balances</string>

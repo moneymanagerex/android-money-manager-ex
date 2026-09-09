@@ -243,8 +243,29 @@ public class MmexApplication
             openHelperAtomicReference = new AtomicReference<>(db);
         } else {
             // close existing db
-            openHelperAtomicReference.get().close();
+            MmxOpenHelper oldDb = openHelperAtomicReference.get();
+            if (oldDb != null) {
+                try {
+                    oldDb.close();
+                } catch (Exception e) {
+                    Timber.e(e, "Error closing existing database");
+                }
+            }
             openHelperAtomicReference.set(db);
+        }
+    }
+
+    public void closeDatabase() {
+        if (openHelperAtomicReference != null) {
+            MmxOpenHelper openHelper = openHelperAtomicReference.get();
+            if (openHelper != null) {
+                try {
+                    openHelper.close();
+                } catch (Exception e) {
+                    Timber.e(e, "Error closing database helper");
+                }
+            }
+            openHelperAtomicReference.set(null);
         }
     }
 
