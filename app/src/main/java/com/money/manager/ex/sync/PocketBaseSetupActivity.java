@@ -28,7 +28,6 @@ import com.money.manager.ex.home.RecentDatabasesProvider;
 import com.money.manager.ex.scheduled.ScheduledTransactionForecastListServices;
 import com.money.manager.ex.settings.AppSettings;
 import com.money.manager.ex.settings.DatabaseSettings;
-import com.money.manager.ex.settings.SyncPreferences;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 
 import java.io.File;
