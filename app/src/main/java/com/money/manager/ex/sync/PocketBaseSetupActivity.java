@@ -50,7 +50,7 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
 
     public static final String EXTRA_RE_LOGIN = "PocketBaseSetupActivity:ReLogin";
 
-    private TextInputEditText mEditTextUrl, mEditTextEmail, mEditTextPassword;
+    private TextInputEditText mEditTextAlias, mEditTextUrl, mEditTextEmail, mEditTextPassword;
     private Button mButtonConnect;
     private ProgressBar mProgressBar;
     private TextView mTextViewStatus;
@@ -77,6 +77,7 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
             });
         }
 
+        mEditTextAlias = findViewById(R.id.editTextAlias);
         mEditTextUrl = findViewById(R.id.editTextUrl);
         mEditTextEmail = findViewById(R.id.editTextEmail);
         mEditTextPassword = findViewById(R.id.editTextPassword);
@@ -114,18 +115,24 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
         mEditTextEmail.setText(current.getRemoteUser());
         mEditTextUrl.setText(current.getRemoteURL());
 
-        if (isReLogin) {
-                // Disable fields in re-login mode
-                mEditTextUrl.setEnabled(false);
-                mEditTextEmail.setEnabled(false);
-                mEditTextPassword.requestFocus();
-                return;
+        if (mEditTextAlias != null && !TextUtils.isEmpty(current.getFileName())) {
+            String name = current.getFileName();
+            if (name.endsWith(".mmb") || name.endsWith(".emb")) {
+                name = name.substring(0, name.lastIndexOf('.'));
+            }
+            mEditTextAlias.setText(name);
         }
 
+        if (isReLogin) {
+            // Disable fields in re-login mode
+            mEditTextUrl.setEnabled(false);
+            mEditTextEmail.setEnabled(false);
+            if (mEditTextAlias != null) mEditTextAlias.setEnabled(false);
+            mEditTextPassword.requestFocus();
+        }
     }
 
     private void attemptSilentLogin() {
-        SyncPreferences prefs = new SyncPreferences(this);
         DatabaseMetadata current = mDatabasesLazy.get().getCurrent();
         if (current == null) return;
 
@@ -150,7 +157,7 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
         .subscribe(success -> {
             if (success) {
                 mTextViewStatus.setText(R.string.session_restored_initializing_database);
-                performInitialPull();
+                performInitialPull(current.localPath, false);
             } else {
                 setLoading(false);
                 mTextViewStatus.setText(R.string.please_enter_your_password_to_continue);
@@ -163,18 +170,52 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
         }));
     }
 
+    private String buildDatabasePathFromAlias(String aliasInput) {
+        String dir = new DatabaseManager(this).getDefaultDatabaseDirectory();
+        String name = aliasInput != null ? aliasInput.trim() : "";
+        if (TextUtils.isEmpty(name)) {
+            name = "pocketbase_db";
+        }
+        // Sanitize filename to remove invalid characters
+        name = name.replaceAll("[\\\\/:*?\"<>|]", "_");
+        if (!name.endsWith(".mmb") && !name.endsWith(".emb")) {
+            name = name + ".mmb";
+        }
+        return dir + File.separator + name;
+    }
+
     private void startSetup() {
         SyncManager.setIsInCloudCreationMode(true);
 
         String url = Objects.requireNonNull(mEditTextUrl.getText()).toString().trim();
         String email = Objects.requireNonNull(mEditTextEmail.getText()).toString().trim();
         String password = Objects.requireNonNull(mEditTextPassword.getText()).toString().trim();
+        String alias = mEditTextAlias != null && mEditTextAlias.getText() != null
+                ? mEditTextAlias.getText().toString().trim() : "";
 
         if (TextUtils.isEmpty(url) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        String dbPath = buildDatabasePathFromAlias(alias);
+        File dbFile = new File(dbPath);
+
+        boolean isReLogin = getIntent().getBooleanExtra(EXTRA_RE_LOGIN, false);
+
+        if (!isReLogin && dbFile.exists()) {
+            new androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setTitle(R.string.confirm_overwrite_title)
+                    .setMessage(getString(R.string.confirm_overwrite_message, dbFile.getName()))
+                    .setPositiveButton(android.R.string.yes, (dialog, which) -> authenticateAndSync(url, email, password, dbPath, true))
+                    .setNegativeButton(android.R.string.no, null)
+                    .show();
+        } else {
+            authenticateAndSync(url, email, password, dbPath, false);
+        }
+    }
+
+    private void authenticateAndSync(String url, String email, String password, String dbPath, boolean overwriteExisting) {
         setLoading(true);
         mTextViewStatus.setText(R.string.authenticating);
 
@@ -188,9 +229,9 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
             if (success) {
                 boolean isReLogin = getIntent().getBooleanExtra(EXTRA_RE_LOGIN, false);
 
-                // update medatada in a safe way
+                // update metadata in a safe way
                 DatabaseMetadata metadata = mDatabasesLazy.get().getCurrent();
-                if (metadata != null ) { // we have an histgory
+                if (metadata != null) {
                     metadata.setRemoteServer(DatabaseMetadata.POCKETBASE, email, url);
                     mDatabasesLazy.get().remove(metadata.localPath);
                     mDatabasesLazy.get().add(metadata);
@@ -205,7 +246,7 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
                     finish();
                 } else {
                     mTextViewStatus.setText(R.string.authentication_successful_initializing_database);
-                    performInitialPull();
+                    performInitialPull(dbPath, overwriteExisting);
                 }
             } else {
                 setLoading(false);
@@ -218,7 +259,7 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
         }));
     }
 
-    private void performInitialPull() {
+    private void performInitialPull(String dbPath, boolean overwriteExisting) {
         mTextViewStatus.setText(R.string.performing_initial_pull_this_may_take_a_while);
 
         String url = Objects.requireNonNull(mEditTextUrl.getText()).toString().trim();
@@ -227,15 +268,17 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
         mDisposables.add(Observable.fromCallable(() -> {
             SyncManager.setIsInCloudCreationMode(true);
 
-            // Close existing database references and delete old file at dbPath if present for clean creation
-            String dbPath = new DatabaseManager(this).getDatabasePath();
             File dbFile = new File(dbPath);
-            if (dbFile.exists()) {
+            if (overwriteExisting && dbFile.exists()) {
+                // User explicitly confirmed to overwrite existing database file with this alias/name
                 new MmxDatabaseUtils(this).closeCurrentDatabase();
+                mDatabasesLazy.get().remove(dbPath);
                 dbFile.delete();
                 new File(dbPath + "-wal").delete();
                 new File(dbPath + "-shm").delete();
                 new File(dbPath + "-journal").delete();
+            } else {
+                new MmxDatabaseUtils(this).closeCurrentDatabase();
             }
 
             // Create new cloud database with table_v1_completo schema
@@ -270,7 +313,7 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
             setLoading(false);
             mTextViewStatus.setText(R.string.sync_setup_complete);
             Toast.makeText(this, "Setup Successful", Toast.LENGTH_LONG).show();
-            
+
             // Restart MainActivity to refresh database connection and UI
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -286,11 +329,12 @@ public class PocketBaseSetupActivity extends AppCompatActivity {
     }
 
     private void setLoading(boolean loading) {
-        mProgressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
-        mButtonConnect.setEnabled(!loading);
-        mEditTextUrl.setEnabled(!loading);
-        mEditTextEmail.setEnabled(!loading);
-        mEditTextPassword.setEnabled(!loading);
+        if (mProgressBar != null) mProgressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
+        if (mButtonConnect != null) mButtonConnect.setEnabled(!loading);
+        if (mEditTextUrl != null) mEditTextUrl.setEnabled(!loading);
+        if (mEditTextEmail != null) mEditTextEmail.setEnabled(!loading);
+        if (mEditTextPassword != null) mEditTextPassword.setEnabled(!loading);
+        if (mEditTextAlias != null) mEditTextAlias.setEnabled(!loading);
     }
 
     private void cancelSetupAndExit() {

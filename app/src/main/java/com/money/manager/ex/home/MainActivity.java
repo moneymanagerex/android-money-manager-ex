@@ -1705,32 +1705,17 @@ public class MainActivity
             new AlertDialog.Builder(this)
                     .setTitle(R.string.confirm_cloud_import_title)
                     .setMessage(R.string.confirm_cloud_import_message)
-                    .setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                        cleanAndStartCloudSetup(dbFile);
-                    })
+                    .setPositiveButton(android.R.string.yes, (dialog, which) -> cleanAndStartCloudSetup())
                     .setNegativeButton(android.R.string.no, null)
                     .show();
         } else {
-            cleanAndStartCloudSetup(null);
+            cleanAndStartCloudSetup();
         }
     }
 
-    private void cleanAndStartCloudSetup(File dbFile) {
-        // Close all active database connections and reset dependencies
+    private void cleanAndStartCloudSetup() {
+        // Close active database connections and reset dependencies without deleting the file
         new MmxDatabaseUtils(this).closeCurrentDatabase();
-
-        // Delete current database file and auxiliary files if present
-        if (dbFile != null && dbFile.exists()) {
-            String path = dbFile.getAbsolutePath();
-            if (dbFile.delete()) {
-                Timber.d("Current database deleted successfully.");
-            } else {
-                Timber.w("Failed to delete current database at %s", path);
-            }
-            new File(path + "-wal").delete();
-            new File(path + "-shm").delete();
-            new File(path + "-journal").delete();
-        }
 
         // Set cloud creation mode flag
         SyncManager.setIsInCloudCreationMode(true);
