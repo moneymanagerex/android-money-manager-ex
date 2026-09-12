@@ -432,6 +432,11 @@
     <string name="menu_report_where_money_comes_from">Where the Money Comes From</string>
     <string name="title_check_repeating_transaction">Notification time</string>
     <string name="summary_check_repeating_transaction">What time would you check if there are scheduled transactions overdue? (default 08:00)</string>
+
+    <string name="pref_use_time_in_transaction">use_time_in_transaction</string>
+    <string name="title_use_time_in_transaction">Use Time in transaction</string>
+    <string name="summary_use_time_in_transaction">Use the time when creating and editing transactions</string>
+
     <string name="credits">Credits</string>
     <string name="libraries">Libraries</string>
     <string name="top_withdrawals_last_30_days">Top Withdrawals: Last 30 Days</string>

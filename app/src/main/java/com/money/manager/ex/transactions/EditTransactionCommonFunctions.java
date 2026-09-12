@@ -137,6 +137,37 @@ public class EditTransactionCommonFunctions {
     private String[] mStatusValues;    // arrays to manage trans.code and status
     private String mUserDateFormat;
 
+    private Date normalizeTransactionDate(Date date) {
+        if (date == null) {
+            return null;
+        }
+
+        BehaviourSettings behaviourSettings =
+                new BehaviourSettings(getContext());
+
+        if (behaviourSettings.getUseTimeInTransaction()) {
+            return date;
+        }
+
+        MmxDate dateTime = new MmxDate(date);
+        dateTime.setHour(0);
+        dateTime.setMinute(0);
+
+        return dateTime.toDate();
+    }
+
+    private void setDate(Date date) {
+        date = normalizeTransactionDate(date);
+
+        if (date == null) {
+            return;
+        }
+
+        transactionEntity.setDate(date);
+        showDate(date);
+        setDirty(true);
+    }
+
     private void setTime(Date date) {
         if (date == null) return;
 
@@ -543,10 +574,15 @@ public class EditTransactionCommonFunctions {
      */
     public void initDateSelector() {
         Date date = this.transactionEntity.getDate();
+
         if (date == null) {
             date = new MmxDate().toDate();
             transactionEntity.setDate(date);
         }
+
+        date = normalizeTransactionDate(date);
+        transactionEntity.setDate(date);
+
         showDate(date);
 
         viewHolder.dateTextView.setOnClickListener(v -> {
@@ -565,22 +601,35 @@ public class EditTransactionCommonFunctions {
                     dateTime.getDayOfMonth()
             );
 
-            // Customize the DatePickerDialog if needed
             datePicker.show();
         });
 
         viewHolder.previousDayButton.setOnClickListener(view -> {
-            Date dateTime = new MmxDate(transactionEntity.getDate()).minusDays(1).toDate();
+            Date dateTime = new MmxDate(transactionEntity.getDate())
+                    .minusDays(1)
+                    .toDate();
             setDate(dateTime);
         });
 
         viewHolder.nextDayButton.setOnClickListener(view -> {
-            Date dateTime = new MmxDate(transactionEntity.getDate()).plusDays(1).toDate();
+            Date dateTime = new MmxDate(transactionEntity.getDate())
+                    .plusDays(1)
+                    .toDate();
             setDate(dateTime);
         });
     }
 
     public void initTimeSelector() {
+        BehaviourSettings behaviourSettings = new BehaviourSettings(getContext());
+
+        // Time in transactions is an optional feature.
+        if (!behaviourSettings.getUseTimeInTransaction()) {
+            viewHolder.txtTime.setVisibility(View.GONE);
+            return;
+        }
+
+        viewHolder.txtTime.setVisibility(View.VISIBLE);
+
         // Show current time
         Date date = transactionEntity.getDate();
         if (date == null) {
@@ -598,7 +647,7 @@ public class EditTransactionCommonFunctions {
                         dateTime.setHour(hour);
                         dateTime.setMinute(minute);
 
-                        setTime(dateTime.toDate()); // must update UI inside setTime()
+                        setTime(dateTime.toDate());
                     },
                     dateTime.getHour(),
                     dateTime.getMinute(),
@@ -1680,13 +1729,13 @@ public class EditTransactionCommonFunctions {
                 .show();
     }
 
-    private void setDate(Date dateTime) {
-        setDirty(true);
-
-        transactionEntity.setDate(dateTime);
-
-        showDate(dateTime);
-    }
+//    private void setDate(Date dateTime) {
+//        setDirty(true);
+//
+//        transactionEntity.setDate(dateTime);
+//
+//       showDate(dateTime);
+//    }
 
     private void updateSplitButton() {
         // update Split button
