@@ -67,4 +67,6 @@ public class PreferenceConstants {
     public static final Integer PREF_SMS_AUTOMATIC_TRANSACTIONS = R.string.pref_sms_auto_trans;
     public static final Integer PREF_SMS_TRANS_STATUS_NOTIFICATION = R.string.pref_sms_trans_status_notification;
 
+    public static final Integer PREF_USE_TIME_IN_TRANSACTION =
+            R.string.pref_use_time_in_transaction;
 }
