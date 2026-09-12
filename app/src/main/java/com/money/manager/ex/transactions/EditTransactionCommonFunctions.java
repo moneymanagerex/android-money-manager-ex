@@ -157,14 +157,14 @@ public class EditTransactionCommonFunctions {
     }
 
     private void setDate(Date date) {
-        date = normalizeTransactionDate(date);
+        Date normalizedDate = normalizeTransactionDate(date);
 
-        if (date == null) {
+        if (normalizedDate == null) {
             return;
         }
 
-        transactionEntity.setDate(date);
-        showDate(date);
+        transactionEntity.setDate(normalizedDate);
+        showDate(normalizedDate);
         setDirty(true);
     }
 
