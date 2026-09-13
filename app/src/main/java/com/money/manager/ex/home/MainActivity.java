@@ -1705,24 +1705,22 @@ public class MainActivity
             new AlertDialog.Builder(this)
                     .setTitle(R.string.confirm_cloud_import_title)
                     .setMessage(R.string.confirm_cloud_import_message)
-                    .setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                        // Delete current database
-                        if (dbFile.delete()) {
-                            Timber.d("Current database deleted successfully.");
-                            startCloudSetup();
-                        } else {
-                            Timber.w("Failed to delete current database.");
-                        }
-                    })
+                    .setPositiveButton(android.R.string.yes, (dialog, which) -> cleanAndStartCloudSetup())
                     .setNegativeButton(android.R.string.no, null)
                     .show();
         } else {
-            startCloudSetup();
+            cleanAndStartCloudSetup();
         }
     }
 
-    private void startCloudSetup() {
-        // Reset preferences and old data.
+    private void cleanAndStartCloudSetup() {
+        // Close active database connections and reset dependencies without deleting the file
+        new MmxDatabaseUtils(this).closeCurrentDatabase();
+
+        // Set cloud creation mode flag
+        SyncManager.setIsInCloudCreationMode(true);
+
+        // Reset preferences and old sync data
         new PocketBaseSyncEngine(this).clearSyncEngine();
 
         // Start the PocketBase setup wizard directly
