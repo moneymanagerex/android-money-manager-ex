@@ -870,8 +870,6 @@
     <!-- PocketBse Sync -->
     <string name="pref_sync_url">Pocketbase 服务器 Url</string>
     <string name="pref_pocketbase_email">Pocketbase 电子邮件</string>
-    <string name="confirm_cloud_import_title">删除所有数据并从云端重新加载？</string>
-    <string name="confirm_cloud_import_message">警告：这将删除您当前的本地数据库并打开初始安装向导以连接到云端。是否继续？</string>
     <string name="menu_open_from_cloud">从云端打开</string>
     <string name="checking_session">正在检查会话...</string>
     <string name="session_restored_initializing_database">会话已恢复。正在初始化数据库...</string>

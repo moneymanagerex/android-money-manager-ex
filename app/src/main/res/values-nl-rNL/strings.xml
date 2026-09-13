@@ -870,8 +870,6 @@
     <!-- PocketBse Sync -->
     <string name="pref_sync_url">Pocketbase server URL</string>
     <string name="pref_pocketbase_email">Pocketbase e-mail</string>
-    <string name="confirm_cloud_import_title">Alle gegevens verwijderen en opnieuw laden vanuit de cloud?</string>
-    <string name="confirm_cloud_import_message">Waarschuwing: Hiermee wordt uw huidige lokale database verwijderd en de installatiewizard geopend om verbinding te maken met de cloud. Doorgaan?</string>
     <string name="menu_open_from_cloud">Open vanuit de cloud</string>
     <string name="checking_session">Sessie controleren...</string>
     <string name="session_restored_initializing_database">Sessie hersteld. Database initialiseren...</string>

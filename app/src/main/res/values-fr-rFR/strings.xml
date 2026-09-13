@@ -870,8 +870,6 @@
     <!-- PocketBse Sync -->
     <string name="pref_sync_url">URL du serveur PocketBase</string>
     <string name="pref_pocketbase_email">Adresse e-mail PocketBase</string>
-    <string name="confirm_cloud_import_title">Supprimer toutes les données et les recharger depuis le cloud ?</string>
-    <string name="confirm_cloud_import_message">Attention : cette opération supprimera votre base de données locale actuelle et ouvrira l’assistant de configuration initiale pour vous connecter au cloud. Continuer ?</string>
     <string name="menu_open_from_cloud">Ouvrir depuis le cloud</string>
     <string name="checking_session"></string>
     <string name="session_restored_initializing_database">Session restaurée. Initialisation de la base de données…</string>

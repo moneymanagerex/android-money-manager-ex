@@ -867,8 +867,6 @@
     <!-- PocketBse Sync -->
     <string name="pref_sync_url">Ссылка на сервер Pocketbase</string>
     <string name="pref_pocketbase_email">Электронная почта Pocketbase</string>
-    <string name="confirm_cloud_import_title">Удалить все данные и перезагрузить из облака?</string>
-    <string name="confirm_cloud_import_message">Предупреждение: Это удалит текущую локальную базу данных и откроет диалог начальной настройки для подключения к облаку. Продолжить?</string>
     <string name="menu_open_from_cloud">Открыть из облака</string>
     <string name="checking_session">Проверка сессии...</string>
     <string name="session_restored_initializing_database">Сессия восстановлена. Инициализация базы данных...</string>
