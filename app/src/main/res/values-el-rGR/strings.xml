@@ -340,7 +340,8 @@
     <string name="last3months">Τελευταίους 3 μήνες</string>
     <string name="last6months">Τελευταίους 6 μήνες</string>
     <string name="empty_category">Άδεια κατηγορία</string>
-    <string name="empty_payee">Κανένας δικαιούχος</string>
+    <string name="empty_payee">Κανένας δικαιούχος
+</string>
     <string name="help">Βοήθεια</string>
     <string name="last">Tελευταίο</string>
     <string name="accounts">Λογαριασμοί</string>
