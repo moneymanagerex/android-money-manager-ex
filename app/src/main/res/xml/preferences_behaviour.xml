@@ -87,6 +87,13 @@
         android:defaultValue="false"
         android:key="@string/pref_auto_transaction_number"
         android:title="@string/title_auto_transaction_number" />
+		
+	<SwitchPreference
+		android:icon="@null"
+		android:defaultValue="false"
+		android:key="@string/pref_use_time_in_transaction"
+		android:summary="@string/summary_use_time_in_transaction"
+		android:title="@string/title_use_time_in_transaction" />
 
     <SwitchPreference
         android:icon="@null"

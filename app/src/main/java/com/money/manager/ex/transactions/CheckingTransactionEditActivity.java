@@ -121,6 +121,8 @@ public class CheckingTransactionEditActivity
             }
         }
 
+        mCommon.initTimeSelector();
+
         initializeInputControls();
 
         // refresh user interface
