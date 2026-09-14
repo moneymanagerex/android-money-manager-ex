@@ -75,14 +75,11 @@
     <!-- Receive SMS strings -->
     <string name="title_sms_auto_trans">Processa Transazione Bancaria via SMS</string>
     <string name="summary_sms_auto_trans">Leggi l\'aggiornamento della transazione bancaria SMS e crea automaticamente la transazione</string>
-    <string name="deny_receive_sms_error">Hai negato l\'autorizzazione a ricevere l\'SMS, quindi il tuo SMS di transazione bancaria non verrà elaborato.
-</string>
+    <string name="deny_receive_sms_error">Hai negato l\'autorizzazione a ricevere l\'SMS, quindi il tuo SMS di transazione bancaria non verrà elaborato.</string>
     <string name="granted_receive_sms_access">Autorizzazione già concessa per RECEIVE_SMS</string>
     <string name="revoke_receive_sms_access">Vai in Impostazioni &gt;&gt; Applicazioni &gt;&gt; Money Manager Ex &gt;&gt; Autorizzazioni e nega l\'accesso per SMS</string>
-    <string name="title_sms_trans_status_notification">Notifica lo stato delle transazioni via SMS
-</string>
-    <string name="summary_sms_trans_status_notification">Abilita la visualizzazione dello stato dell\'elaborazione degli SMS delle transazioni bancarie nell\'area di notifica, invece di mostrarli come messaggio Toast o nella schermata Nuova Transazione.
-</string>
+    <string name="title_sms_trans_status_notification">Notifica lo stato delle transazioni via SMS</string>
+    <string name="summary_sms_trans_status_notification">Abilita la visualizzazione dello stato dell\'elaborazione degli SMS delle transazioni bancarie nell\'area di notifica, invece di mostrarli come messaggio Toast o nella schermata Nuova Transazione.</string>
     <string name="notification_click_to_edit_transaction">Tocca per modificare la transazione&#8230;</string>
     <string name="notification_process_sms_transaction_status">Processa Stato Transazione Bancaria via SMS</string>
     <string name="notification_process_sms_channel_description">Canale di notifica SMS AMMEX</string>
@@ -254,8 +251,7 @@
     <string name="in_x_months">In (x) Mesi</string>
     <string name="every_x_days">Ogni (x) Giorni</string>
     <string name="every_x_months">Ogni (x) Mesi</string>
-    <string name="repeating_empty_transaction">Non sono state trovate transazioni pianificate. Per crearne una, toccare il pulsante verde più.
-</string>
+    <string name="repeating_empty_transaction">Non sono state trovate transazioni pianificate. Per crearne una, toccare il pulsante verde più.</string>
     <string name="inactive">Inattivo</string>
     <string name="activates">Attiva</string>
     <string name="days_overdue">Scaduta da %d giorni</string>
@@ -390,8 +386,7 @@
     <string name="menu_report_where_money_goes">Dove va il denaro</string>
     <string name="menu_report_where_money_comes_from">Da dove arriva il denaro</string>
     <string name="title_check_repeating_transaction">Ora di notifica</string>
-    <string name="summary_check_repeating_transaction">A che ora controllare se ci sono transazioni programmate in ritardo? ( predefinito 08:00)
-</string>
+    <string name="summary_check_repeating_transaction">A che ora controllare se ci sono transazioni programmate in ritardo? ( predefinito 08:00)</string>
     <string name="credits">Ringraziamenti</string>
     <string name="libraries">Librerie</string>
     <string name="top_withdrawals_last_30_days">Top Prelievi: Ultimi 30 giorni</string>
@@ -492,8 +487,7 @@
     <string name="tutorial_global_1">Svariate valute e lingue. Open Source. Unisciti al nostro team di traduzione.</string>
     <string name="tutorial_sync_1">Supporto per piattaforme multiple, sincronizzazione con servizi Cloud. Importazione ed esportazione dei dati in altre applicazioni.</string>
     <string name="transactions">Transazioni</string>
-    <string name="tutorial_transactions_1">Depositi, prelievi, trasferimenti. Transazioni pianificate con promemoria.
-</string>
+    <string name="tutorial_transactions_1">Depositi, prelievi, trasferimenti. Transazioni pianificate con promemoria.</string>
     <string name="split_category">-Categoria Suddivisa-</string>
     <string name="title_activity_currency_chart">Grafico del tasso di cambio valuta</string>
     <string name="sort_by_ascending">Ordina per anno e mese crescente</string>
