@@ -28,6 +28,11 @@ android {
         targetCompatibility JavaVersion.VERSION_11
     }
 
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
+
     defaultConfig {
         manifestPlaceholders = [appName: "Money Manager Ex"]
         applicationId "com.money.manager.ex"
@@ -134,7 +139,14 @@ android {
     }
     packagingOptions {
         resources {
-            excludes += ['META-INF/LICENSE.txt', 'META-INF/LICENSE', 'META-INF/NOTICE', 'META-INF/NOTICE.txt', 'META-INF/DEPENDENCIES']
+            excludes += [
+                    'META-INF/LICENSE.txt',
+                    'META-INF/LICENSE',
+                    'META-INF/NOTICE',
+                    'META-INF/NOTICE.txt',
+                    'META-INF/DEPENDENCIES',
+                    'META-INF/version-control-info.textproto'
+            ]
         }
     }
 
