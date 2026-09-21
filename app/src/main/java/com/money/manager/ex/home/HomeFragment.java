@@ -20,7 +20,9 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -126,6 +128,7 @@ public class HomeFragment
     private static final int REQUEST_BALANCE_ACCOUNT = 1;
 
     @Inject Lazy<InfoRepositorySql> infoRepositorySqlLazy;
+    @Inject Lazy<RecentDatabasesProvider> mDatabasesLazy;
 
     private CurrencyService mCurrencyService;
     private boolean mHideReconciled;
@@ -453,7 +456,15 @@ public class HomeFragment
 
             String dbPath = new AppSettings(activity).getDatabaseSettings().getDatabasePath();
             if (dbPath != null && !dbPath.isEmpty()) {
-                activity.getSupportActionBar().setSubtitle(Paths.get(dbPath).getFileName().toString());
+                DatabaseMetadata metadata = mDatabasesLazy.get().get(dbPath);
+                if (metadata != null && metadata.isRemoteSyncServer() && !TextUtils.isEmpty(metadata.remotePath)) {
+                    String type = metadata.getRemoteServerType(); // "pocketbase"
+                    // String url  = metadata.getRemoteURL();         // "server" or "server:8090"
+                    // activity.getSupportActionBar().setSubtitle(type + " @ " + url);
+                    activity.getSupportActionBar().setSubtitle(type + ":" + Paths.get(dbPath).getFileName().toString());
+                } else {
+                    activity.getSupportActionBar().setSubtitle(Paths.get(dbPath).getFileName().toString());
+                }
             } else {
                 activity.getSupportActionBar().setSubtitle(R.string.path_database_not_exists);
             }

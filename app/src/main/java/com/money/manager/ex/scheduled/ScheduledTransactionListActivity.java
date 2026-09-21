@@ -69,7 +69,7 @@ public class ScheduledTransactionListActivity
                 intent.putExtra(PasscodeActivity.INTENT_MESSAGE_TEXT, getString(R.string.enter_your_passcode));
                 intent.putExtra(PasscodeActivity.PASSCODE_REQUEST, String.valueOf(SecuritySettingsFragment.REQUEST_LOGIN_PASSCODE)); // passing zero as default value
                 // start activity
-                startActivityForResult(intent, INTENT_REQUEST_PASSCODE);
+                launchActivityForResult(intent, INTENT_REQUEST_PASSCODE);
             }
 
         }
@@ -121,8 +121,7 @@ public class ScheduledTransactionListActivity
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    protected void handleActivityResult(int requestCode, int resultCode, Intent data) {
 
         // check request code
         if (requestCode == INTENT_REQUEST_PASSCODE) {

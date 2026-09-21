@@ -349,7 +349,17 @@ public class MmxDatabaseUtils {
         return result;
     }
 
-    private void resetContentProvider() {
+    public void closeCurrentDatabase() {
+        com.money.manager.ex.scheduled.ScheduledTransactionForecastListServices.destroyInstance();
+        MmexApplication.getApp().closeDatabase();
+        try {
+            resetContentProvider();
+        } catch (Exception e) {
+            Timber.e(e, "Error resetting content provider when closing current database");
+        }
+    }
+
+    public void resetContentProvider() {
         ContentResolver resolver = getContext().getContentResolver();
         String authority = getContext().getApplicationContext().getPackageName() + ".provider";
         ContentProviderClient client = resolver.acquireContentProviderClient(authority);

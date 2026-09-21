@@ -34,6 +34,9 @@ import com.money.manager.ex.core.RequestCodes;
 import com.money.manager.ex.core.docstorage.FileStorageHelper;
 import com.money.manager.ex.database.PasswordActivity;
 import com.money.manager.ex.sync.PocketBaseSetupActivity;
+import com.money.manager.ex.sync.PocketBaseSyncEngine;
+import com.money.manager.ex.sync.SyncManager;
+import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxFileUtils;
 
 import javax.inject.Inject;
@@ -84,8 +87,7 @@ public class SelectDatabaseActivity extends MmxBaseFragmentActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    protected void handleActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (resultCode != RESULT_OK) {
             Timber.w("The activity result is not OK");
@@ -114,17 +116,21 @@ public class SelectDatabaseActivity extends MmxBaseFragmentActivity {
 
     private void onCreateDatabaseClick() {
         startActivity(new Intent(this, PasswordActivity.class));
-        FileStorageHelper helper = new FileStorageHelper(this);
-        helper.showCreateFilePicker();
+        launchActivityForResult(FileStorageHelper.buildCreateFileIntent(), RequestCodes.CREATE_DOCUMENT);
     }
 
     private void onOpenDatabaseClick() {
         startActivity(new Intent(this, PasswordActivity.class));
         FileStorageHelper helper = new FileStorageHelper(this);
-        helper.showStorageFilePicker();
+        launchActivityForResult(FileStorageHelper.buildOpenFileIntent(), RequestCodes.SELECT_DOCUMENT);
     }
 
     private void onOpenCloudDatabaseClick() {
+        // Close active database references and set clean creation state
+        new MmxDatabaseUtils(this).closeCurrentDatabase();
+        SyncManager.setIsInCloudCreationMode(true);
+        new PocketBaseSyncEngine(this).clearSyncEngine();
+
         // Start the PocketBase setup wizard
         Intent intent = new Intent(this, PocketBaseSetupActivity.class);
         startActivity(intent);

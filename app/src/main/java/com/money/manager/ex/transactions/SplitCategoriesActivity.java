@@ -122,8 +122,7 @@ public class SplitCategoriesActivity
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    protected void handleActivityResult(int requestCode, int resultCode, Intent data) {
 
         if ((resultCode != Activity.RESULT_OK) || (data == null)) return;
 
@@ -197,10 +196,10 @@ public class SplitCategoriesActivity
 
     @Subscribe
     public void onEvent(AmountEntryRequestedEvent event) {
-        Calculator.forActivity(this)
+        launchActivityForResult(Calculator.forActivity(this)
                 .currency(mAdapter.currencyId)
                 .amount(event.amount)
-                .show(event.requestId + amountRequestOffset);
+            .buildIntent(), event.requestId + amountRequestOffset);
     }
 
     @Subscribe
@@ -296,7 +295,7 @@ public class SplitCategoriesActivity
         // add id of the item that requested the category.
         intent.putExtra(CategoryListActivity.KEY_REQUEST_ID, requestId);
 
-        startActivityForResult(intent, REQUEST_PICK_CATEGORY);
+        launchActivityForResult(intent, REQUEST_PICK_CATEGORY);
     }
 
     private void showInvalidAmountDialog() {
