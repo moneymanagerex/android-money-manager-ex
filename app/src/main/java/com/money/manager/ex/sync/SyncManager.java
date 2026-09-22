@@ -93,11 +93,14 @@ public class SyncManager {
      * Checks if cloud sync (PocketBase) is enabled for the current database.
      */
     public static boolean isCloudSyncEnabled() {
+        if (Boolean.TRUE.equals(isInCloudCreationMode)) {
+            return true;
+        }
 
         RecentDatabasesProvider provider = MmexApplication.getApp().iocComponent.recentDatabasesProvider();
-        if (provider == null) return isInCloudCreationMode;
+        if (provider == null) return false;
         DatabaseMetadata current = provider.getCurrent();
-        if (current == null) return isInCloudCreationMode;
+        if (current == null) return false;
 
         return current.isRemoteSyncServer();
     }

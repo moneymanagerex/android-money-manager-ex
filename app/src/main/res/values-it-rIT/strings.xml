@@ -20,7 +20,8 @@
     <!-- application -->
     <string name="application_name">Money Manager Ex</string>
     <string name="application_definition">Una applicazione semplice e facile da usare per gestire finanze personali, conti bancari, budget familiare, etc.</string>
-    <string name="application_credits">Money Manager Ex per Android utilizza la libreria ActionBarSherlock</string>
+    <string name="application_credits">Money Manager Ex per Android utilizza la libreria ActionBarSherlock
+</string>
     <string name="application_license">Licenze open source</string>
     <!-- database -->
     <string name="db_insert_failed">Inserimento di dati fallito</string>
@@ -577,10 +578,14 @@
     <!-- Password entry activity -->
     <string name="title_activity_password">Inserire la password del database</string>
     <string name="fingerprint_info">Scansiona l\'impronta digitale per sbloccare</string>
-    <string name="fingerprint_no_hardware">Il dispositivo non supporta l\'autenticazione tramite impronta digitale</string>
-    <string name="fingerprint_check_permission">Attivare l\'autorizzazione per l\'impronta digitale</string>
-    <string name="fingerprint_has_enrolled">Nessuna impronta digitale configurata. Registrare almeno un\'impronta digitale nelle impostazioni del dispositivo.</string>
-    <string name="fingerprint_is_keyguard_secure">Attiva la protezione della schermata di blocco nelle impostazioni del tuo dispositivo.</string>
+    <string name="fingerprint_no_hardware">Il dispositivo non supporta l\'autenticazione tramite impronta digitale
+</string>
+    <string name="fingerprint_check_permission">Attivare l\'autorizzazione per l\'impronta digitale
+</string>
+    <string name="fingerprint_has_enrolled">Nessuna impronta digitale configurata. Registrare almeno un\'impronta digitale nelle impostazioni del dispositivo.
+</string>
+    <string name="fingerprint_is_keyguard_secure">Attiva la protezione della schermata di blocco nelle impostazioni del tuo dispositivo.
+</string>
     <string name="income_expense_period">Periodo di entrata/uscite</string>
     <string name="income_expense_period_summary">Il periodo per la visualizzazione di entrate/uscite a piè di pagina della schermata iniziale.</string>
     <string name="appwidget_text">ESEMPIO</string>
@@ -779,7 +784,8 @@
     <string name="notification_channel_remotefile__description">Notifica Operazione su File Remota</string>
     <string name="notification_channel_fileoperation_downloadin">Download Mmex</string>
     <string name="notification_channel_fileoperation_uploadin">Caricamento MMEX</string>
-    <string name="notification_channel_fileoperation_complete">Caricamento Mmex completato</string>
+    <string name="notification_channel_fileoperation_complete">Caricamento Mmex completato
+</string>
     <string name="notification_channel_fileoperation_conflict">Conflitto Di Sincronizzazione Mmex</string>
     <string name="notification_channel_syncing">Sincronizza Canale</string>
     <string name="notification_channel_syncing__description">Sincronizza in corso canale di notifica</string>

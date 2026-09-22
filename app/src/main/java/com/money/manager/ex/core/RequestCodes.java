@@ -24,16 +24,12 @@ package com.money.manager.ex.core;
 
 public class RequestCodes {
     public static final int ACCOUNT = 12;
-    public static final int ALLOCATION = 1;
     public static final int AMOUNT = 2;
     public static final int AMOUNT_FROM = 3;
     public static final int AMOUNT_TO = 4;
-    public static final int ASSET_CLASS = 5;
     public static final int CATEGORY = 10;
-    public static final int CURRENCY = 11;
     public static final int PASSCODE = 7;
     public static final int PAYEE = 8;
-    public static final int PRICE = 9;
     public static final int TAG = 21;
 
     /**
@@ -41,8 +37,6 @@ public class RequestCodes {
      */
     public static final int SELECT_DOCUMENT = 15;
     public static final int CREATE_DOCUMENT = 16;
-    public static final int CODE_BACKUP = 16;
-    public static final int SORT_ORDER = 13;
     public static final int SPLIT_TX = 14;
     public static final int REQUEST_PASSWORD = 20;
 }

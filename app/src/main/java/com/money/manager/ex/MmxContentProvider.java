@@ -365,7 +365,14 @@ public class MmxContentProvider
 
     public void resetDatabase() {
         if (openHelper != null) {
-            //       openHelper.get().close();
+            try {
+                MmxOpenHelper helper = openHelper.get();
+                if (helper != null) {
+                    helper.close();
+                }
+            } catch (Exception e) {
+                Timber.e(e, "Error closing openHelper in content provider");
+            }
         }
 
         openHelper = null;

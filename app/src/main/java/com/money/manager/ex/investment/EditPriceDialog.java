@@ -260,7 +260,6 @@ public class EditPriceDialog
                 AmountInputDialog dialog = AmountInputDialog.getInstance("ignore", mPrice.price, mCurrencyId, false);
                 dialog.show(getFragmentManager(), TAG_AMOUNT_INPUT);
 //                Intent intent = IntentFactory.getIntentForNumericInput(getActivity(), mPrice.price, mCurrencyId, false);
-//                getActivity().startActivityForResult(intent, RequestCodes.AMOUNT);
             }
         };
         viewHolder.amountTextView.setOnClickListener(onClickAmount);

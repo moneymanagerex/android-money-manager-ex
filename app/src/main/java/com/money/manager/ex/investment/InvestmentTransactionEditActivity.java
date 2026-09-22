@@ -232,11 +232,9 @@ public class InvestmentTransactionEditActivity
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
+    protected void handleActivityResult(int requestCode, int resultCode, Intent data) {
         if (mCommon != null) {
-            mCommon.onActivityResult(requestCode, resultCode, data);
+            mCommon.handleActivityResult(requestCode, resultCode, data);
         }
 
         if (resultCode == Activity.RESULT_CANCELED || data == null) return;
@@ -359,37 +357,37 @@ public class InvestmentTransactionEditActivity
     private void onNumSharesClick() {
         Money amount = MoneyFactory.fromDouble(mStock.getNumberOfShares());
 
-        Calculator.forActivity(this)
+        launchActivityForResult(Calculator.forActivity(this)
                 .amount(amount)
                 .roundToCurrency(false)
-                .show(REQUEST_NUM_SHARES);
+            .buildIntent(), REQUEST_NUM_SHARES);
     }
 
     private void onPurchasePriceClick() {
         if (mAccount == null) return;
 
-        Calculator.forActivity(this)
+        launchActivityForResult(Calculator.forActivity(this)
                 .roundToCurrency(false)
                 .amount(mStock.getPurchasePrice())
                 .currency(mAccount.getCurrencyId())
-                .show(REQUEST_PURCHASE_PRICE);
+            .buildIntent(), REQUEST_PURCHASE_PRICE);
     }
 
     private void onCommissionClick() {
         if (mAccount == null) return;
 
-        Calculator.forActivity(this)
+        launchActivityForResult(Calculator.forActivity(this)
                 .amount(mStock.getCommission())
                 .currency(mAccount.getCurrencyId())
-                .show(REQUEST_COMMISSION);
+            .buildIntent(), REQUEST_COMMISSION);
     }
 
     private void onCurrentPriceClick() {
         if (mAccount == null) return;
-        Calculator.forActivity(this)
+        launchActivityForResult(Calculator.forActivity(this)
                 .currency(mAccount.getCurrencyId())
                 .amount(mStock.getCurrentPrice())
-                .show(REQUEST_CURRENT_PRICE);
+            .buildIntent(), REQUEST_CURRENT_PRICE);
     }
 
     /*

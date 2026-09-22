@@ -20,9 +20,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceScreen;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
@@ -40,6 +42,8 @@ public class SettingsFragment
     extends PreferenceFragmentCompat {
 
     public static final int REQUEST_GENERAL_PREFERENCES = 1;
+        private final ActivityResultLauncher<Intent> generalPreferencesLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> getActivity().recreate());
 
     private UIHelper uiHelper;
 
@@ -56,14 +60,11 @@ public class SettingsFragment
             perDbPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_settings_applications)
                     .color(uiHelper.getSecondaryTextColor()));
 
-            perDbPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    Intent intent = new Intent(getActivity(), SettingsActivity.class);
-                    intent.putExtra(SettingsActivity.EXTRA_FRAGMENT, PerDatabaseFragment.class.getSimpleName());
-                    startActivity(intent);
-                    return true;
-                }
+            perDbPreference.setOnPreferenceClickListener(preference -> {
+                Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                intent.putExtra(SettingsActivity.EXTRA_FRAGMENT, PerDatabaseFragment.class.getSimpleName());
+                startActivity(intent);
+                return true;
             });
         }
 
@@ -71,12 +72,9 @@ public class SettingsFragment
         if (lookAndFeelPreference != null) {
             lookAndFeelPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_wallpaper)
                     .color(uiHelper.getSecondaryTextColor()));
-            lookAndFeelPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    startActivity(new Intent(getActivity(), LookFeelSettingsActivity.class));
-                    return true;
-                }
+            lookAndFeelPreference.setOnPreferenceClickListener(preference -> {
+                startActivity(new Intent(getActivity(), LookFeelSettingsActivity.class));
+                return true;
             });
         }
 
@@ -84,12 +82,9 @@ public class SettingsFragment
         if (behaviourPreference != null) {
             behaviourPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_play_circle_outline)
                     .color(uiHelper.getSecondaryTextColor()));
-            behaviourPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    startActivity(new Intent(getActivity(), BehaviourSettingsActivity.class));
-                    return true;
-                }
+            behaviourPreference.setOnPreferenceClickListener(preference -> {
+                startActivity(new Intent(getActivity(), BehaviourSettingsActivity.class));
+                return true;
             });
         }
 
@@ -97,12 +92,9 @@ public class SettingsFragment
         if (investmentPreference != null) {
             investmentPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_trending_up)
                     .color(uiHelper.getSecondaryTextColor()));
-            investmentPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    startActivity(new Intent(getActivity(), InvestmentSettingsActivity.class));
-                    return true;
-                }
+            investmentPreference.setOnPreferenceClickListener(preference -> {
+                startActivity(new Intent(getActivity(), InvestmentSettingsActivity.class));
+                return true;
             });
         }
 
@@ -110,12 +102,9 @@ public class SettingsFragment
         if (budgetPreference != null) {
             budgetPreference.setIcon(uiHelper.getIcon(MMXIconFont.Icon.mmx_law)
                     .color(uiHelper.getSecondaryTextColor()));
-            budgetPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    startActivity(new Intent(getActivity(), BudgetSettingsActivity.class));
-                    return true;
-                }
+            budgetPreference.setOnPreferenceClickListener(preference -> {
+                startActivity(new Intent(getActivity(), BudgetSettingsActivity.class));
+                return true;
             });
         }
 
@@ -123,12 +112,9 @@ public class SettingsFragment
         if (passcodePreference != null) {
             passcodePreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_lock)
                     .color(uiHelper.getSecondaryTextColor()));
-            passcodePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    startActivity(new Intent(getActivity(), SecuritySettingsActivity.class));
-                    return true;
-                }
+            passcodePreference.setOnPreferenceClickListener(preference -> {
+                startActivity(new Intent(getActivity(), SecuritySettingsActivity.class));
+                return true;
             });
         }
 
@@ -136,12 +122,9 @@ public class SettingsFragment
         if (databasesPreference != null) {
             databasesPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_storage)
                     .color(uiHelper.getSecondaryTextColor()));
-            databasesPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    startActivity(new Intent(getActivity(), DatabaseSettingsActivity.class));
-                    return true;
-                }
+            databasesPreference.setOnPreferenceClickListener(preference -> {
+                startActivity(new Intent(getActivity(), DatabaseSettingsActivity.class));
+                return true;
             });
         }
 
@@ -150,12 +133,9 @@ public class SettingsFragment
         if (syncPreference != null) {
             syncPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_sync)
                     .color(uiHelper.getSecondaryTextColor()));
-            syncPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    startActivity(new Intent(getActivity(), SyncPreferencesActivity.class));
-                    return true;
-                }
+            syncPreference.setOnPreferenceClickListener(preference -> {
+                startActivity(new Intent(getActivity(), SyncPreferencesActivity.class));
+                return true;
             });
         }
 
@@ -163,27 +143,26 @@ public class SettingsFragment
         if (infoPreference != null) {
             infoPreference.setIcon(uiHelper.getIcon(GoogleMaterial.Icon.gmd_info_outline)
                     .color(uiHelper.getSecondaryTextColor()));
-            infoPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    startActivity(new Intent(getActivity(), AboutActivity.class));
-                    return true;
-                }
+            infoPreference.setOnPreferenceClickListener(preference -> {
+                startActivity(new Intent(getActivity(), AboutActivity.class));
+                return true;
             });
         }
 
         // manage intent
-        if (getActivity().getIntent() != null) {
+        if (getActivity() != null && getActivity().getIntent() != null) {
             if (!TextUtils.isEmpty(getActivity().getIntent()
                     .getStringExtra(Constants.INTENT_REQUEST_PREFERENCES_SCREEN))) {
                 try {
-                    PreferenceScreen screen = getPreferenceScreen();
                     Preference preference = findPreference(getActivity().getIntent()
                             .getStringExtra(Constants.INTENT_REQUEST_PREFERENCES_SCREEN));
                     if (preference != null) {
-                        //screen.onItemClick(null, null, preference.getOrder(), 0);
-                        screen.performClick();
+                        Preference.OnPreferenceClickListener listener = preference.getOnPreferenceClickListener();
+                        if (listener != null) {
+                            listener.onPreferenceClick(preference);
+                        } else {
+                            onPreferenceTreeClick(preference);
+                        }
                     }
                 } catch (Exception e) {
                     Timber.e(e, "opening preferences screen");
@@ -195,16 +174,6 @@ public class SettingsFragment
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         // Timber.d("creating preferences");
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQUEST_GENERAL_PREFERENCES) {// always recreate activity when returning from general preferences, instead of
-            // trying to figure out if something has changed.
-            getActivity().recreate();
-        }
     }
 
     private UIHelper getUiHelper() {
@@ -223,13 +192,10 @@ public class SettingsFragment
         generalPreference.setIcon(getUiHelper().getIcon(GoogleMaterial.Icon.gmd_build)
             .color(uiHelper.getSecondaryTextColor()));
 
-        generalPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Intent intent = new Intent(getActivity(), GeneralSettingsActivity.class);
-                startActivityForResult(intent, REQUEST_GENERAL_PREFERENCES);
-                return true;
-            }
+        generalPreference.setOnPreferenceClickListener(preference -> {
+            Intent intent = new Intent(getActivity(), GeneralSettingsActivity.class);
+            generalPreferencesLauncher.launch(intent);
+            return true;
         });
     }
 }

@@ -55,6 +55,10 @@ import timber.log.Timber;
 
 public abstract class MmxBaseFragmentActivity
         extends AppCompatActivity {
+    private int activityResultRequestCode;
+    private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+        new ActivityResultContracts.StartActivityForResult(), result ->
+            handleActivityResult(activityResultRequestCode, result.getResultCode(), result.getData()));
     private ActivityResultLauncher<Intent> openDocumentLauncher;
     private ActivityResultLauncher<Intent> directoryPickerLauncher;
 
@@ -65,6 +69,15 @@ public abstract class MmxBaseFragmentActivity
 
     private BaseListFragment listFragment;
     private String FRAGMENTTAG = null;
+
+    public void launchActivityForResult(Intent intent, int requestCode) {
+        activityResultRequestCode = requestCode;
+        activityResultLauncher.launch(intent);
+    }
+
+    protected void handleActivityResult(int requestCode, int resultCode, Intent data) {
+// need to be overwrite by sub class
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

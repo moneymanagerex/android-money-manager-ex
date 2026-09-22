@@ -24,6 +24,8 @@ import com.money.manager.ex.database.MmxOpenHelper;
 import com.squareup.sqlbrite3.BriteDatabase;
 import com.squareup.sqlbrite3.SqlBrite;
 
+import com.money.manager.ex.database.SupportSQLiteOpenHelperAdapter;
+
 import dagger.Module;
 import dagger.Provides;
 import io.reactivex.schedulers.Schedulers;
@@ -60,6 +62,6 @@ public final class DbModule {
     @Provides
     BriteDatabase provideDatabase(SqlBrite sqlBrite, MmxOpenHelper helper) {
         SupportSQLiteOpenHelper supportHelper = helper.provideSupportSQLiteOpenHelper();
-        return sqlBrite.wrapDatabaseHelper(supportHelper, Schedulers.io());
+        return sqlBrite.wrapDatabaseHelper(new SupportSQLiteOpenHelperAdapter(supportHelper), Schedulers.io());
     }
 }

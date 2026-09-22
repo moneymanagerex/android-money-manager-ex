@@ -1,0 +1,5 @@
+* Add time support to transactions
+* Add "Database Alias" to give a neme to cloud configuration
+* fix bug: now in payee pick, inactive payee are not shown
+* remove legacy dependencies and improve code for next release
+* add support for fdroid apk signature

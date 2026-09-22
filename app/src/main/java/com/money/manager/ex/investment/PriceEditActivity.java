@@ -209,8 +209,7 @@ public class PriceEditActivity
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    protected void handleActivityResult(int requestCode, int resultCode, Intent data) {
 
         if ((resultCode == Activity.RESULT_CANCELED) || data == null) return;
 
@@ -265,10 +264,10 @@ public class PriceEditActivity
     }
 
     private void onPriceClick() {
-        Calculator.forActivity(this)
+        launchActivityForResult(Calculator.forActivity(this)
             .amount(model.price)
             .roundToCurrency(false)
-            .show(RequestCodes.AMOUNT);
+            .buildIntent(), RequestCodes.AMOUNT);
     }
 
     private void onDateClick() {

@@ -94,6 +94,10 @@ public class BehaviourSettings
         return get(R.string.pref_auto_transaction_number, false);
     }
 
+    public boolean getUseTimeInTransaction() {
+        return get(PreferenceConstants.PREF_USE_TIME_IN_TRANSACTION, false);
+    }
+
     public Boolean getShowTutorial() {
         return get(R.string.pref_show_tutorial, true);
     }

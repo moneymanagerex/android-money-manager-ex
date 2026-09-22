@@ -199,6 +199,7 @@
     <string name="confirmDelete">Are you sure you want to delete the record?</string>
     <string name="confirm_delete_stock_investment">Do you want to delete the stock investment?</string>
     <string name="date">Date</string>
+    <string name="time">Time</string>
     <string name="delete">Delete</string>
     <string name="download">Download</string>
     <string name="edit">Edit</string>
@@ -431,6 +432,11 @@
     <string name="menu_report_where_money_comes_from">Where the Money Comes From</string>
     <string name="title_check_repeating_transaction">Notification time</string>
     <string name="summary_check_repeating_transaction">What time would you check if there are scheduled transactions overdue? (default 08:00)</string>
+
+    <string name="pref_use_time_in_transaction">use_time_in_transaction</string>
+    <string name="title_use_time_in_transaction">Use Time in transaction</string>
+    <string name="summary_use_time_in_transaction">Use the time when creating and editing transactions</string>
+
     <string name="credits">Credits</string>
     <string name="libraries">Libraries</string>
     <string name="top_withdrawals_last_30_days">Top Withdrawals: Last 30 Days</string>
@@ -976,8 +982,8 @@
     <!-- PocketBse Sync -->
     <string name="pref_sync_url">Pocketbase server Url</string>
     <string name="pref_pocketbase_email">Pocketbase email</string>
-    <string name="confirm_cloud_import_title">Delete all data and reload from cloud?</string>
-    <string name="confirm_cloud_import_message">Warning: This will delete your current local database and open the initial setup wizard to connect to the cloud. Proceed?</string>
+    <string name="confirm_cloud_import_title">Clear all data and reload from cloud?</string>
+    <string name="confirm_cloud_import_message">Warning: This will clear your current configuration and open the initial setup wizard to connect to the cloud. Proceed?</string>
     <string name="menu_open_from_cloud">Open from cloud</string>
     <string name="checking_session">Checking session...</string>
     <string name="session_restored_initializing_database">Session restored. Initializing database...</string>
@@ -991,7 +997,10 @@
     <string name="sync_setup_complete">Sync Setup Complete!</string>
     <string name="sync_failed">"Sync failed: "</string>
     <string name="sync_your_data_with_pocketbase_cloud">Sync your data with PocketBase Cloud</string>
-	
+    <string name="database_alias">Database Alias</string>
+    <string name="confirm_overwrite_title">Database already exists</string>
+    <string name="confirm_overwrite_message">A local database named \'%1$s\' already exists. Do you want to delete it and reload from cloud?</string>
+
 	<!-- Show & Hide Balance -->
     <string name="show_balances">Show Balances</string>
     <string name="hide_balances">Hide Balances</string>
