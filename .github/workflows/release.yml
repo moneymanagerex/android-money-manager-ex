@@ -17,6 +17,64 @@ jobs:
         with:
           fetch-depth: 0 # Essential for reading tag and PR history
 
+      - name: Get Version Code and Name
+        id: version
+        run: |
+          # Extracts both versionCode and versionName from build.gradle
+          VERSION_NAME=$(grep -m 1 'versionName "' app/build.gradle | cut -d'"' -f2)
+          VERSION_CODE=$(grep -m 1 'versionCode ' app/build.gradle | awk '{print $2}')
+          
+          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "version_code=$VERSION_CODE" >> $GITHUB_OUTPUT
+          
+          echo "=== BUILD VERSION INFO ==="
+          echo "VERSION_NAME: $VERSION_NAME"
+          echo "VERSION_CODE: $VERSION_CODE"
+          echo "========================="          
+
+      - name: Validate Version Continuity
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION_NAME="${{ steps.version.outputs.version_name }}"
+          VERSION_CODE="${{ steps.version.outputs.version_code }}"
+          
+          echo "1. Validazione formato versione..."
+          if ! [[ "$VERSION_CODE" =~ ^[0-9]+$ ]]; then
+          echo "::error::Validation failed: versionCode '$VERSION_CODE' must be a valid number."
+          exit 1
+          fi
+          
+          if ! [[ "$VERSION_NAME" =~ ^[0-9]+\.[0-9]+\.[0-9]+ ]]; then
+          echo "::error::Validation failed: versionName '$VERSION_NAME' must follow the x.y.z format."
+          exit 1
+          fi
+          
+          echo "2. Validazione continuità con GitHub Releases..."
+          LATEST_RELEASE=$(gh release view --json tagName -q .tagName 2>/dev/null || echo "0.0.0")
+          LATEST_RELEASE=${LATEST_RELEASE#v} # Rimuove l'eventuale prefisso 'v'
+          
+          if [ "$LATEST_RELEASE" != "0.0.0" ]; then
+          HIGHEST=$(printf "%s\n%s" "$VERSION_NAME" "$LATEST_RELEASE" | sort -V | tail -n1)
+          if [ "$HIGHEST" = "$LATEST_RELEASE" ]; then
+           echo "::error::Processo bloccato! La versionName in Gradle ($VERSION_NAME) è inferiore o uguale all'ultima release GitHub ($LATEST_RELEASE). Hai dimenticato di incrementare la versione?"
+           exit 1
+          fi
+          fi
+          echo "La versione è valida e superiore all'ultima release ($LATEST_RELEASE)."
+
+      - name: Validate Metadata Changelog
+        run: |
+          VERSION_CODE="${{ steps.version.outputs.version_code }}"
+          SRC="metadata/android/en-US/changelogs/$VERSION_CODE.txt"
+          
+          echo "3. Controllo esistenza file changelog..."
+          if [ ! -f "$SRC" ]; then
+            echo "::error::Validation failed: Mandatory changelog file '$SRC' does not exist for the new version!"
+            exit 1
+          fi
+          echo "File changelog trovato con success          
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -36,45 +94,6 @@ jobs:
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
         run: |
           ./gradlew bundleRelease assembleRelease
-
-      - name: Get Version Code and Name
-        id: version
-        run: |
-          # Extracts both versionCode and versionName from build.gradle
-          VERSION_NAME=$(grep -m 1 'versionName "' app/build.gradle | cut -d'"' -f2)
-          VERSION_CODE=$(grep -m 1 'versionCode ' app/build.gradle | awk '{print $2}')
-          
-          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
-          echo "version_code=$VERSION_CODE" >> $GITHUB_OUTPUT
-        
-          echo "=== BUILD VERSION INFO ==="
-          echo "VERSION_NAME: $VERSION_NAME"
-          echo "VERSION_CODE: $VERSION_CODE"
-          echo "========================="          
-
-      - name: Validate Version and Changelog
-        run: |
-          VERSION_NAME="${{ steps.version.outputs.version_name }}"
-          VERSION_CODE="${{ steps.version.outputs.version_code }}"
-
-          echo "Running pre-release validations..."
-          # 1. Check if version_code is a valid number
-          if ! [[ "$VERSION_CODE" =~ ^[0-9]+$ ]]; then
-            echo "::error::Validation failed: versionCode '$VERSION_CODE' must be a valid number."
-            exit 1
-          fi
-          # 2. Check if version_name matches x.y.z format (e.g., 5.5.11 or 5.5.11-rc1)
-          if ! [[ "$VERSION_NAME" =~ ^[0-9]+\.[0-9]+\.[0-9]+ ]]; then
-            echo "::error::Validation failed: versionName '$VERSION_NAME' must follow the x.y.z format."
-            exit 1
-          fi
-          # 3. Check if the changelog file exists for the given version code
-          SRC="metadata/android/en-US/changelogs/$VERSION_CODE.txt"
-          if [ ! -f "$SRC" ]; then
-            echo "::error::Validation failed: Mandatory changelog file '$SRC' does not exist!"
-            exit 1
-          fi
-          echo "All validations passed successfully!"
 
       - name: Prepare GPlay Changelog
         run: |
