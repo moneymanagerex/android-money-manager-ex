@@ -73,7 +73,7 @@ jobs:
             echo "::error::Validation failed: Mandatory changelog file '$SRC' does not exist for the new version!"
             exit 1
           fi
-          echo "File changelog trovato con success          
+          echo "File changelog trovato con successo!"         
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
