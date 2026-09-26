@@ -186,6 +186,7 @@
     <string name="confirmDelete">Möchten Sie den Eintrag wirklich löschen?</string>
     <string name="confirm_delete_stock_investment">Möchten Sie die Wertpapieranlage löschen?</string>
     <string name="date">Datum</string>
+    <string name="time">Zeit</string>
     <string name="delete">Löschen</string>
     <string name="download">Download</string>
     <string name="edit">Bearbeiten</string>
@@ -407,6 +408,9 @@
     <string name="menu_report_where_money_comes_from">Wo das Geld herkommt</string>
     <string name="title_check_repeating_transaction">Erinnerungszeitpunkt</string>
     <string name="summary_check_repeating_transaction">Zu welcher Zeit wollen Sie prüfen, ob geplante Transaktionen überfällig sind? (Standard 08:00)</string>
+    <string name="pref_use_time_in_transaction">benutzt_Zeit_in_Transaktionen</string>
+    <string name="title_use_time_in_transaction">Zeit in Transaktion verwenden</string>
+    <string name="summary_use_time_in_transaction">Nutzen Sie die Zeit beim Erstellen und Bearbeiten von Transaktionen</string>
     <string name="credits">Credits</string>
     <string name="libraries">Bibliotheken</string>
     <string name="top_withdrawals_last_30_days">Größte Abhebungen: Letzte 30 Tage</string>
@@ -870,6 +874,8 @@
     <!-- PocketBse Sync -->
     <string name="pref_sync_url">Pocketbase-Server-Url</string>
     <string name="pref_pocketbase_email">Pocketbase E-Mail</string>
+    <string name="confirm_cloud_import_title">Alle Daten löschen und aus der Cloud neu laden?</string>
+    <string name="confirm_cloud_import_message">Warnung: Dies löscht Ihre aktuelle lokale Datenbank und öffnet den Einrichtungsassistenten, um sich mit der Cloud zu verbinden. Fortfahren?</string>
     <string name="menu_open_from_cloud">In der Cloud öffnen</string>
     <string name="checking_session">Überprüfe Sitzung...</string>
     <string name="session_restored_initializing_database">Sitzung wiederhergestellt. Initialisiere Datenbank...</string>
@@ -883,6 +889,9 @@
     <string name="sync_setup_complete">Sync-Einrichtung abgeschlossen!</string>
     <string name="sync_failed">"Sync fehlgeschlagen: "</string>
     <string name="sync_your_data_with_pocketbase_cloud">Daten mit PocketBase Cloud synchronisieren</string>
+    <string name="database_alias">Datenbank Alias</string>
+    <string name="confirm_overwrite_title">Datenbank existiert schon</string>
+    <string name="confirm_overwrite_message">Eine lokale Datenbank mit dem Namen \'%1$s\' existiert bereits. Möchten Sie sie löschen und aus der Cloud neu laden?</string>
     <!-- Show & Hide Balance -->
     <string name="show_balances">Kontostände anzeigen</string>
     <string name="hide_balances">Kontostände ausblenden</string>
