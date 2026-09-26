@@ -112,6 +112,25 @@ jobs:
           echo "==============================="
           echo "Changelog successfully prepared for GPlay."
 
+      - name: Prepare Release Files
+        run: |
+            VERSION_NAME="${{ steps.version.outputs.version_name }}"
+            
+            mkdir -p dist-release
+            
+            # 1. FDROID ==> FOSS:
+            cp app/build/outputs/apk/fdroid/release/*.apk dist-release/ammx-${VERSION_NAME}-foss.apk
+            
+            # 2. GPLAY ==> RESTRICT
+            cp app/build/outputs/bundle/gplayRelease/*.aab dist-release/ammx-${VERSION_NAME}-restrict.aab
+            
+            # 3. SYNC: 
+            cp app/build/outputs/apk/sync/release/*.apk dist-release/ammx-${VERSION_NAME}-sync.apk
+            
+            echo "=== RELEASE FILES PREPARED ==="
+            ls -lh dist-release/
+
+
       - name: Create GitHub Release with Auto-Generated Notes
         uses: softprops/action-gh-release@v2
         with:
@@ -119,13 +138,7 @@ jobs:
           name: "${{ steps.version.outputs.version_name }}"   
           generate_release_notes: true
           prerelease: false
-          files: |
-            app/build/outputs/bundle/fdroidRelease/*.aab
-            app/build/outputs/bundle/gplayRelease/*.aab
-            app/build/outputs/bundle/syncRelease/*.aab
-            app/build/outputs/apk/fdroid/release/*.apk
-            app/build/outputs/apk/gplay/release/*.apk
-            app/build/outputs/apk/sync/release/*.apk
+          files: dist-release/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
