@@ -16,7 +16,10 @@ SELECT
 	coalesce( st.CategId, TX.CategId, -1 ) AS CategID,
     COALESCE( SCAT.fullcatid, CAT.fullcatid, "" ) AS FullCatID,
     TX.Status AS Status,
-    TX.NOTES AS Notes,
+    CASE
+        WHEN ST.NOTES = TX.NOTES THEN TX.NOTES
+        ELSE COALESCE(TX.NOTES || ':' || NULLIF(ST.NOTES, ''), TX.NOTES)
+    END AS Notes,
     ifnull(cf.BaseConvRate, cfTo.BaseConvRate) AS BaseConvRate,
     cf.currency_symbol AS currency,
     ROUND( ( CASE TX.TRANSCODE WHEN 'Deposit' THEN 1 ELSE -1 END ) *
@@ -59,13 +62,23 @@ FROM CHECKINGACCOUNT_V1 TX
     group by REFID
     ) AS ATT on TX.TransID = ATT.REFID
 	LEFT JOIN (
-		select Transid, Tags from (
-		SELECT TRANSACTIONID as Transid,
-			   group_concat(TAGNAME) AS Tags
-		FROM (SELECT TAGLINK_V1.REFID as TRANSACTIONID, TAG_V1.TAGNAME
-			  FROM TAGLINK_V1 inner join TAG_V1 on TAGLINK_V1.TAGID = TAG_V1.TAGID
-			  where REFTYPE = "Transaction" and ACTIVE = 1
-			  ORDER BY REFID, TAGNAME)
-		GROUP BY TRANSACTIONID)
-    ) as TAGS on TX.Transid = TAGS.Transid
+		SELECT Transid, Splitid, group_concat(TAGNAME) AS Tags
+		FROM (
+			SELECT TRANSACTIONID as Transid, SPLITTRANSID as Splitid, TAGNAME
+			FROM (
+				SELECT TAGLINK_V1.REFID as TRANSACTIONID, null as SPLITTRANSID, TAG_V1.TAGNAME
+				FROM TAGLINK_V1
+				INNER JOIN TAG_V1 ON TAGLINK_V1.TAGID = TAG_V1.TAGID
+				WHERE REFTYPE = 'Transaction' AND ACTIVE = 1
+				UNION
+				-- Tag legati agli split delle transazioni (ST) mappati sul TransID principale
+				SELECT null AS TRANSACTIONID, TAGLINK_V1.REFID as SPLITTRANSID, TAG_V1.TAGNAME
+				FROM TAGLINK_V1
+				INNER JOIN TAG_V1 ON TAGLINK_V1.TAGID = TAG_V1.TAGID
+				WHERE REFTYPE = 'TransactionSplit' AND ACTIVE = 1
+			)
+			ORDER BY TRANSACTIONID, SPLITTRANSID, TAGNAME
+		)
+		GROUP BY Transid, Splitid
+    ) as TAGS on ( TX.Transid = TAGS.Transid or ST.SPLITTRANSID = TAGS.Splitid )
 WHERE (TX.DELETEDTIME IS NULL OR TX.DELETEDTIME = '')
