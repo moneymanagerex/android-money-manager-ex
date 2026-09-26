@@ -11,7 +11,7 @@ WITH RECURSIVE categories(categid, categname, catshortname, parentid, parentcate
 SELECT
     TX.TransID AS ID,
     TX.TransCode AS TransactionType,
-    date( TX.TransDate ) AS Date,
+    TX.TransDate AS Date,
     COALESCE( SCAT.categname, CAT.categname, "" ) AS Category,
 	coalesce( st.CategId, TX.CategId, -1 ) AS CategID,
     COALESCE( SCAT.fullcatid, CAT.fullcatid, "" ) AS FullCatID,
