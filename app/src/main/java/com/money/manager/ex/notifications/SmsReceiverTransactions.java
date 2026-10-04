@@ -82,7 +82,6 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         mContext = context.getApplicationContext();
-        debugToast("SMS broadcast received");
 
         final BehaviourSettings behav_settings = new BehaviourSettings(mContext);
         final GeneralSettings gen_settings = new GeneralSettings(mContext);
@@ -101,7 +100,6 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
         try {
             //------- if settings enabled the parse the sms and create trans ---------------
-            if (!behav_settings.getBankSmsTrans()) debugToast("SMS feature switch is OFF");
             if (behav_settings.getBankSmsTrans()) {
 
                 //---get the SMS message passed in---
@@ -123,7 +121,6 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                     // Privacy: only read SMS from the senders the user allowed.
                     // Anything else is dropped here, before its body is touched.
                     if (!SmsSenderAllowlist.isAllowed(msgSender, behav_settings.getSmsAllowedSenders())) {
-                        debugToast("Sender not allowed: " + msgSender + " / allowed=" + behav_settings.getSmsAllowedSenders());
                         return;
                     }
 
@@ -135,7 +132,6 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                     }
 
                     SamsungCardSmsParser.Result card = SamsungCardSmsParser.parse(msgBody);
-                    debugToast("Sender OK, card parse " + (card != null ? "OK" : "FAILED"));
                     if (card != null) {
                         new SamsungCardSmsProcessor(mContext).process(card, msgBody, msgSender);
                         return;
@@ -459,13 +455,6 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         {
             Timber.e(e, "MMEX: Bank Transaction Process EXCEPTION");
         }
-    }
-
-    private void debugToast(String msg) {
-        if (!com.money.manager.ex.BuildConfig.DEBUG) return;
-        Timber.w("SmsDebug: %s", msg);
-        new android.os.Handler(android.os.Looper.getMainLooper()).post(
-                () -> Toast.makeText(mContext, "MMEX-DBG: " + msg, Toast.LENGTH_LONG).show());
     }
 
     @SuppressLint("Range")

@@ -21,7 +21,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-import com.money.manager.ex.BuildConfig;
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
 import com.money.manager.ex.core.TransactionTypes;
@@ -66,10 +65,6 @@ public class SamsungCardSmsProcessor {
     public void process(SamsungCardSmsParser.Result card, String rawBody, String sender) {
         try {
             final Long accountId = new CardSmsLinkStore(mContext).getAccountId(card.issuer, card.cardLast4);
-            if (BuildConfig.DEBUG) {
-                new android.os.Handler(android.os.Looper.getMainLooper()).post(() -> Toast.makeText(mContext,
-                        "MMEX-DBG: card " + card.cardLast4 + " linked account=" + accountId, Toast.LENGTH_LONG).show());
-            }
             if (accountId == null) {
                 notifyNotLinked(card, rawBody, sender);
                 return;
