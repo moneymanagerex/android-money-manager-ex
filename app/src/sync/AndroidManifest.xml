@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
+    <!-- SMS Interface -->
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+
+    <application>
+
+        <receiver android:name=".notifications.SmsReceiverTransactions"
+            android:label="SMS Receiver" android:exported="true"
+            android:permission="android.permission.BROADCAST_SMS">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>
