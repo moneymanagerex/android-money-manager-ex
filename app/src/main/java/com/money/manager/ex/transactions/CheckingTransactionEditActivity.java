@@ -597,7 +597,10 @@ public class CheckingTransactionEditActivity
 
                         mCommon.transactionEntity.setTransactionNumber(extras.getString(EditTransactionActivityConstants.KEY_TRANS_NUMBER));
                         mCommon.transactionEntity.setNotes(extras.getString(EditTransactionActivityConstants.KEY_NOTES));
-                        mCommon.transactionEntity.setDate(new MmxDate().toDate());
+                        Object smsDate = extras.getSerializable(EditTransactionActivityConstants.KEY_TRANS_DATE);
+                        mCommon.transactionEntity.setDate(smsDate instanceof Date
+                                ? (Date) smsDate
+                                : new MmxDate().toDate());
 
                         if (extras.getString(EditTransactionActivityConstants.KEY_PAYEE_NAME).isEmpty())
                         {

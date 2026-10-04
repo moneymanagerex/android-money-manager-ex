@@ -82,6 +82,27 @@
     <string name="notification_click_to_edit_transaction">트랜잭션을 편집하려면 터치하세요&#8230;</string>
     <string name="notification_process_sms_transaction_status">은행 거래 SMS 상태 처리</string>
     <string name="notification_process_sms_channel_description">AMMEX SMS 알림 채널</string>
+    <string name="title_sms_allowed_senders">허용 발신번호</string>
+    <string name="summary_sms_allowed_senders">이 번호에서 온 문자만 읽고, 나머지는 읽지 않고 무시합니다. 쉼표로 구분하세요. 현재: %1$s</string>
+    <string name="title_sms_card_links">카드 문자 계좌 연결</string>
+    <string name="summary_sms_card_links">카드별로 문자를 기록할 계좌를 선택합니다</string>
+    <string name="card_sms_issuer_samsung">삼성카드</string>
+    <string name="card_sms_not_linked_title">카드 %1$s가 계좌에 연결되지 않았습니다</string>
+    <string name="card_sms_not_linked_subtext">탭하여 계좌 선택</string>
+    <string name="card_sms_linked">카드 %1$s → %2$s 연결됨</string>
+    <string name="card_sms_already_exists">이미 기록된 거래(%1$s)라서 건너뜁니다</string>
+    <string name="card_sms_currency_missing">통화 %1$s가 데이터베이스에 없습니다</string>
+    <string name="card_sms_recorded">카드 문자 기록됨: %1$s %2$s (%3$d건)</string>
+    <string name="card_sms_installment_note">[할부 %1$d/%2$d]</string>
+    <string name="card_sms_installment_months_note">[할부 %1$d개월]</string>
+    <string name="card_sms_links_help">카드 문자는 여기서 연결한 계좌에 기록됩니다. 카드를 탭하면 계좌 변경, 길게 누르면 연결 해제.</string>
+    <string name="card_sms_links_empty">연결된 카드가 없습니다</string>
+    <string name="card_sms_links_add">카드 추가</string>
+    <string name="card_sms_links_last4_hint">카드번호 끝 4자리</string>
+    <string name="card_sms_links_last4_invalid">끝 4자리 숫자를 입력하세요</string>
+    <string name="card_sms_links_unlink_confirm">카드 %1$s 연결을 해제할까요?</string>
+    <string name="card_sms_links_account_missing">(계좌 없음)</string>
+    <string name="card_sms_links_row">%1$s %2$s → %3$s</string>
     <!-- account -->
     <string name="account">계좌</string>
     <string name="account_list">계좌 목록</string>

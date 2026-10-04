@@ -81,6 +81,17 @@
         android:dependency="@string/pref_sms_auto_trans"
         android:summary="@string/summary_sms_trans_status_notification"
         android:title="@string/title_sms_trans_status_notification" />
+    <EditTextPreference
+        android:icon="@null"
+        android:key="@string/pref_sms_allowed_senders"
+        android:dependency="@string/pref_sms_auto_trans"
+        android:title="@string/title_sms_allowed_senders" />
+    <Preference
+        android:icon="@null"
+        android:key="@string/pref_sms_card_links"
+        android:dependency="@string/pref_sms_auto_trans"
+        android:summary="@string/summary_sms_card_links"
+        android:title="@string/title_sms_card_links" />
 
     <SwitchPreference
         android:icon="@null"

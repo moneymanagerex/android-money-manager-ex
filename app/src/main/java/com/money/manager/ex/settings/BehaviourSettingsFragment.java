@@ -18,6 +18,7 @@ package com.money.manager.ex.settings;
 
 import android.Manifest;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
@@ -32,6 +34,8 @@ import androidx.preference.SwitchPreference;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.R;
+import com.money.manager.ex.notifications.CardSmsLinkActivity;
+import com.money.manager.ex.notifications.SmsSenderAllowlist;
 import com.money.manager.ex.utils.MmxDate;
 
 /**
@@ -59,6 +63,8 @@ public class BehaviourSettingsFragment
 
         initializeNotificationTime();
         initializeSmsAutomation();
+        initializeSmsAllowedSenders();
+        initializeSmsCardLinks();
 
         // todo force true and disable. remove after cleaning old catsubcat
         Preference nestedCat = findPreference(getString(R.string.pref_use_nested_category));
@@ -165,4 +171,33 @@ public class BehaviourSettingsFragment
         preference.setOnPreferenceClickListener(listener);
     }
 
+
+    private void initializeSmsAllowedSenders() {
+        final BehaviourSettings settings = new BehaviourSettings(getActivity());
+
+        EditTextPreference preference = findPreference(getString(PreferenceConstants.PREF_SMS_ALLOWED_SENDERS));
+        if (preference == null) return;
+
+        String current = SmsSenderAllowlist.format(settings.getSmsAllowedSenders());
+        preference.setText(current);
+        preference.setSummary(getString(R.string.summary_sms_allowed_senders, current));
+
+        preference.setOnPreferenceChangeListener((pref, newValue) -> {
+            // store the normalized list, not the raw input
+            String normalized = SmsSenderAllowlist.format(SmsSenderAllowlist.parse(String.valueOf(newValue)));
+            ((EditTextPreference) pref).setText(normalized);
+            pref.setSummary(getString(R.string.summary_sms_allowed_senders, normalized));
+            return false;
+        });
+    }
+
+    private void initializeSmsCardLinks() {
+        Preference preference = findPreference(getString(PreferenceConstants.PREF_SMS_CARD_LINKS));
+        if (preference == null) return;
+
+        preference.setOnPreferenceClickListener(pref -> {
+            startActivity(new Intent(getActivity(), CardSmsLinkActivity.class));
+            return true;
+        });
+    }
 }

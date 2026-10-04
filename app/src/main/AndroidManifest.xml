@@ -202,6 +202,7 @@
                 <action android:name="android.intent.action.EDIT" />
             </intent-filter>
         </activity>
+        <activity android:name=".notifications.CardSmsLinkActivity" />
         <activity android:name=".account.AccountListActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PICK" />

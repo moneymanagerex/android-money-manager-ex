@@ -22,6 +22,9 @@ import android.content.SharedPreferences;
 import androidx.preference.PreferenceManager;
 
 import com.money.manager.ex.R;
+import com.money.manager.ex.notifications.SmsSenderAllowlist;
+
+import java.util.Set;
 
 /**
  * Settings in the General category.
@@ -88,6 +91,21 @@ public class BehaviourSettings
 
     public void setSmsTransStatusNotification(boolean status) {
         set(PreferenceConstants.PREF_SMS_TRANS_STATUS_NOTIFICATION, status);
+    }
+
+    /**
+     * Normalized senders whose SMS may be read. Anything else is dropped unread.
+     */
+    public Set<String> getSmsAllowedSenders() {
+        return SmsSenderAllowlist.parse(getSmsAllowedSendersRaw());
+    }
+
+    public String getSmsAllowedSendersRaw() {
+        return get(PreferenceConstants.PREF_SMS_ALLOWED_SENDERS, SmsSenderAllowlist.DEFAULT_SENDERS);
+    }
+
+    public void setSmsAllowedSenders(Set<String> senders) {
+        set(PreferenceConstants.PREF_SMS_ALLOWED_SENDERS, SmsSenderAllowlist.format(senders));
     }
 
     public boolean getAutoTransactionNumber() {

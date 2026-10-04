@@ -88,6 +88,27 @@
     <string name="notification_click_to_edit_transaction">Touch to edit the transaction&#8230;</string>
     <string name="notification_process_sms_transaction_status">Process Bank Transaction SMS Status</string>
     <string name="notification_process_sms_channel_description">AMMEX SMS Notification Channel</string>
+    <string name="title_sms_allowed_senders">Allowed SMS senders</string>
+    <string name="summary_sms_allowed_senders">Only SMS from these numbers are read. Others are ignored without being read. Separate with commas. Current: %1$s</string>
+    <string name="title_sms_card_links">Card SMS account links</string>
+    <string name="summary_sms_card_links">Choose the account each card SMS is recorded to</string>
+    <string name="card_sms_issuer_samsung">Samsung Card</string>
+    <string name="card_sms_not_linked_title">Card %1$s is not linked to an account</string>
+    <string name="card_sms_not_linked_subtext">Touch to choose an account</string>
+    <string name="card_sms_linked">Card %1$s linked to %2$s</string>
+    <string name="card_sms_already_exists">Skipping card SMS, transaction %1$s already exists</string>
+    <string name="card_sms_currency_missing">Currency %1$s is not defined in this database</string>
+    <string name="card_sms_recorded">Card SMS recorded: %1$s %2$s (%3$d transaction(s))</string>
+    <string name="card_sms_installment_note">[Installment %1$d/%2$d]</string>
+    <string name="card_sms_installment_months_note">[Installment %1$d months]</string>
+    <string name="card_sms_links_help">Card SMS are recorded to the account linked here. Tap a card to change its account, long-press to unlink.</string>
+    <string name="card_sms_links_empty">No cards linked yet</string>
+    <string name="card_sms_links_add">Add card</string>
+    <string name="card_sms_links_last4_hint">Last 4 digits of the card</string>
+    <string name="card_sms_links_last4_invalid">Enter the last 4 digits</string>
+    <string name="card_sms_links_unlink_confirm">Unlink card %1$s?</string>
+    <string name="card_sms_links_account_missing">(account not found)</string>
+    <string name="card_sms_links_row">%1$s %2$s → %3$s</string>
 
     <!-- account -->
     <string name="account">Account</string>

@@ -22,16 +22,11 @@ import java.util.Date;
 import java.util.regex.*;
 
 import android.annotation.SuppressLint;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import androidx.core.app.NotificationCompat;
 import androidx.sqlite.db.SupportSQLiteQuery;
 import androidx.sqlite.db.SupportSQLiteQueryBuilder;
 
@@ -116,21 +111,33 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                 if (bundle != null) { //---retrieve the SMS message received---
 
                     Object[] pdus = (Object[]) bundle.get("pdus");
+                    if (pdus == null || pdus.length == 0) return;
+
+                    String format = bundle.getString("format");
                     msgs = new SmsMessage[pdus.length];
+                    msgs[0] = SmsMessage.createFromPdu((byte[]) pdus[0], format);
+                    msgSender = msgs[0].getOriginatingAddress();
+
+                    // Privacy: only read SMS from the senders the user allowed.
+                    // Anything else is dropped here, before its body is touched.
+                    if (!SmsSenderAllowlist.isAllowed(msgSender, behav_settings.getSmsAllowedSenders())) {
+                        return;
+                    }
 
                     for (int i = 0; i < msgs.length; i++) {
-                        msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
-                        msgSender = msgs[i].getOriginatingAddress();
+                        if (msgs[i] == null) {
+                            msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i], format);
+                        }
                         msgBody += msgs[i].getMessageBody();
                     }
 
-                    //Must be commented in released version
-                    //msgSender = "AT-SIBSMS";
+                    SamsungCardSmsParser.Result card = SamsungCardSmsParser.parse(msgBody);
+                    if (card != null) {
+                        new SamsungCardSmsProcessor(mContext).process(card, msgBody, msgSender);
+                        return;
+                    }
 
-                    if(isTransactionSms(msgSender) && !msgBody.toLowerCase().contains("otp")) {
-                        // Transaction Sms sender will have format like this AT-SIBSMS, South Indian Bank
-                        // Promotional sms will have sender like AT-012345
-                        // Not sure how this format will be in out side of India. I may need to update if I get sample
+                    if(!msgBody.toLowerCase().contains("otp")) {
 
                         // MMEX Helper
                         openHelper = new MmxOpenHelper(mContext, app_settings.getDatabaseSettings().getDatabasePath());
@@ -476,30 +483,6 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
 
         return  currencySymbl;
 
-    }
-
-    private boolean isTransactionSms(String smsSender)
-    {
-        boolean reqMatch = true;
-
-        try
-        {
-            Pattern p = Pattern.compile("(-?\\d+)");
-            Matcher m = p.matcher(smsSender);
-
-            if (m != null) {
-                while(m.find()) {
-                    reqMatch = false;
-                    break;
-                }
-            }
-        }
-        catch(Exception e)
-        {
-            Timber.e(e, "isTransactionSms");
-        }
-
-        return reqMatch;
     }
 
     private boolean validateTransType(String[] keySearch, String smsMsg)
@@ -950,117 +933,14 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
     }
 
     public String validateData() {
-
-        if (mCommon.transactionEntity.getAccountId().equals(Constants.NOT_SET)) {
-            return mContext.getString(R.string.error_fromaccount_not_selected);
-        }
-
-        // Amount is required and must be positive. Sign is determined by transaction type.
-        if (mCommon.transactionEntity.getAmount().toDouble() <= 0 ) {
-            return mContext.getString(R.string.error_amount_must_be_positive);
-        }
-
-        if (mCommon.transactionEntity.getTransactionType().equals(TransactionTypes.Transfer)) {
-
-            if (mCommon.transactionEntity.getToAccountId().equals(Constants.NOT_SET)) {
-                return mContext.getString(R.string.error_toaccount_not_selected);
-            }
-
-            if (mCommon.transactionEntity.getToAccountId().equals(mCommon.transactionEntity.getAccountId())) {
-                return mContext.getString(R.string.error_transfer_to_same_account);
-            }
-
-            // Amount To is required and has to be positive.
-            if (mCommon.transactionEntity.getToAmount().toDouble() <= 0 ) {
-                return mContext.getString(R.string.error_amount_must_be_positive);
-            }
-        } else { // payee required for automatic transactions.
-            if (!mCommon.transactionEntity.hasPayee()) {
-                return mContext.getString(R.string.error_payee_not_selected);
-            }
-        }
-
-        // Category is required if tx is not a split or transfer.
-        if (!mCommon.transactionEntity.hasCategory()) {
-            return mContext.getString(R.string.error_category_not_selected);
-        }
-
-        return "PASS";
+        return SmsTransactionHelper.validate(mContext, mCommon.transactionEntity);
     }
 
     public String saveTransaction() {
-
-        AccountTransactionRepository repo = new AccountTransactionRepository(mContext);
-
-        if (!mCommon.transactionEntity.hasId()) { // insert
-            mCommon.transactionEntity = repo.insert((AccountTransaction) mCommon.transactionEntity);
-
-            if (!mCommon.transactionEntity.hasId()) { //Insert new transaction failed!
-                return mContext.getString(R.string.db_checking_insert_failed);
-            }
-        } else { // update
-            if (!repo.update((AccountTransaction) mCommon.transactionEntity)) { //Update transaction failed!
-                return mContext.getString(R.string.db_checking_update_failed);
-            }
-        }
-        return "PASS";
+        return SmsTransactionHelper.save(mContext, (AccountTransaction) mCommon.transactionEntity);
     }
 
-    /**
-     * Note: Check the new NotificationUtils for creation of notification channel and the code that
-     * utilizes it.
-     * @param intent
-     * @param notificationText
-     */
     private void showNotification(Intent intent, String notificationText, String msgSender, String txnStatus, String errorMsg) {
-
-        try {
-
-            String GROUP_KEY_AMMEX = "com.android.example.MoneyManagerEx";
-            int ID_NOTIFICATION =  (int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE);
-
-            PendingIntent pendingIntent = PendingIntent.getActivity(mContext, ID_NOTIFICATION, intent, PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
-
-            NotificationManager notificationManager = (NotificationManager) mContext
-                    .getSystemService(Context.NOTIFICATION_SERVICE);
-
-            // Create the NotificationChannel
-            NotificationChannel nChannel = new NotificationChannel(CHANNEL_ID, "AMMEXSMS", NotificationManager.IMPORTANCE_DEFAULT);
-            nChannel.setDescription(mContext.getString(R.string.notification_process_sms_channel_description));
-
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            notificationManager.createNotificationChannel(nChannel);
-
-            Notification notification = new NotificationCompat.Builder(mContext, CHANNEL_ID)
-                    .setAutoCancel(true)
-                    .setContentIntent(pendingIntent)
-                    .setContentTitle(mContext.getString(R.string.notification_process_sms_transaction_status) + ": " + txnStatus + errorMsg)
-                    .setSubText(mContext.getString(R.string.notification_click_to_edit_transaction))
-                    .setSmallIcon(R.drawable.ic_stat_notification)
-                    .setStyle(new NotificationCompat.BigTextStyle()
-                            .bigText(msgSender + " : " + notificationText))
-                    .setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
-                    .setGroup(GROUP_KEY_AMMEX)
-                    .build();
-
-            // Change the notification color based on the status
-            switch(txnStatus) {
-                case "Auto Failed":
-                    notification.color = mContext.getResources().getColor(R.color.md_red);
-                    break;  //optional
-                case "Already Exists":
-                    notification.color = mContext.getResources().getColor(R.color.md_indigo);
-                    break;  //optional
-                default:
-                    notification.color = mContext.getResources().getColor(R.color.md_primary);
-            }
-
-            // notify
-            notificationManager.notify(ID_NOTIFICATION, notification);
-
-            } catch (Exception e) {
-                Timber.e(e, "showing notification for sms transaction");
-            }
+        SmsTransactionHelper.showNotification(mContext, intent, notificationText, msgSender, txnStatus, errorMsg);
     }
 }
