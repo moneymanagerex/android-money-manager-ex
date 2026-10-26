@@ -25,6 +25,18 @@ Money Manager Ex for Android is a mobile companion to PC/desktop personal financ
 [<img alt="Get it on GitHub" src="https://raw.githubusercontent.com/Kunzisoft/Github-badge/main/get-it-on-github.png" width="240">](https://github.com/moneymanagerex/android-money-manager-ex/releases/latest)
 [<img alt="Get it on Google Play" src="http://steverichey.github.io/google-play-badge-svg/img/en_get.svg" width="240">](https://play.google.com/store/apps/details?id=com.money.manager.ex.android)
 
+
+#### Build Variants & Releases
+
+We provide several build variants depending on the distribution platform and desired features:
+
+* **`*-foss.apk`**: The standard application version, which is also available on F-Droid.
+* **`*-restrict.aab`**: The version optimized for the Google Play Store, compiled without the SMS receiver.
+* **`*-sync.apk`**: A beta variant that utilizes a remote server for synchronization. For more details, see the [mmex-sync repository](https://github.com/moneymanagerex/mmex-sync).
+
+**Note on Releases:** New releases are generated automatically via Pull Requests that target branches following the `release/V*` naming convention.
+
+
 #### Documentation
 - [User Manual](https://android.moneymanagerex.org/usermanual/)
 
