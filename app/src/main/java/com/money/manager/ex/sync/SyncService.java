@@ -28,6 +28,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.JobIntentService;
 import androidx.core.app.NotificationCompat;
 
@@ -47,7 +48,6 @@ import com.money.manager.ex.utils.NotificationUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.util.HashMap;
 
 import javax.inject.Inject;
 
@@ -93,7 +93,7 @@ public class SyncService
     }
 
     @Override
-    protected void onHandleWork(Intent intent) {
+    protected void onHandleWork(@NonNull Intent intent) {
         String action = intent != null
                 ? intent.getAction()
                 : "null";
@@ -242,7 +242,6 @@ public class SyncService
         boolean isLocalModified = currentDb.isLocalFileChanged();
         boolean isRemoteModified = currentDb.isRemoteFileChanged(getApplicationContext());
         Timber.d("Local file has changed: %b, Remote file has changed: %b", isLocalModified, isRemoteModified);
-        Uri uri = Uri.parse(currentDb.remotePath);
 
         // for debug
 //         if (true) {
@@ -254,10 +253,6 @@ public class SyncService
         if (!isLocalModified && !isRemoteModified) {
             sendMessage(outMessenger, SyncServiceMessage.FILE_NOT_CHANGED);
 //            sendStopEvent();
-            MmexApplication.getAmplitude().track("synchronize", new HashMap<String, String>() {{
-                put("authority", uri.getAuthority());
-                put("result", "no change");
-            }});
             return;
         }
 
@@ -283,10 +278,6 @@ public class SyncService
                         Timber.e(e, "Could not complete sync");
                         sendMessage(outMessenger, SyncServiceMessage.CONFLICT);
                         //           sendStopEvent();
-                        MmexApplication.getAmplitude().track("synchronize", new HashMap<String, String>() {{
-                            put("authority", uri.getAuthority());
-                            put("result", "Conflict");
-                        }});
                         showNotificationForConflict();
                     }
                 } else {
@@ -310,7 +301,6 @@ public class SyncService
             } catch (Exception e) {
                 sendMessage(outMessenger, SyncServiceMessage.ERROR);
             }
-            return;
         }
     }
 
