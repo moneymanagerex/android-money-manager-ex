@@ -54,7 +54,6 @@ import com.money.manager.ex.utils.NetworkUtils;
 import com.money.manager.ex.utils.NotificationUtils;
 
 import java.io.InputStream;
-import java.util.HashMap;
 
 import javax.inject.Inject;
 
@@ -363,11 +362,6 @@ public class SyncManager {
         }
 
         invokeSyncService(SyncConstants.INTENT_ACTION_SYNC);
-        Uri uri = Uri.parse(remotePath);
-        MmexApplication.getAmplitude().track("synchronize", new HashMap() {{
-            put("authority", uri.getAuthority());
-            put("result", "triggerSynchronization");
-        }});
     }
 
     private void triggerCloudSync() {

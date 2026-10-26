@@ -14,7 +14,6 @@ import androidx.appcompat.app.AlertDialog;
 import java.nio.file.Files;
 
 import com.google.common.io.ByteStreams;
-import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.home.DatabaseMetadata;
 import com.money.manager.ex.utils.MmxDatabaseUtils;
 import com.money.manager.ex.utils.MmxDate;
@@ -27,7 +26,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.StandardCopyOption;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
 import timber.log.Timber;
@@ -143,10 +141,6 @@ public class FileStorageHelper {
             } catch (Exception ignored) {}
             return;
         }
-        MmexApplication.getAmplitude().track("synchronize", new HashMap<String, String>() {{
-            put("authority", uri.getAuthority());
-            put("result", "pullDatabase");
-        }});
     }
 
     /**
@@ -190,11 +184,6 @@ public class FileStorageHelper {
         metadata.localSnapshotTimestamp = localLastModifiedMmxDate.toIsoString();
 
         saveMetadata(metadata);
-
-        MmexApplication.getAmplitude().track("synchronize", new HashMap<String, String>() {{
-            put("authority", remoteUri.getAuthority());
-            put("result", "pushDatabase");
-        }});
     }
 
     /**
