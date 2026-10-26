@@ -20,28 +20,19 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.ContextMenu;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import androidx.annotation.NonNull;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
-import com.mikepenz.mmex_icon_font_typeface_library.MMXIconFont;
 import com.money.manager.ex.MmexApplication;
 import com.money.manager.ex.R;
 import com.money.manager.ex.adapter.AllDataAdapter;
@@ -58,10 +49,6 @@ import com.money.manager.ex.servicelayer.RecurringTransactionService;
 import com.money.manager.ex.transactions.CheckingTransactionEditActivity;
 import com.money.manager.ex.transactions.EditTransactionActivityConstants;
 import com.money.manager.ex.utils.MmxDateTimeUtils;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -109,8 +96,6 @@ public class ScheduledTransactionListFragment
         // setHasOptionsMenu(true);
         registerForContextMenu(getListView());
         getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        UIHelper uiHelper = new UIHelper(getActivity());
-        getListView().setDivider(new ColorDrawable(uiHelper.resolveAttribute(R.attr.theme_background_color)));
 
         // create adapter once so we can swap cursor on reload and preserve
         // the list position / focus (same approach used in AccountListFragment)
