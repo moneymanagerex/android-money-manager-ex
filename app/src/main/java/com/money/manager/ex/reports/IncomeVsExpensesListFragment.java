@@ -554,6 +554,18 @@ public class IncomeVsExpensesListFragment
                 dateTime.lastDayOfMonth();
                 params.dateTo = dateTime.toDate();
 
+                // trim date to custom date filter if necessary
+                // This is necessary if selected month has part of custom date
+                // example: month gen. custom date 15/01 to 20/01
+                // total is for date beetin 15 and 20 and we need to trim them
+                // if custom date is 15/01 to 15/03 and we select feb no trim is required
+                if (params.dateFrom.before(mDateFrom)) {
+                    params.dateFrom = mDateFrom;
+                }
+                if (params.dateTo.after(mDateTo)) {
+                    params.dateTo = mDateTo;
+                }
+
                 int mode = getAccountFilterMode();
                 LookAndFeelSettings settings = new AppSettings(requireContext()).getLookAndFeelSettings();
                 params.accountFilterWhere = AccountFilterSupport.getSelectionForAccountIdColumn(

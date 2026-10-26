@@ -511,7 +511,8 @@ public class SearchParametersFragment
         // to date
         if (searchParameters.dateTo != null) {
             where.addStatement(QueryAllData.Date, " <= ",
-                    new MmxDate(searchParameters.dateTo).toIsoDateString());
+                    // since date in db can have time we need to force end of day
+                    new MmxDate(searchParameters.dateTo).setTimeToEndOfDay().toIsoString());
         }
         // payee
         if (searchParameters.payeeId != null) {
