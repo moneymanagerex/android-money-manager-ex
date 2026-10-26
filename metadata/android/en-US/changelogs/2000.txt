@@ -1,0 +1,6 @@
+## What's Changed
+* Fix transaction order using time
+* Add search in split category for: Amount, Category, Notes Tag
+* fix error while opening old transacion
+* preserve custom date in search result and consider datoTo as end of day.
+* restore recurring transaction separato
