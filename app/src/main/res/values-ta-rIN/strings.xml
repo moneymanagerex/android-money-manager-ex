@@ -875,15 +875,10 @@
     <string name="pref_sync_url">பாக்கெட் பேஸ் சர்வர் URL</string>
     <string name="pref_pocketbase_email">பாக்கெட்பேஸ் மின்னஞ்சல்</string>
     <string name="menu_open_from_cloud">மேகத்திலிருந்து திறக்கவும்</string>
-    <string name="checking_session">அமர்வைச் சரிபார்க்கிறது...</string>
-    <string name="session_restored_initializing_database">அமர்வு மீட்டமைக்கப்பட்டது. தரவுத்தளம் துவக்கப்படுகிறது...</string>
     <string name="please_enter_your_password_to_continue">தொடர உங்கள் கடவுச்சொல்லை உள்ளிடவும்.</string>
     <string name="session_expired_please_login_again">அமர்வு முடிவடைந்தது. மீண்டும் உள்நுழையவும்.</string>
-    <string name="authenticating">சரிபார்க்கப்படுகிறது...</string>
-    <string name="authentication_successful_initializing_database">சரிபார்ப்பு வெற்றிகரமாக முடிந்தது. தரவுத்தளம் துவக்கப்படுகிறது...</string>
     <string name="authentication_failed_check_credentials_and_url">அங்கீகாரம் தோல்வியடைந்தது. சான்றுகளையும் URL-ஐயும் சரிபார்க்கவும்.</string>
     <string name="error_two_dots">"பிழை:"</string>
-    <string name="performing_initial_pull_this_may_take_a_while">ஆரம்பநிலை இழுத்தல் நடைபெறுகிறது (இதற்கு சிறிது நேரம் ஆகலாம்)...</string>
     <string name="sync_setup_complete">ஒத்திசைவு அமைப்பு நிறைவடைந்தது!</string>
     <string name="sync_failed">"ஒத்திசைவு தோல்வி:"</string>
     <string name="sync_your_data_with_pocketbase_cloud">உங்கள் தரவை PocketBase Cloud உடன் ஒத்திசைக்கவும்</string>

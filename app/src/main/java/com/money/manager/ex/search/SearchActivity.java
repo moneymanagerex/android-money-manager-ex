@@ -19,6 +19,7 @@ package com.money.manager.ex.search;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,8 +36,6 @@ import com.money.manager.ex.settings.AppSettings;
 import org.parceler.Parcels;
 
 import androidx.fragment.app.FragmentTransaction;
-
-import timber.log.Timber;
 
 public class SearchActivity
     extends MmxBaseFragmentActivity {
@@ -157,7 +156,7 @@ public class SearchActivity
         SearchParameters searchParameters = Parcels.unwrap(searchParcel);
 
         if (searchParameters != null) {
-            Timber.d("-------\n\n\n\n\n\n\n\n\n\n\n\n\nPayeeName: " + searchParameters.payeeName + "\nPayeeId: " + searchParameters.payeeId);
+//            Timber.d("-------\n\n\n\n\n\n\n\n\n\n\n\n\nPayeeName: " + searchParameters.payeeName + "\nPayeeId: " + searchParameters.payeeId);
             getSearchFragment().setSearchParameters(searchParameters);
             performSearch();
         }
@@ -189,10 +188,20 @@ public class SearchActivity
 
         //search parameters
         SearchParameters searchParameters = getSearchFragment().getSearchParameters();
+        boolean useMobileData = false;
+        if (searchParameters != null) {
+            boolean hasNotes = !TextUtils.isEmpty(searchParameters.notes);
+            boolean hasCategory = searchParameters.category != null;
+            boolean hasAmount = searchParameters.amountFrom != null || searchParameters.amountTo != null;
+            boolean hasTag = searchParameters.tagId != null || !TextUtils.isEmpty(searchParameters.tagName);
+
+            useMobileData = hasNotes || hasCategory || hasAmount || hasTag;
+        }
+
         if (searchParameters != null && searchParameters.accountId != null )
-            searchResultsFragment = AllDataListFragment.newInstance(searchParameters.accountId, false);
+            searchResultsFragment = AllDataListFragment.newInstance(searchParameters.accountId, false, useMobileData);
         else
-            searchResultsFragment = AllDataListFragment.newInstance(Constants.NOT_SET, false);
+            searchResultsFragment = AllDataListFragment.newInstance(Constants.NOT_SET, false, useMobileData);
 
 
         searchResultsFragment.showTotalsFooter();

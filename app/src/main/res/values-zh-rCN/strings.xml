@@ -871,15 +871,10 @@
     <string name="pref_sync_url">Pocketbase 服务器 Url</string>
     <string name="pref_pocketbase_email">Pocketbase 电子邮件</string>
     <string name="menu_open_from_cloud">从云端打开</string>
-    <string name="checking_session">正在检查会话...</string>
-    <string name="session_restored_initializing_database">会话已恢复。正在初始化数据库...</string>
     <string name="please_enter_your_password_to_continue">请输入密码以继续。</string>
     <string name="session_expired_please_login_again">会话已过期。请重新登录。</string>
-    <string name="authenticating">正在验证...</string>
-    <string name="authentication_successful_initializing_database">验证成功。正在初始化数据库...</string>
     <string name="authentication_failed_check_credentials_and_url">验证失败。请检查凭据和URL。</string>
     <string name="error_two_dots">"错误： "</string>
-    <string name="performing_initial_pull_this_may_take_a_while">正在执行初始拉取 (这可能需要一段时间) ...</string>
     <string name="sync_setup_complete">同步设置完成！</string>
     <string name="sync_failed">"同步失败： "</string>
     <string name="sync_your_data_with_pocketbase_cloud">与 PocketBase Cloud 同步您的数据</string>

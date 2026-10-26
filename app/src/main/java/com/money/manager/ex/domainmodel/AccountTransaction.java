@@ -19,6 +19,7 @@ package com.money.manager.ex.domainmodel;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.text.TextUtils;
 
 import com.money.manager.ex.Constants;
 import com.money.manager.ex.core.TransactionTypes;
@@ -180,9 +181,10 @@ public class AccountTransaction
 
     public Date getDate() {
         String dateString = getDateString();
-        return dateString != null
-                ? new MmxDate(dateString, "yyyy-MM-dd'T'HH:mm:ss").toDate()
-                : null;
+        if (TextUtils.isEmpty(dateString)) {
+            return null;
+        }
+        return MmxDate.parseDate(dateString);
     }
 
 //    public void setDate(Date value) {

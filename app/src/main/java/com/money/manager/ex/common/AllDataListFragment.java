@@ -61,6 +61,7 @@ import com.money.manager.ex.currency.CurrencyService;
 import com.money.manager.ex.database.Dataset;
 import com.money.manager.ex.database.ITransactionEntity;
 import com.money.manager.ex.database.QueryAllData;
+import com.money.manager.ex.database.QueryMobileData;
 import com.money.manager.ex.datalayer.AccountTransactionRepository;
 import com.money.manager.ex.datalayer.Select;
 import com.money.manager.ex.datalayer.SplitCategoryRepository;
@@ -93,12 +94,17 @@ public class AllDataListFragment
 
     private static final String ARG_ACCOUNT_ID = "AccountId";
     private static final String ARG_SHOW_FLOATING_BUTTON = "ShowFloatingButton";
+    private static final String ARG_USE_MOBILE_DATA = "UseMobileData";
 
     private static final int SORT_BY_DATE_DESC = 0;
     private static final int SORT_BY_DATE_ASC = 1;
 
     public static AllDataListFragment newInstance(long accountId) {
-        return newInstance(accountId, true);
+        return newInstance(accountId, true, false);
+    }
+
+    public static AllDataListFragment newInstance(long accountId, boolean showFloatingButton) {
+        return newInstance(accountId, showFloatingButton, false);
     }
 
     /**
@@ -107,12 +113,13 @@ public class AllDataListFragment
      * @param accountId Id of account to display. If generic shown set -1
      * @return new instance AllDataListFragment
      */
-    public static AllDataListFragment newInstance(long accountId, boolean showFloatingButton) {
+    public static AllDataListFragment newInstance(long accountId, boolean showFloatingButton, boolean useMobileData) {
         AllDataListFragment fragment = new AllDataListFragment();
 
         Bundle args = new Bundle();
         args.putLong(ARG_ACCOUNT_ID, accountId);
         args.putBoolean(ARG_SHOW_FLOATING_BUTTON, showFloatingButton);
+        args.putBoolean(ARG_USE_MOBILE_DATA, useMobileData);
         fragment.setArguments(args);
 
         return fragment;
@@ -253,13 +260,10 @@ public class AllDataListFragment
 
                     // add sort menu in transaction list
                     menuInflater.inflate(R.menu.menu_sort_transaction, menu);
-                    switch (new AppSettings(getContext()).getTransactionSort()) {
-                        case SORT_BY_DATE_ASC:
-                            menu.findItem(R.id.menu_sort_date_asc).setChecked(true);
-                            break;
-                        default:
-                            menu.findItem(R.id.menu_sort_date_desc).setChecked(true);
-                            break;
+                    if (new AppSettings(getContext()).getTransactionSort() == SORT_BY_DATE_ASC) {
+                        menu.findItem(R.id.menu_sort_date_asc).setChecked(true);
+                    } else {
+                        menu.findItem(R.id.menu_sort_date_desc).setChecked(true);
                     }
                 }
             }
@@ -303,6 +307,7 @@ public class AllDataListFragment
         // Loader event handlers
 
     @Override
+    @NonNull
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (getSearchResultFragmentLoaderCallbacks() != null)
             getSearchResultFragmentLoaderCallbacks().onCreateLoader(id, args);
@@ -320,7 +325,13 @@ public class AllDataListFragment
 //                    whereParams = whereParamsList.toArray(whereParams);
 //                }
 
-            Dataset allData = new QueryAllData(getActivity());
+            boolean useMobileData = getArguments() != null && getArguments().getBoolean(ARG_USE_MOBILE_DATA, false);
+            Dataset dataset;
+            if (useMobileData) {
+                dataset = new QueryMobileData(getActivity());
+            } else {
+                dataset = new QueryAllData(getActivity());
+            }
 
             // set sort
             String sort = (args != null) ? args.getString(KEY_ARGUMENTS_SORT) : null;
@@ -328,20 +339,22 @@ public class AllDataListFragment
             //#2810: Transaction list order is inconsistent for transactions created on the same day
             if (TextUtils.isEmpty(sort)) {
                 String sortDirection = (new AppSettings(getContext())).getTransactionSort() == 0 ? "DESC" : "ASC";
-                sort = QueryAllData.Date + " " + sortDirection + ", " + QueryAllData.ID + " " + sortDirection;
+                String dateCol = useMobileData ? QueryMobileData.Date : QueryAllData.Date;
+                String idCol = useMobileData ? QueryMobileData.ID : QueryAllData.ID;
+                sort = dateCol + " " + sortDirection + ", " + idCol + " " + sortDirection;
             }
 
-            Select query = new Select(allData.getAllColumns())
+            Select query = new Select(dataset.getAllColumns())
                     .where(selection)
                     .orderBy(sort);
 
-            return new MmxCursorLoader(getActivity(), allData.getUri(), query);
+            return new MmxCursorLoader(getActivity(), dataset.getUri(), query);
         }
         return null;
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         LoaderManager.LoaderCallbacks<Cursor> parent = getSearchResultFragmentLoaderCallbacks();
         if (parent != null) parent.onLoaderReset(loader);
 
@@ -350,7 +363,7 @@ public class AllDataListFragment
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         LoaderManager.LoaderCallbacks<Cursor> parent = getSearchResultFragmentLoaderCallbacks();
         if (parent != null) parent.onLoadFinished(loader, data);
 

@@ -1,1 +1,1 @@
-Pārvaldīt savus ienākumus un izdevumus uz mobilo ierīci, sinhronizēt, izmantojot mākonis
+Pārvaldiet ienākumus un izdevumus mobilajā ierīcē ar sinhronizāciju mākonī.

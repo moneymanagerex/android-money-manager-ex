@@ -871,15 +871,10 @@
     <string name="pref_sync_url">URL del servidor de Pocketbase</string>
     <string name="pref_pocketbase_email">Correo electrónico de Pocketbase</string>
     <string name="menu_open_from_cloud">Abrir desde la nube</string>
-    <string name="checking_session">Comprobando la sesión...</string>
-    <string name="session_restored_initializing_database">Sesión restaurada. Inicializando la base de datos...</string>
     <string name="please_enter_your_password_to_continue">Introduce tu contraseña para continuar.</string>
     <string name="session_expired_please_login_again">La sesión ha caducado. Vuelve a iniciar sesión.</string>
-    <string name="authenticating">Autenticando...</string>
-    <string name="authentication_successful_initializing_database">Autenticación correcta. Inicializando la base de datos...</string>
     <string name="authentication_failed_check_credentials_and_url">Error de autenticación. Comprueba las credenciales y la URL.</string>
     <string name="error_two_dots">"Error: "</string>
-    <string name="performing_initial_pull_this_may_take_a_while">Realizando la descarga inicial (esto puede tardar un rato)...</string>
     <string name="sync_setup_complete">¡Configuración de la sincronización completada!</string>
     <string name="sync_failed">"Error de sincronización: "</string>
     <string name="sync_your_data_with_pocketbase_cloud">Sincroniza tus datos con PocketBase Cloud</string>

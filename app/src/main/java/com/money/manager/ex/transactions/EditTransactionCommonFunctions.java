@@ -152,6 +152,7 @@ public class EditTransactionCommonFunctions {
         MmxDate dateTime = new MmxDate(date);
         dateTime.setHour(0);
         dateTime.setMinute(0);
+        dateTime.setSecond(0);
 
         return dateTime.toDate();
     }

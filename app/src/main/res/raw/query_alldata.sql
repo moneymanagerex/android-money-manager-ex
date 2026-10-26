@@ -9,7 +9,7 @@ WITH RECURSIVE categories(categid, categname, parentid, fullcatid) AS
 SELECT
     TX.TransID AS ID,
     TX.TransCode AS TransactionType,
-    date( TX.TransDate ) AS Date,
+    TX.TransDate AS Date,
     CAT.categName AS Category,
     TX.CATEGID AS CategID,
     CAT.fullcatid AS FullCatID,

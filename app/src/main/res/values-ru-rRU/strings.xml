@@ -868,14 +868,9 @@
     <string name="pref_sync_url">Ссылка на сервер Pocketbase</string>
     <string name="pref_pocketbase_email">Электронная почта Pocketbase</string>
     <string name="menu_open_from_cloud">Открыть из облака</string>
-    <string name="checking_session">Проверка сессии...</string>
-    <string name="session_restored_initializing_database">Сессия восстановлена. Инициализация базы данных...</string>
     <string name="please_enter_your_password_to_continue">Пожалуйста, введите ваш пароль</string>
     <string name="session_expired_please_login_again">Сессия истекла. Пожалуйста, войдите снова.</string>
-    <string name="authenticating">Аутентификация...</string>
-    <string name="authentication_successful_initializing_database">Аутентификация успешна. Инициализация базы данных...</string>
     <string name="authentication_failed_check_credentials_and_url">Ошибка аутентификации. Проверьте учетные данные и URL-адрес.</string>
     <string name="error_two_dots">"Ошибка: "</string>
-    <string name="performing_initial_pull_this_may_take_a_while">Выполняется первоначальная загрузка (потребуется некоторое время)...</string>
     <!-- Show & Hide Balance -->
 </resources>

@@ -22,6 +22,7 @@ import com.money.manager.ex.Constants;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -38,34 +39,84 @@ import timber.log.Timber;
 public class MmxDate {
 
     /**
+     * Parse date string trying multiple common formats without throwing exceptions.
+     */
+    public static Date parseDate(String dateString) {
+        if (TextUtils.isEmpty(dateString)) return null;
+
+        String[] patterns = new String[] {
+            Constants.IOS_8601_COMBINED,         // "yyyy-MM-dd'T'HH:mm:ss"
+            Constants.ISO_DATE_FORMAT,            // "yyyy-MM-dd"
+            "yyyy-MM-dd HH:mm:ss",
+            Constants.ISO_DATE_SHORT_TIME_FORMAT, // "yyyy-MM-dd HH:mm"
+            Constants.ISO_8601_FORMAT             // "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        };
+
+        for (String pattern : patterns) {
+            Date date = parseExact(dateString, pattern);
+            if (date != null) {
+                return date;
+            }
+        }
+
+        return null;
+    }
+
+    private static Date parseExact(String dateString, String pattern) {
+        if (TextUtils.isEmpty(dateString)) return null;
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(pattern, Locale.ENGLISH);
+            ParsePosition pos = new ParsePosition(0);
+            Date date = sdf.parse(dateString, pos);
+            if (date != null && pos.getIndex() == dateString.length()) {
+                return date;
+            }
+        } catch (Exception e) {
+            // ignore
+        }
+        return null;
+    }
+
+    /**
      * The expected format is full ISO format: 2016-10-22T02:36:46.000+0200
      * @param dateString The date string in ISO format.
      * @return MmxDate instance.
      */
     public static MmxDate fromIso8601(String dateString) {
+        if (TextUtils.isEmpty(dateString)) return null;
+
         if (dateString.length() < 28) {
-            // 2025-02-25T21:08:51 //  Combined
+            // 2025-02-25T21:08:51 // Combined
             if (dateString.length() == 19 && dateString.charAt(10) == 'T') {
                 return new MmxDate(dateString, Constants.IOS_8601_COMBINED);
             }
 
             // manually handle short time-zone offset, i.e. 2016-10-22T02:36:46.000+02
-            if (dateString.charAt(23) == '+' || dateString.charAt(23) == '-') {
+            if (dateString.length() >= 24 && (dateString.charAt(23) == '+' || dateString.charAt(23) == '-')) {
                 // append two zeroes
                 dateString = dateString.concat("00");
             }
 
             // handle invalid format 2016-10-21T18:42:18.000Z
-            if (dateString.charAt(23) == 'Z') {
+            if (dateString.length() >= 24 && dateString.charAt(23) == 'Z') {
                 dateString = dateString.substring(0, 23);
                 // append the current time zone time
-                DateFormat offsetFormat = new SimpleDateFormat("Z");
+                DateFormat offsetFormat = new SimpleDateFormat("Z", Locale.ENGLISH);
                 String offsetString = offsetFormat.format(new MmxDate().toDate());
                 dateString += offsetString;
             }
         }
 
-        return new MmxDate(dateString, Constants.ISO_8601_FORMAT);
+        Date date = parseExact(dateString, Constants.ISO_8601_FORMAT);
+        if (date == null) {
+            date = parseDate(dateString);
+        }
+
+        if (date == null) {
+            return new MmxDate();
+        }
+
+        return new MmxDate(date);
     }
 
     public static Date from(String dateString, String pattern) {
@@ -80,9 +131,8 @@ public class MmxDate {
     }
 
     public static MmxDate newDate() {
-        MmxDate result = new MmxDate()
+        return new MmxDate()
                 .setTimeToBeginningOfDay();
-        return result;
     }
 
     /*
@@ -113,18 +163,24 @@ public class MmxDate {
      * @param isoString ISO date string
      */
     public MmxDate(@NonNull String isoString) {
-        String pattern = Constants.ISO_DATE_FORMAT;
-        Date date = from(isoString, pattern);
+        Date date = parseDate(isoString);
 
         mCalendar = new GregorianCalendar();
-        mCalendar.setTime(date);
+        if (date != null) {
+            mCalendar.setTime(date);
+        }
     }
 
     public MmxDate(String dateString, String pattern) {
-        Date date = from(dateString, pattern);
+        Date date = parseExact(dateString, pattern);
+        if (date == null) {
+            date = parseDate(dateString);
+        }
 
         mCalendar = new GregorianCalendar();
-        mCalendar.setTime(date);
+        if (date != null) {
+            mCalendar.setTime(date);
+        }
     }
 
     public MmxDate(int year, int month, int day) {
@@ -297,7 +353,7 @@ public class MmxDate {
     /**
      * Set the month for the current calendar.
      * @param month Month value i.e. Calendar.January. NOT ordinal, i.e. November != 11.
-     * @return
+     * @return date
      */
     public MmxDate setMonth(int month) {
         mCalendar.set(Calendar.MONTH, month);
