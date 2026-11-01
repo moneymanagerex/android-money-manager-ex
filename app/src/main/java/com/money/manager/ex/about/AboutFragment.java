@@ -283,7 +283,12 @@ public class AboutFragment extends Fragment {
 
         String rtn;
         try {
-            rtn = output.toString();
+            final int maxLogcatLength = 100000;
+            if (output.length() > maxLogcatLength) {
+                rtn = "...[truncated]...\n" + output.substring(output.length() - maxLogcatLength);
+            } else {
+                rtn = output.toString();
+            }
         } catch ( Exception e) {
             rtn = "Too big.";
         }

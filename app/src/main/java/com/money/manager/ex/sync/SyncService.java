@@ -238,7 +238,11 @@ public class SyncService
         DatabaseMetadata currentDb = this.recentDatabasesProvider.get(localFile.getAbsolutePath());
         FileStorageHelper storage = new FileStorageHelper(getApplicationContext());
         // download remote file into tmp (this forces also a refresh of the meta data)
-        storage.pullDatabaseToTmpFile(currentDb);
+        if (!storage.pullDatabaseToTmpFile(currentDb)) {
+            Timber.w("Failed to pull remote database to temporary file. Aborting sync.");
+            sendMessage(outMessenger, SyncServiceMessage.ERROR);
+            return;
+        }
         boolean isLocalModified = currentDb.isLocalFileChanged();
         boolean isRemoteModified = currentDb.isRemoteFileChanged(getApplicationContext());
         Timber.d("Local file has changed: %b, Remote file has changed: %b", isLocalModified, isRemoteModified);

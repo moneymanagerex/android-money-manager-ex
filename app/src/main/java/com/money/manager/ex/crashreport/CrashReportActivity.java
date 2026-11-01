@@ -59,10 +59,14 @@ public class CrashReportActivity extends AppCompatActivity {
             sendMail.setOnClickListener(v -> {
                 // send mail
                 //send file using email
+                String mailReport = report;
+                if (mailReport != null && mailReport.length() > 100000) {
+                    mailReport = mailReport.substring(0, 100000) + "\n...[truncated]...";
+                }
                 Intent emailIntent = new Intent(Intent.ACTION_SEND);
                 emailIntent.setType("plain/text");
                 emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{Constants.EMAIL});
-                emailIntent.putExtra(Intent.EXTRA_TEXT, report);
+                emailIntent.putExtra(Intent.EXTRA_TEXT, mailReport);
                 // the mail subject
                 emailIntent .putExtra(Intent.EXTRA_SUBJECT, "Android Crash Report:");
 
@@ -79,7 +83,11 @@ public class CrashReportActivity extends AppCompatActivity {
         Button openIssue = findViewById(R.id.buttonOpenIssue);
         if ( openIssue != null ) {
             openIssue.setOnClickListener(v -> {
-                String body = "[Put here your description]\n" + report;
+                String issueReport = report != null ? report : "";
+                if (issueReport.length() > 7000) {
+                    issueReport = issueReport.substring(0, 7000) + "\n...[truncated]...";
+                }
+                String body = "[Put here your description]\n" + issueReport;
                 String uri = Uri.parse("https://github.com/moneymanagerex/android-money-manager-ex/issues/new")
                         .buildUpon()
                         .appendQueryParameter("label", "bug")
@@ -87,7 +95,10 @@ public class CrashReportActivity extends AppCompatActivity {
                         .appendQueryParameter("body", body)
                         .build().toString();
                 Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                this.startActivity(myIntent);
+                try {
+                    this.startActivity(myIntent);
+                } catch (Exception ignored) {
+                }
 
                 closeActivity();
 

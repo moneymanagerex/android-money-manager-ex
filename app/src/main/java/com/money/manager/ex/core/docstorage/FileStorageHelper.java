@@ -147,15 +147,18 @@ public class FileStorageHelper {
      * Downloads the remote file into a temporary file.
      *
      * @param metadata Database file metadata.
+     * @return true if downloaded successfully, false otherwise.
      */
-    public void pullDatabaseToTmpFile(DatabaseMetadata metadata) {
+    public boolean pullDatabaseToTmpFile(DatabaseMetadata metadata) {
         // copy the contents into a local database file.
         Uri uri = Uri.parse(metadata.remotePath);
         try {
             // fix localTmpPtah null after first run
             this.downloadDatabase(uri, metadata.getTmpFilePath());
+            return true;
         } catch (Exception e) {
             Timber.e(e);
+            return false;
         }
     }
 
@@ -165,7 +168,9 @@ public class FileStorageHelper {
      */
     public void pushDatabase(DatabaseMetadata metadata) {
         // upload local file
-        uploadDatabase(metadata);
+        if (!uploadDatabase(metadata)) {
+            return;
+        }
 
         // Update the modification timestamps, both local and remote.
         MmxDate localLastModifiedMmxDate = metadata.getLocalFileModifiedDate();
@@ -174,11 +179,11 @@ public class FileStorageHelper {
         Uri remoteUri = Uri.parse(metadata.remotePath);
         DocFileMetadata remote = DocFileMetadata.fromUri(_host, remoteUri);
 
-        if (remote.lastModified.toDate().before(localLastModified)) {
+        if (remote.lastModified != null && remote.lastModified.getMillis() > 0 && remote.lastModified.toDate().before(localLastModified)) {
             // The metadata has not been updated yet!
             // Solve this problem by polling until new value fetched. (doh!)
             pollNewRemoteTimestamp(metadata);
-        } else {
+        } else if (remote.lastModified != null && remote.lastModified.getMillis() > 0) {
             metadata.remoteLastChangedDate = remote.lastModified.toIsoString();
         }
         metadata.localSnapshotTimestamp = localLastModifiedMmxDate.toIsoString();
@@ -216,7 +221,7 @@ public class FileStorageHelper {
     /**
      * Just pushes the given local file to the document provider, using a temporary name.
      */
-    private void uploadDatabase(DatabaseMetadata metadata) {
+    private boolean uploadDatabase(DatabaseMetadata metadata) {
         ContentResolver resolver = getContext().getContentResolver();
         MmxDatabaseUtils utils = new MmxDatabaseUtils(getContext());
         MmxDate lastSyncDateBackup = null;
@@ -260,6 +265,7 @@ public class FileStorageHelper {
                 }
             }
         }
+        return successfullySynced;
     }
 
     /**
@@ -305,12 +311,16 @@ public class FileStorageHelper {
     private void pollNewRemoteTimestamp(DatabaseMetadata metadata) {
         // poll every n seconds.
         long milliseconds = 2 * 1000;
+        final int maxAttempts = 5;
 
         // Param is optional, to run task on UI thread.
         Handler handler = new Handler(Looper.getMainLooper());
         Runnable runnable = new Runnable() {
+            private int attempts = 0;
+
             @Override
             public void run() {
+                attempts++;
                 // Fetch the remote metadata until it has reflected the upload.
                 Uri uri = Uri.parse(metadata.remotePath);
                 DocFileMetadata remote;
@@ -320,12 +330,22 @@ public class FileStorageHelper {
                     Timber.e(e, "Error fetching remote metadata");
                     return;
                 }
-                Date storedLastChange = MmxDate.fromIso8601(metadata.remoteLastChangedDate).toDate();
+                if (remote.lastModified == null || remote.lastModified.getMillis() <= 0) {
+                    Timber.w("Remote metadata unavailable or permission denied, stopping poll.");
+                    return;
+                }
+                Date storedLastChange = metadata.remoteLastChangedDate != null
+                        ? MmxDate.fromIso8601(metadata.remoteLastChangedDate).toDate()
+                        : null;
 
                 if (remote.lastModified.toDate().equals(storedLastChange)) {
-                    // repeat
-                    Timber.d("fetching the actual remote metadata...");
-                    handler.postDelayed(this, milliseconds); // Optional, to repeat the task.
+                    if (attempts < maxAttempts) {
+                        // repeat
+                        Timber.d("fetching the actual remote metadata...");
+                        handler.postDelayed(this, milliseconds); // Optional, to repeat the task.
+                    } else {
+                        Timber.w("Max polling attempts reached for remote metadata.");
+                    }
                 } else {
                     // got an update. store the latest metadata.
                     metadata.remoteLastChangedDate = remote.lastModified.toIsoString();

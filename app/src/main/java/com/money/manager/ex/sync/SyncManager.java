@@ -138,21 +138,23 @@ public class SyncManager {
             return true;
         }
 
-        if (isPhoneStorage()) return true;
+        if (!isPhoneStorage()) {
+            // check if online
+            if (!isActive()) return false;
 
-        // check if online
-        if (!isActive()) return false;
+            // should we sync only on wifi?
+            if (getPreferences().shouldSyncOnlyOnWifi()) {
+                Timber.d("Preferences set to sync on WiFi only.");
 
-        // should we sync only on wifi?
-        if (getPreferences().shouldSyncOnlyOnWifi()) {
-            Timber.d("Preferences set to sync on WiFi only.");
-
-            // check if we are on WiFi connection.
-            NetworkUtils network = new NetworkUtils(getContext());
-            if (!network.isOnWiFi()) {
-                Timber.i("Not on WiFi connection. Not synchronizing.");
-                return false;
+                // check if we are on WiFi connection.
+                NetworkUtils network = new NetworkUtils(getContext());
+                if (!network.isOnWiFi()) {
+                    Timber.i("Not on WiFi connection. Not synchronizing.");
+                    return false;
+                }
             }
+        } else {
+            if (TextUtils.isEmpty(getRemotePath())) return false;
         }
 
         // Try to catch error if Remote provider does not support read.

@@ -88,6 +88,7 @@ import timber.log.Timber;
 public class SearchParametersFragment
     extends Fragment {
 
+        private static final String KEY_PENDING_REQUEST_CODE = "SearchParametersFragment:pendingRequestCode";
         private int pendingRequestCode;
         private final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(), result ->
@@ -134,6 +135,10 @@ public class SearchParametersFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_PENDING_REQUEST_CODE)) {
+            pendingRequestCode = savedInstanceState.getInt(KEY_PENDING_REQUEST_CODE);
+        }
 
         MmexApplication.getApp().iocComponent.inject(this);
 
@@ -331,6 +336,8 @@ public class SearchParametersFragment
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
+
+        savedInstanceState.putInt(KEY_PENDING_REQUEST_CODE, pendingRequestCode);
 
         View view = getView();
         if (view != null) {

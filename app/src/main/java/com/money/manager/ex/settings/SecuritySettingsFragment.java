@@ -41,6 +41,9 @@ import androidx.preference.PreferenceScreen;
 public class SecuritySettingsFragment
     extends PreferenceFragmentCompat {
 
+    private static final String KEY_PENDING_REQUEST_CODE = "SecuritySettingsFragment:pendingRequestCode";
+    private static final String KEY_PASSCODE = "SecuritySettingsFragment:passcode";
+
     private static final int REQUEST_INSERT_PASSCODE = 1;
     private static final int REQUEST_EDIT_PASSCODE = 2;
     private static final int REQUEST_REINSERT_PASSCODE = 10;
@@ -56,6 +59,10 @@ public class SecuritySettingsFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            pendingRequestCode = savedInstanceState.getInt(KEY_PENDING_REQUEST_CODE, 0);
+            passcode = savedInstanceState.getString(KEY_PASSCODE);
+        }
         addPreferencesFromResource(R.xml.preferences_security);
         getActivity().setTitle(R.string.preferences_security);
 
@@ -148,7 +155,7 @@ public class SecuritySettingsFragment
             case REQUEST_DELETE_PASSCODE:
                 // check if reinsert
                 passcode = data.getStringExtra(PasscodeActivity.INTENT_RESULT_PASSCODE);
-                if (passcode.equals("FingerprintAuthenticationSuccess")) {
+                if ("FingerprintAuthenticationSuccess".equals(passcode)) {
                     if (!pass.clearPasscode()) {
                         Toast.makeText(getActivity(), R.string.passcode_not_update, Toast.LENGTH_LONG).show();
                     }
@@ -192,6 +199,13 @@ public class SecuritySettingsFragment
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(KEY_PENDING_REQUEST_CODE, pendingRequestCode);
+        outState.putString(KEY_PASSCODE, passcode);
+        super.onSaveInstanceState(outState);
+    }
+
     private void startActivityPasscode(CharSequence message, int request) {
         Intent intent = new Intent(getActivity(), PasscodeActivity.class);
 
@@ -199,8 +213,6 @@ public class SecuritySettingsFragment
         intent.putExtra(PasscodeActivity.INTENT_MESSAGE_TEXT, message);
         intent.putExtra(PasscodeActivity.PASSCODE_REQUEST, String.valueOf(request));
 
-        pendingRequestCode = request;
-        resultLauncher.launch(intent);
         pendingRequestCode = request;
         resultLauncher.launch(intent);
     }
