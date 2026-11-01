@@ -720,7 +720,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         // - ((\s)at\s(.*?)\s+using) added for LBP currency. Request from HussienH
         String[] searchFor = {
                 "((\\s)at\\s(.*?)\\s+(?:on|for))", "((\\s)favoring\\s(.*?)\\s+is)",
-                "((\\s)to\\s(.*?)\\s+at)", "((\\s)to\\s(.*?)[.])",
+                "((\\s)to\\s(.*?)\\s+(?:at|on|for))", "((\\s)to\\s(.*?)[.])",
                 "((\\s)at\\s(.*?)[.])", "([\\*](.*?)[.])",
                 "((\\s)FROM\\s(.*?)\\s+\\d)", "(from\\s(.*?)\\s(\\())", "(([a-zA-Z]+)(\\s)has(\\s)added)",
                 "((\\s)paid\\s(.*?)\\s)",
@@ -763,13 +763,13 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                 "(I[D//d](.)?(:)?(\\s)?((.*?)\\w+))", "(I[D//d](.)?(:)?)(\\s)?(\\d+)", "(id(\\s)is(\\s)?(:)?(\\d+))",
                 "((Reference:)(\\s)?(\\d+))",  "([\\*](\\d+)[\\*])", "([\\*](.*?)(\\d+)?[\\.]\\s?)",
                 "((reference number)(.*?)(\\d+))", "(\\s)?#(\\s?)(\\d+)(\\s?)",  "([A-Za-z\\*]\\/+(\\d+)+\\/[A-Za-z\\*])",
-                "((?:UPI|IMPS)\\s?(?::|/)\\s?(\\d+)\\s?)", "(Info(:)+(.*?)(\\d+)?[\\.:-]?)", "(I[Dd]\\s?([.:])\\s?((.*?)(\\d+))\\s)"};
+                "((?:UPI|IMPS)(?:\\sRef)?\\s*[:/\\s]\\s*(\\d+)\\s*)", "(Info(:)+(.*?)(\\d+)?[\\.:-]?)", "(I[Dd]\\s?([.:])\\s?((.*?)(\\d+))\\s)", "(RRN(?:\\sno)?\\s*[:/\\s]\\s*(\\d+)\\s*)"};
 
         int[] getGroup = {2, 3, 2,
                           5, 5, 5,
                           4, 2, 3,
                           4, 3, 2,
-                          2, 4, 3};
+                          2, 4, 3, 2};
 
         try
         {
