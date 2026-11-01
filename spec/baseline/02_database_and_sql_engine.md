@@ -1,31 +1,31 @@
 # Baseline 02: Database and SQL Engine
 
-Questo strato rappresenta la vera complessità di MMEX Android, in quanto esegue interazioni RAW con SQLite, gestisce crittografia e si appoggia interamente a cursori custom e file esterni.
+This layer represents the true complexity of MMEX Android, as it executes RAW interactions with SQLite, manages encryption, and relies entirely on custom cursors and external files.
 
 ## 1. Core SQL Engine
-Il package `database/` e `core/database/` gestiscono le connessioni:
-- **`MmxOpenHelper.java`**: L'helper principale che gestisce la creazione (`onCreate`) tramite `tables_v1.sql` e l'aggiornamento (`onUpgrade`) eseguendo gli script raw `database_version_XX.sql` nell'ordine esatto.
-- **`SupportSQLiteOpenHelperAdapter`**: Fa da bridge tra l'interfaccia SQLite standard di Android e **SQLCipher** per la crittografia del database.
-- **`core/database/DatabaseManager.java`**: Gestisce il pool di connessioni, controlla la disponibilità del database e orchestra l'accesso thread-safe.
+The `database/` and `core/database/` packages handle connections:
+- **`MmxOpenHelper.java`**: The main helper managing creation (`onCreate`) via `tables_v1.sql` and updates (`onUpgrade`) by executing raw scripts `database_version_XX.sql` in the exact order.
+- **`SupportSQLiteOpenHelperAdapter`**: Acts as a bridge between the standard Android SQLite interface and **SQLCipher** for database encryption.
+- **`core/database/DatabaseManager.java`**: Manages the connection pool, checks database availability, and orchestrates thread-safe access.
 
-## 2. Sicurezza e Crittografia
-- **`PasswordActivity`**: Gestisce l'UI per lo sblocco del database tramite master password.
-- **`SecureDatabasePasswordManager`**: Mantiene in memoria sicura o KeyStore le chiavi crittografiche necessarie per istanziare l'Helper di SQLCipher.
+## 2. Security and Encryption
+- **`PasswordActivity`**: Manages the UI for unlocking the database via a master password.
+- **`SecureDatabasePasswordManager`**: Keeps the cryptographic keys necessary to instantiate the SQLCipher Helper in secure memory or KeyStore.
 
-## 3. IPC e URI Mapping (Content Provider)
-- **`MmxContentProvider.java`**: Tutte le operazioni UI si appoggiano a questo ContentProvider interno. Intercetta le URI e le mappa sulle tabelle/query SQLite sottostanti. Rilascia notifiche di modifica sui cursori usati da `MmxCursorLoader`.
+## 3. IPC and URI Mapping (Content Provider)
+- **`MmxContentProvider.java`**: All UI operations rely on this internal ContentProvider. It intercepts URIs and maps them to the underlying SQLite tables/queries. It releases modification notifications on cursors used by `MmxCursorLoader`.
 
-## 4. Architettura delle Query Custom (Dataset)
-Le interrogazioni SQL complesse (non coperte dal CRUD base dei repository) sono modellate come oggetti "Dataset".
-- **Interfacce Base**: `Dataset`, `DatasetType`.
-- **`SQLDataSet`**: Wrapper che accorpa una stringa RAW (estratta da `res/raw/`) fornendo metodi per legare i parametri.
-- **`WhereStatementGenerator`**: Utility factory per comporre programmaticamente le clausole `WHERE` complesse con i rispettivi argomenti `?`.
+## 4. Custom Query Architecture (Dataset)
+Complex SQL queries (not covered by basic repository CRUD) are modeled as "Dataset" objects.
+- **Base Interfaces**: `Dataset`, `DatasetType`.
+- **`SQLDataSet`**: Wrapper encapsulating a RAW string (extracted from `res/raw/`) providing methods to bind parameters.
+- **`WhereStatementGenerator`**: Utility factory to programmatically compose complex `WHERE` clauses with respective `?` arguments.
 
-### Esempi di Query Complesse (`database/`)
-Queste classi mappano logicamente i file `res/raw/query_*.sql`:
-- `QueryAllData`: Ricerca e fusione dati per visualizzazioni omnicomprensive.
-- `QueryAccountBills`: Calcolo stato delle scadenze e bollette relative a un conto.
-- `QueryBillDeposits`: Interroga transazioni periodiche/programmate.
-- `QueryMobileData`: (Usata prevalentemente per mapping sync).
-- `QueryReportIncomeVsExpenses`: Estrae i dati aggregati per mese/anno per i grafici cashflow.
-- Tutte queste query vengono lette e incrociate con i metadati definiti in `table_config.json`.
+### Complex Query Examples (`database/`)
+These classes logically map the `res/raw/query_*.sql` files:
+- `QueryAllData`: Data search and fusion for comprehensive views.
+- `QueryAccountBills`: Calculation of scheduled transaction status and bills related to an account.
+- `QueryBillDeposits`: Queries periodic/scheduled transactions.
+- `QueryMobileData`: (Used predominantly for sync mapping).
+- `QueryReportIncomeVsExpenses`: Extracts aggregated data by month/year for cashflow charts.
+- All these queries are read and crossed with metadata defined in `table_config.json`.

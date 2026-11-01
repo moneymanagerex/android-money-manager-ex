@@ -1,33 +1,33 @@
 # Baseline 00: Project and Build Variants
 
-## 1. Struttura dei Source Sets (`app/src/`)
-Il modulo principale `:app` gestisce diverse build variants e flavor, orchestrate tramite Gradle. L'albero dei sorgenti riflette una profonda separazione tra i target di distribuzione e le suite di test.
+## 1. Source Sets Structure (`app/src/`)
+The main module `:app` manages different build variants and flavors, orchestrated via Gradle. The source tree reflects a deep separation between distribution targets and test suites.
 
-### 1.1 Varianti di Distribuzione (Flavors / Build Types)
-- **`app/src/main/`**: Il core dell'applicazione MMEX contenente la maggior parte del codice Java, delle risorse UI e della configurazione del Manifest principale.
-- **`app/src/fdroid/`**: Variante specifica per il rilascio su F-Droid, senza dipendenze proprietarie di Google Play Services (es. rimozione di tracciamenti proprietari o sync legato a Google Drive).
-- **`app/src/beta/`**: non viene più usata.
+### 1.1 Distribution Variants (Flavors / Build Types)
+- **`app/src/main/`**: The core of the MMEX application containing most of the Java code, UI resources, and the main Manifest configuration.
+- **`app/src/fdroid/`**: Specific variant for F-Droid release, without proprietary Google Play Services dependencies (e.g., removal of proprietary tracking or Google Drive sync).
+- **`app/src/beta/`**: No longer used.
 
-### 1.2 Varianti di Test
-- **`app/src/test/`**: Unit test eseguiti sulla JVM locale (JUnit 4). Focus sui calcoli di business e logiche disaccoppiate da Android.
-- **`app/src/androidTest/`**: Test strumentali e test basati su **Robolectric**. Include configurazioni dedicate nel package `org.moneymanagerex.android.tests`.
-  - **`TestApplication`**: Sottoclasse dell'applicazione usata durante i test per iniettare mock o un database in-memory saltando l'inizializzazione standard di Dagger (MmxComponent).
+### 1.2 Test Variants
+- **`app/src/test/`**: Unit tests executed on the local JVM (JUnit 4). Focus on business calculations and Android-decoupled logic.
+- **`app/src/androidTest/`**: Instrumental tests and **Robolectric** based tests. Includes dedicated configurations in the `org.moneymanagerex.android.tests` package.
+  - **`TestApplication`**: Subclass of the application used during tests to inject mocks or an in-memory database, skipping standard Dagger initialization (MmxComponent).
 
-**Nota**: tutta la struttura di test è stata aggioranta in modo parziale e non rispecchia tutte le funzionalità.
+**Note**: The entire test structure has been partially updated and does not cover all functionality.
 
 ---
 
-## 2. Gestione degli Assets e SQL Raw (`app/src/main/`)
+## 2. Assets and Raw SQL Management (`app/src/main/`)
 
-A differenza delle app che usano ORM, MMEX utilizza una gestione manuale e fortemente strutturata per asset e query SQL.
+Unlike apps using an ORM, MMEX uses manual and highly structured management for assets and SQL queries.
 
 ### 2.1 Assets (`src/main/assets/`)
-- **`fonts/`**: Contiene tipografia custom e l'icon-font di MMEX (condiviso/collegato con `:MMEX_Icon_Font`).
-- **`tutorial_images/`**: Immagini per il carosello di on-boarding iniziale o la guida introduttiva.
+- **`fonts/`**: Contains custom typography and the MMEX icon-font (shared/linked with `:MMEX_Icon_Font`).
+- **`tutorial_images/`**: Images for the initial onboarding carousel or introductory guide.
 
 ### 2.2 Raw SQL (`src/main/res/raw/`)
-Questa directory è il cuore dell'interazione col database.
-- **File di Setup Schema**: Contiene `tables_v1.sql` (lo schema iniziale completo).
-- **File di Migrazione**: Serie di file `database_version_0.sql` fino a `database_version_21.sql` (o successivi) usati da `MmxOpenHelper` per i delta di aggiornamento.
-- **File di Query (`query_*.sql`)**: Query complesse multi-tabella caricate a runtime per la reportistica e la dashboard (es. bilancio incrociato).
-- **`table_config.json`**: File descrittore che mappa la struttura delle tabelle e dei metadati associati.
+This directory is the heart of database interaction.
+- **Schema Setup File**: Contains `tables_v1.sql` (the complete initial schema).
+- **Migration Files**: Series of files from `database_version_0.sql` to `database_version_21.sql` (or later) used by `MmxOpenHelper` for update deltas.
+- **Query Files (`query_*.sql`)**: Complex multi-table queries loaded at runtime for reporting and the dashboard (e.g., cross-account balance).
+- **`table_config.json`**: Descriptor file that maps the structure of tables and associated metadata.

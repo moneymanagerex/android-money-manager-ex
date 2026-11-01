@@ -1,23 +1,23 @@
 # Baseline 03: Data Layer and Domain Models
 
-L'astrazione dei dati per l'CRUD tabellare base usa un ORM interno custom basato su astrazioni Repository ed Entity. Non usa librerie standard di mercato (es. Room).
+The data abstraction for basic tabular CRUD uses a custom internal ORM based on Repository and Entity abstractions. It does not use standard market libraries (e.g., Room).
 
-## 1. Architettura Data Layer (`datalayer/`)
-- **`IRepository<T extends IEntity>`**: Interfaccia generica per operazioni CRUD.
-- **`RepositoryBase`**: Classe astratta che gestisce operazioni comuni sui repository.
-- **`SqlRepositoryBase`**: L'implementazione concreta di base. Traduce gli oggetti di dominio in `ContentValues` ed esegue insert, update e map dei Cursori ad oggetti.
-- **`Select`**: Una classe builder/fluent usata nel layer di business per comporre query programmatiche (`Select(Tabella).where(campo).eq(valore).execute()`).
+## 1. Data Layer Architecture (`datalayer/`)
+- **`IRepository<T extends IEntity>`**: Generic interface for CRUD operations.
+- **`RepositoryBase`**: Abstract class handling common repository operations.
+- **`SqlRepositoryBase`**: The concrete base implementation. Translates domain objects into `ContentValues` and executes inserts, updates, and maps Cursors to objects.
+- **`Select`**: A builder/fluent class used in the business layer to programmatically compose queries (`Select(Table).where(field).eq(value).execute()`).
 
-## 2. Modelli di Dominio (`domainmodel/`)
-- **`IEntity`**: Interfaccia contrattuale per tutti gli oggetti salvabili.
-- **`EntityBase`**: Provvede getter/setter per le PK.
-- **`IModificationTraceable`**: Interfaccia **fondamentale per la Sincronizzazione**. Contiene metodi per leggere/scrivere `UPDATEDTIME` e `CREATEDTIME`.
-- **`RefType`**: Enum usata frequentemente per indicare se una riga si riferisce a un Trasferimento, Entrata, Uscita ecc.
+## 2. Domain Models (`domainmodel/`)
+- **`IEntity`**: Contract interface for all savable objects.
+- **`EntityBase`**: Provides getters/setters for PKs.
+- **`IModificationTraceable`**: **Fundamental interface for Synchronization**. Contains methods to read/write `UPDATEDTIME` and `CREATEDTIME`.
+- **`RefType`**: Enum frequently used to indicate if a row refers to a Transfer, Deposit, Withdrawal, etc.
 
-## 3. Mappa Completa Modelli, Repository e Tabelle
-Qui la mappa esatta tra i 23 Modelli di Dominio, i rispettivi Repository (iniettati via Dagger) e il nome tabella fisico SQLite (dichiarato nello schema).
+## 3. Complete Map of Models, Repositories, and Tables
+Here is the exact map between the 23 Domain Models, their respective Repositories (injected via Dagger), and the physical SQLite table name (declared in the schema).
 
-| Domain Model | Repository in `datalayer/` | Tabella SQLite RAW (`tables_v1.sql`) |
+| Domain Model | Repository in `datalayer/` | RAW SQLite Table (`tables_v1.sql`) |
 |--------------|---------------------------|----------------------------------|
 | `Account` | `AccountRepository` | `ACCOUNTLIST_V1` |
 | `AccountTransaction` | `AccountTransactionRepository` | `CHECKINGACCOUNT_V1` |
@@ -43,4 +43,4 @@ Qui la mappa esatta tra i 23 Modelli di Dominio, i rispettivi Repository (iniett
 | `TagLink` | `TagLinkRepository` | `TAGLINK_V1` |
 | `TransactionLink` | `TransactionLinkRepository` | `TRANSACTIONLINK_V1` |
 
-> *Nota Architetturale: Qualsiasi modifica ai campi dei Domain Models (es. `Category.java`) implica una modifica parallela nella logica di ContentValue mapping all'interno del relativo `CategoryRepository` e un'alterazione dello schema in un nuovo file `database_version_XX.sql` in `res/raw/`.*
+> *Architectural Note: Any modification to the fields of Domain Models (e.g., `Category.java`) implies a parallel modification in the ContentValue mapping logic within the relevant `CategoryRepository` and a schema alteration in a new `database_version_XX.sql` file in `res/raw/`.*

@@ -1,27 +1,27 @@
 # Baseline 07: Feature - Accounts and Transactions
 
-Questo documento descrive il flusso delle feature principali di MMEX, mappando l'ingresso dell'utente dall'app fino all'inserimento di una transazione e al ricalcolo asincrono dei bilanci.
+This document describes the flow of MMEX's main features, mapping the user entry from the app to the insertion of a transaction and the asynchronous recalculation of balances.
 
-## 1. App Entry e Dashboard (`home/`, `search/`)
-- **`MainActivity`**: L'host contenitore principale con il Navigation Drawer.
-- **`HomeFragment` / `DashboardFragment`**: Punti di atterraggio. Riepilogano il patrimonio netto aggregando i conti correnti (Asset) al netto delle passività.
-- **Ricerca (`search/`)**:
-  - **`SearchParameters`**: Modello che raccoglie filtri utente (importo, data, tag, nota, stato, payee). Viene passato al `Dataset` che genera dinamicamente il `WhereStatementGenerator`.
+## 1. App Entry and Dashboard (`home/`, `search/`)
+- **`MainActivity`**: The main container host with the Navigation Drawer.
+- **`HomeFragment` / `DashboardFragment`**: Landing points. They summarize the net worth by aggregating checking accounts (Assets) net of liabilities.
+- **Search (`search/`)**:
+  - **`SearchParameters`**: Model collecting user filters (amount, date, tag, note, status, payee). Passed to the `Dataset` which dynamically generates the `WhereStatementGenerator`.
 
-## 2. Flusso Conti Correnti (`account/`)
-- La lista viene servita da `AbsRecyclerFragment` agganciato a `AccountRepository`.
-- **Ricalcolo dei Saldi (`CalculateRunningBalanceTask2`)**: Un task asincrono cruciale (storicamente `AsyncTask` o worker) che ricomputa il saldo corrente di un conto iterando su tutto il suo registro transazioni dal "Saldo Iniziale". Non si basa su trigger SQL ma su logica applicativa Java, al fine di ricalcolare i bilanci progressivi riga per riga (Running Balance).
+## 2. Checking Accounts Flow (`account/`)
+- The list is served by `AbsRecyclerFragment` hooked to `AccountRepository`.
+- **Balance Recalculation (`CalculateRunningBalanceTask2`)**: A crucial asynchronous task (historically `AsyncTask` or worker) that recomputes an account's current balance by iterating over its entire transaction ledger from the "Initial Balance". It does not rely on SQL triggers but on Java application logic, in order to recalculate progressive balances row by row (Running Balance).
 
-## 3. Flusso Transazioni (`transactions/`)
-- **Modifica ed Inserimento**: 
-  - **`CheckingTransactionEditActivity`**: La complessa Activity di edit di una transazione (incassa Input Dialog per l'importo, Spinner per categorie/payee, DatePicker).
-  - **`EditTransactionCommonFunctions`**: Classe helper che astrae validazioni e logiche condivise (es. validazione importo non nullo o gestione cambi valuta per trasferimenti internazionali).
-- **Gestione Categorie Annidate (`nestedcategory/`)**: 
-  - MMEX non ha tabelle separate per le sub-categorie, usa il ParentID. `NestedCategoryEntity` e `QueryNestedCategory` ricompletano l'albero (Parent > Child) mostrandolo nello spinner della UI.
-- **Flusso Tag (`tag/`)**:
-  - Implementazione M2M (Many-To-Many). Un'interfaccia (`TagLinkUtils`) permette di visualizzare un campo di testo con Tag (separati da virgole), che vengono parsati e tradotti in query sulla tabella di join `TAGLINK_V1` durante il salvataggio della transazione.
+## 3. Transactions Flow (`transactions/`)
+- **Modification and Insertion**:
+  - **`CheckingTransactionEditActivity`**: The complex transaction edit Activity (embeds Input Dialog for amount, Spinners for categories/payee, DatePicker).
+  - **`EditTransactionCommonFunctions`**: Helper class abstracting shared validations and logic (e.g., non-null amount validation or currency exchange handling for international transfers).
+- **Nested Categories Management (`nestedcategory/`)**:
+  - MMEX does not have separate tables for sub-categories; it uses ParentID. `NestedCategoryEntity` and `QueryNestedCategory` complete the tree (Parent > Child), displaying it in the UI spinner.
+- **Tag Flow (`tag/`)**:
+  - M2M (Many-To-Many) implementation. An interface (`TagLinkUtils`) allows displaying a text field with Tags (comma-separated), which are parsed and translated into queries on the `TAGLINK_V1` join table during transaction saving.
 
-## 4. Transazioni Suddivise (Split - `SplitCategoriesActivity`)
-Una singola spesa al supermercato può essere categorizzata su multipli rami (Cibo, Detersivi).
-- Viene mappata tramite la tabella `SPLITTRANSACTIONS_V1`.
-- L'activity `SplitCategoriesActivity` gestisce un adapter speciale dove l'utente aggiunge N righe. La somma delle righe Split deve combaciare con l'importo totale della `AccountTransaction` padre, altrimenti viene mostrato un avviso di sbilanciamento e il salvataggio è bloccato.
+## 4. Split Transactions (`SplitCategoriesActivity`)
+A single grocery expense can be categorized into multiple branches (Food, Detergents).
+- It is mapped via the `SPLITTRANSACTIONS_V1` table.
+- The `SplitCategoriesActivity` handles a special adapter where the user adds N rows. The sum of the Split rows must match the total amount of the parent `AccountTransaction`, otherwise an imbalance warning is shown and saving is blocked.

@@ -1,30 +1,30 @@
 # Baseline 04: Service Layer and Business Logic
 
-Questo documento descrive il livello di astrazione dedicato alla logica di business e all'esportazione dei dati, situato sopra i Repository (`datalayer/`).
+This document describes the abstraction layer dedicated to business logic and data export, located above the Repositories (`datalayer/`).
 
-## 1. Architettura Service Layer (`servicelayer/`)
-Il pattern di progettazione prevede che frammenti e activity non chiamino quasi mai direttamente i repository, ma passino per i "Service" che incapsulano le regole applicative (es. aggiornamento saldi a cascata, validazioni, controlli di integrità relazionale).
+## 1. Service Layer Architecture (`servicelayer/`)
+The design pattern dictates that fragments and activities almost never call repositories directly, but pass through "Services" that encapsulate application rules (e.g., cascading balance updates, validations, relational integrity checks).
 
-- **`ServiceBase`**: Classe base per i servizi. Solitamente contiene riferimenti al contesto e risolve le dipendenze tramite Dagger (iniettando i repository necessari).
-- **Iniezione**: I servizi vengono tipicamente istanziati e iniettati nei ViewModel o nei Fragment tramite Dagger `MmxComponent`.
+- **`ServiceBase`**: Base class for services. Usually contains references to the context and resolves dependencies via Dagger (injecting the necessary repositories).
+- **Injection**: Services are typically instantiated and injected into ViewModels or Fragments via Dagger's `MmxComponent`.
 
-## 2. Servizi Core di Business
-- **`AccountService`**: Regole relative ai conti (calcolo saldi inziali, chiusura conto, validazione valute associate).
-- **`CategoryService`**: Logica di gestione dell'albero delle categorie, controllo orfani o categorie in uso.
-- **`InfoService`**: Gestione dei metadati del database (versione schema, configurazioni salvate su DB).
-- **`PayeeService`**: Logica per il partizionamento e la normalizzazione dei beneficiari.
-- **`RecurringTransactionService`**: Motore applicativo per lo srotolamento delle transazioni ricorrenti in transazioni effettive nel registro (bills/deposits).
-- **`TagService`**: Validazione, associazione multipla di Tag alle transazioni tramite la tabella ponte `TAGLINK_V1`.
+## 2. Core Business Services
+- **`AccountService`**: Rules relating to accounts (initial balance calculation, account closure, associated currencies validation).
+- **`CategoryService`**: Category tree management logic, checking for orphans or categories in use.
+- **`InfoService`**: Database metadata management (schema version, configurations saved in DB).
+- **`PayeeService`**: Logic for payee partitioning and normalization.
+- **`RecurringTransactionService`**: Application engine for unrolling recurring transactions into actual transactions in the ledger (bills/deposits).
+- **`TagService`**: Validation, multiple association of Tags to transactions via the `TAGLINK_V1` bridge table.
 
-## 3. Motore di Esportazione e Importazione
-La logica di scambio dati verso formati standard è isolata dal DB locale.
+## 3. Export and Import Engine
+The data exchange logic towards standard formats is isolated from the local DB.
 
-### 3.1 Esportazione QIF (`servicelayer/qif/`)
-Il formato Quicken Interchange Format è gestito tramite un framework custom:
-- **`QifExport`**: La classe orchestratrice che recupera i conti e delega la generazione.
-- **`QifGenerator`**: Motore che itera sui cursori delle transazioni (utilizzando `MmxCursorLoader` o le query del repository) e mappa i dati testuali.
-- **`QifHeader`**: Modella l'intestazione standard di una transazione QIF (es. `!Type:Bank`).
-- **`QifRecord`**: Modella i singoli campi di un record (data, importo, categoria, beneficiario).
+### 3.1 QIF Export (`servicelayer/qif/`)
+The Quicken Interchange Format is managed via a custom framework:
+- **`QifExport`**: The orchestrator class that retrieves accounts and delegates generation.
+- **`QifGenerator`**: Engine that iterates over transaction cursors (using `MmxCursorLoader` or repository queries) and maps the textual data.
+- **`QifHeader`**: Models the standard header of a QIF transaction (e.g., `!Type:Bank`).
+- **`QifRecord`**: Models individual fields of a record (date, amount, category, payee).
 
-### 3.2 Esportazione CSV
-- **`core/ExportToCsvFile.java`**: Utility legacy robusta per l'esportazione tabellare dei report o del registro transazioni, gestendo in modo accurato gli escape dei caratteri separatori.
+### 3.2 CSV Export
+- **`core/ExportToCsvFile.java`**: Robust legacy utility for tabular export of reports or the transaction ledger, accurately handling separator character escaping.

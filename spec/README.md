@@ -1,19 +1,19 @@
 # Governance Spec-Driven - MMEX Android
 
-Questo repository gestisce lo sviluppo e il refactoring di **Money Manager Ex per Android (MMEX)** tramite il protocollo **Spec-Driven Development (SDD)**.
+This repository manages the development and refactoring of **Money Manager Ex for Android (MMEX)** via the **Spec-Driven Development (SDD)** protocol.
 
-> **ATTENZIONE CRITICA ALL'ARCHITETTURA REALE**:
-> MMEX Android **NON** è una tipica app moderna (non usa Room, non usa Kotlin Coroutines/Flow per il core dati, non usa Hilt). 
-> Il progetto è una codebase complessa basata su **Java**, **Dagger IoC classico**, **EventBus**, architettura custom multi-layer (`datalayer`/`domainmodel`), **Raw SQLite** (`res/raw/*.sql`), `MmxContentProvider` e motori di sincronizzazione custom (SyncAdapter classico e PocketBase).
-> Qualsiasi modifica deve rispettare rigorosamente questo stack tecnologico.
+> **CRITICAL ATTENTION TO REAL ARCHITECTURE**:
+> MMEX Android is **NOT** a typical modern app (it doesn't use Room, it doesn't use Kotlin Coroutines/Flow for core data, it doesn't use Hilt). 
+> The project is a complex codebase based on **Java**, **classic Dagger IoC**, **EventBus**, custom multi-layer architecture (`datalayer`/`domainmodel`), **Raw SQLite** (`res/raw/*.sql`), `MmxContentProvider`, and custom synchronization engines (classic SyncAdapter and PocketBase).
+> Any modification must strictly respect this technology stack.
 
-## 1. Ciclo di Vita delle Modifiche
-1. **Analisi Baseline**: Consulta i file in `spec/baseline/` (da `00` a `11`) che documentano in modo granulare l'architettura Java reale (classi, package, SQL, Eventi).
-2. **Redazione CR (Change Request)**: Crea un file in `spec/cr/` derivato dal `CR-TEMPLATE.md`. Analizza minuziosamente l'impatto sul DB (Raw SQL), sui Repository, su EventBus e sui meccanismi di Sync.
-3. **Approvazione & Implementazione**: Scrivi codice solo basandoti sui task atomici definiti e approvati nella CR, assicurandoti di implementare test adeguati (JUnit/Robolectric).
-4. **Aggiornamento Baseline**: Una volta implementata la modifica, le sezioni rilevanti in `spec/baseline/` devono essere aggiornate per riflettere le nuove classi o tabelle.
+## 1. Change Lifecycle
+1. **Baseline Analysis**: Consult the files in `spec/baseline/` (from `00` to `11`), which document the real Java architecture (classes, packages, SQL, Events) in a granular manner.
+2. **Drafting a CR (Change Request)**: Create a file in `spec/cr/` derived from `CR-TEMPLATE.md`. Meticulously analyze the impact on the DB (Raw SQL), Repositories, EventBus, and Sync mechanisms.
+3. **Approval & Implementation**: Write code based solely on the atomic tasks defined and approved in the CR, ensuring you implement adequate tests (JUnit/Robolectric).
+4. **Baseline Update**: Once the modification is implemented, relevant sections in `spec/baseline/` must be updated to reflect the new classes or tables.
 
-## 2. Direttive per l'Assistente AI
-- Non presumere stack tecnologici non documentati (niente Kotlin Flow se non esplicitamente richiesto per nuovi componenti isolati; rispetta l'uso di `EventBus` e `MmxCursorLoader`).
-- Quando definisci un task o scrivi codice, cita sempre le classi Java e i package reali (es. `com.money.manager.ex.core.database.DatabaseManager`).
-- Rispetta il protocollo di risoluzione conflitti (`DataMerger.java`) in caso di modifiche ai modelli di dominio marcati come `IModificationTraceable`.
+## 2. Directives for the AI Assistant
+- Do not assume undocumented technology stacks (no Kotlin Flow unless explicitly requested for new isolated components; respect the use of `EventBus` and `MmxCursorLoader`).
+- When defining a task or writing code, always cite the real Java classes and packages (e.g., `com.money.manager.ex.core.database.DatabaseManager`).
+- Respect the conflict resolution protocol (`DataMerger.java`) in case of modifications to domain models marked as `IModificationTraceable`.

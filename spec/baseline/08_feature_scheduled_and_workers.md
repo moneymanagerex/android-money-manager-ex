@@ -1,18 +1,18 @@
 # Baseline 08: Feature - Scheduled and Workers
 
-Questo documento descrive il sistema di gestione delle transazioni periodiche (Recurring/Scheduled) e l'intercettazione degli SMS bancari.
+This document describes the management system for periodic transactions (Recurring/Scheduled) and the interception of banking SMS.
 
-## 1. Architettura delle Transazioni Periodiche (`scheduled/`)
-In MMEX, le transazioni periodiche ("Bills and Deposits") non entrano nel registro del conto finché non scade la loro data. Il sistema deve anticiparne l'esecuzione per renderle "Reali".
+## 1. Periodic Transactions Architecture (`scheduled/`)
+In MMEX, periodic transactions ("Bills and Deposits") do not enter the account ledger until their date expires. The system must anticipate their execution to make them "Real".
 
-- **`Recurrence` / `RecurringTransactionProcess`**: Motore logico che, dato un oggetto `RecurringTransaction`, calcola le date future (Next Occurrence) sulla base di un cron-like setting (Es. "Ogni 2 Mesi").
-- **`ScheduledTransactionForecastList`**: Fragment che aggrega le future uscite programmate, aiutando l'utente a stimare il flusso di cassa futuro.
-- **`ScheduledTransactionEditActivity`**: Activity dedicata alla modifica del template di una ricorrenza (che contiene importo base, payee e frequenza), ma non incide direttamente sul saldo finché non viene srotolata (Unrolled).
+- **`Recurrence` / `RecurringTransactionProcess`**: Logical engine that, given a `RecurringTransaction` object, calculates future dates (Next Occurrence) based on a cron-like setting (e.g., "Every 2 Months").
+- **`ScheduledTransactionForecastList`**: Fragment that aggregates future scheduled expenses, helping the user estimate future cash flow.
+- **`ScheduledTransactionEditActivity`**: Dedicated activity to edit a recurrence template (containing base amount, payee, and frequency), but does not directly affect the balance until unrolled.
 
-## 2. Worker di Processamento (`scheduled/worker/`)
-L'app utilizza i servizi di background di Android per svegliarsi e controllare se una spesa ricorrente deve essere inserita nel registro effettivo.
-- **`RecurringTransactionBootReceiver`**: `BroadcastReceiver` in ascolto di `BOOT_COMPLETED` per ri-registrare gli allarmi dopo un riavvio del device.
-- **`ScheduledTransactionWorker`** (WorkManager): Periodicamente interroga il database per transazioni con `NextOccurrenceDate <= Oggi`. Per ognuna, invoca il `RecurringTransactionService` che duplica il template in una `AccountTransaction` vera e propria nel conto, aggiornando la prossima data utile del template.
+## 2. Processing Worker (`scheduled/worker/`)
+The app uses Android background services to wake up and check if a recurring expense needs to be inserted into the actual ledger.
+- **`RecurringTransactionBootReceiver`**: `BroadcastReceiver` listening for `BOOT_COMPLETED` to re-register alarms after a device reboot.
+- **`ScheduledTransactionWorker`** (WorkManager): Periodically queries the database for transactions with `NextOccurrenceDate <= Today`. For each, it invokes the `RecurringTransactionService`, which duplicates the template into an actual `AccountTransaction` in the account, updating the template's next valid date.
 
-## 3. Analisi Automatica (SMS/Notifiche - `notifications/`)
-- **`SmsReceiverTransactions`**: `BroadcastReceiver` storico in ascolto degli SMS in entrata. Cerca di fare parsing del testo (tramite regex definite nelle impostazioni utente) per riconoscere importo, payee e conto (in base alle ultime 4 cifre del CC). Se riconosce una transazione bancaria, genera una `AccountTransaction` in stato "Draft" o notifica l'utente per approvarla.
+## 3. Automatic Analysis (SMS/Notifications - `notifications/`)
+- **`SmsReceiverTransactions`**: Historical `BroadcastReceiver` listening to incoming SMS. Attempts to parse the text (via regex defined in user settings) to recognize amount, payee, and account (based on the last 4 digits of the CC). If it recognizes a banking transaction, it generates an `AccountTransaction` in "Draft" status or notifies the user to approve it.

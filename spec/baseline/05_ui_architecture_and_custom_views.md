@@ -1,29 +1,29 @@
 # Baseline 05: UI Architecture and Custom Views
 
-Questo documento illustra l'infrastruttura dell'interfaccia utente (UI), che combina pattern storici Android con layout modernizzati.
+This document outlines the User Interface (UI) infrastructure, which combines historical Android patterns with modernized layouts.
 
-## 1. Gerarchia delle Activity e dei Fragment
-Tutta la logica di presentazione eredita da robuste classi base che garantiscono coerenza (es. gestione automatica dei Loader, iniezione Dagger e temi).
+## 1. Activity and Fragment Hierarchy
+All presentation logic inherits from robust base classes that guarantee consistency (e.g., automatic Loader management, Dagger injection, and theming).
 
-- **`MmxBaseFragmentActivity`**: Activity principale (Appcompat-based). Registra EventBus in `onStart`/`onStop`, prepara il `MmxComponent` (Dagger) e gestisce la toolbar.
-- **Fragment di Lista**:
-  - **`AbsListFragment` / `BaseListFragment`**: Fragment legacy basati su `ListView`. Gestiscono i cursori e mostrano layout di "Empty State".
-  - **`AbsRecyclerFragment` / `BaseRecyclerFragment`**: Evoluzione moderna basata su `RecyclerView`. Standard per le schermate a lista (Conti, Categorie, Transazioni).
-- **`AllDataListFragment`**: Base astratta per mostrare set di dati complessi incrociati (`QueryAllData`), implementando logiche generiche di raggruppamento e ordinamento.
+- **`MmxBaseFragmentActivity`**: Main Activity (Appcompat-based). Registers EventBus in `onStart`/`onStop`, prepares the `MmxComponent` (Dagger), and manages the toolbar.
+- **List Fragments**:
+  - **`AbsListFragment` / `BaseListFragment`**: Legacy fragments based on `ListView`. Manage cursors and display "Empty State" layouts.
+  - **`AbsRecyclerFragment` / `BaseRecyclerFragment`**: Modern evolution based on `RecyclerView`. Standard for list screens (Accounts, Categories, Transactions).
+- **`AllDataListFragment`**: Abstract base to show complex crossed datasets (`QueryAllData`), implementing generic grouping and sorting logic.
 
-## 2. Architettura Cursori e Adapters
-MMEX usa estensivamente i `Loader` (LoaderManager storico) per interrogare il database in background e aggiornare l'UI reattivamente quando il ContentProvider notifica un cambiamento.
+## 2. Cursor Architecture and Adapters
+MMEX extensively uses `Loaders` (historical LoaderManager) to query the database in the background and reactively update the UI when the ContentProvider notifies of a change.
 
-- **`MmxCursorLoader`**: Loader custom che interroga `MmxContentProvider`. Quando un record viene modificato altrove, il cursore si invalida, forzando un refresh della lista.
-- **`MoneySimpleCursorAdapter`**: Adapter bridge usato nelle combo box (Spinner) e per liste legacy, mappando colonne SQLite a viste XML.
-- **`AllDataAdapter`**: Adapter complesso per le RecyclerView, in grado di gestire ViewType multipli (intestazioni di data, transazioni, totalizzatori).
-- **Pattern `*ViewHolder`**: Ogni entità ha un ViewHolder associato (es. `TransactionViewHolder`) che estrae i dati dal cursore nella posizione corrente ed effettua il binding sui widget.
+- **`MmxCursorLoader`**: Custom loader querying `MmxContentProvider`. When a record is modified elsewhere, the cursor is invalidated, forcing a list refresh.
+- **`MoneySimpleCursorAdapter`**: Bridge adapter used in combo boxes (Spinners) and for legacy lists, mapping SQLite columns to XML views.
+- **`AllDataAdapter`**: Complex adapter for RecyclerViews, capable of handling multiple ViewTypes (date headers, transactions, totalizers).
+- **`*ViewHolder` Pattern**: Each entity has an associated ViewHolder (e.g., `TransactionViewHolder`) that extracts data from the cursor at the current position and binds it to widgets.
 
-## 3. Custom Views e Interazione Utente (`view/`, `common/`)
-- **Gestione Font Custom (`Roboto*`)**: Classi come `RobotoTextView` o `RobotoButton` che ereditano dai widget base applicando dinamicamente il typeface corretto (o i font vettoriali mappati nel modulo `:MMEX_Icon_Font`).
-- **`ContextMenuRecyclerView`**: Estensione di RecyclerView per supportare i menu contestuali classici di Android al long-press (modifica, elimina, duplica).
-- **Dialogs e Input**:
-  - **`AmountInputDialog`**: Dialog personalizzato ad alta affidabilità per l'inserimento di valori monetari (gestione virgola/punto, localizzazione).
-  - **`CalculatorActivity`**: Activity popup che funge da calcolatrice integrata, ritornando il risultato alla vista chiamante (es. form di transazione).
+## 3. Custom Views and User Interaction (`view/`, `common/`)
+- **Custom Font Management (`Roboto*`)**: Classes like `RobotoTextView` or `RobotoButton` that inherit from base widgets dynamically applying the correct typeface (or vector fonts mapped in the `:MMEX_Icon_Font` module).
+- **`ContextMenuRecyclerView`**: RecyclerView extension to support classic Android contextual menus on long-press (edit, delete, duplicate).
+- **Dialogs and Input**:
+  - **`AmountInputDialog`**: High-reliability custom dialog for entering monetary values (comma/dot handling, localization).
+  - **`CalculatorActivity`**: Popup activity acting as an integrated calculator, returning the result to the calling view (e.g., transaction form).
 
-*(Nota: L'introduzione del pacchetto `viewmodels/` in alcune sezioni affianca o sostituisce gradualmente i loader con `ViewModel` AndroidX, spesso appoggiati a LiveData o chiamate asincrone tramite EventBus.)*
+*(Note: The introduction of the `viewmodels/` package in some sections gradually supplements or replaces loaders with AndroidX `ViewModel`s, often backed by LiveData or asynchronous calls via EventBus.)*
