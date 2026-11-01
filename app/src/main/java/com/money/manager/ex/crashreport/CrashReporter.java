@@ -45,13 +45,22 @@ public class CrashReporter implements Thread.UncaughtExceptionHandler {
         // note we can't just open in Android an dialog etc. we have to use Intents here
         // http://stackoverflow.com/questions/13416879/show-a-dialog-in-thread-setdefaultuncaughtexceptionhandler
 
+        String reportText = generateReport(mContext, thread, ex);
+        final int maxReportLength = 100000;
+        if (reportText.length() > maxReportLength) {
+            reportText = reportText.substring(0, maxReportLength) + "\n...[truncated]...";
+        }
+
         Intent registerActivity = new Intent(mContext, CrashReportActivity.class);
         registerActivity.setAction("HANDLE_ERROR");
         registerActivity.putExtra("ERROR", CrashReporter.class.getName());
-        registerActivity.putExtra(Intent.EXTRA_TEXT, generateReport(mContext, thread, ex));
+        registerActivity.putExtra(Intent.EXTRA_TEXT, reportText);
         registerActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        mContext.startActivity(registerActivity);
+        try {
+            mContext.startActivity(registerActivity);
+        } catch (Exception ignored) {
+        }
 
         rootHandler.uncaughtException(thread, ex);
 //        // make sure we die, otherwise the app will hang ...

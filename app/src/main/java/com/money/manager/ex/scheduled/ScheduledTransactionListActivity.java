@@ -129,7 +129,7 @@ public class ScheduledTransactionListActivity
             if (resultCode == RESULT_OK && data != null) {
 
                 String passIntent = data.getStringExtra(PasscodeActivity.INTENT_RESULT_PASSCODE);
-                if (!passIntent.equals("FingerprintAuthenticationSuccess")) {
+                if (!"FingerprintAuthenticationSuccess".equals(passIntent)) {
                     Passcode passcode = new Passcode(getApplicationContext());
                     String passDb = passcode.getPasscode();
 

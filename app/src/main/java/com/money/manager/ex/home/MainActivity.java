@@ -173,6 +173,7 @@ public class MainActivity
     // private
 
     private static final String KEY_IN_AUTHENTICATION = "MainActivity:isInAuthenticated";
+    private static final String KEY_IS_AUTHENTICATED = "MainActivity:isAuthenticated";
     private static final String KEY_RECURRING_TRANSACTION = "MainActivity:RecurringTransaction";
 
     // state if restart activity
@@ -282,7 +283,7 @@ public class MainActivity
 
                 //#2381 : Passcode issue after Android update
                 // remove the passcode which was set as "FingerprintAuthenticationSuccess"
-                if (passcode.getPasscode().equals("FingerprintAuthenticationSuccess")) {
+                if ("FingerprintAuthenticationSuccess".equals(passcode.getPasscode())) {
                     if (passcode.clearPasscode()) {
                         new Core(this).alert(R.string.fingerprint_passcode_deactivated);
                     }
@@ -344,13 +345,18 @@ public class MainActivity
 
         switch (requestCode) {
             case RequestCodes.REQUEST_PASSWORD:
+                if (data == null) return;
                 String path = data.getStringExtra(MainActivity.EXTRA_DATABASE_PATH);
+                if (path == null) return;
                 DatabaseMetadata selectedDatabase = getDatabases().get(path);
-                onOpenDatabaseClick(selectedDatabase);
+                if (selectedDatabase != null) {
+                    onOpenDatabaseClick(selectedDatabase);
+                }
                 break;
             case RequestCodes.SELECT_DOCUMENT:
                 FileStorageHelper storageHelper = new FileStorageHelper(this);
                 DatabaseMetadata db = storageHelper.selectDatabase(data);
+                if (db == null) return;
                 changeDatabase(db);
                 break;
             case RequestCodes.CREATE_DOCUMENT:
@@ -366,11 +372,11 @@ public class MainActivity
                 isInAuthentication = false;
                 if (resultCode == RESULT_OK && data != null) {
                     String passIntent = data.getStringExtra(PasscodeActivity.INTENT_RESULT_PASSCODE);
-                    if (!passIntent.equals("FingerprintAuthenticationSuccess")) {
+                    if (!"FingerprintAuthenticationSuccess".equals(passIntent)) {
                         Passcode passcode = new Passcode(getApplicationContext());
                         String passDb = passcode.getPasscode();
 
-                        if (passDb != null) {
+                        if (passIntent != null && passDb != null) {
                             isAuthenticated = passIntent.equals(passDb);
                             if (!isAuthenticated) {
                                 Toast.makeText(getApplicationContext(), R.string.passocde_no_macth, Toast.LENGTH_LONG).show();
@@ -450,6 +456,7 @@ public class MainActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putBoolean(KEY_IN_AUTHENTICATION, isInAuthentication);
+        outState.putBoolean(KEY_IS_AUTHENTICATED, isAuthenticated);
         outState.putBoolean(KEY_RECURRING_TRANSACTION, isScheduledTransactionStarted);
 
         super.onSaveInstanceState(outState);
@@ -1425,6 +1432,7 @@ public class MainActivity
      * @param recentDb selected recent database entry
      */
     private void onOpenDatabaseClick(DatabaseMetadata recentDb) {
+        if (recentDb == null || recentDb.localPath == null) return;
         // do nothing if selecting the currently open database
         String currentDb = new DatabaseManager(this).getDatabasePath();
         if (recentDb.localPath.equals(currentDb)) return;
@@ -1448,6 +1456,8 @@ public class MainActivity
     private void restoreInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState.containsKey(KEY_IN_AUTHENTICATION))
             isInAuthentication = savedInstanceState.getBoolean(KEY_IN_AUTHENTICATION);
+        if (savedInstanceState.containsKey(KEY_IS_AUTHENTICATED))
+            isAuthenticated = savedInstanceState.getBoolean(KEY_IS_AUTHENTICATED);
         if (savedInstanceState.containsKey(KEY_RECURRING_TRANSACTION)) {
             isScheduledTransactionStarted = savedInstanceState.getBoolean(KEY_RECURRING_TRANSACTION);
         }
@@ -1496,7 +1506,7 @@ public class MainActivity
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String lastPath = preferences.getString(context.getString(PreferenceConstants.PREF_LAST_DB_PATH_SHOWN), "");
 
-        if (!lastPath.equals(currentPath)) {
+        if (!TextUtils.equals(lastPath, currentPath)) {
             preferences.edit()
                     .putString(context.getString(PreferenceConstants.PREF_LAST_DB_PATH_SHOWN), currentPath)
                     .apply();

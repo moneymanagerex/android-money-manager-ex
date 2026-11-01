@@ -55,6 +55,7 @@ import timber.log.Timber;
 
 public abstract class MmxBaseFragmentActivity
         extends AppCompatActivity {
+    private static final String KEY_ACTIVITY_RESULT_REQUEST_CODE = "MmxBaseFragmentActivity:activityResultRequestCode";
     private int activityResultRequestCode;
     private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
         new ActivityResultContracts.StartActivityForResult(), result ->
@@ -73,6 +74,10 @@ public abstract class MmxBaseFragmentActivity
     public void launchActivityForResult(Intent intent, int requestCode) {
         activityResultRequestCode = requestCode;
         activityResultLauncher.launch(intent);
+    }
+
+    protected int getActivityResultRequestCode() {
+        return activityResultRequestCode;
     }
 
     protected void handleActivityResult(int requestCode, int resultCode, Intent data) {
@@ -99,6 +104,10 @@ public abstract class MmxBaseFragmentActivity
         this.compositeSubscription = new CompositeSubscription();
 
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_ACTIVITY_RESULT_REQUEST_CODE)) {
+            activityResultRequestCode = savedInstanceState.getInt(KEY_ACTIVITY_RESULT_REQUEST_CODE);
+        }
 
         // Initialize the ActivityResultLauncher
         openDocumentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -249,6 +258,7 @@ public abstract class MmxBaseFragmentActivity
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(KEY_ACTIVITY_RESULT_REQUEST_CODE, activityResultRequestCode);
         super.onSaveInstanceState(outState);
     }
 

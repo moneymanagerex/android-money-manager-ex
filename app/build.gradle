@@ -36,9 +36,9 @@ android {
     defaultConfig {
         manifestPlaceholders = [appName: "Money Manager Ex"]
         applicationId "com.money.manager.ex"
-        versionCode 2000
+        versionCode 2001
         //versionName getVersionAsDate() + "." + versionCode
-        versionName "5.5.14"
+        versionName "5.5.15"
         // versionName getVersionAsDate()
 
         minSdkVersion rootProject.ext.minSdkVersion
