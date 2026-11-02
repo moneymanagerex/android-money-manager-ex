@@ -142,12 +142,12 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         // find out the trans type using reg ex
                         String[] key_credit_search = {"(credited)", "(received)", "(added)", "(reloaded)", "(deposited)", "(refunded)",
                                 "(debited)(.*?)(towards)(\\s)", "(\\s)(received)(.*?)(in(\\s)your)(\\s)", "(sent)(.*?)(to)(\\s)", "(debited)(.*?)(to)(\\s)",
-                                "(credited)(.*?)(in)(\\s)", "(credited)(.*?)(to)(\\s)", "(recharge)"};
+                                "(credited)(.*?)(in)(\\s)", "(credited)(.*?)(to)(\\s)", "(recharge)", "(credit)", "(cr)"};
 
                         // - Sales Draft added for LBP currency. Request from HussienH
                         String[] key_debit_search = {"(made)", "(debited)", "(using)", "(paid)", "(purchase)", "(withdrawn)", "(done)",
                                 "(credited)(.*?)(from)(\\s)", "(sent)(.*?)(from)(\\s)", "(\\s)(received)(.*?)(from)(\\s)",
-                                "(sales\\sdraft)", "(spent)"}; //
+                                "(sales\\sdraft)", "(spent)", "(debit)", "(dr)"}; //
 
                         String transType = "";
 
