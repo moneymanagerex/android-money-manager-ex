@@ -289,10 +289,14 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                         mCommon.transactionEntity.setTransactionType(TransactionTypes.Withdrawal);
                                         mCommon.transactionEntity.setToAccountId(Constants.NOT_SET);
                                         mCommon.transactionEntity.setToAmount(MoneyFactory.fromString(transAmount));
-
-                                        mCommon.transactionEntity.setPayeeId(Long.parseLong(transPayee[0]));
                                         mCommon.payeeName = transPayee[1];
-                                        mCommon.transactionEntity.setCategoryId(Long.parseLong(transPayee[2]));
+
+                                        if (!transPayee[0].isEmpty()) {
+                                            mCommon.transactionEntity.setPayeeId(Long.parseLong(transPayee[0]));
+                                            mCommon.transactionEntity.setCategoryId(Long.parseLong(transPayee[2]));
+                                        } else {
+                                            mCommon.transactionEntity.setPayeeId(Constants.NOT_SET);
+                                        }
                                     }
 
                                     t_intent.setAction(Intent.ACTION_INSERT); //Set the action
