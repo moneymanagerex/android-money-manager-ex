@@ -142,12 +142,12 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                         // find out the trans type using reg ex
                         String[] key_credit_search = {"(credited)", "(received)", "(added)", "(reloaded)", "(deposited)", "(refunded)",
                                 "(debited)(.*?)(towards)(\\s)", "(\\s)(received)(.*?)(in(\\s)your)(\\s)", "(sent)(.*?)(to)(\\s)", "(debited)(.*?)(to)(\\s)",
-                                "(credited)(.*?)(in)(\\s)", "(credited)(.*?)(to)(\\s)", "(recharge)"};
+                                "(credited)(.*?)(in)(\\s)", "(credited)(.*?)(to)(\\s)", "(recharge)", "(credit)", "(cr)"};
 
                         // - Sales Draft added for LBP currency. Request from HussienH
                         String[] key_debit_search = {"(made)", "(debited)", "(using)", "(paid)", "(purchase)", "(withdrawn)", "(done)",
                                 "(credited)(.*?)(from)(\\s)", "(sent)(.*?)(from)(\\s)", "(\\s)(received)(.*?)(from)(\\s)",
-                                "(sales\\sdraft)", "(spent)"}; //
+                                "(sales\\sdraft)", "(spent)", "(debit)", "(dr)"}; //
 
                         String transType = "";
 
@@ -289,10 +289,14 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                                         mCommon.transactionEntity.setTransactionType(TransactionTypes.Withdrawal);
                                         mCommon.transactionEntity.setToAccountId(Constants.NOT_SET);
                                         mCommon.transactionEntity.setToAmount(MoneyFactory.fromString(transAmount));
-
-                                        mCommon.transactionEntity.setPayeeId(Long.parseLong(transPayee[0]));
                                         mCommon.payeeName = transPayee[1];
-                                        mCommon.transactionEntity.setCategoryId(Long.parseLong(transPayee[2]));
+
+                                        if (!transPayee[0].isEmpty()) {
+                                            mCommon.transactionEntity.setPayeeId(Long.parseLong(transPayee[0]));
+                                            mCommon.transactionEntity.setCategoryId(Long.parseLong(transPayee[2]));
+                                        } else {
+                                            mCommon.transactionEntity.setPayeeId(Constants.NOT_SET);
+                                        }
                                     }
 
                                     t_intent.setAction(Intent.ACTION_INSERT); //Set the action
@@ -720,7 +724,7 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
         // - ((\s)at\s(.*?)\s+using) added for LBP currency. Request from HussienH
         String[] searchFor = {
                 "((\\s)at\\s(.*?)\\s+(?:on|for))", "((\\s)favoring\\s(.*?)\\s+is)",
-                "((\\s)to\\s(.*?)\\s+at)", "((\\s)to\\s(.*?)[.])",
+                "((\\s)to\\s(.*?)\\s+(?:at|on|for))", "((\\s)to\\s(.*?)[.])",
                 "((\\s)at\\s(.*?)[.])", "([\\*](.*?)[.])",
                 "((\\s)FROM\\s(.*?)\\s+\\d)", "(from\\s(.*?)\\s(\\())", "(([a-zA-Z]+)(\\s)has(\\s)added)",
                 "((\\s)paid\\s(.*?)\\s)",
@@ -763,13 +767,13 @@ public class SmsReceiverTransactions extends BroadcastReceiver {
                 "(I[D//d](.)?(:)?(\\s)?((.*?)\\w+))", "(I[D//d](.)?(:)?)(\\s)?(\\d+)", "(id(\\s)is(\\s)?(:)?(\\d+))",
                 "((Reference:)(\\s)?(\\d+))",  "([\\*](\\d+)[\\*])", "([\\*](.*?)(\\d+)?[\\.]\\s?)",
                 "((reference number)(.*?)(\\d+))", "(\\s)?#(\\s?)(\\d+)(\\s?)",  "([A-Za-z\\*]\\/+(\\d+)+\\/[A-Za-z\\*])",
-                "((?:UPI|IMPS)\\s?(?::|/)\\s?(\\d+)\\s?)", "(Info(:)+(.*?)(\\d+)?[\\.:-]?)", "(I[Dd]\\s?([.:])\\s?((.*?)(\\d+))\\s)"};
+                "((?:UPI|IMPS)(?:\\sRef)?\\s*[:/\\s]\\s*(\\d+)\\s*)", "(Info(:)+(.*?)(\\d+)?[\\.:-]?)", "(I[Dd]\\s?([.:])\\s?((.*?)(\\d+))\\s)", "(RRN(?:\\sno)?\\s*[:/\\s]\\s*(\\d+)\\s*)"};
 
         int[] getGroup = {2, 3, 2,
                           5, 5, 5,
                           4, 2, 3,
                           4, 3, 2,
-                          2, 4, 3};
+                          2, 4, 3, 2};
 
         try
         {
