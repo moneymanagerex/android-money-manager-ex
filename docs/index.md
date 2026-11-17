@@ -71,12 +71,6 @@ Donate via Paypal<br>
 </td>
 <td>
 <center>
-Donate via WeChat<br>
-<img src="assets/images/wechat-donate.png" style="width: 120px; margin: 6px auto;">
-</center>
-</td>
-<td>
-<center>
 Donate via bitcoin<br>
 <img src="assets/images/bitcoin-donate.png" style="width: 120px; margin: 6px auto;">
 </center>
