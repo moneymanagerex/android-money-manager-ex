@@ -88,8 +88,12 @@
     <string name="account_empty_list">Không tìm thấy tài khoản nào. Để tạo 1 tài khoản, chạm vào nút \"+\" màu xanh.</string>
     <string name="account_balance">Số dư tài khoản</string>
     <string name="account_reconciled_balance">Số dư đối chiếu</string>
+    <string name="total_balance">Tổng số dư</string>
+    <string name="cash_balance">Tiền mặt</string>
+    <string name="gain_loss">Lãi / Lỗ</string>
     <string name="pie_other">Khác</string>
     <string name="delete_account">Xoá tài khoản</string>
+    <string name="delete_stock_investment">Xóa khoản đầu tư chứng khoán</string>
     <string name="account_name">Tên tài khoản</string>
     <string name="account_type">Loại tài khoản</string>
     <string name="account_number">Số tài khoản</string>
@@ -683,8 +687,11 @@
     <string name="loan">Khoản cho vay</string>
     <string name="loan_account">Tài khoản các khoản cho vay</string>
     <string name="shares_accounts">Tài khoản cổ phần</string>
+    <string name="menu_create_database">Tạo cơ sở dữ liệu</string>
+    <string name="create_database">Tạo cơ sở dữ liệu</string>
     <!-- Notification Setting -->
     <!-- Builder button -->
+    <string name="empty_color_message">Chọn màu</string>
     <!--- New navigation mode -->
     <!--Upload/Downlaod warnning -->
     <string name="menu_account_filter_all">Tất cả tài khoản</string>
@@ -693,5 +700,10 @@
     <!-- changelog -->
     <string name="changelog">Thay đổi</string>
     <!-- PocketBse Sync -->
+    <string name="checking_session"></string>
+    <string name="authenticating">Đang xác thực...</string>
+    <string name="error_two_dots">"Lỗi: "</string>
+    <string name="sync_setup_complete">Thiết lập đồng bộ hoàn tất!</string>
     <!-- Show & Hide Balance -->
+    <string name="pref_hide_balances_title"></string>
 </resources>
